@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
+import Neighbourhoods from '@/components/city/Neighbourhoods';
 import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
 import WhereToStay from '@/components/city/WhereToStay';
@@ -46,6 +47,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             {/* Main content */}
             <div>
+              <Neighbourhoods city={city} />
               <ThingsToDo city={city} />
               <OffbeatPlaces city={city} />
               <WhereToStay city={city} />

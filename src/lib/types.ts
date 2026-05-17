@@ -29,6 +29,16 @@ export interface Restaurant {
   mustTry: string;
 }
 
+export interface Neighbourhood {
+  name: string;
+  description: string;
+  bestFor: string[];
+  vibe: string;
+  priceRange: '$' | '$$' | '$$$' | '$$$$';
+  highlights: string[];
+  notFor: string;
+}
+
 export interface OffbeatPlace {
   name: string;
   description: string;
@@ -58,6 +68,7 @@ export interface City {
   gettingAround: string[];
   proTips: string[];
   offbeatPlaces: OffbeatPlace[];
+  neighbourhoods: Neighbourhood[];
 }
 
 export interface TripPlanRequest {
