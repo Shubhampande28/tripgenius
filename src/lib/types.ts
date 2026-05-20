@@ -29,6 +29,31 @@ export interface Restaurant {
   mustTry: string;
 }
 
+export interface Airport {
+  name: string;
+  code: string;
+  note: string;
+  distanceFromCity: string;
+  transferTime: string;
+  transferOptions: string[];
+}
+
+export interface FlightRoute {
+  from: string;
+  flag: string;
+  duration: string;
+  airlines: string;
+  note?: string;
+}
+
+export interface GettingThere {
+  summary: string;
+  airports: Airport[];
+  topRoutes: FlightRoute[];
+  bestTimeToBuyTip: string;
+  bookingTip: string;
+}
+
 export type MonthRating = 'excellent' | 'good' | 'average' | 'avoid';
 
 export interface MonthInfo {
@@ -108,6 +133,7 @@ export interface City {
   neighbourhoods: Neighbourhood[];
   budgetBreakdown: CityBudget;
   monthByMonth: MonthByMonth;
+  gettingThere: GettingThere;
 }
 
 export interface TripPlanRequest {
