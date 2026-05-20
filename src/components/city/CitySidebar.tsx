@@ -2,12 +2,15 @@ import Link from 'next/link';
 import { Plane, Hotel, Globe, Clock, Coins, MapPin, Tag } from 'lucide-react';
 import { City } from '@/lib/types';
 import { cities } from '@/lib/cities';
+import CitySnapshot from './CitySnapshot';
 
 export default function CitySidebar({ city }: { city: City }) {
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 4);
 
   return (
     <aside className="space-y-6">
+      {/* Snapshot CTA — always first */}
+      <CitySnapshot city={city} />
       {/* Quick facts */}
       <div className="bg-surface border border-border rounded-2xl p-5">
         <h3 className="font-heading text-xl font-semibold text-primary-text mb-4">Quick Facts</h3>
