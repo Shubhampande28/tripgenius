@@ -26,7 +26,8 @@ const priceColor: Record<string, string> = {
 };
 
 export default function MonthByMonth({ city }: { city: City }) {
-  const { monthByMonth: data } = city;
+  if (!city.monthByMonth) return null;
+  const data = city.monthByMonth;
 
   return (
     <section className="py-16 bg-surface">

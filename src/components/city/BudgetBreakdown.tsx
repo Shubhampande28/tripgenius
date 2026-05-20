@@ -18,6 +18,7 @@ const rows = [
 ] as const;
 
 export default function BudgetBreakdown({ city }: { city: City }) {
+  if (!city.budgetBreakdown) return null;
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

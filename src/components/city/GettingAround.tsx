@@ -5,6 +5,7 @@ import { Navigation } from 'lucide-react';
 import { City } from '@/lib/types';
 
 export default function GettingAround({ city }: { city: City }) {
+  if (!city.gettingAround?.length) return null;
   return (
     <section className="py-16 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

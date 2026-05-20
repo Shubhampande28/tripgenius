@@ -124,10 +124,9 @@ export default function CitySnapshot({ city }: { city: City }) {
                 </div>
 
                 {/* Top 5 things to do */}
+                {city.thingsToDo && city.thingsToDo.length > 0 && (
                 <div className="px-5 py-4 border-b border-border">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
-                    Top Things To Do
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Top Things To Do</p>
                   <div className="space-y-2">
                     {city.thingsToDo.slice(0, 5).map((item, i) => (
                       <div key={item.name} className="flex items-center gap-3">
@@ -139,12 +138,12 @@ export default function CitySnapshot({ city }: { city: City }) {
                     ))}
                   </div>
                 </div>
+                )}
 
                 {/* Budget tiers */}
+                {city.budgetBreakdown && (
                 <div className="px-5 py-4 border-b border-border">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
-                    Daily Budget
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Daily Budget</p>
                   <div className="grid grid-cols-3 gap-2">
                     {city.budgetBreakdown.tiers.map((tier) => (
                       <div key={tier.label} className="text-center p-2.5 rounded-xl bg-surface border border-border">
@@ -155,19 +154,16 @@ export default function CitySnapshot({ city }: { city: City }) {
                     ))}
                   </div>
                 </div>
+                )}
 
-                {/* Month grid — mini bars */}
+                {/* Month grid */}
+                {city.monthByMonth && (
                 <div className="px-5 py-4 border-b border-border">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
-                    Best Time to Visit
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Best Time to Visit</p>
                   <div className="flex gap-1 items-end h-8 mb-2">
                     {city.monthByMonth.months.map((m) => (
                       <div key={m.short} className="flex-1 flex flex-col items-center gap-1">
-                        <div
-                          className={`w-full rounded-sm ${ratingBar[m.rating]} ${ratingHeight[m.rating]} transition-all`}
-                          title={`${m.month}: ${m.rating}`}
-                        />
+                        <div className={`w-full rounded-sm ${ratingBar[m.rating]} ${ratingHeight[m.rating]}`} title={`${m.month}: ${m.rating}`} />
                       </div>
                     ))}
                   </div>
@@ -178,38 +174,18 @@ export default function CitySnapshot({ city }: { city: City }) {
                       </div>
                     ))}
                   </div>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-sm bg-teal" />
-                      <span className="text-xs text-muted">Excellent</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-sm bg-accent" />
-                      <span className="text-xs text-muted">Good</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-sm bg-gold" />
-                      <span className="text-xs text-muted">Average</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-sm bg-red-500/70" />
-                      <span className="text-xs text-muted">Avoid</span>
-                    </div>
-                  </div>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {city.monthByMonth.bestMonths.map((m) => (
-                      <span key={m} className="text-xs px-2 py-0.5 rounded-full bg-teal/10 text-teal border border-teal/25 font-medium">
-                        {m}
-                      </span>
+                      <span key={m} className="text-xs px-2 py-0.5 rounded-full bg-teal/10 text-teal border border-teal/25 font-medium">{m}</span>
                     ))}
                   </div>
                 </div>
+                )}
 
-                {/* Neighbourhoods — top 2 */}
+                {/* Neighbourhoods */}
+                {city.neighbourhoods && city.neighbourhoods.length > 0 && (
                 <div className="px-5 py-4 border-b border-border">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
-                    Best Neighbourhoods
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Best Neighbourhoods</p>
                   <div className="space-y-2">
                     {city.neighbourhoods.slice(0, 3).map((n) => (
                       <div key={n.name} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface border border-border">
@@ -223,12 +199,12 @@ export default function CitySnapshot({ city }: { city: City }) {
                     ))}
                   </div>
                 </div>
+                )}
 
                 {/* Getting there */}
+                {city.gettingThere && (
                 <div className="px-5 py-4 border-b border-border">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">
-                    Getting There
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Getting There</p>
                   {city.gettingThere.airports.slice(0, 1).map((airport) => (
                     <div key={airport.code} className="p-3 rounded-xl bg-surface border border-border">
                       <div className="flex items-center gap-2 mb-2">
@@ -240,20 +216,19 @@ export default function CitySnapshot({ city }: { city: City }) {
                       <p className="text-xs text-teal mt-1">⏱ {airport.transferTime.split('·')[0].trim()}</p>
                     </div>
                   ))}
-                  <p className="text-xs text-muted/70 italic mt-2 leading-relaxed">
-                    {city.gettingThere.bestTimeToBuyTip}
-                  </p>
+                  <p className="text-xs text-muted/70 italic mt-2 leading-relaxed">{city.gettingThere.bestTimeToBuyTip}</p>
                 </div>
+                )}
 
                 {/* Pro tip */}
+                {city.proTips && city.proTips.length > 0 && (
                 <div className="px-5 py-4 border-b border-border">
                   <div className="flex items-start gap-2 p-3 rounded-xl bg-gold/5 border border-gold/20">
                     <Star size={13} className="text-gold flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-primary-text/80 leading-relaxed italic">
-                      {city.proTips[0]}
-                    </p>
+                    <p className="text-xs text-primary-text/80 leading-relaxed italic">{city.proTips[0]}</p>
                   </div>
                 </div>
+                )}
 
                 {/* CTAs */}
                 <div className="px-5 py-5 space-y-3">

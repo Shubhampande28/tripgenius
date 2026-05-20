@@ -138,17 +138,17 @@ export interface City {
   accentColor: string;
   image: string;
   heroImage: string;
-  thingsToDo: ThingToDo[];
-  hotels: Hotel[];
-  restaurants: Restaurant[];
-  gettingAround: string[];
-  proTips: string[];
-  offbeatPlaces: OffbeatPlace[];
-  neighbourhoods: Neighbourhood[];
-  budgetBreakdown: CityBudget;
-  monthByMonth: MonthByMonth;
-  gettingThere: GettingThere;
   areas?: CityArea[];
+  thingsToDo?: ThingToDo[];
+  hotels?: Hotel[];
+  restaurants?: Restaurant[];
+  gettingAround?: string[];
+  proTips?: string[];
+  offbeatPlaces?: OffbeatPlace[];
+  neighbourhoods?: Neighbourhood[];
+  budgetBreakdown?: CityBudget;
+  monthByMonth?: MonthByMonth;
+  gettingThere?: GettingThere;
 }
 
 export interface TripPlanRequest {

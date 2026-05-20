@@ -190,7 +190,7 @@ export const cities: City[] = [
         name: "Seminyak",
         emoji: "🌅",
         accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1559628233-100c798642af?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1573790387438-4da905039392?auto=format&fit=crop&w=600&q=80",
         tagline: "Stylish beach clubs & dining",
         spots: [
           { name: "Seminyak Beach", tag: "Beach" },
@@ -205,7 +205,7 @@ export const cities: City[] = [
         name: "Nusa Penida",
         emoji: "🦅",
         accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1604999565976-8913ad2ddb37?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=600&q=80",
         tagline: "Dramatic cliffs & pristine waters",
         spots: [
           { name: "Kelingking Beach", tag: "Iconic" },
@@ -523,6 +523,86 @@ export const cities: City[] = [
       "The best street food is often at markets that close by 10pm — eat early",
       "Heat and humidity are intense — plan outdoor activities before 11am or after 4pm",
     ],
+    areas: [
+      {
+        name: "Old City", emoji: "🛕", accentColor: "#FF6B35",
+        image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=600&q=80",
+        tagline: "Temples, palaces & river life",
+        spots: [
+          { name: "Grand Palace & Wat Phra Kaew", tag: "Must-see" },
+          { name: "Wat Pho & Giant Reclining Buddha", tag: "Temple" },
+          { name: "Chao Phraya River", tag: "Boat rides" },
+          { name: "Amulet Market", tag: "Market" },
+          { name: "Khao San Road", tag: "Backpacker hub" },
+          { name: "Sanam Luang Park", tag: "Free" },
+        ],
+      },
+      {
+        name: "Sukhumvit", emoji: "🌃", accentColor: "#00C9A7",
+        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        tagline: "Nightlife, malls & street food",
+        spots: [
+          { name: "Terminal 21 Mall", tag: "Shopping" },
+          { name: "Nana & Asok BTS Strip", tag: "Nightlife" },
+          { name: "Soi 38 Night Food Market", tag: "Food" },
+          { name: "Benjasiri Park", tag: "Chill" },
+          { name: "Thonglor dining scene", tag: "Upscale" },
+          { name: "Emquartier & Emporium", tag: "Luxury" },
+        ],
+      },
+      {
+        name: "Silom & Sathorn", emoji: "🍹", accentColor: "#FFD166",
+        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        tagline: "Rooftop bars & riverside views",
+        spots: [
+          { name: "Sky Bar at Lebua Tower", tag: "Iconic rooftop" },
+          { name: "Patpong Night Market", tag: "Night market" },
+          { name: "Lumphini Park", tag: "Nature" },
+          { name: "Sri Maha Mariamman Temple", tag: "Temple" },
+          { name: "Riverside dining strip", tag: "Sunset dining" },
+          { name: "Silom Soi 20 street food", tag: "Local food" },
+        ],
+      },
+      {
+        name: "Chinatown (Yaowarat)", emoji: "🦀", accentColor: "#EF4444",
+        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        tagline: "Street food heaven after dark",
+        spots: [
+          { name: "Yaowarat Road night market", tag: "Must-do" },
+          { name: "Roast duck & crab fried rice", tag: "Food" },
+          { name: "Wat Traimit (Golden Buddha)", tag: "Temple" },
+          { name: "Talat Noi Street Art", tag: "Art" },
+          { name: "Shrewsbury Tea Shops", tag: "Local" },
+          { name: "Sampeng Lane market", tag: "Shopping" },
+        ],
+      },
+      {
+        name: "Chatuchak & Ari", emoji: "🛍️", accentColor: "#8B5CF6",
+        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        tagline: "World's biggest weekend market",
+        spots: [
+          { name: "Chatuchak Weekend Market", tag: "15,000 stalls" },
+          { name: "Or Tor Kor Fresh Market", tag: "Gourmet" },
+          { name: "Ari neighbourhood cafes", tag: "Local vibes" },
+          { name: "Chatuchak Park", tag: "Free" },
+          { name: "Vintage & antique shops", tag: "Shopping" },
+          { name: "Street food around JJ Market", tag: "Food" },
+        ],
+      },
+      {
+        name: "Thonglor & Ekkamai", emoji: "✨", accentColor: "#F59E0B",
+        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        tagline: "Bangkok's coolest local scene",
+        spots: [
+          { name: "72 Courtyard lifestyle mall", tag: "Design" },
+          { name: "Craft cocktail bars", tag: "Nightlife" },
+          { name: "Ekkamai street food sois", tag: "Food" },
+          { name: "Artisan coffee shops", tag: "Cafes" },
+          { name: "Piman 49 boutique stores", tag: "Shopping" },
+          { name: "Rooftop bars", tag: "Views" },
+        ],
+      },
+    ],
     gettingThere: {
       summary: "Bangkok has two airports — Suvarnabhumi (BKK) for international flights and Don Mueang (DMK) for budget carriers. It's one of Asia's best-connected hubs with direct flights from most major cities worldwide.",
       airports: [
@@ -798,6 +878,86 @@ export const cities: City[] = [
       "Most shops and restaurants are closed on Sundays — plan accordingly",
       "Learning a few words of French goes a very long way in terms of service and warmth",
       "The best baguette is from Paul Pâtisserie, Maison Landemaine, or your nearest neighborhood boulangerie",
+    ],
+    areas: [
+      {
+        name: "Le Marais", emoji: "🎨", accentColor: "#8B5CF6",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "Galleries, fashion & historic squares",
+        spots: [
+          { name: "Place des Vosges", tag: "Iconic" },
+          { name: "Musée Picasso", tag: "Art" },
+          { name: "Rue des Rosiers (Jewish Quarter)", tag: "Culture" },
+          { name: "L'As du Fallafel", tag: "Best falafel" },
+          { name: "Centre Pompidou", tag: "Modern art" },
+          { name: "Boutique shopping", tag: "Fashion" },
+        ],
+      },
+      {
+        name: "Montmartre", emoji: "⛪", accentColor: "#FF6B35",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "Artists, hilltop views & bohemian charm",
+        spots: [
+          { name: "Sacré-Cœur Basilica", tag: "Views" },
+          { name: "Place du Tertre artists", tag: "Art" },
+          { name: "Moulin Rouge", tag: "Cabaret" },
+          { name: "Montmartre Vineyard", tag: "Hidden gem" },
+          { name: "Rue Lepic food market", tag: "Local" },
+          { name: "Musée de Montmartre", tag: "Museum" },
+        ],
+      },
+      {
+        name: "Saint-Germain", emoji: "📚", accentColor: "#00C9A7",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "Literary cafes & Left Bank elegance",
+        spots: [
+          { name: "Café de Flore", tag: "Iconic cafe" },
+          { name: "Les Deux Magots", tag: "Historic" },
+          { name: "Jardin du Luxembourg", tag: "Park" },
+          { name: "Shakespeare & Company", tag: "Bookshop" },
+          { name: "Rue de Buci market", tag: "Market" },
+          { name: "Musée d'Orsay", tag: "Must-see" },
+        ],
+      },
+      {
+        name: "Eiffel & Trocadéro", emoji: "🗼", accentColor: "#FFD166",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "Paris's iconic skyline zone",
+        spots: [
+          { name: "Eiffel Tower", tag: "Book ahead" },
+          { name: "Trocadéro photo spot", tag: "Best view" },
+          { name: "Champ de Mars picnic", tag: "Free" },
+          { name: "Musée du quai Branly", tag: "Museum" },
+          { name: "Bir-Hakeim Bridge", tag: "Photo spot" },
+          { name: "River Seine cruise", tag: "Experience" },
+        ],
+      },
+      {
+        name: "Bastille & Oberkampf", emoji: "🍷", accentColor: "#EF4444",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "Local Paris — bars, markets & nightlife",
+        spots: [
+          { name: "Marché de la Bastille (Sunday)", tag: "Best market" },
+          { name: "Natural wine bars", tag: "Nightlife" },
+          { name: "Place de la Bastille", tag: "Historic" },
+          { name: "Rue de Lappe bars", tag: "Nightlife" },
+          { name: "Oberkampf restaurant scene", tag: "Food" },
+          { name: "Promenade Plantée (elevated park)", tag: "Hidden" },
+        ],
+      },
+      {
+        name: "Louvre & Opera", emoji: "🎭", accentColor: "#F59E0B",
+        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        tagline: "World-class art & grand boulevards",
+        spots: [
+          { name: "The Louvre Museum", tag: "Must-do" },
+          { name: "Palais Royal gardens", tag: "Free" },
+          { name: "Galeries Lafayette", tag: "Shopping" },
+          { name: "Passage des Panoramas", tag: "Hidden gem" },
+          { name: "Opéra Garnier", tag: "Architecture" },
+          { name: "Rue de Rivoli", tag: "Shopping" },
+        ],
+      },
     ],
     gettingThere: {
       summary: "Paris is extraordinarily well connected — two major airports, a Eurostar rail link from London, and direct flights from every continent. CDG is the main hub; Orly serves budget European routes.",
@@ -1075,6 +1235,86 @@ export const cities: City[] = [
       "Cherry blossom (late March–early April) is spectacular but accommodation prices triple",
       "Shoes that slip on and off are essential — many traditional restaurants require removing shoes",
     ],
+    areas: [
+      {
+        name: "Shinjuku", emoji: "🌃", accentColor: "#EF4444",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Neon, nightlife & Golden Gai",
+        spots: [
+          { name: "Kabukicho neon district", tag: "Nightlife" },
+          { name: "Golden Gai tiny bars", tag: "Iconic" },
+          { name: "Shinjuku Gyoen park", tag: "Nature" },
+          { name: "Omoide Yokocho yakitori alley", tag: "Food" },
+          { name: "Tokyo Metropolitan Government Building (free view)", tag: "Views" },
+          { name: "Takashimaya Times Square", tag: "Shopping" },
+        ],
+      },
+      {
+        name: "Shibuya & Harajuku", emoji: "🛍️", accentColor: "#FF6B35",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Fashion, crossings & youth culture",
+        spots: [
+          { name: "Shibuya Scramble Crossing", tag: "Iconic" },
+          { name: "Shibuya Sky observation deck", tag: "Views" },
+          { name: "Takeshita Street (Harajuku)", tag: "Fashion" },
+          { name: "Omotesando luxury boulevard", tag: "Luxury" },
+          { name: "Meiji Shrine", tag: "Culture" },
+          { name: "Yoyogi Park", tag: "Weekend fun" },
+        ],
+      },
+      {
+        name: "Asakusa", emoji: "⛩️", accentColor: "#FFD166",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Traditional Tokyo & ancient temples",
+        spots: [
+          { name: "Senso-ji Temple", tag: "Must-see" },
+          { name: "Nakamise shopping street", tag: "Souvenirs" },
+          { name: "Sumida River views", tag: "Scenic" },
+          { name: "Rickshaw rides", tag: "Experience" },
+          { name: "Kappabashi Kitchen Town", tag: "Unique" },
+          { name: "Hama-rikyu Garden", tag: "Nature" },
+        ],
+      },
+      {
+        name: "Akihabara", emoji: "🎮", accentColor: "#00C9A7",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Electronics, anime & maid cafes",
+        spots: [
+          { name: "Multi-floor electronics stores", tag: "Tech" },
+          { name: "Anime & manga shops", tag: "Culture" },
+          { name: "Maid cafes", tag: "Quirky" },
+          { name: "Retro gaming arcades", tag: "Gaming" },
+          { name: "Yodobashi Camera", tag: "Shopping" },
+          { name: "Gundam & figure stores", tag: "Collectibles" },
+        ],
+      },
+      {
+        name: "Ginza", emoji: "💎", accentColor: "#8B5CF6",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Luxury shopping & Michelin dining",
+        spots: [
+          { name: "Ginza Six luxury mall", tag: "Luxury" },
+          { name: "Tsukiji Outer Market (breakfast)", tag: "Food" },
+          { name: "teamLab Planets", tag: "Art" },
+          { name: "Kabuki-za Theatre", tag: "Culture" },
+          { name: "Hakuhinkan toy store", tag: "Unique" },
+          { name: "Michelin-starred restaurants", tag: "Dining" },
+        ],
+      },
+      {
+        name: "Yanaka & Ueno", emoji: "🏮", accentColor: "#F59E0B",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        tagline: "Old Tokyo charm & world-class museums",
+        spots: [
+          { name: "Yanaka Ginza shotengai", tag: "Local market" },
+          { name: "Ueno Park museums", tag: "Culture" },
+          { name: "Tokyo National Museum", tag: "Must-see" },
+          { name: "Yanaka Cemetery", tag: "Peaceful" },
+          { name: "Nezu Shrine torii gates", tag: "Hidden gem" },
+          { name: "Ameyoko market", tag: "Bargains" },
+        ],
+      },
+    ],
     gettingThere: {
       summary: "Tokyo has two international airports — Narita (further, cheaper) and Haneda (closer, more convenient). Both have excellent rail links to central Tokyo. Haneda is worth paying a premium for if arriving late or with heavy luggage.",
       airports: [
@@ -1350,6 +1590,86 @@ export const cities: City[] = [
       "Dress conservatively in souks, malls, and public spaces — swimwear belongs at the beach or pool",
       "Ramadan changes operating hours and bans public eating/drinking — check dates before booking",
       "The best views of the Burj Khalifa and fountain are from the free outdoor terrace of Dubai Mall",
+    ],
+    areas: [
+      {
+        name: "Downtown", emoji: "🏙️", accentColor: "#FFD166",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Burj Khalifa, fountains & luxury",
+        spots: [
+          { name: "Burj Khalifa At the Top", tag: "Must-do" },
+          { name: "Dubai Fountain show", tag: "Free evening" },
+          { name: "Dubai Mall", tag: "Shopping" },
+          { name: "Dubai Opera", tag: "Culture" },
+          { name: "DIFC dining & art", tag: "Upscale" },
+          { name: "Address Boulevard rooftop", tag: "Views" },
+        ],
+      },
+      {
+        name: "Marina & JBR", emoji: "⛵", accentColor: "#00C9A7",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Waterfront walks & beach clubs",
+        spots: [
+          { name: "JBR Beach", tag: "Beach" },
+          { name: "The Walk at JBR", tag: "Promenade" },
+          { name: "Marina Walk yacht gazing", tag: "Scenic" },
+          { name: "Ain Dubai (observation wheel)", tag: "Iconic" },
+          { name: "Beach clubs & rooftops", tag: "Nightlife" },
+          { name: "Bluewaters Island", tag: "Shopping" },
+        ],
+      },
+      {
+        name: "Old Dubai (Deira)", emoji: "🕌", accentColor: "#FF6B35",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Souks, spices & authentic Dubai",
+        spots: [
+          { name: "Gold Souk", tag: "Shopping" },
+          { name: "Spice Souk", tag: "Aromas" },
+          { name: "Abra Creek crossing", tag: "AED 1 ride" },
+          { name: "Al Fahidi Heritage Village", tag: "Culture" },
+          { name: "Dubai Museum", tag: "History" },
+          { name: "Deira street food", tag: "Cheap eats" },
+        ],
+      },
+      {
+        name: "Palm Jumeirah", emoji: "🌴", accentColor: "#8B5CF6",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Man-made island & luxury resorts",
+        spots: [
+          { name: "Atlantis Aquaventure Waterpark", tag: "Fun" },
+          { name: "The Pointe dining", tag: "Waterfront" },
+          { name: "Nakheel Mall", tag: "Shopping" },
+          { name: "Palm Monorail ride", tag: "Views" },
+          { name: "Private beach clubs", tag: "Beach" },
+          { name: "FIVE Palm Jumeirah rooftop", tag: "Party" },
+        ],
+      },
+      {
+        name: "Al Quoz & Alserkal", emoji: "🎨", accentColor: "#EF4444",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Dubai's creative warehouse arts district",
+        spots: [
+          { name: "Alserkal Avenue galleries", tag: "Art" },
+          { name: "Concrete art venue", tag: "Events" },
+          { name: "Specialty coffee roasters", tag: "Cafes" },
+          { name: "Independent cinemas", tag: "Culture" },
+          { name: "Design studios & workshops", tag: "Creative" },
+          { name: "Street art walls", tag: "Free" },
+        ],
+      },
+      {
+        name: "Desert & Day Trips", emoji: "🐪", accentColor: "#F59E0B",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        tagline: "Red dunes, stargazing & adventure",
+        spots: [
+          { name: "Desert Safari & dune bashing", tag: "Must-do" },
+          { name: "Al Qudra flamingo lakes", tag: "Hidden gem" },
+          { name: "Hatta mountain village", tag: "Day trip" },
+          { name: "Camel riding at sunrise", tag: "Experience" },
+          { name: "Bedouin camp dinner", tag: "Culture" },
+          { name: "Abu Dhabi day trip", tag: "UNESCO" },
+        ],
+      },
     ],
     gettingThere: {
       summary: "Dubai International is one of the world's busiest airports and Emirates' global hub — making it extraordinarily well-connected. Almost every major city in the world has a direct or one-stop route to DXB.",
@@ -1627,6 +1947,86 @@ export const cities: City[] = [
       "Portuguese pork sausages (choriz) from local bakeries are a breakfast institution",
       "Nightlife in North Goa requires advance planning — the best parties are often in private venues",
     ],
+    areas: [
+      {
+        name: "Calangute & Baga", emoji: "🎉", accentColor: "#FF6B35",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Goa's busiest & most touristy strip",
+        spots: [
+          { name: "Calangute Beach", tag: "Main beach" },
+          { name: "Baga Beach & shacks", tag: "Party" },
+          { name: "Tito's Street nightlife", tag: "Nightlife" },
+          { name: "Saturday Night Market", tag: "Shopping" },
+          { name: "Water sports at Baga", tag: "Adventure" },
+          { name: "Britto's beach restaurant", tag: "Institution" },
+        ],
+      },
+      {
+        name: "Anjuna & Vagator", emoji: "🌀", accentColor: "#8B5CF6",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Bohemian Goa — flea markets & cliff bars",
+        spots: [
+          { name: "Anjuna Wednesday Flea Market", tag: "Must-do" },
+          { name: "Chapora Fort sunset", tag: "Views" },
+          { name: "Vagator cliff beaches", tag: "Scenic" },
+          { name: "Curlies beach shack", tag: "Institution" },
+          { name: "Nine Bar clifftop", tag: "Nightlife" },
+          { name: "Little Vagator Beach", tag: "Hidden" },
+        ],
+      },
+      {
+        name: "Assagao & Siolim", emoji: "☕", accentColor: "#00C9A7",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Goa's upscale cafe & villa district",
+        spots: [
+          { name: "Gunpowder restaurant", tag: "Best food" },
+          { name: "Artisan coffee shops", tag: "Cafes" },
+          { name: "Villa boutique stays", tag: "Accommodation" },
+          { name: "Heritage Portuguese villas", tag: "Architecture" },
+          { name: "Boutique art galleries", tag: "Art" },
+          { name: "Yoga & wellness retreats", tag: "Wellness" },
+        ],
+      },
+      {
+        name: "Palolem (South Goa)", emoji: "🏖️", accentColor: "#FFD166",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Paradise beach & silent discos",
+        spots: [
+          { name: "Palolem crescent beach", tag: "Most beautiful" },
+          { name: "Silent disco parties", tag: "Unique" },
+          { name: "Kayak to Butterfly Beach", tag: "Adventure" },
+          { name: "Dolphin watching boats", tag: "Wildlife" },
+          { name: "Agonda quiet beach nearby", tag: "Peaceful" },
+          { name: "Beach hut stays", tag: "Stay" },
+        ],
+      },
+      {
+        name: "Panaji (Panjim)", emoji: "🇵🇹", accentColor: "#EF4444",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Goa's charming colonial capital",
+        spots: [
+          { name: "Fontainhas Latin Quarter", tag: "Must-see" },
+          { name: "Church of Our Lady of Immaculate Conception", tag: "Iconic" },
+          { name: "Mandovi River waterfront", tag: "Evening walks" },
+          { name: "Old Goa UNESCO Churches", tag: "Heritage" },
+          { name: "Mando Casino cruise", tag: "Entertainment" },
+          { name: "Local Goan restaurants", tag: "Authentic food" },
+        ],
+      },
+      {
+        name: "Dudhsagar & Spice Country", emoji: "🌿", accentColor: "#F59E0B",
+        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        tagline: "Waterfalls, spices & wildlife",
+        spots: [
+          { name: "Dudhsagar Falls (monsoon is epic)", tag: "Waterfall" },
+          { name: "Bhagwan Mahavir Wildlife Sanctuary", tag: "Wildlife" },
+          { name: "Spice plantation tours (Ponda)", tag: "Experience" },
+          { name: "Divar Island ferry trip", tag: "Hidden" },
+          { name: "Cabo de Rama Fort ruins", tag: "History" },
+          { name: "Cola Beach hidden lagoons", tag: "Secret" },
+        ],
+      },
+    ],
     gettingThere: {
       summary: "Goa now has two airports — the older Dabolim (GOI) in South Goa and the brand new Mopa International (MOI) in North Goa, which opened in 2023. Choose based on where you're staying. Most domestic Indian flights are frequent and affordable.",
       airports: [
@@ -1789,10 +2189,18 @@ export const cities: City[] = [
   },
 ];
 
+import { worldCities } from './worldCities';
+
+export const allCities = [...cities, ...worldCities];
+
 export function getCityBySlug(slug: string): City | undefined {
-  return cities.find((city) => city.slug === slug);
+  return allCities.find((city) => city.slug === slug);
 }
 
 export function getAllCitySlugs(): string[] {
-  return cities.map((city) => city.slug);
+  return allCities.map((city) => city.slug);
+}
+
+export function getFeaturedCities(): City[] {
+  return cities;
 }

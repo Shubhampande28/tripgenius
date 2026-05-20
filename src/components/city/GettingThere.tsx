@@ -5,7 +5,8 @@ import { Plane, Building2, Clock, ArrowRight, Lightbulb, Tag } from 'lucide-reac
 import { City } from '@/lib/types';
 
 export default function GettingThere({ city }: { city: City }) {
-  const { gettingThere: data } = city;
+  if (!city.gettingThere) return null;
+  const data = city.gettingThere;
 
   return (
     <section className="py-16">

@@ -12,6 +12,7 @@ const priceLabel: Record<string, { label: string; color: string }> = {
 };
 
 export default function Neighbourhoods({ city }: { city: City }) {
+  if (!city.neighbourhoods?.length) return null;
   return (
     <section className="py-16 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -35,6 +35,7 @@ const typeColors: Record<string, string> = {
 
 export default function OffbeatPlaces({ city }: { city: City }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  if (!city.offbeatPlaces?.length) return null;
 
   return (
     <section className="py-16">
