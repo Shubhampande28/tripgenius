@@ -6,9 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Compass } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Cities', href: '/cities' },
-  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'All Cities', href: '/' },
   { label: 'Newsletter', href: '/#waitlist' },
 ];
 
@@ -60,10 +58,10 @@ export default function Navbar() {
 
             <div className="hidden md:flex items-center gap-4">
               <Link
-                href="/#cities"
+                href="/cities/bali"
                 className="px-5 py-2.5 rounded-full bg-accent text-white text-sm font-semibold hover:bg-accent/90 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-accent/25"
               >
-                Explore Cities
+                Bali Guide ✦
               </Link>
             </div>
 
@@ -99,11 +97,11 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                href="/#cities"
+                href="/cities/bali"
                 onClick={() => setMobileOpen(false)}
                 className="block mt-4 px-5 py-3 rounded-full bg-accent text-white text-sm font-semibold text-center hover:bg-accent/90 transition-colors"
               >
-                Explore Cities
+                Bali Guide ✦
               </Link>
             </div>
           </motion.div>

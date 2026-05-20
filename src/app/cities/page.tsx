@@ -19,17 +19,16 @@ const regionMap: Record<string, string[]> = {
 };
 
 const vibeColors: Record<string, string> = {
-  Spiritual:   'bg-gold/10 text-gold',
-  Romantic:    'bg-pink-500/10 text-pink-400',
-  Adventure:   'bg-accent/10 text-accent',
-  Cultural:    'bg-purple-500/10 text-purple-400',
-  Foodie:      'bg-orange-500/10 text-orange-400',
-  Luxury:      'bg-gold/10 text-gold',
-  Beach:       'bg-teal/10 text-teal',
-  Bohemian:    'bg-pink-500/10 text-pink-400',
-  Spectacle:   'bg-yellow-500/10 text-yellow-400',
-  Modern:      'bg-blue-500/10 text-blue-400',
-  Nature:      'bg-green-500/10 text-green-400',
+  Spiritual:    'bg-gold/10 text-gold',
+  Romantic:     'bg-pink-500/10 text-pink-400',
+  Adventure:    'bg-accent/10 text-accent',
+  Cultural:     'bg-purple-500/10 text-purple-400',
+  Foodie:       'bg-orange-500/10 text-orange-400',
+  Luxury:       'bg-gold/10 text-gold',
+  Beach:        'bg-teal/10 text-teal',
+  Bohemian:     'bg-pink-500/10 text-pink-400',
+  Modern:       'bg-blue-500/10 text-blue-400',
+  Nature:       'bg-green-500/10 text-green-400',
 };
 
 export default function CitiesPage() {
@@ -37,13 +36,12 @@ export default function CitiesPage() {
   const [activeRegion, setActiveRegion] = useState('All');
 
   const filtered = allCities.filter((city) => {
-    const matchesSearch = query.length === 0 ||
+    const matchesSearch =
+      query.length === 0 ||
       city.name.toLowerCase().includes(query.toLowerCase()) ||
       city.country.toLowerCase().includes(query.toLowerCase());
-
-    const matchesRegion = activeRegion === 'All' ||
-      (regionMap[activeRegion] ?? []).includes(city.slug);
-
+    const matchesRegion =
+      activeRegion === 'All' || (regionMap[activeRegion] ?? []).includes(city.slug);
     return matchesSearch && matchesRegion;
   });
 
@@ -55,7 +53,11 @@ export default function CitiesPage() {
         <div className="relative border-b border-border bg-surface overflow-hidden pt-28 pb-12">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_120%,rgba(255,107,53,0.07),transparent)]" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
                 {allCities.length} Destinations
               </p>
@@ -67,7 +69,7 @@ export default function CitiesPage() {
               </p>
             </motion.div>
 
-            {/* Search bar */}
+            {/* Search */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -108,7 +110,7 @@ export default function CitiesPage() {
           </div>
         </div>
 
-        {/* Cities grid */}
+        {/* Grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {filtered.length === 0 ? (
             <div className="text-center py-20">
@@ -118,7 +120,8 @@ export default function CitiesPage() {
           ) : (
             <>
               <p className="text-xs text-muted mb-6">
-                Showing {filtered.length} {filtered.length === 1 ? 'city' : 'cities'}
+                Showing <strong className="text-primary-text">{filtered.length}</strong>{' '}
+                {filtered.length === 1 ? 'city' : 'cities'}
                 {activeRegion !== 'All' && ` in ${activeRegion}`}
                 {query && ` matching "${query}"`}
               </p>
@@ -131,7 +134,7 @@ export default function CitiesPage() {
                     transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.5) }}
                   >
                     <Link href={`/cities/${city.slug}`}>
-                      <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30">
+                      <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 h-full">
                         {/* Image */}
                         <div className="relative h-44 overflow-hidden">
                           <Image
@@ -142,9 +145,14 @@ export default function CitiesPage() {
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent" />
-                          <div className="absolute top-3 left-3">
-                            <span className="text-xl">{city.flag}</span>
-                          </div>
+                          <div className="absolute top-3 left-3 text-xl">{city.flag}</div>
+                          {city.areas && city.areas.length > 0 && (
+                            <div className="absolute top-3 right-3">
+                              <span className="text-xs px-2 py-0.5 rounded-full bg-teal/80 text-dark font-bold backdrop-blur-sm">
+                                Full Guide
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Content */}
@@ -157,7 +165,6 @@ export default function CitiesPage() {
                             <span className="text-xs text-muted">{city.country}</span>
                           </div>
 
-                          {/* Stats */}
                           <div className="flex items-center gap-3 mb-3 text-xs text-muted">
                             <div className="flex items-center gap-1">
                               <Clock size={10} />
@@ -169,7 +176,6 @@ export default function CitiesPage() {
                             </div>
                           </div>
 
-                          {/* Vibes */}
                           <div className="flex flex-wrap gap-1">
                             {city.vibes.slice(0, 2).map((v) => (
                               <span
@@ -179,11 +185,6 @@ export default function CitiesPage() {
                                 {v}
                               </span>
                             ))}
-                            {city.areas && (
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-teal/10 text-teal font-medium">
-                                Guide ✓
-                              </span>
-                            )}
                           </div>
                         </div>
                       </div>
