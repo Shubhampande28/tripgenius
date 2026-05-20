@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
+import ExploreByArea from '@/components/city/ExploreByArea';
 import Neighbourhoods from '@/components/city/Neighbourhoods';
 import BudgetBreakdown from '@/components/city/BudgetBreakdown';
 import MonthByMonth from '@/components/city/MonthByMonth';
@@ -45,6 +46,9 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
       <main className="bg-dark">
         <CityHero city={city} />
         <AtAGlance city={city} />
+
+        {/* Full-width area explorer — outside sidebar grid */}
+        <ExploreByArea city={city} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">

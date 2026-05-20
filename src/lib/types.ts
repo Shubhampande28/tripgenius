@@ -1,3 +1,17 @@
+export interface AreaSpot {
+  name: string;
+  tag?: string;
+}
+
+export interface CityArea {
+  name: string;
+  emoji: string;
+  accentColor: string;
+  image: string;
+  tagline: string;
+  spots: AreaSpot[];
+}
+
 export interface CityStats {
   bestTime: string;
   budget: string;
@@ -134,6 +148,7 @@ export interface City {
   budgetBreakdown: CityBudget;
   monthByMonth: MonthByMonth;
   gettingThere: GettingThere;
+  areas?: CityArea[];
 }
 
 export interface TripPlanRequest {
