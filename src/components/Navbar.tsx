@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Compass } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Explore', href: '/#cities' },
-  { label: 'Cities', href: '/#cities' },
+  { label: 'Home', href: '/' },
+  { label: 'Cities', href: '/cities' },
   { label: 'How It Works', href: '/#how-it-works' },
   { label: 'Newsletter', href: '/#waitlist' },
 ];
