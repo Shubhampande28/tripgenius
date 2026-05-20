@@ -29,6 +29,22 @@ export interface Restaurant {
   mustTry: string;
 }
 
+export interface BudgetTier {
+  label: 'Budget' | 'Mid-range' | 'Luxury';
+  icon: string;
+  perDay: string;
+  accommodation: string;
+  food: string;
+  transport: string;
+  activities: string;
+  tip: string;
+}
+
+export interface CityBudget {
+  disclaimer: string;
+  tiers: [BudgetTier, BudgetTier, BudgetTier];
+}
+
 export interface Neighbourhood {
   name: string;
   description: string;
@@ -69,6 +85,7 @@ export interface City {
   proTips: string[];
   offbeatPlaces: OffbeatPlace[];
   neighbourhoods: Neighbourhood[];
+  budgetBreakdown: CityBudget;
 }
 
 export interface TripPlanRequest {
