@@ -6,6 +6,7 @@ import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
 import Neighbourhoods from '@/components/city/Neighbourhoods';
 import BudgetBreakdown from '@/components/city/BudgetBreakdown';
+import MonthByMonth from '@/components/city/MonthByMonth';
 import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
 import WhereToStay from '@/components/city/WhereToStay';
@@ -50,6 +51,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
             <div>
               <Neighbourhoods city={city} />
               <BudgetBreakdown city={city} />
+              <MonthByMonth city={city} />
               <ThingsToDo city={city} />
               <OffbeatPlaces city={city} />
               <WhereToStay city={city} />

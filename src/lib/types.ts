@@ -29,6 +29,27 @@ export interface Restaurant {
   mustTry: string;
 }
 
+export type MonthRating = 'excellent' | 'good' | 'average' | 'avoid';
+
+export interface MonthInfo {
+  month: string;
+  short: string;
+  rating: MonthRating;
+  weather: string;
+  temp: string;
+  crowds: 'Low' | 'Moderate' | 'High' | 'Peak';
+  price: 'Low' | 'Moderate' | 'High' | 'Peak';
+  highlight: string;
+}
+
+export interface MonthByMonth {
+  summary: string;
+  bestMonths: string[];
+  avoidMonths: string[];
+  months: [MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo,
+           MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo];
+}
+
 export interface BudgetTier {
   label: 'Budget' | 'Mid-range' | 'Luxury';
   icon: string;
@@ -86,6 +107,7 @@ export interface City {
   offbeatPlaces: OffbeatPlace[];
   neighbourhoods: Neighbourhood[];
   budgetBreakdown: CityBudget;
+  monthByMonth: MonthByMonth;
 }
 
 export interface TripPlanRequest {
