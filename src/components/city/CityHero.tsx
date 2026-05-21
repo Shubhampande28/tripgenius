@@ -24,8 +24,8 @@ export default function CityHero({ city }: { city: City }) {
       {/* Dark base overlay so text always reads well */}
       <div className="absolute inset-0 bg-black/50" />
 
-      {/* Bottom gradient fades to page background */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      {/* Bottom gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
 
       {/* Subtle top vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />

@@ -28,8 +28,8 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/95 backdrop-blur-xl border-b border-border shadow-sm shadow-slate-200'
-            : 'bg-white/80 backdrop-blur-sm'
+            ? 'bg-dark/90 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-black/20'
+            : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,14 +56,7 @@ export default function Navbar() {
               ))}
             </nav>
 
-            <div className="hidden md:flex items-center gap-4">
-              <Link
-                href="/cities/bali"
-                className="px-5 py-2.5 rounded-full bg-accent text-white text-sm font-semibold hover:bg-accent/90 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-accent/25"
-              >
-                Bali Guide ✦
-              </Link>
-            </div>
+            <div className="hidden md:flex items-center gap-4" />
 
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -83,7 +76,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 bg-white/98 backdrop-blur-xl border-b border-border shadow-md md:hidden"
+            className="fixed inset-x-0 top-16 z-40 bg-dark/95 backdrop-blur-xl border-b border-border md:hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
@@ -96,13 +89,6 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/cities/bali"
-                onClick={() => setMobileOpen(false)}
-                className="block mt-4 px-5 py-3 rounded-full bg-accent text-white text-sm font-semibold text-center hover:bg-accent/90 transition-colors"
-              >
-                Bali Guide ✦
-              </Link>
             </div>
           </motion.div>
         )}

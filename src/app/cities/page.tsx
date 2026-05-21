@@ -60,7 +60,7 @@ export default function CitiesPage() {
               transition={{ duration: 0.6 }}
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
-                {allCities.length} Destinations
+                Explore the World
               </p>
               <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-primary-text">
                 Explore the World

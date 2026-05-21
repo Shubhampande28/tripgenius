@@ -29,31 +29,32 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Light background with soft colour wash */}
-      <div className="absolute inset-0 bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-5%,rgba(255,107,53,0.08),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_70%,rgba(0,168,140,0.06),transparent)]" />
+      {/* Dark background */}
+      <div className="absolute inset-0 bg-dark">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(255,107,53,0.15),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_60%,rgba(0,201,167,0.08),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_20%_70%,rgba(255,209,102,0.06),transparent)]" />
       </div>
 
-      {/* Subtle dot grid */}
+      {/* Grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `radial-gradient(circle, #64748B 1px, transparent 1px)`,
-          backgroundSize: '28px 28px',
+          backgroundImage: `linear-gradient(rgba(230,237,243,1) 1px, transparent 1px), linear-gradient(90deg, rgba(230,237,243,1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
         }}
       />
 
-      {/* Floating colour blobs */}
+      {/* Floating orbs */}
       <motion.div
         animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-32 left-[10%] w-64 h-64 rounded-full bg-accent/8 blur-3xl"
+        className="absolute top-32 left-[10%] w-48 h-48 rounded-full bg-accent/10 blur-3xl"
       />
       <motion.div
         animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        className="absolute bottom-32 right-[10%] w-72 h-72 rounded-full bg-teal/8 blur-3xl"
+        className="absolute bottom-32 right-[10%] w-64 h-64 rounded-full bg-teal/10 blur-3xl"
       />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
