@@ -5,14 +5,18 @@ import Footer from '@/components/Footer';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
 import MonthByMonth from '@/components/city/MonthByMonth';
+// New merged components (used for restructured pages)
+import NeighbourhoodsAreas from '@/components/city/NeighbourhoodsAreas';
+import GettingThereAround from '@/components/city/GettingThereAround';
+// Legacy components (kept for old structure)
 import ExploreByArea from '@/components/city/ExploreByArea';
 import Neighbourhoods from '@/components/city/Neighbourhoods';
+import BudgetBreakdown from '@/components/city/BudgetBreakdown';
+import GettingThere from '@/components/city/GettingThere';
 import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
-import BudgetBreakdown from '@/components/city/BudgetBreakdown';
 import WhereToStay from '@/components/city/WhereToStay';
 import WhereToEat from '@/components/city/WhereToEat';
-import GettingThere from '@/components/city/GettingThere';
 import GettingAround from '@/components/city/GettingAround';
 import ProTips from '@/components/city/ProTips';
 import CitySidebar from '@/components/city/CitySidebar';
@@ -34,50 +38,86 @@ export async function generateMetadata(
   };
 }
 
+/** Cities using the NEW restructured layout */
+const REDESIGNED_SLUGS = new Set(['bali']);
+
 export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   const { slug } = await props.params;
   const city = getCityBySlug(slug);
   if (!city) notFound();
 
+  /* ── NEW 9-section layout (Bali demo) ──────────────────────── */
+  if (REDESIGNED_SLUGS.has(slug)) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-dark">
+          {/* 1. Hero */}
+          <CityHero city={city} />
+
+          {/* 2. At a Glance */}
+          <AtAGlance city={city} />
+
+          {/* 3. Best Time to Visit */}
+          <MonthByMonth city={city} />
+
+          {/* 4. Neighbourhoods (merged with area spots) */}
+          <NeighbourhoodsAreas city={city} />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+              <div>
+                {/* 5. Things To Do */}
+                <ThingsToDo city={city} />
+
+                {/* 6. Offbeat Places */}
+                <OffbeatPlaces city={city} />
+
+                {/* 7. Budget Breakdown */}
+                <BudgetBreakdown city={city} />
+
+                {/* 8. Where to Eat */}
+                <WhereToEat city={city} />
+              </div>
+
+              {/* Sidebar */}
+              <div className="lg:sticky lg:top-24 lg:self-start">
+                <CitySidebar city={city} />
+              </div>
+            </div>
+          </div>
+
+          {/* 9. Getting There & Around — full width */}
+          <GettingThereAround city={city} />
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  /* ── OLD layout (all other cities, unchanged) ───────────────── */
   return (
     <>
       <Navbar />
       <main className="bg-dark">
-        {/* 1. Hero */}
         <CityHero city={city} />
-
-        {/* 2. Quick stats */}
         <AtAGlance city={city} />
-
-        {/* 3. Best time to visit */}
         <MonthByMonth city={city} />
-
-        {/* 4. Explore by area — full width */}
         <ExploreByArea city={city} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
-              {/* 5. By neighbourhood */}
               <Neighbourhoods city={city} />
-
-              {/* 6. Places to see */}
               <ThingsToDo city={city} />
               <OffbeatPlaces city={city} />
-
-              {/* 7. Cost */}
               <BudgetBreakdown city={city} />
-
-              {/* 8. Where to stay & eat */}
               <WhereToStay city={city} />
               <WhereToEat city={city} />
-
-              {/* 9. Getting there & around */}
               <GettingThere city={city} />
               <GettingAround city={city} />
               <ProTips city={city} />
             </div>
-
             <div className="lg:sticky lg:top-24 lg:self-start">
               <CitySidebar city={city} />
             </div>
