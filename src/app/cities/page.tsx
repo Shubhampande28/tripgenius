@@ -9,10 +9,11 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 
-const regions = ['All', 'Asia', 'Europe', 'Americas', 'Middle East & Africa'];
+const regions = ['All', 'India', 'Asia', 'Europe', 'Americas', 'Middle East & Africa'];
 
 const regionMap: Record<string, string[]> = {
-  Asia: ['bali', 'bangkok', 'tokyo', 'goa', 'singapore', 'seoul', 'kyoto', 'hong-kong', 'phuket', 'chiang-mai', 'maldives'],
+  India: ['goa', 'delhi', 'agra', 'jaipur', 'mumbai', 'varanasi', 'udaipur', 'amritsar', 'jodhpur', 'rishikesh', 'kolkata', 'shimla', 'manali', 'darjeeling', 'ladakh', 'bengaluru', 'kochi', 'hampi', 'munnar', 'alleppey', 'mysuru', 'pondicherry', 'pushkar', 'andaman', 'ahmedabad'],
+  Asia: ['bali', 'bangkok', 'tokyo', 'singapore', 'seoul', 'kyoto', 'hong-kong', 'phuket', 'chiang-mai', 'maldives'],
   Europe: ['paris', 'london', 'barcelona', 'rome', 'amsterdam', 'prague', 'lisbon', 'istanbul', 'athens', 'budapest', 'santorini'],
   Americas: ['new-york', 'mexico-city', 'rio-de-janeiro', 'buenos-aires', 'cusco'],
   'Middle East & Africa': ['dubai', 'marrakech', 'cape-town'],
