@@ -9,6 +9,7 @@ export const cities: City[] = [
     tagline: "Island of the Gods",
     description: "Bali is where ancient temples meet emerald rice terraces, sacred ceremonies fill the air with incense, and world-class surf breaks draw adventurers from every corner of the globe.",
     heroDescription: "A timeless island where spirituality, nature, and culture converge in perfect harmony. Every sunrise paints the volcanoes gold, every sunset drowns the horizon in amber.",
+    visa: "Visa on Arrival — $35 · 30 days · extendable once",
     stats: {
       bestTime: "Apr – Oct",
       budget: "$40–$200/day",

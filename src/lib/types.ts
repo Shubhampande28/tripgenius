@@ -138,6 +138,7 @@ export interface City {
   accentColor: string;
   image: string;
   heroImage: string;
+  visa?: string;
   areas?: CityArea[];
   thingsToDo?: ThingToDo[];
   hotels?: Hotel[];
