@@ -1660,4 +1660,186 @@ export const indianCitiesExtended: City[] = [
     areaTagline: 'Weekend beaches, seafood and family resorts',
     highlights: ['New Digha Beach', 'Old Digha promenade', 'Mandarmani Beach', 'Marine Aquarium', 'Tajpur day trip'],
   }),
+
+  // ── BATCH 3 — completing state-by-state coverage ─────────────
+
+  quickIndianCity({
+    slug: 'pahalgam', name: 'Pahalgam', state: 'Jammu & Kashmir',
+    tagline: 'Valley of Shepherds',
+    description: 'A lush Kashmiri valley where the Lidder River rushes through pine forests — Betaab Valley, Baisaran meadows, the Amarnath yatra base, and the most serene summer escape in J&K.',
+    bestTime: 'Apr – Oct', budget: '$20–$70/day', language: 'Kashmiri, Urdu, Hindi',
+    vibes: ['Nature', 'Adventure', 'Spiritual'], gradient: 'from-green-900 to-blue-900', accentColor: '#16A34A',
+    image: '', areaTagline: 'Meadows, rivers and mountain treks',
+    highlights: ['Betaab Valley', 'Baisaran (Mini Switzerland)', 'Aru Valley', 'Chandanwari (Amarnath base)', 'Lidder River rafting'],
+  }),
+
+  quickIndianCity({
+    slug: 'mathura', name: 'Mathura & Vrindavan', state: 'Uttar Pradesh',
+    tagline: 'Krishna\'s Birthplace',
+    description: 'The twin holy cities of Lord Krishna — Mathura\'s ghats and temples, Vrindavan\'s 5,000+ ashrams, and the world\'s most joyful Holi celebration every March.',
+    bestTime: 'Oct – Mar', budget: '$10–$35/day', language: 'Hindi, Braj Bhasha',
+    vibes: ['Spiritual', 'Cultural', 'Festive'], gradient: 'from-amber-900 to-orange-800', accentColor: '#D97706',
+    image: '', areaTagline: 'Temples, ghats and Holi celebrations',
+    highlights: ['Sri Krishna Janmabhoomi', 'Vishram Ghat', 'Banke Bihari Temple Vrindavan', 'ISKCON Vrindavan', 'Holi at Barsana (day trip)'],
+  }),
+
+  quickIndianCity({
+    slug: 'prayagraj', name: 'Prayagraj', state: 'Uttar Pradesh',
+    tagline: 'City of Kumbh Mela',
+    description: 'Where the Ganga, Yamuna, and mythical Saraswati rivers meet — the Triveni Sangam, the Kumbh Mela (world\'s largest human gathering), and Allahabad Fort.',
+    bestTime: 'Oct – Mar', budget: '$10–$35/day', language: 'Hindi, Awadhi',
+    vibes: ['Spiritual', 'Cultural', 'Historical'], gradient: 'from-orange-900 to-amber-900', accentColor: '#EA580C',
+    image: '', areaTagline: 'Sacred confluence and historic city',
+    highlights: ['Triveni Sangam', 'Kumbh Mela grounds', 'Allahabad Fort', 'Anand Bhavan (Nehru family home)', 'Sangam boat ride at dawn'],
+  }),
+
+  quickIndianCity({
+    slug: 'sundarbans', name: 'Sundarbans', state: 'West Bengal',
+    tagline: 'World\'s Largest Mangrove Forest',
+    description: 'A UNESCO World Heritage delta where Bengal tigers swim between islands — the only mangrove tiger reserve on earth, best explored by boat through tidal creeks.',
+    bestTime: 'Nov – Feb', budget: '$30–$100/day', language: 'Bengali',
+    vibes: ['Nature', 'Adventure', 'Wildlife'], gradient: 'from-green-900 to-teal-900', accentColor: '#166534',
+    image: '', areaTagline: 'Boat safaris through mangrove tiger country',
+    highlights: ['Tiger spotting boat safaris', 'Sajnekhali Watch Tower', 'Sudhanyakhali', 'Dobanki canopy walk', 'Village homestay experience'],
+  }),
+
+  quickIndianCity({
+    slug: 'shantiniketan', name: 'Shantiniketan', state: 'West Bengal',
+    tagline: 'Tagore\'s Open-Air University',
+    description: 'Rabindranath Tagore built his school under the trees in 1901 — now a UNESCO World Heritage Site with an extraordinary tradition of Baul music, visual arts, and Bengali culture.',
+    bestTime: 'Oct – Mar', budget: '$12–$45/day', language: 'Bengali, Hindi',
+    vibes: ['Cultural', 'Historical', 'Spiritual'], gradient: 'from-amber-900 to-stone-900', accentColor: '#D97706',
+    image: '', areaTagline: 'Tagore heritage, Baul music and arts',
+    highlights: ['Visva-Bharati University campus', 'Tagore\'s Uttarayan complex', 'Poush Mela fair (Dec)', 'Baul music performances', 'Kopai River bathing ghat'],
+  }),
+
+  quickIndianCity({
+    slug: 'nalanda', name: 'Nalanda', state: 'Bihar',
+    tagline: 'Ancient World\'s Greatest University',
+    description: 'From the 5th to 12th century, Nalanda was the world\'s largest university — students came from China, Tibet, Korea, and Persia. The UNESCO ruins are one of India\'s most important sites.',
+    bestTime: 'Oct – Mar', budget: '$10–$30/day', language: 'Hindi, Magahi',
+    vibes: ['Historical', 'Cultural', 'Spiritual'], gradient: 'from-stone-900 to-amber-900', accentColor: '#92400E',
+    image: '', areaTagline: 'UNESCO ruins of the ancient world university',
+    highlights: ['Nalanda Archaeological Site (UNESCO)', 'Nalanda Museum', 'Xuanzang Memorial Hall', 'Nava Nalanda Mahavihara', 'Rajgir day trip (15km)'],
+  }),
+
+  quickIndianCity({
+    slug: 'rajgir', name: 'Rajgir', state: 'Bihar',
+    tagline: 'Valley of Hot Springs and Buddhism',
+    description: 'A sacred Buddhist and Jain valley where the Buddha preached — Gridhakuta Hill, Vishwa Shanti Stupa, Japanese rope-car, and therapeutic hot spring baths.',
+    bestTime: 'Oct – Mar', budget: '$10–$35/day', language: 'Hindi, Magahi',
+    vibes: ['Spiritual', 'Historical', 'Nature'], gradient: 'from-amber-900 to-green-900', accentColor: '#B45309',
+    image: '', areaTagline: 'Buddhist pilgrimage and hot spring baths',
+    highlights: ['Vishwa Shanti Stupa (Japanese)', 'Gridhakuta Hill (Buddha preached here)', 'Rajgir hot springs', 'Venu Vana bamboo grove', 'Jarasandha Akhara ruins'],
+  }),
+
+  quickIndianCity({
+    slug: 'kanha', name: 'Kanha', state: 'Madhya Pradesh',
+    tagline: 'The Real Jungle Book',
+    description: 'Rudyard Kipling\'s inspiration for The Jungle Book — meadow-rich sal forests, the rarest deer (barasingha), and some of India\'s highest tiger densities.',
+    bestTime: 'Nov – Jun (closed Jul–Sep)', budget: '$30–$150/day', language: 'Hindi, Gondi',
+    vibes: ['Wildlife', 'Nature', 'Adventure'], gradient: 'from-green-900 to-stone-900', accentColor: '#166534',
+    image: '', areaTagline: 'Tiger safaris through Jungle Book country',
+    highlights: ['Kanha jeep safari (dawn & dusk)', 'Barasingha (hard-ground swamp deer)', 'Tiger sightings at Kanha meadow', 'Kipling Camp birding', 'Bandhavgarh day trip (220km)'],
+  }),
+
+  quickIndianCity({
+    slug: 'pachmarhi', name: 'Pachmarhi', state: 'Madhya Pradesh',
+    tagline: 'Queen of Satpura',
+    description: 'A hill station hidden in the Satpura Range — waterfalls, Pandava Caves, the Bee Falls, ancient rock art, and the most pleasant climate in central India.',
+    bestTime: 'Oct – Jun', budget: '$15–$55/day', language: 'Hindi',
+    vibes: ['Nature', 'Adventure', 'Wellness'], gradient: 'from-green-900 to-emerald-900', accentColor: '#059669',
+    image: '', areaTagline: 'Waterfalls, caves and forest walks',
+    highlights: ['Bee Falls', 'Pandava Caves', 'Jata Shankar cave temple', 'Dhupgarh (highest point MP)', 'Satpura Tiger Reserve safari'],
+  }),
+
+  quickIndianCity({
+    slug: 'bhopal', name: 'Bhopal', state: 'Madhya Pradesh',
+    tagline: 'City of Lakes and Nawabs',
+    description: 'A lake city ruled by Nawabs — Upper and Lower Bhopal lakes, the tribal art at BHARAT BHAVAN, the Shaukat Mahal, and India\'s best museum of tribal art.',
+    bestTime: 'Oct – Mar', budget: '$15–$55/day', language: 'Hindi, Urdu',
+    vibes: ['Cultural', 'Historical', 'Foodie'], gradient: 'from-blue-900 to-stone-900', accentColor: '#1D4ED8',
+    image: '', areaTagline: 'Lakes, tribal museums and Nawabi cuisine',
+    highlights: ['Upper Lake boat ride', 'Bharat Bhavan tribal arts', 'Shaukat Mahal & Sadar Manzil', 'State Museum', 'Sanchi Stupa day trip (46km)'],
+  }),
+
+  quickIndianCity({
+    slug: 'tirupati', name: 'Tirupati', state: 'Andhra Pradesh',
+    tagline: 'World\'s Most Visited Temple',
+    description: 'The Sri Venkateswara Temple at Tirumala Hill receives 50,000–100,000 pilgrims daily — the richest and most visited place of worship anywhere on earth.',
+    bestTime: 'Sep – Feb', budget: '$10–$40/day', language: 'Telugu, Hindi',
+    vibes: ['Spiritual', 'Cultural', 'Pilgrimage'], gradient: 'from-red-900 to-amber-900', accentColor: '#DC2626',
+    image: '', areaTagline: 'Most visited temple on earth',
+    highlights: ['Sri Venkateswara Temple (Tirumala)', 'Govinda Raja Swamy Temple', 'Sri Padmavathi Temple (Tiruchanur)', 'Silathoranam natural arch', 'Chandragiri Fort'],
+  }),
+
+  quickIndianCity({
+    slug: 'visakhapatnam', name: 'Visakhapatnam', state: 'Andhra Pradesh',
+    tagline: 'City of Destiny',
+    description: 'A port city with excellent beaches, a submarine museum, the scenic Araku Valley coffee country, and Eastern Ghats tribal culture just a mountain train away.',
+    bestTime: 'Oct – Mar', budget: '$15–$60/day', language: 'Telugu, Hindi',
+    vibes: ['Beach', 'Adventure', 'Cultural'], gradient: 'from-blue-900 to-teal-900', accentColor: '#0891B2',
+    image: '', areaTagline: 'Beaches, submarine and mountain valleys',
+    highlights: ['Rushikonda Beach', 'INS Kurusura Submarine Museum', 'Araku Valley (Vistadome train)', 'Borra Caves', 'RK Beach promenade'],
+  }),
+
+  quickIndianCity({
+    slug: 'bhubaneswar', name: 'Bhubaneswar', state: 'Odisha',
+    tagline: 'Temple City of India',
+    description: 'With over 700 medieval temples, Bhubaneswar is one of India\'s greatest temple cities — Lingaraja Temple, the archaeological museum, and the gateway to Puri and Konark.',
+    bestTime: 'Oct – Feb', budget: '$12–$45/day', language: 'Odia, Hindi',
+    vibes: ['Cultural', 'Historical', 'Spiritual'], gradient: 'from-orange-900 to-red-900', accentColor: '#EA580C',
+    image: '', areaTagline: '700 temples and Odisha cultural heartland',
+    highlights: ['Lingaraja Temple (8th century)', 'Mukteshwar Temple', 'Odisha State Museum', 'Nandankanan Zoo', 'Udayagiri & Khandagiri caves'],
+  }),
+
+  quickIndianCity({
+    slug: 'konark', name: 'Konark', state: 'Odisha',
+    tagline: 'The Black Pagoda',
+    description: 'A 13th-century Sun Temple shaped like a colossal stone chariot — UNESCO World Heritage, India\'s finest piece of medieval sculptural art, 64km from Puri.',
+    bestTime: 'Oct – Feb', budget: '$10–$35/day', language: 'Odia',
+    vibes: ['Historical', 'Cultural', 'Spiritual'], gradient: 'from-stone-900 to-amber-900', accentColor: '#92400E',
+    image: '', areaTagline: 'UNESCO Sun Temple and Chandrabhaga beach',
+    highlights: ['Konark Sun Temple (UNESCO)', 'Stone chariot wheels (24 spokes = 24 hours)', 'Chandrabhaga Beach', 'Archaeological Museum', 'Dance Festival (Dec)'],
+  }),
+
+  quickIndianCity({
+    slug: 'sasan-gir', name: 'Sasan Gir', state: 'Gujarat',
+    tagline: 'Last Home of the Asiatic Lion',
+    description: 'The only place on earth where wild Asiatic lions still roam — a dry deciduous forest of 1,400 sq km with leopards, crocodiles, and 300+ bird species.',
+    bestTime: 'Dec – Jun (closed Jul–Sep)', budget: '$25–$100/day', language: 'Gujarati, Hindi',
+    vibes: ['Wildlife', 'Nature', 'Adventure'], gradient: 'from-amber-900 to-green-900', accentColor: '#D97706',
+    image: '', areaTagline: 'Asiatic lion safaris and forest wildlife',
+    highlights: ['Gir jeep safari (dawn & dusk)', 'Asiatic lion sighting', 'Devaliya Safari Park (closer access)', 'Kamleshwar Dam (crocodiles)', 'Somnath Temple day trip (55km)'],
+  }),
+
+  quickIndianCity({
+    slug: 'vadodara', name: 'Vadodara (Baroda)', state: 'Gujarat',
+    tagline: 'Cultural Capital of Gujarat',
+    description: 'The Gaekwad Maharajas built a city of extraordinary palaces, museums, and art institutions — Laxmi Vilas Palace, Baroda Museum, and the finest collection of Indian art outside Delhi.',
+    bestTime: 'Oct – Mar', budget: '$15–$55/day', language: 'Gujarati, Hindi',
+    vibes: ['Cultural', 'Historical', 'Foodie'], gradient: 'from-purple-900 to-indigo-900', accentColor: '#7C3AED',
+    image: '', areaTagline: 'Maharaja palaces, art and Gujarati cuisine',
+    highlights: ['Laxmi Vilas Palace (4× Buckingham Palace)', 'Baroda Museum & Picture Gallery', 'Champaner-Pavagadh (UNESCO, 50km)', 'Kirti Mandir', 'Sursagar Lake'],
+  }),
+
+  quickIndianCity({
+    slug: 'lonavala', name: 'Lonavala & Khandala', state: 'Maharashtra',
+    tagline: 'Mumbai & Pune\'s Monsoon Escape',
+    description: 'Twin hill stations on the Western Ghats — waterfalls, viewpoints, Karla and Bhaja Buddhist caves, and the famous chikki toffee. Best in monsoon when everything turns green.',
+    bestTime: 'Jun – Sep (monsoon) · Oct – Feb', budget: '$15–$70/day', language: 'Marathi, Hindi',
+    vibes: ['Nature', 'Romantic', 'Adventure'], gradient: 'from-green-900 to-stone-900', accentColor: '#16A34A',
+    image: '', areaTagline: 'Monsoon waterfalls, forts and ancient caves',
+    highlights: ['Tiger\'s Leap viewpoint', 'Bhushi Dam waterfall', 'Karla Buddhist Caves', 'Rajmachi Fort trek', 'Della Adventure Park'],
+  }),
+
+  quickIndianCity({
+    slug: 'coimbatore', name: 'Coimbatore', state: 'Tamil Nadu',
+    tagline: 'Gateway to the Nilgiris',
+    description: 'A temple-and-textile city at the base of the Nilgiri Hills — Adiyogi Shiva statue, gateway to Ooty, Sadhguru\'s Isha Yoga Centre, and the best local food in Tamil Nadu.',
+    bestTime: 'Oct – Mar', budget: '$12–$45/day', language: 'Tamil',
+    vibes: ['Spiritual', 'Cultural', 'Nature'], gradient: 'from-orange-900 to-red-900', accentColor: '#EA580C',
+    image: '', areaTagline: 'Adiyogi Shiva, Isha Yoga and Nilgiri gateway',
+    highlights: ['Adiyogi Shiva statue (Isha Foundation)', 'Isha Yoga Centre (free tour)', 'Marudamalai Temple', 'VOC Park and Zoo', 'Mettupalayam (Nilgiri toy train start)'],
+  }),
 ];
