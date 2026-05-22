@@ -28,7 +28,35 @@ type QuickIndianCity = {
   highlights: string[];
 };
 
+/** Unsplash base URL */
+const U = 'https://images.unsplash.com';
+
+/**
+ * Category-based fallback photos — verified to exist on Unsplash.
+ * Chosen to match the city's primary vibe.
+ */
+function categoryPhoto(vibes: string[], gradient: string): string {
+  if (vibes.includes('Beach'))                      return `${U}/photo-1507525428034-b723cf961d3e`;
+  if (vibes.includes('Wildlife'))                   return `${U}/photo-1549366021-9f761d040a94`;
+  if (vibes.includes('Adventure') && vibes.includes('Nature')) return `${U}/photo-1626621341517-bbf3d9990a23`;
+  if (vibes.includes('Nature'))                     return `${U}/photo-1544634076-a9c0aa0d8e45`;
+  if (vibes.includes('Spiritual') || vibes.includes('Pilgrimage')) return `${U}/photo-1561361058-c24cecae35ca`;
+  if (vibes.includes('Historical') || vibes.includes('Cultural')) {
+    if (gradient.includes('amber') || gradient.includes('orange')) return `${U}/photo-1477587458883-47145ed94245`;
+    return `${U}/photo-1524492412937-b28074a5d7da`;
+  }
+  if (vibes.includes('Romantic'))                   return `${U}/photo-1477587458883-47145ed94245`;
+  if (vibes.includes('Foodie'))                     return `${U}/photo-1529253355930-ddbe423a2ac7`;
+  if (vibes.includes('Wellness'))                   return `${U}/photo-1582510003544-4d00b7f74220`;
+  // Default: scenic India
+  return `${U}/photo-1524492412937-b28074a5d7da`;
+}
+
 function quickIndianCity(city: QuickIndianCity): City {
+  const basePhoto = categoryPhoto(city.vibes, city.gradient);
+  const cardUrl   = `${basePhoto}?auto=format&fit=crop&w=800&q=80`;
+  const heroUrl   = `${basePhoto}?auto=format&fit=crop&w=1600&q=85`;
+
   return {
     slug: city.slug,
     name: city.name,
@@ -47,14 +75,14 @@ function quickIndianCity(city: QuickIndianCity): City {
     vibes: city.vibes,
     gradient: city.gradient,
     accentColor: city.accentColor,
-    image: '',
-    heroImage: '',
+    image: cardUrl,
+    heroImage: heroUrl,
     areas: [
       {
         name: 'Essential Stops',
         emoji: '📍',
         accentColor: city.accentColor,
-        image: '',
+        image: cardUrl,
         tagline: city.areaTagline,
         spots: city.highlights.map((name) => ({ name, tag: 'Highlight' })),
       },

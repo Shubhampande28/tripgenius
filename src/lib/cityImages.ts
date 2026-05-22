@@ -50,20 +50,43 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   kochi:        { card: 'photo-1593693397690-362cb9666fc2', hero: 'photo-1593693397690-362cb9666fc2' },
   hampi:        { card: 'photo-1615813967515-e1838c1c5116', hero: 'photo-1615813967515-e1838c1c5116' },
   alleppey:     { card: 'photo-1602216056096-3b40cc0c9944', hero: 'photo-1602216056096-3b40cc0c9944' },
-  // Extended Indian cities — verified photos
-  jaisalmer:    { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  srinagar:     { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
-  dharamshala:  { card: 'photo-1544634076-a9c0aa0d8e45', hero: 'photo-1544634076-a9c0aa0d8e45' },
-  hyderabad:    { card: 'photo-1555993539-1732b0258235', hero: 'photo-1555993539-1732b0258235' },
-  chennai:      { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  nainital:     { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
-  lucknow:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  manali:       { card: 'photo-1617859047452-8510bcf207fd', hero: 'photo-1617859047452-8510bcf207fd' },
-  shimla:       { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
-  darjeeling:   { card: 'photo-1544634076-a9c0aa0d8e45', hero: 'photo-1544634076-a9c0aa0d8e45' },
-  coorg:        { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  mussoorie:    { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
-  ooty:         { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
+  // ── Extended Indian cities — verified photos ──────────────────
+  // Rajasthan
+  jaisalmer:       { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
+  bikaner:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
+  ranthambore:     { card: 'photo-1549366021-9f761d040a94', hero: 'photo-1549366021-9f761d040a94' },
+  'mount-abu':     { card: 'photo-1544634076-a9c0aa0d8e45', hero: 'photo-1544634076-a9c0aa0d8e45' },
+  // J&K / Himachal
+  srinagar:        { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
+  gulmarg:         { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
+  dharamshala:     { card: 'photo-1544634076-a9c0aa0d8e45', hero: 'photo-1544634076-a9c0aa0d8e45' },
+  kasol:           { card: 'photo-1617859047452-8510bcf207fd', hero: 'photo-1617859047452-8510bcf207fd' },
+  spiti:           { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
+  manali:          { card: 'photo-1617859047452-8510bcf207fd', hero: 'photo-1617859047452-8510bcf207fd' },
+  shimla:          { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
+  // Uttarakhand
+  nainital:        { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
+  mussoorie:       { card: 'photo-1626015365107-b35bfd13e7ae', hero: 'photo-1626015365107-b35bfd13e7ae' },
+  haridwar:        { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
+  'jim-corbett':   { card: 'photo-1549366021-9f761d040a94', hero: 'photo-1549366021-9f761d040a94' },
+  // South India
+  hyderabad:       { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  chennai:         { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  madurai:         { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
+  ooty:            { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
+  mahabalipuram:   { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  coorg:           { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
+  gokarna:         { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  thekkady:        { card: 'photo-1549366021-9f761d040a94', hero: 'photo-1549366021-9f761d040a94' },
+  varkala:         { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  // North / Central India
+  lucknow:         { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  khajuraho:       { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  puri:            { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  darjeeling:      { card: 'photo-1544634076-a9c0aa0d8e45', hero: 'photo-1544634076-a9c0aa0d8e45' },
+  // Gujarat
+  'rann-of-kutch': { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
+  'sasan-gir':     { card: 'photo-1549366021-9f761d040a94', hero: 'photo-1549366021-9f761d040a94' },
 };
 
 const BASE = 'https://images.unsplash.com';
