@@ -2193,8 +2193,9 @@ export const cities: City[] = [
 import { worldCities } from './worldCities';
 import { indianCities } from './indianCities';
 import { indianCitiesExtended } from './indianCitiesExtended';
+import { enrichCity } from './enrichCity';
 
-export const allCities = [...cities, ...worldCities, ...indianCities, ...indianCitiesExtended];
+export const allCities = [...cities, ...worldCities, ...indianCities, ...indianCitiesExtended].map(enrichCity);
 
 export function getCityBySlug(slug: string): City | undefined {
   return allCities.find((city) => city.slug === slug);

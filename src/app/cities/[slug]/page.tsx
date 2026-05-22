@@ -34,6 +34,7 @@ export async function generateMetadata(
   if (!city) return { title: 'City Not Found' };
   const title = `${city.name} Travel Guide ${city.flag} — Best Time, Budget & Things To Do`;
   const description = `Complete ${city.name} travel guide: best time to visit (${city.stats.bestTime}), daily budget (${city.stats.budget}), top things to do, neighbourhoods, and hidden gems. Free, expert travel advice.`;
+  const ogImage = city.heroImage || city.image || 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=85';
   return {
     title,
     description,
@@ -47,7 +48,7 @@ export async function generateMetadata(
       title,
       description,
       url: `https://www.tripgenius.in/cities/${slug}`,
-      images: [{ url: city.heroImage, width: 1600, height: 900, alt: `${city.name} travel guide` }],
+      images: [{ url: ogImage, width: 1600, height: 900, alt: `${city.name} travel guide` }],
     },
     twitter: { card: 'summary_large_image', title, description },
   };

@@ -29,8 +29,6 @@ type QuickIndianCity = {
 };
 
 function quickIndianCity(city: QuickIndianCity): City {
-  const heroImage = city.image.replace('w=800&q=80', 'w=1600&q=85');
-
   return {
     slug: city.slug,
     name: city.name,
@@ -49,14 +47,14 @@ function quickIndianCity(city: QuickIndianCity): City {
     vibes: city.vibes,
     gradient: city.gradient,
     accentColor: city.accentColor,
-    image: city.image,
-    heroImage,
+    image: '',
+    heroImage: '',
     areas: [
       {
         name: 'Essential Stops',
         emoji: '📍',
         accentColor: city.accentColor,
-        image: city.image,
+        image: '',
         tagline: city.areaTagline,
         spots: city.highlights.map((name) => ({ name, tag: 'Highlight' })),
       },
