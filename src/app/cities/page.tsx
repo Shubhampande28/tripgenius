@@ -10,24 +10,13 @@ import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 
-const regions = ['All', 'India', 'Asia', 'Europe', 'Americas', 'Middle East & Africa'];
-
-const regionMap: Record<string, string[]> = {
-  India: [
-    // Original 25
-    'goa', 'delhi', 'agra', 'jaipur', 'mumbai', 'varanasi', 'udaipur', 'amritsar',
-    'jodhpur', 'rishikesh', 'kolkata', 'shimla', 'manali', 'darjeeling', 'ladakh',
-    'bengaluru', 'kochi', 'hampi', 'munnar', 'alleppey', 'mysuru', 'pondicherry',
-    'pushkar', 'andaman', 'ahmedabad',
-    // Batch 1 (new)
-    'jaisalmer', 'srinagar', 'dharamshala', 'hyderabad', 'chennai',
-    'nainital', 'lucknow', 'khajuraho', 'puri', 'coorg',
-  ],
-  Asia: ['bali', 'bangkok', 'tokyo', 'singapore', 'seoul', 'kyoto', 'hong-kong', 'phuket', 'chiang-mai', 'maldives'],
-  Europe: ['paris', 'london', 'barcelona', 'rome', 'amsterdam', 'prague', 'lisbon', 'istanbul', 'athens', 'budapest', 'santorini'],
-  Americas: ['new-york', 'mexico-city', 'rio-de-janeiro', 'buenos-aires', 'cusco'],
-  'Middle East & Africa': ['dubai', 'marrakech', 'cape-town'],
-};
+const countries = [
+  'All',
+  'India',
+  ...Array.from(new Set(allCities.map((city) => city.country)))
+    .filter((country) => country !== 'India')
+    .sort((a, b) => a.localeCompare(b)),
+];
 
 const vibeColors: Record<string, string> = {
   Spiritual:    'bg-gold/10 text-gold',
@@ -44,16 +33,15 @@ const vibeColors: Record<string, string> = {
 
 export default function CitiesPage() {
   const [query, setQuery] = useState('');
-  const [activeRegion, setActiveRegion] = useState('All');
+  const [activeCountry, setActiveCountry] = useState('All');
 
   const filtered = allCities.filter((city) => {
     const matchesSearch =
       query.length === 0 ||
       city.name.toLowerCase().includes(query.toLowerCase()) ||
       city.country.toLowerCase().includes(query.toLowerCase());
-    const matchesRegion =
-      activeRegion === 'All' || (regionMap[activeRegion] ?? []).includes(city.slug);
-    return matchesSearch && matchesRegion;
+    const matchesCountry = activeCountry === 'All' || city.country === activeCountry;
+    return matchesSearch && matchesCountry;
   });
 
   return (
@@ -97,24 +85,24 @@ export default function CitiesPage() {
               />
             </motion.div>
 
-            {/* Region filters */}
+            {/* Country filters */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.25 }}
               className="mt-5 flex flex-wrap justify-center gap-2"
             >
-              {regions.map((r) => (
+              {countries.map((country) => (
                 <button
-                  key={r}
-                  onClick={() => setActiveRegion(r)}
+                  key={country}
+                  onClick={() => setActiveCountry(country)}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    activeRegion === r
+                    activeCountry === country
                       ? 'bg-accent text-white shadow-lg shadow-accent/20'
                       : 'bg-elevated border border-border text-muted hover:text-primary-text'
                   }`}
                 >
-                  {r}
+                  {country}
                 </button>
               ))}
             </motion.div>
@@ -133,7 +121,7 @@ export default function CitiesPage() {
               <p className="text-xs text-muted mb-6">
                 Showing <strong className="text-primary-text">{filtered.length}</strong>{' '}
                 {filtered.length === 1 ? 'city' : 'cities'}
-                {activeRegion !== 'All' && ` in ${activeRegion}`}
+                {activeCountry !== 'All' && ` in ${activeCountry}`}
                 {query && ` matching "${query}"`}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
