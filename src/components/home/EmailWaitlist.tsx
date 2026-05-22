@@ -12,8 +12,20 @@ export default function EmailWaitlist() {
     e.preventDefault();
     if (!email.trim()) return;
     setStatus('loading');
-    await new Promise((r) => setTimeout(r, 800));
-    setStatus('success');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (

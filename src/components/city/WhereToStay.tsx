@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Star, DollarSign } from 'lucide-react';
+import { hotelUrl } from '@/lib/affiliateLinks';
 import { City } from '@/lib/types';
 
 export default function WhereToStay({ city }: { city: City }) {
@@ -61,7 +62,9 @@ export default function WhereToStay({ city }: { city: City }) {
                     <span className="text-sm font-semibold text-primary-text">{hotel.priceRange}</span>
                   </div>
                   <a
-                    href="#"
+                    href={hotelUrl(city.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-xs font-semibold text-teal hover:text-teal/80 transition-colors"
                   >
                     Book now →

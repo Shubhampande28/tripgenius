@@ -2,6 +2,7 @@
 
 import SafeImage from '@/components/SafeImage';
 import { getCityImageUrl } from '@/lib/cityImages';
+import { hotelNeighbourhoodUrl } from '@/lib/affiliateLinks';
 import { motion } from 'framer-motion';
 import { MapPin, Check, X, Hotel, ChevronRight } from 'lucide-react';
 import { City } from '@/lib/types';
@@ -150,7 +151,9 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                         </p>
                       </div>
                       <a
-                        href="#"
+                        href={hotelNeighbourhoodUrl(city.name, n.name)}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/20 transition-colors text-xs font-semibold text-accent whitespace-nowrap flex-shrink-0"
                       >
                         <Hotel size={12} />

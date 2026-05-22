@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Plane, Building2, Clock, ArrowRight, Lightbulb, Tag } from 'lucide-react';
+import { flightUrl } from '@/lib/affiliateLinks';
 import { City } from '@/lib/types';
 
 export default function GettingThere({ city }: { city: City }) {
@@ -161,7 +162,9 @@ export default function GettingThere({ city }: { city: City }) {
 
             {/* Flight search CTA */}
             <a
-              href="#"
+              href={flightUrl(city.name)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 active:scale-95 transition-all shadow-lg shadow-accent/20"
             >
               <Plane size={15} />
