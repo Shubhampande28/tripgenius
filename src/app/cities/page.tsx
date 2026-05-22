@@ -10,13 +10,27 @@ import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 
-const regions = ['All', 'India', 'Asia', 'Europe', 'Americas', 'Middle East & Africa'];
+const regions = [
+  'All',
+  // Indian state-wise regions
+  'Rajasthan', 'North India', 'Himalayan', 'South India', 'West India', 'East India', 'Northeast India',
+  // International
+  'Asia', 'Europe', 'Americas', 'Middle East & Africa',
+];
 
 const regionMap: Record<string, string[]> = {
-  India: ['goa', 'delhi', 'agra', 'jaipur', 'mumbai', 'varanasi', 'udaipur', 'amritsar', 'jodhpur', 'rishikesh', 'kolkata', 'shimla', 'manali', 'darjeeling', 'ladakh', 'bengaluru', 'kochi', 'hampi', 'munnar', 'alleppey', 'mysuru', 'pondicherry', 'pushkar', 'andaman', 'ahmedabad'],
-  Asia: ['bali', 'bangkok', 'tokyo', 'singapore', 'seoul', 'kyoto', 'hong-kong', 'phuket', 'chiang-mai', 'maldives'],
-  Europe: ['paris', 'london', 'barcelona', 'rome', 'amsterdam', 'prague', 'lisbon', 'istanbul', 'athens', 'budapest', 'santorini'],
-  Americas: ['new-york', 'mexico-city', 'rio-de-janeiro', 'buenos-aires', 'cusco'],
+  // ── Indian Regions ───────────────────────────────
+  'Rajasthan': ['jaipur', 'jodhpur', 'udaipur', 'pushkar', 'jaisalmer', 'bikaner', 'ranthambore', 'mount-abu'],
+  'North India': ['delhi', 'agra', 'varanasi', 'amritsar', 'lucknow', 'mathura', 'prayagraj', 'chandigarh', 'khajuraho', 'bodh-gaya', 'nalanda', 'rajgir', 'bhopal', 'kanha', 'pachmarhi', 'puri', 'bhubaneswar', 'konark'],
+  'Himalayan': ['shimla', 'manali', 'dharamshala', 'kasol', 'ladakh', 'srinagar', 'gulmarg', 'pahalgam', 'rishikesh', 'nainital', 'mussoorie', 'haridwar', 'jim-corbett', 'spiti', 'auli', 'dalhousie'],
+  'South India': ['bengaluru', 'mysuru', 'hampi', 'coorg', 'gokarna', 'kochi', 'munnar', 'alleppey', 'thekkady', 'varkala', 'pondicherry', 'chennai', 'madurai', 'ooty', 'mahabalipuram', 'hyderabad', 'tirupati', 'visakhapatnam'],
+  'West India': ['goa', 'mumbai', 'ahmedabad', 'pune', 'aurangabad', 'nashik', 'mahabaleshwar', 'rann-of-kutch', 'sasan-gir', 'somnath', 'dwarka'],
+  'East India': ['kolkata', 'darjeeling', 'sundarbans', 'shantiniketan'],
+  'Northeast India': ['andaman', 'guwahati', 'kaziranga', 'shillong', 'gangtok', 'tawang'],
+  // ── International ────────────────────────────────
+  'Asia': ['bali', 'bangkok', 'tokyo', 'singapore', 'seoul', 'kyoto', 'hong-kong', 'phuket', 'chiang-mai', 'maldives'],
+  'Europe': ['paris', 'london', 'barcelona', 'rome', 'amsterdam', 'prague', 'lisbon', 'istanbul', 'athens', 'budapest', 'santorini'],
+  'Americas': ['new-york', 'mexico-city', 'rio-de-janeiro', 'buenos-aires', 'cusco'],
   'Middle East & Africa': ['dubai', 'marrakech', 'cape-town'],
 };
 
@@ -95,16 +109,28 @@ export default function CitiesPage() {
               transition={{ delay: 0.25 }}
               className="mt-5 flex flex-wrap justify-center gap-2"
             >
-              {regions.map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setActiveRegion(r)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    activeRegion === r
-                      ? 'bg-accent text-white shadow-lg shadow-accent/20'
-                      : 'bg-elevated border border-border text-muted hover:text-primary-text'
-                  }`}
-                >
+              {/* All */}
+              {['All'].map((r) => (
+                <button key={r} onClick={() => setActiveRegion(r)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeRegion === r ? 'bg-accent text-white shadow-lg shadow-accent/20' : 'bg-elevated border border-border text-muted hover:text-primary-text'}`}>
+                  {r}
+                </button>
+              ))}
+
+              {/* India divider */}
+              <span className="flex items-center px-2 text-xs text-muted/40 font-semibold uppercase tracking-widest">🇮🇳 India</span>
+              {['Rajasthan','North India','Himalayan','South India','West India','East India','Northeast India'].map((r) => (
+                <button key={r} onClick={() => setActiveRegion(r)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeRegion === r ? 'bg-teal text-dark shadow-lg shadow-teal/20' : 'bg-teal/5 border border-teal/20 text-teal/70 hover:text-teal hover:border-teal/40'}`}>
+                  {r}
+                </button>
+              ))}
+
+              {/* International divider */}
+              <span className="flex items-center px-2 text-xs text-muted/40 font-semibold uppercase tracking-widest">🌍 International</span>
+              {['Asia','Europe','Americas','Middle East & Africa'].map((r) => (
+                <button key={r} onClick={() => setActiveRegion(r)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeRegion === r ? 'bg-accent text-white shadow-lg shadow-accent/20' : 'bg-elevated border border-border text-muted hover:text-primary-text'}`}>
                   {r}
                 </button>
               ))}

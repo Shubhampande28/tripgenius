@@ -139,6 +139,7 @@ export interface City {
   image: string;
   heroImage: string;
   visa?: string;
+  state?: string;
   areas?: CityArea[];
   thingsToDo?: ThingToDo[];
   hotels?: Hotel[];
