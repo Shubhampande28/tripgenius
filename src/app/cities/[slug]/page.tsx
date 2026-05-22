@@ -32,25 +32,32 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const city = getCityBySlug(slug);
   if (!city) return { title: 'City Not Found' };
-  const title = `${city.name} Travel Guide ${city.flag} — Best Time, Budget & Things To Do`;
-  const description = `Complete ${city.name} travel guide: best time to visit (${city.stats.bestTime}), daily budget (${city.stats.budget}), top things to do, neighbourhoods, and hidden gems. Free, expert travel advice.`;
-  const ogImage = city.heroImage || city.image || 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=85';
+
+  const year = new Date().getFullYear();
+  const title = `${city.name} Travel Guide ${year} — Things To Do, Best Time & Budget`;
+  const desc  = `Plan your ${city.name} trip: best time to visit (${city.stats.bestTime}), daily budget (${city.stats.budget}), top things to do, where to stay, and local insider tips. Free ${city.country} travel guide.`;
+
   return {
     title,
-    description,
+    description: desc,
     keywords: [
-      `${city.name} travel guide`, `visit ${city.name}`, `things to do in ${city.name}`,
-      `best time to visit ${city.name}`, `${city.name} budget`, `${city.country} travel`,
-      `${city.name} itinerary`, `${city.name} tips`,
+      `${city.name} travel guide`, `things to do in ${city.name}`,
+      `best time to visit ${city.name}`, `${city.name} travel tips`,
+      `${city.name} itinerary`, `${city.name} budget`,
+      `${city.country} travel`, `visit ${city.name} ${year}`,
+      `${city.name} tourist guide`, `${city.name} trip`,
     ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
     openGraph: {
-      title,
-      description,
-      url: `https://www.tripgenius.in/cities/${slug}`,
-      images: [{ url: ogImage, width: 1600, height: 900, alt: `${city.name} travel guide` }],
+      title, description: desc,
+      url:  `https://www.tripgenius.in/cities/${slug}`,
+      type: 'article',
+      images: [{ url: `/cities/${slug}/opengraph-image`, width: 1200, height: 630, alt: `${city.name} travel guide — TripGenius` }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image', title, description: desc,
+      images: [`/cities/${slug}/opengraph-image`],
+    },
   };
 }
 
@@ -58,28 +65,78 @@ export async function generateMetadata(
 const REDESIGNED_SLUGS = new Set(['bali']);
 
 function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & object; slug: string }) {
-  const jsonLd = {
+  const base = 'https://www.tripgenius.in';
+  const url  = `${base}/cities/${slug}`;
+
+  // 1. TouristDestination
+  const destination = {
     '@context': 'https://schema.org',
     '@type': 'TouristDestination',
     name: city.name,
     description: city.description,
-    url: `https://www.tripgenius.in/cities/${slug}`,
-    image: city.heroImage,
+    url,
+    image: city.heroImage || city.image,
     touristType: city.vibes,
-    geo: { '@type': 'GeoCoordinates' },
     containedInPlace: { '@type': 'Country', name: city.country },
     isAccessibleForFree: true,
-    publisher: {
-      '@type': 'Organization',
-      name: 'TripGenius',
-      url: 'https://www.tripgenius.in',
-    },
+    publisher: { '@type': 'Organization', name: 'TripGenius', url: base },
   };
+
+  // 2. BreadcrumbList — helps Google show "TripGenius > Cities > Bali" in results
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: base },
+      { '@type': 'ListItem', position: 2, name: 'Cities', item: `${base}/cities` },
+      { '@type': 'ListItem', position: 3, name: city.name, item: url },
+    ],
+  };
+
+  // 3. FAQPage — shows directly in Google search results as expandable Q&A
+  const faqs = [
+    {
+      q: `What is the best time to visit ${city.name}?`,
+      a: city.monthByMonth
+        ? `The best time to visit ${city.name} is ${city.monthByMonth.bestMonths.join(', ')}. ${city.monthByMonth.summary}`
+        : `The best time to visit ${city.name} is ${city.stats.bestTime}.`,
+    },
+    {
+      q: `How much does a trip to ${city.name} cost per day?`,
+      a: `A trip to ${city.name} typically costs ${city.stats.budget} per person per day. Budget travellers can explore on the lower end, while luxury travellers will spend more.`,
+    },
+    {
+      q: `What are the top things to do in ${city.name}?`,
+      a: city.thingsToDo?.length
+        ? `Top things to do in ${city.name} include: ${city.thingsToDo.slice(0, 5).map((t) => t.name).join(', ')}.`
+        : `${city.name} offers world-class cultural, culinary, and natural experiences. Explore the local areas and neighbourhoods for the best experiences.`,
+    },
+    {
+      q: `What language do they speak in ${city.name}?`,
+      a: `The main language spoken in ${city.name} is ${city.stats.language}. English is widely understood in tourist areas.`,
+    },
+    {
+      q: `What is the currency in ${city.name}?`,
+      a: `The currency used in ${city.name} is ${city.stats.currency}. It's advisable to carry some local cash for markets, temples, and street food vendors.`,
+    },
+  ];
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(destination) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+    </>
   );
 }
 

@@ -16,35 +16,54 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const SITE = "https://www.tripgenius.in";
+const YEAR = new Date().getFullYear();
+
 export const metadata: Metadata = {
   title: {
-    default: "TripGenius — Travel Guides for Every City",
+    default: `TripGenius — Free Travel Guides for India & the World (${YEAR})`,
     template: "%s | TripGenius",
   },
   description:
-    "Free travel guides for 60+ cities worldwide. Best time to visit, neighbourhoods, things to do, budget breakdown, and insider tips — for Bali, Tokyo, Paris, Delhi, Mumbai and beyond.",
+    `Free travel guides for 160+ cities across India, Asia, Europe & the Americas. Find the best time to visit, things to do, budget breakdowns, and local insider tips for Bali, Delhi, Jaipur, Tokyo, Paris and more.`,
   keywords: [
-    "travel guide", "city guide", "best time to visit", "things to do",
-    "travel tips", "vacation planning", "India travel", "Europe travel",
-    "Asia travel", "budget travel", "luxury travel", "TripGenius",
+    "travel guide", "city travel guide", "best time to visit India",
+    "things to do in India", "India travel tips", "Rajasthan travel",
+    "Kerala travel guide", "Himachal Pradesh travel", "budget travel India",
+    "Asia travel guide", "Europe city guide", "TripGenius",
+    "free travel guide", "trip planning", `travel guide ${YEAR}`,
   ],
-  metadataBase: new URL("https://www.tripgenius.in"),
-  alternates: { canonical: "https://www.tripgenius.in" },
+  metadataBase: new URL(SITE),
+  alternates: { canonical: SITE },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
     siteName: "TripGenius",
-    url: "https://www.tripgenius.in",
-    title: "TripGenius — Travel Guides for Every City",
-    description: "Free travel guides for 60+ cities. Best time to visit, budget, things to do, and hidden gems.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TripGenius Travel Guides" }],
+    url: SITE,
+    title: `TripGenius — Free Travel Guides for India & the World`,
+    description: `Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
+    images: [{ url: `${SITE}/og-default.png`, width: 1200, height: 630, alt: "TripGenius — Free Travel Guides" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TripGenius — Travel Guides for Every City",
-    description: "Free travel guides for 60+ cities. Best time to visit, budget, things to do, and hidden gems.",
+    site: "@tripgenius_in",
+    title: "TripGenius — Free Travel Guides for India & the World",
+    description: "Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems.",
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true, follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // Add when you get Google Search Console verification code:
+    // google: "your-verification-code",
+  },
 };
 
 export default function RootLayout({
@@ -54,7 +73,46 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable}`}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <head>
+        {/* Preconnect to critical third-party domains */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://www.booking.com" />
+        <link rel="dns-prefetch" href="https://www.skyscanner.net" />
+      </head>
+      <body className="min-h-screen antialiased">
+        {children}
+        {/* Site-wide Organization structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'TripGenius',
+              url: SITE,
+              logo: `${SITE}/icon.png`,
+              sameAs: [],
+              description: 'Free travel guides for 160+ cities worldwide.',
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              url: SITE,
+              name: 'TripGenius',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: { '@type': 'EntryPoint', urlTemplate: `${SITE}/cities?q={search_term_string}` },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+      </body>
     </html>
   );
 }
