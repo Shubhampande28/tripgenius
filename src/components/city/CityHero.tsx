@@ -1,6 +1,7 @@
 'use client';
 
 import SafeImage from '@/components/SafeImage';
+import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
@@ -12,9 +13,10 @@ export default function CityHero({ city }: { city: City }) {
 
       {/* Full-bleed hero photo */}
       <SafeImage
-        src={city.heroImage}
+        src={getCityImageUrl(city.slug, 'hero') ?? city.heroImage}
         alt={`${city.name}, ${city.country}`}
         city={city.slug}
+        accentColor={city.accentColor}
         fill
         priority
         sizes="100vw"

@@ -8,6 +8,7 @@ import { Search, MapPin, Clock, Wallet } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
+import { getCityImageUrl } from '@/lib/cityImages';
 
 const regions = ['All', 'India', 'Asia', 'Europe', 'Americas', 'Middle East & Africa'];
 
@@ -139,9 +140,10 @@ export default function CitiesPage() {
                         {/* Image */}
                         <div className="relative h-44 overflow-hidden">
                           <SafeImage
-                            src={city.image}
+                            src={getCityImageUrl(city.slug, 'card') ?? city.image}
                             alt={city.name}
                             city={city.slug}
+                            accentColor={city.accentColor}
                             fill
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"

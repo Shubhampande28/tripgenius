@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
+import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Clock } from 'lucide-react';
 import { cities } from '@/lib/cities';
@@ -66,9 +67,10 @@ export default function FeaturedCities() {
 
                   {/* Real photo */}
                   <SafeImage
-                    src={city.image}
+                    src={getCityImageUrl(city.slug, 'card') ?? city.image}
                     alt={city.name}
                     city={city.slug}
+                    accentColor={city.accentColor}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"

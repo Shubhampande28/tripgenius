@@ -1,6 +1,7 @@
 'use client';
 
 import SafeImage from '@/components/SafeImage';
+import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import { MapPin, Check, X, Hotel, ChevronRight } from 'lucide-react';
 import { City } from '@/lib/types';
@@ -67,9 +68,10 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                   {matchingArea?.image && (
                     <div className="relative h-56 md:h-auto overflow-hidden">
                       <SafeImage
-                        src={matchingArea.image}
+                        src={getCityImageUrl(city.slug, 'card') ?? matchingArea.image}
                         alt={n.name}
-                        city={`${city.slug}-${n.name}`}
+                        city={city.slug}
+                        accentColor={city.accentColor}
                         fill
                         sizes="(max-width: 768px) 100vw, 320px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

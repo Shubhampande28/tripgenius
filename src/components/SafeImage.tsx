@@ -4,49 +4,79 @@ import { useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 
 interface SafeImageProps extends Omit<ImageProps, 'onError'> {
-  fallbackGradient?: string;
   city?: string;
+  accentColor?: string;
 }
 
-const gradients = [
-  'from-orange-900 via-amber-800 to-orange-950',
-  'from-rose-900 via-pink-800 to-rose-950',
-  'from-indigo-900 via-purple-800 to-indigo-950',
-  'from-teal-900 via-cyan-800 to-teal-950',
-  'from-amber-900 via-yellow-800 to-amber-950',
-  'from-emerald-900 via-green-800 to-emerald-950',
-  'from-blue-900 via-sky-800 to-blue-950',
-  'from-red-900 via-rose-800 to-red-950',
+// Deterministic gradient from city name
+const GRADIENTS = [
+  ['#1a1a2e', '#16213e', '#0f3460'],
+  ['#2d1b0e', '#3d2211', '#5a3a1a'],
+  ['#0a1628', '#0e2040', '#1a3a5c'],
+  ['#1a0a2e', '#2d1b4e', '#3d2b5e'],
+  ['#0a2818', '#0e3d24', '#1a5e38'],
+  ['#2e1a0a', '#4e2d11', '#6e4018'],
+  ['#0a1a2e', '#112840', '#1a3d5c'],
+  ['#2e0a1a', '#4e1128', '#6e1a3d'],
 ];
 
-function stringToGradient(s: string) {
+function slugToGradient(slug: string) {
   let hash = 0;
-  for (let i = 0; i < s.length; i++) hash = s.charCodeAt(i) + ((hash << 5) - hash);
-  return gradients[Math.abs(hash) % gradients.length];
+  for (let i = 0; i < slug.length; i++) hash = slug.charCodeAt(i) + ((hash << 5) - hash);
+  const g = GRADIENTS[Math.abs(hash) % GRADIENTS.length];
+  return `linear-gradient(135deg, ${g[0]}, ${g[1]}, ${g[2]})`;
 }
 
-export default function SafeImage({ src, alt, city, className, ...props }: SafeImageProps) {
-  const [broken, setBroken] = useState(false);
-  const gradient = stringToGradient(city ?? (alt as string) ?? 'travel');
+export default function SafeImage({
+  src,
+  alt,
+  city,
+  accentColor,
+  className,
+  fill,
+  style,
+  ...props
+}: SafeImageProps) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError]   = useState(false);
 
-  if (broken) {
-    return (
-      <div
-        className={`bg-gradient-to-br ${gradient} flex items-end justify-start p-4 ${className ?? ''}`}
-        style={props.style}
-      >
-        <span className="text-white/40 text-xs font-medium">{alt}</span>
-      </div>
-    );
-  }
+  const gradient = slugToGradient(city ?? String(alt));
+
+  const containerStyle: React.CSSProperties = fill
+    ? { position: 'absolute', inset: 0, ...style }
+    : { position: 'relative', width: '100%', height: '100%', ...style };
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      className={className}
-      onError={() => setBroken(true)}
-      {...props}
-    />
+    <div style={containerStyle}>
+      {/* Always-visible gradient base */}
+      <div
+        style={{ position: 'absolute', inset: 0, background: gradient }}
+        aria-hidden
+      />
+      {/* Accent glow on top of gradient */}
+      {accentColor && (
+        <div
+          style={{
+            position: 'absolute', inset: 0,
+            background: `radial-gradient(ellipse at 30% 60%, ${accentColor}30, transparent 70%)`,
+          }}
+          aria-hidden
+        />
+      )}
+
+      {/* Photo — only attempt if src looks valid */}
+      {!error && src && (
+        <Image
+          src={src}
+          alt={alt}
+          fill={fill}
+          className={`${className ?? ''} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+          style={{ objectFit: 'cover', position: 'absolute', inset: 0 }}
+          {...props}
+        />
+      )}
+    </div>
   );
 }
