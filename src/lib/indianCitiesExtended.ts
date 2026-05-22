@@ -8,9 +8,62 @@ import { City } from './types';
  * Batch 2 (10 cities): Gulmarg, Kasol, Spiti, Mussoorie, Haridwar,
  *   Jim Corbett, Bikaner, Madurai, Ooty, Mahabalipuram
  *
- * TO ADD NEXT: Batch 4 — Amritsar, Kanyakumari, Hampi, Udaipur, Mount Abu,
- *   Rann of Kutch, Shillong, Gangtok, Auroville, Mysore
+ * Batch 4-7: high-priority India backlog without duplicates from indianCities.ts.
  */
+
+type QuickIndianCity = {
+  slug: string;
+  name: string;
+  state: string;
+  tagline: string;
+  description: string;
+  bestTime: string;
+  budget: string;
+  language: string;
+  vibes: string[];
+  gradient: string;
+  accentColor: string;
+  image: string;
+  areaTagline: string;
+  highlights: string[];
+};
+
+function quickIndianCity(city: QuickIndianCity): City {
+  const heroImage = city.image.replace('w=800&q=80', 'w=1600&q=85');
+
+  return {
+    slug: city.slug,
+    name: city.name,
+    state: city.state,
+    country: 'India',
+    flag: '🇮🇳',
+    tagline: city.tagline,
+    description: city.description,
+    heroDescription: city.description,
+    stats: {
+      bestTime: city.bestTime,
+      budget: city.budget,
+      language: city.language,
+      currency: 'INR (Rupee)',
+    },
+    vibes: city.vibes,
+    gradient: city.gradient,
+    accentColor: city.accentColor,
+    image: city.image,
+    heroImage,
+    areas: [
+      {
+        name: 'Essential Stops',
+        emoji: '📍',
+        accentColor: city.accentColor,
+        image: city.image,
+        tagline: city.areaTagline,
+        spots: city.highlights.map((name) => ({ name, tag: 'Highlight' })),
+      },
+    ],
+  };
+}
+
 export const indianCitiesExtended: City[] = [
 
   // ── BATCH 1 ──────────────────────────────────────────────────
@@ -1162,8 +1215,451 @@ export const indianCitiesExtended: City[] = [
     ],
   },
 
-  // ── BATCH 4 PLACEHOLDER ──────────────────────────────────────
-  // Add next 10 cities in the next session:
-  // Amritsar, Kanyakumari, Hampi, Udaipur, Mount Abu,
-  // Rann of Kutch, Shillong, Gangtok, Auroville, Mysore
+  // -- BATCH 4: NATIONAL COVERAGE GAPS --------------------------------
+
+  quickIndianCity({
+    slug: 'kanyakumari', name: 'Kanyakumari', state: 'Tamil Nadu',
+    tagline: 'Where Three Seas Meet',
+    description: 'India\'s southern tip where the Arabian Sea, Bay of Bengal, and Indian Ocean meet, famous for sunrise, sunset, Vivekananda Rock Memorial, and coastal pilgrimage energy.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Tamil, Malayalam, English',
+    vibes: ['Spiritual', 'Cultural', 'Beach'], gradient: 'from-orange-900 to-cyan-900', accentColor: '#EA580C',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Seafront icons and pilgrimage stops',
+    highlights: ['Vivekananda Rock Memorial', 'Thiruvalluvar Statue', 'Kanyakumari sunrise point', 'Bhagavathy Amman Temple', 'Padmanabhapuram Palace day trip'],
+  }),
+
+  quickIndianCity({
+    slug: 'mount-abu', name: 'Mount Abu', state: 'Rajasthan',
+    tagline: 'Rajasthan\'s Hill Station',
+    description: 'The Aravalli Hills\' cool-weather escape, with marble Jain temples, forested viewpoints, lake boating, and a softer side of Rajasthan far from the desert heat.',
+    bestTime: 'Oct - Mar', budget: '$15-$60/day', language: 'Hindi, Rajasthani, Gujarati',
+    vibes: ['Nature', 'Spiritual', 'Romantic'], gradient: 'from-green-900 to-stone-800', accentColor: '#15803D',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temples, lake walks and Aravalli viewpoints',
+    highlights: ['Dilwara Jain Temples', 'Nakki Lake boating', 'Guru Shikhar', 'Sunset Point', 'Achalgarh Fort'],
+  }),
+
+  quickIndianCity({
+    slug: 'rann-of-kutch', name: 'Rann of Kutch', state: 'Gujarat',
+    tagline: 'White Desert of Gujarat',
+    description: 'A surreal salt desert that glows under moonlight, best known for Rann Utsav, craft villages, flamingo wetlands, and the wide-open landscapes of Kutch.',
+    bestTime: 'Nov - Feb', budget: '$25-$110/day', language: 'Gujarati, Kutchi, Hindi',
+    vibes: ['Cultural', 'Nature', 'Adventure'], gradient: 'from-slate-200 to-amber-700', accentColor: '#D97706',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Salt flats, craft villages and desert camps',
+    highlights: ['Great Rann white desert', 'Rann Utsav tent city', 'Kala Dungar viewpoint', 'Hodka craft village', 'Bhuj heritage base'],
+  }),
+
+  quickIndianCity({
+    slug: 'shillong', name: 'Shillong', state: 'Meghalaya',
+    tagline: 'Scotland of the East',
+    description: 'A music-loving hill city of pine ridges, waterfalls, cafes, colonial-era lanes, and road trips into Meghalaya\'s cloud forests and living-root bridge country.',
+    bestTime: 'Oct - Apr', budget: '$18-$70/day', language: 'Khasi, English, Hindi',
+    vibes: ['Nature', 'Cultural', 'Urban'], gradient: 'from-emerald-900 to-slate-900', accentColor: '#059669',
+    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Waterfalls, viewpoints and Khasi culture',
+    highlights: ['Umiam Lake', 'Laitlum Canyon', 'Elephant Falls', 'Police Bazaar', 'Don Bosco Museum'],
+  }),
+
+  quickIndianCity({
+    slug: 'gangtok', name: 'Gangtok', state: 'Sikkim',
+    tagline: 'Himalayan Capital of Sikkim',
+    description: 'A clean, compact mountain capital with Buddhist monasteries, Kanchenjunga views, momo cafes, ropeway rides, and access to high-altitude lakes and passes.',
+    bestTime: 'Mar - May · Oct - Dec', budget: '$20-$80/day', language: 'Nepali, Sikkimese, Hindi, English',
+    vibes: ['Nature', 'Spiritual', 'Cultural'], gradient: 'from-blue-900 to-emerald-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Monasteries, mountain views and day trips',
+    highlights: ['MG Marg promenade', 'Rumtek Monastery', 'Tsomgo Lake', 'Nathula Pass', 'Tashi View Point'],
+  }),
+
+  quickIndianCity({
+    slug: 'auroville', name: 'Auroville', state: 'Tamil Nadu',
+    tagline: 'Experimental Township by the Sea',
+    description: 'A global intentional community near Pondicherry, known for the Matrimandir, sustainable architecture, forest restoration, cafes, boutiques, and quiet beaches.',
+    bestTime: 'Nov - Feb', budget: '$15-$65/day', language: 'Tamil, English, French',
+    vibes: ['Wellness', 'Cultural', 'Bohemian'], gradient: 'from-amber-900 to-teal-900', accentColor: '#D97706',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Slow travel, design, wellness and beaches',
+    highlights: ['Matrimandir viewpoint', 'Auroville visitor centre', 'Auroville Bakery', 'Sadhana Forest', 'Serenity Beach'],
+  }),
+
+  quickIndianCity({
+    slug: 'tawang', name: 'Tawang', state: 'Arunachal Pradesh',
+    tagline: 'High Himalayan Monastery Town',
+    description: 'A remote Himalayan destination of dramatic passes, Buddhist monasteries, alpine lakes, and Indo-Tibetan culture near the edge of northeast India.',
+    bestTime: 'Mar - Jun · Sep - Oct', budget: '$25-$95/day', language: 'Monpa, Hindi, English',
+    vibes: ['Adventure', 'Spiritual', 'Nature'], gradient: 'from-slate-900 to-blue-900', accentColor: '#2563EB',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Monasteries, passes and high-altitude lakes',
+    highlights: ['Tawang Monastery', 'Sela Pass', 'Madhuri Lake', 'Bum La Pass', 'Nuranang Falls'],
+  }),
+
+  quickIndianCity({
+    slug: 'wayanad', name: 'Wayanad', state: 'Kerala',
+    tagline: 'Kerala\'s Wild Green Highlands',
+    description: 'A forested plateau of waterfalls, caves, tea and coffee estates, wildlife sanctuaries, and boutique stays between Kerala and the Nilgiris.',
+    bestTime: 'Oct - Mar', budget: '$18-$85/day', language: 'Malayalam, Kannada, English',
+    vibes: ['Nature', 'Wildlife', 'Wellness'], gradient: 'from-green-900 to-lime-900', accentColor: '#16A34A',
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Waterfalls, caves, plantations and wildlife',
+    highlights: ['Edakkal Caves', 'Chembra Peak', 'Banasura Sagar Dam', 'Soochipara Falls', 'Wayanad Wildlife Sanctuary'],
+  }),
+
+  quickIndianCity({
+    slug: 'chikmagalur', name: 'Chikmagalur', state: 'Karnataka',
+    tagline: 'Coffee Country of Karnataka',
+    description: 'A Western Ghats escape of coffee estates, misty homestays, waterfalls, and peak drives, ideal for slow weekends and monsoon-green scenery.',
+    bestTime: 'Sep - Mar', budget: '$18-$75/day', language: 'Kannada, Hindi, English',
+    vibes: ['Nature', 'Wellness', 'Romantic'], gradient: 'from-green-900 to-stone-800', accentColor: '#15803D',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Coffee estates, peaks and waterfalls',
+    highlights: ['Mullayanagiri Peak', 'Baba Budangiri', 'Coffee estate stays', 'Hebbe Falls', 'Bhadra Wildlife Sanctuary'],
+  }),
+
+  quickIndianCity({
+    slug: 'mcleod-ganj', name: 'McLeod Ganj', state: 'Himachal Pradesh',
+    tagline: 'Little Lhasa in the Dhauladhars',
+    description: 'The Tibetan heart of Himachal, with monasteries, mountain cafes, short treks, meditation centres, and the trailhead energy of the Dhauladhar range.',
+    bestTime: 'Mar - Jun · Sep - Nov', budget: '$12-$50/day', language: 'Tibetan, Hindi, English',
+    vibes: ['Spiritual', 'Bohemian', 'Adventure'], gradient: 'from-red-900 to-slate-900', accentColor: '#B91C1C',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Tibetan culture and Dhauladhar hikes',
+    highlights: ['Tsuglagkhang Complex', 'Bhagsu Falls', 'Triund Trek', 'Namgyal Monastery', 'Dharamkot cafes'],
+  }),
+
+  // -- BATCH 5: PILGRIMAGE, HERITAGE AND CENTRAL INDIA -----------------
+
+  quickIndianCity({
+    slug: 'kedarnath', name: 'Kedarnath', state: 'Uttarakhand',
+    tagline: 'Sacred Himalayan Shiva Shrine',
+    description: 'One of India\'s most powerful pilgrimage journeys, reached by a high Himalayan trek to a stone temple below glacier peaks.',
+    bestTime: 'May - Jun · Sep - Oct', budget: '$20-$80/day', language: 'Hindi, Garhwali',
+    vibes: ['Spiritual', 'Adventure', 'Nature'], gradient: 'from-slate-900 to-blue-900', accentColor: '#64748B',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Pilgrimage trek and Himalayan scenery',
+    highlights: ['Kedarnath Temple', 'Gaurikund trek start', 'Bhairavnath Temple', 'Mandakini valley', 'Sonprayag base'],
+  }),
+
+  quickIndianCity({
+    slug: 'badrinath', name: 'Badrinath', state: 'Uttarakhand',
+    tagline: 'Vishnu Shrine in the Garhwal Himalaya',
+    description: 'A major Char Dham pilgrimage town framed by snow peaks, hot springs, sacred river confluences, and high-altitude village routes.',
+    bestTime: 'May - Jun · Sep - Oct', budget: '$20-$75/day', language: 'Hindi, Garhwali',
+    vibes: ['Spiritual', 'Nature', 'Cultural'], gradient: 'from-orange-900 to-blue-900', accentColor: '#EA580C',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temple rituals, hot springs and mountain villages',
+    highlights: ['Badrinath Temple', 'Tapt Kund', 'Mana Village', 'Vasudhara Falls', 'Alaknanda riverfront'],
+  }),
+
+  quickIndianCity({
+    slug: 'dwarka', name: 'Dwarka', state: 'Gujarat',
+    tagline: 'Krishna\'s Coastal Kingdom',
+    description: 'A sacred coastal city on the Arabian Sea with temple rituals, island pilgrimages, beaches, and one of Hinduism\'s Char Dham sites.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Gujarati, Hindi',
+    vibes: ['Spiritual', 'Beach', 'Cultural'], gradient: 'from-blue-900 to-amber-900', accentColor: '#2563EB',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temples, coastlines and island pilgrimages',
+    highlights: ['Dwarkadhish Temple', 'Bet Dwarka', 'Rukmini Devi Temple', 'Gomti Ghat', 'Shivrajpur Beach'],
+  }),
+
+  quickIndianCity({
+    slug: 'somnath', name: 'Somnath', state: 'Gujarat',
+    tagline: 'Legendary Jyotirlinga by the Sea',
+    description: 'A dramatic temple town where one of India\'s most revered Shiva shrines faces the open Arabian Sea.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Gujarati, Hindi',
+    vibes: ['Spiritual', 'Cultural', 'Beach'], gradient: 'from-stone-900 to-orange-900', accentColor: '#D97706',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Sea-facing shrines and sacred coast',
+    highlights: ['Somnath Temple', 'Triveni Sangam', 'Bhalka Tirth', 'Somnath beach', 'Light and sound show'],
+  }),
+
+  quickIndianCity({
+    slug: 'nashik', name: 'Nashik', state: 'Maharashtra',
+    tagline: 'Wine Country and Kumbh City',
+    description: 'A Godavari river city combining Ramayana pilgrimage, old ghats, vineyard tastings, and easy access to the Trimbakeshwar Jyotirlinga.',
+    bestTime: 'Oct - Mar', budget: '$18-$80/day', language: 'Marathi, Hindi, English',
+    vibes: ['Spiritual', 'Foodie', 'Cultural'], gradient: 'from-purple-900 to-stone-900', accentColor: '#7C3AED',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Ghats, temples and vineyards',
+    highlights: ['Sula Vineyards', 'Trimbakeshwar Temple', 'Panchavati', 'Ramkund ghats', 'Pandav Leni caves'],
+  }),
+
+  quickIndianCity({
+    slug: 'maheshwar', name: 'Maheshwar', state: 'Madhya Pradesh',
+    tagline: 'Narmada Ghats and Handloom Heritage',
+    description: 'A graceful riverside town of Ahilyabai Holkar history, sandstone ghats, evening aarti, and the famous Maheshwari weaving tradition.',
+    bestTime: 'Oct - Mar', budget: '$12-$50/day', language: 'Hindi, Nimadi',
+    vibes: ['Cultural', 'Spiritual', 'Historical'], gradient: 'from-amber-900 to-stone-900', accentColor: '#B45309',
+    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'River ghats, forts and handloom workshops',
+    highlights: ['Ahilya Fort', 'Narmada ghats', 'Rehwa Society weaving', 'Evening aarti', 'Boat rides on the Narmada'],
+  }),
+
+  quickIndianCity({
+    slug: 'orchha', name: 'Orchha', state: 'Madhya Pradesh',
+    tagline: 'Palaces Beside the Betwa',
+    description: 'A compact heritage town of Bundela palaces, riverside cenotaphs, painted temples, and relaxed lanes near Jhansi.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Hindi, Bundeli',
+    vibes: ['Historical', 'Cultural', 'Romantic'], gradient: 'from-stone-900 to-orange-900', accentColor: '#B45309',
+    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Palaces, temples and riverside ruins',
+    highlights: ['Orchha Fort complex', 'Jahangir Mahal', 'Chaturbhuj Temple', 'Betwa River cenotaphs', 'Ram Raja Temple'],
+  }),
+
+  quickIndianCity({
+    slug: 'gwalior', name: 'Gwalior', state: 'Madhya Pradesh',
+    tagline: 'Fort City of Music and Palaces',
+    description: 'A historic city dominated by one of India\'s greatest hill forts, with palaces, temples, classical music heritage, and Scindia-era architecture.',
+    bestTime: 'Oct - Mar', budget: '$15-$55/day', language: 'Hindi',
+    vibes: ['Historical', 'Cultural', 'Architecture'], gradient: 'from-blue-900 to-stone-900', accentColor: '#2563EB',
+    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Fort ramparts, palaces and music heritage',
+    highlights: ['Gwalior Fort', 'Man Mandir Palace', 'Sas Bahu Temples', 'Jai Vilas Palace', 'Tansen Tomb'],
+  }),
+
+  quickIndianCity({
+    slug: 'ajmer', name: 'Ajmer', state: 'Rajasthan',
+    tagline: 'Sufi Pilgrimage and Aravalli Gateway',
+    description: 'A sacred Sufi city built around the Ajmer Sharif Dargah, with lakes, Mughal history, and easy pairing with Pushkar.',
+    bestTime: 'Oct - Mar', budget: '$10-$40/day', language: 'Hindi, Rajasthani, Urdu',
+    vibes: ['Spiritual', 'Cultural', 'Historical'], gradient: 'from-green-900 to-amber-900', accentColor: '#047857',
+    image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Sufi shrines, lakes and Mughal remains',
+    highlights: ['Ajmer Sharif Dargah', 'Ana Sagar Lake', 'Adhai Din Ka Jhonpra', 'Taragarh Fort', 'Akbari Fort Museum'],
+  }),
+
+  quickIndianCity({
+    slug: 'kodaikanal', name: 'Kodaikanal', state: 'Tamil Nadu',
+    tagline: 'Princess of Hill Stations',
+    description: 'A misty Palani Hills retreat with a star-shaped lake, pine forests, viewpoints, chocolate shops, and slow mountain walks.',
+    bestTime: 'Apr - Jun · Sep - Feb', budget: '$15-$60/day', language: 'Tamil, English',
+    vibes: ['Nature', 'Romantic', 'Wellness'], gradient: 'from-green-900 to-blue-900', accentColor: '#059669',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Lake walks, viewpoints and forest trails',
+    highlights: ['Kodaikanal Lake', 'Coaker\'s Walk', 'Pillar Rocks', 'Bryant Park', 'Pine Forest'],
+  }),
+
+  // -- BATCH 6: NORTHEAST AND YOUNGER TRAVEL ---------------------------
+
+  quickIndianCity({
+    slug: 'ziro-valley', name: 'Ziro Valley', state: 'Arunachal Pradesh',
+    tagline: 'Apatani Valley and Music Festival',
+    description: 'A lush plateau of rice fields, pine hills, Apatani villages, and one of India\'s most loved outdoor music festivals.',
+    bestTime: 'Mar - Oct', budget: '$20-$75/day', language: 'Apatani, Hindi, English',
+    vibes: ['Cultural', 'Nature', 'Bohemian'], gradient: 'from-green-900 to-slate-900', accentColor: '#16A34A',
+    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Rice fields, tribal culture and music',
+    highlights: ['Apatani villages', 'Ziro Music Festival', 'Talley Valley Wildlife Sanctuary', 'Pine Grove', 'Paddy field walks'],
+  }),
+
+  quickIndianCity({
+    slug: 'majuli', name: 'Majuli', state: 'Assam',
+    tagline: 'World\'s Largest River Island',
+    description: 'A Brahmaputra river island known for satras, mask-making, cycling routes, wetlands, and a fragile landscape shaped by water.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Assamese, Mising, Hindi',
+    vibes: ['Cultural', 'Nature', 'Spiritual'], gradient: 'from-teal-900 to-green-900', accentColor: '#0F766E',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Satras, river life and cycling trails',
+    highlights: ['Kamalabari Satra', 'Auniati Satra', 'Mask-making workshops', 'Brahmaputra ferries', 'Mising village stays'],
+  }),
+
+  quickIndianCity({
+    slug: 'cherrapunji', name: 'Cherrapunji', state: 'Meghalaya',
+    tagline: 'Waterfall Country of Meghalaya',
+    description: 'A rain-carved plateau of plunging waterfalls, caves, living-root bridges, and cloud-wrapped landscapes near Sohra.',
+    bestTime: 'Oct - May', budget: '$18-$70/day', language: 'Khasi, English, Hindi',
+    vibes: ['Nature', 'Adventure', 'Photography'], gradient: 'from-blue-900 to-emerald-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Waterfalls, caves and root bridges',
+    highlights: ['Nohkalikai Falls', 'Double Decker Living Root Bridge', 'Mawsmai Cave', 'Seven Sisters Falls', 'Dainthlen Falls'],
+  }),
+
+  quickIndianCity({
+    slug: 'mawlynnong', name: 'Mawlynnong', state: 'Meghalaya',
+    tagline: 'Clean Village and Living Roots',
+    description: 'A Khasi village famous for community-led cleanliness, bamboo skywalks, garden lanes, and nearby living-root bridges.',
+    bestTime: 'Oct - Apr', budget: '$15-$55/day', language: 'Khasi, English, Hindi',
+    vibes: ['Cultural', 'Nature', 'Slow Travel'], gradient: 'from-green-900 to-teal-900', accentColor: '#059669',
+    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Village walks, roots and viewpoints',
+    highlights: ['Mawlynnong village walk', 'Living root bridge', 'Sky View bamboo platform', 'Balancing Rock', 'Dawki day trip'],
+  }),
+
+  quickIndianCity({
+    slug: 'dzukou-valley', name: 'Dzukou Valley', state: 'Nagaland / Manipur',
+    tagline: 'Rolling Green Trekking Valley',
+    description: 'A high, flower-filled valley of rolling hills, seasonal blooms, camping shelters, and one of Northeast India\'s most beautiful treks.',
+    bestTime: 'Jun - Sep · Nov - Feb', budget: '$15-$50/day', language: 'Angami, Manipuri, English',
+    vibes: ['Adventure', 'Nature', 'Trekking'], gradient: 'from-green-900 to-slate-900', accentColor: '#16A34A',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Trekking, camping and seasonal flowers',
+    highlights: ['Dzukou Valley trek', 'Viswema trail', 'Jakhama trail', 'Valley campsite', 'Dzukou lilies in season'],
+  }),
+
+  quickIndianCity({
+    slug: 'tirthan-valley', name: 'Tirthan Valley', state: 'Himachal Pradesh',
+    tagline: 'Quiet Gateway to Great Himalayan National Park',
+    description: 'A peaceful river valley for trout streams, wooden homestays, forest hikes, and low-key Himalayan travel without the Manali crowds.',
+    bestTime: 'Mar - Jun · Sep - Nov', budget: '$18-$70/day', language: 'Hindi, Pahadi',
+    vibes: ['Nature', 'Adventure', 'Slow Travel'], gradient: 'from-green-900 to-blue-900', accentColor: '#15803D',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'River stays, forest trails and village walks',
+    highlights: ['Great Himalayan National Park', 'Jibhi day trip', 'Serolsar Lake', 'Chehni Kothi', 'Tirthan River walks'],
+  }),
+
+  quickIndianCity({
+    slug: 'bir-billing', name: 'Bir Billing', state: 'Himachal Pradesh',
+    tagline: 'Paragliding Capital of India',
+    description: 'A Tibetan-influenced mountain town and world-class paragliding site with monasteries, cafes, landing fields, and Dhauladhar views.',
+    bestTime: 'Mar - Jun · Oct - Nov', budget: '$15-$60/day', language: 'Hindi, Tibetan, English',
+    vibes: ['Adventure', 'Bohemian', 'Spiritual'], gradient: 'from-sky-900 to-green-900', accentColor: '#0EA5E9',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Paragliding, monasteries and cafes',
+    highlights: ['Billing take-off site', 'Bir landing field', 'Sherab Ling Monastery', 'Deer Park Institute', 'Cafe hopping in Bir'],
+  }),
+
+  quickIndianCity({
+    slug: 'kasauli', name: 'Kasauli', state: 'Himachal Pradesh',
+    tagline: 'Quiet Colonial Hill Town',
+    description: 'A small cantonment hill station of pine walks, old churches, sunset viewpoints, and relaxed weekend escapes from Chandigarh and Delhi.',
+    bestTime: 'Mar - Jun · Sep - Nov', budget: '$20-$80/day', language: 'Hindi, Pahadi, English',
+    vibes: ['Romantic', 'Nature', 'Slow Travel'], gradient: 'from-green-900 to-slate-900', accentColor: '#166534',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Pine trails, churches and viewpoints',
+    highlights: ['Monkey Point', 'Gilbert Trail', 'Christ Church', 'Mall Road', 'Sunset Point'],
+  }),
+
+  quickIndianCity({
+    slug: 'diu', name: 'Diu', state: 'Dadra and Nagar Haveli and Daman and Diu',
+    tagline: 'Portuguese Forts and Quiet Beaches',
+    description: 'A compact island-like coastal escape with Portuguese forts, churches, seafood, and calmer beaches than most of western India.',
+    bestTime: 'Oct - Mar', budget: '$15-$55/day', language: 'Gujarati, Hindi, Portuguese heritage',
+    vibes: ['Beach', 'Historical', 'Relaxation'], gradient: 'from-blue-900 to-stone-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Forts, churches and relaxed beaches',
+    highlights: ['Diu Fort', 'Nagoa Beach', 'Naida Caves', 'St Paul\'s Church', 'Ghoghla Beach'],
+  }),
+
+  quickIndianCity({
+    slug: 'mandu', name: 'Mandu', state: 'Madhya Pradesh',
+    tagline: 'Romantic Ruins on a Plateau',
+    description: 'A medieval fortress city of Afghan architecture, monsoon lakes, palaces, pavilions, and one of central India\'s most atmospheric ruin landscapes.',
+    bestTime: 'Jul - Mar', budget: '$12-$45/day', language: 'Hindi, Malwi',
+    vibes: ['Historical', 'Romantic', 'Architecture'], gradient: 'from-stone-900 to-green-900', accentColor: '#78716C',
+    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Palaces, pavilions and monsoon views',
+    highlights: ['Jahaz Mahal', 'Hindola Mahal', 'Rani Roopmati Pavilion', 'Baz Bahadur Palace', 'Hoshang Shah Tomb'],
+  }),
+
+  // -- BATCH 7: COASTAL AND ISLAND INDIA -------------------------------
+
+  quickIndianCity({
+    slug: 'lakshadweep', name: 'Lakshadweep', state: 'Lakshadweep',
+    tagline: 'India\'s Coral Island Escape',
+    description: 'A remote archipelago of turquoise lagoons, coral reefs, white sand, and limited-permit island stays with some of India\'s clearest water.',
+    bestTime: 'Oct - Mar', budget: '$60-$250/day', language: 'Malayalam, Mahl, English',
+    vibes: ['Beach', 'Nature', 'Luxury'], gradient: 'from-cyan-900 to-blue-900', accentColor: '#06B6D4',
+    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Lagoons, reefs and quiet island stays',
+    highlights: ['Agatti Island', 'Bangaram Island', 'Kadmat lagoon', 'Snorkelling reefs', 'Kalpeni Island'],
+  }),
+
+  quickIndianCity({
+    slug: 'tarkarli', name: 'Tarkarli', state: 'Maharashtra',
+    tagline: 'Clear-Water Konkan Coast',
+    description: 'A relaxed beach destination on the Konkan coast known for scuba diving, Sindhudurg Fort, homestays, seafood, and backwater boat rides.',
+    bestTime: 'Oct - Mar', budget: '$15-$55/day', language: 'Marathi, Malvani, Hindi',
+    vibes: ['Beach', 'Adventure', 'Foodie'], gradient: 'from-cyan-900 to-orange-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Beaches, diving and Malvani food',
+    highlights: ['Tarkarli Beach', 'Sindhudurg Fort', 'Scuba diving', 'Devbag Sangam', 'Malvani seafood'],
+  }),
+
+  quickIndianCity({
+    slug: 'ganpatipule', name: 'Ganpatipule', state: 'Maharashtra',
+    tagline: 'Temple Beach on the Konkan',
+    description: 'A coastal pilgrimage town with a long clean beach, a sea-facing Ganesh temple, red laterite roads, and quiet Konkan village stays.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Marathi, Hindi',
+    vibes: ['Beach', 'Spiritual', 'Relaxation'], gradient: 'from-orange-900 to-cyan-900', accentColor: '#EA580C',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temple, beach and Konkan drives',
+    highlights: ['Ganpatipule Temple', 'Ganpatipule Beach', 'Aare Ware coastal road', 'Prachin Konkan Museum', 'Jaigad Fort'],
+  }),
+
+  quickIndianCity({
+    slug: 'dhanushkodi', name: 'Dhanushkodi', state: 'Tamil Nadu',
+    tagline: 'Ghost Town at India\'s Edge',
+    description: 'A windswept sandbar beyond Rameswaram, where ruined churches, wild beaches, and the road to Adam\'s Bridge create an end-of-the-world feeling.',
+    bestTime: 'Oct - Mar', budget: '$12-$40/day', language: 'Tamil, Hindi',
+    vibes: ['Beach', 'Historical', 'Offbeat'], gradient: 'from-slate-900 to-cyan-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Ruins, sandbars and wild seascapes',
+    highlights: ['Dhanushkodi ghost town', 'Arichal Munai', 'Old church ruins', 'Adam\'s Bridge viewpoint', 'Rameswaram day pairing'],
+  }),
+
+  quickIndianCity({
+    slug: 'rameswaram', name: 'Rameswaram', state: 'Tamil Nadu',
+    tagline: 'Island Temple Town',
+    description: 'A sacred island town with one of India\'s greatest temple corridors, sea rituals, historic bridges, and easy access to Dhanushkodi.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Tamil, Hindi, English',
+    vibes: ['Spiritual', 'Beach', 'Cultural'], gradient: 'from-blue-900 to-orange-900', accentColor: '#2563EB',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temple corridors, bridges and sea rituals',
+    highlights: ['Ramanathaswamy Temple', 'Pamban Bridge', 'Agnitheertham', 'APJ Abdul Kalam Memorial', 'Dhanushkodi road trip'],
+  }),
+
+  quickIndianCity({
+    slug: 'kovalam', name: 'Kovalam', state: 'Kerala',
+    tagline: 'Kerala\'s Classic Beach Resort',
+    description: 'A crescent-beach town near Thiruvananthapuram with lighthouse views, Ayurveda stays, seafood shacks, and easy airport access.',
+    bestTime: 'Nov - Mar', budget: '$18-$90/day', language: 'Malayalam, English',
+    vibes: ['Beach', 'Wellness', 'Relaxation'], gradient: 'from-teal-900 to-orange-900', accentColor: '#0D9488',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Lighthouse beaches, Ayurveda and seafood',
+    highlights: ['Lighthouse Beach', 'Hawah Beach', 'Samudra Beach', 'Vizhinjam harbour', 'Ayurveda resorts'],
+  }),
+
+  quickIndianCity({
+    slug: 'bekal', name: 'Bekal', state: 'Kerala',
+    tagline: 'Fort and Backwaters of North Kerala',
+    description: 'A quieter Kerala coast escape anchored by a dramatic sea fort, clean beaches, backwater resorts, and North Malabar food.',
+    bestTime: 'Oct - Mar', budget: '$20-$110/day', language: 'Malayalam, Kannada, English',
+    vibes: ['Beach', 'Historical', 'Wellness'], gradient: 'from-green-900 to-cyan-900', accentColor: '#0F766E',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Sea fort, beaches and backwater stays',
+    highlights: ['Bekal Fort', 'Bekal Beach', 'Kappil Beach', 'Valiyaparamba backwaters', 'North Malabar cuisine'],
+  }),
+
+  quickIndianCity({
+    slug: 'murudeshwar', name: 'Murudeshwar', state: 'Karnataka',
+    tagline: 'Sea Temple and Scuba Gateway',
+    description: 'A coastal temple town famous for its towering Shiva statue, beachside gopuram, and boat trips to Netrani Island for diving.',
+    bestTime: 'Oct - Mar', budget: '$15-$60/day', language: 'Kannada, Hindi, English',
+    vibes: ['Spiritual', 'Beach', 'Adventure'], gradient: 'from-blue-900 to-stone-900', accentColor: '#2563EB',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Sea temple, beaches and diving trips',
+    highlights: ['Murudeshwar Shiva statue', 'Murudeshwar Temple', 'Netrani Island diving', 'Murudeshwar Beach', 'Honnavar day trip'],
+  }),
+
+  quickIndianCity({
+    slug: 'udupi', name: 'Udupi', state: 'Karnataka',
+    tagline: 'Temple Food and Coastal Karnataka',
+    description: 'A temple town and food capital with Krishna worship, vegetarian institutions, quiet beaches, and access to the backwater-like coast of Karnataka.',
+    bestTime: 'Oct - Mar', budget: '$12-$45/day', language: 'Kannada, Tulu, Konkani',
+    vibes: ['Foodie', 'Spiritual', 'Beach'], gradient: 'from-orange-900 to-teal-900', accentColor: '#F97316',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Temple kitchens, beaches and coastal food',
+    highlights: ['Sri Krishna Matha', 'Malpe Beach', 'St Mary\'s Island', 'Manipal cafes', 'Udupi vegetarian meals'],
+  }),
+
+  quickIndianCity({
+    slug: 'digha-mandarmani', name: 'Digha & Mandarmani', state: 'West Bengal',
+    tagline: 'Bengal\'s Weekend Beach Belt',
+    description: 'The classic beach escape from Kolkata, pairing Digha\'s old-school seaside energy with Mandarmani\'s long, driveable beach and resort stays.',
+    bestTime: 'Oct - Feb', budget: '$12-$55/day', language: 'Bengali, Hindi',
+    vibes: ['Beach', 'Family', 'Relaxation'], gradient: 'from-cyan-900 to-slate-900', accentColor: '#0891B2',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    areaTagline: 'Weekend beaches, seafood and family resorts',
+    highlights: ['New Digha Beach', 'Old Digha promenade', 'Mandarmani Beach', 'Marine Aquarium', 'Tajpur day trip'],
+  }),
 ];
