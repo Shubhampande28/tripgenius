@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
@@ -11,9 +11,10 @@ export default function CityHero({ city }: { city: City }) {
     <section className="relative min-h-[80vh] flex items-end overflow-hidden">
 
       {/* Full-bleed hero photo */}
-      <Image
+      <SafeImage
         src={city.heroImage}
         alt={`${city.name}, ${city.country}`}
+        city={city.slug}
         fill
         priority
         sizes="100vw"

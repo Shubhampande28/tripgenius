@@ -32,14 +32,55 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const city = getCityBySlug(slug);
   if (!city) return { title: 'City Not Found' };
+  const title = `${city.name} Travel Guide ${city.flag} — Best Time, Budget & Things To Do`;
+  const description = `Complete ${city.name} travel guide: best time to visit (${city.stats.bestTime}), daily budget (${city.stats.budget}), top things to do, neighbourhoods, and hidden gems. Free, expert travel advice.`;
   return {
-    title: `${city.name} Travel Guide — ${city.country}`,
-    description: city.description,
+    title,
+    description,
+    keywords: [
+      `${city.name} travel guide`, `visit ${city.name}`, `things to do in ${city.name}`,
+      `best time to visit ${city.name}`, `${city.name} budget`, `${city.country} travel`,
+      `${city.name} itinerary`, `${city.name} tips`,
+    ],
+    alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.tripgenius.in/cities/${slug}`,
+      images: [{ url: city.heroImage, width: 1600, height: 900, alt: `${city.name} travel guide` }],
+    },
+    twitter: { card: 'summary_large_image', title, description },
   };
 }
 
 /** Cities using the NEW restructured layout */
 const REDESIGNED_SLUGS = new Set(['bali']);
+
+function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & object; slug: string }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    name: city.name,
+    description: city.description,
+    url: `https://www.tripgenius.in/cities/${slug}`,
+    image: city.heroImage,
+    touristType: city.vibes,
+    geo: { '@type': 'GeoCoordinates' },
+    containedInPlace: { '@type': 'Country', name: city.country },
+    isAccessibleForFree: true,
+    publisher: {
+      '@type': 'Organization',
+      name: 'TripGenius',
+      url: 'https://www.tripgenius.in',
+    },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
 
 export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   const { slug } = await props.params;
@@ -50,6 +91,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   if (REDESIGNED_SLUGS.has(slug)) {
     return (
       <>
+        <CityJsonLd city={city} slug={slug} />
         <Navbar />
         <main className="bg-dark">
           {/* 1. Hero */}
@@ -98,6 +140,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   /* ── OLD layout (all other cities, unchanged) ───────────────── */
   return (
     <>
+      <CityJsonLd city={city} slug={slug} />
       <Navbar />
       <main className="bg-dark">
         <CityHero city={city} />

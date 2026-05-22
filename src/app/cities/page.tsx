@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Clock, Wallet } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -138,9 +138,10 @@ export default function CitiesPage() {
                       <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 h-full">
                         {/* Image */}
                         <div className="relative h-44 overflow-hidden">
-                          <Image
+                          <SafeImage
                             src={city.image}
                             alt={city.name}
+                            city={city.slug}
                             fill
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"

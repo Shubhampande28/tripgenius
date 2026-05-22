@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Clock } from 'lucide-react';
 import { cities } from '@/lib/cities';
@@ -65,9 +65,10 @@ export default function FeaturedCities() {
                 <div className="group relative rounded-2xl overflow-hidden h-80 cursor-pointer transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/50">
 
                   {/* Real photo */}
-                  <Image
+                  <SafeImage
                     src={city.image}
                     alt={city.name}
+                    city={city.slug}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"

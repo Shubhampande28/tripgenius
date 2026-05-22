@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
 import { Map } from 'lucide-react';
 import { City } from '@/lib/types';
@@ -64,9 +64,10 @@ export default function ExploreByArea({ city }: { city: City }) {
             >
               {/* Image strip */}
               <div className="relative h-36 overflow-hidden">
-                <Image
+                <SafeImage
                   src={area.image}
                   alt={`${area.name}, ${city.name}`}
+                  city={`${city.slug}-${area.name}`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
