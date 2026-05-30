@@ -1,7 +1,5 @@
 'use client';
 
-import SafeImage from '@/components/SafeImage';
-import { getCityImageUrl } from '@/lib/cityImages';
 import { hotelNeighbourhoodUrl } from '@/lib/affiliateLinks';
 import { motion } from 'framer-motion';
 import { MapPin, Check, X, Hotel, ChevronRight } from 'lucide-react';
@@ -65,29 +63,35 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
               >
                 <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr]">
 
-                  {/* Left: photo */}
-                  {matchingArea?.image && (
-                    <div className="relative h-56 md:h-auto overflow-hidden">
-                      <SafeImage
-                        src={getCityImageUrl(city.slug, 'card') ?? matchingArea.image}
-                        alt={n.name}
-                        city={city.slug}
-                        accentColor={city.accentColor}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 320px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-surface/80 hidden md:block" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-surface/60 to-transparent md:hidden" />
-
-                      {/* Vibe tag over image */}
-                      <div className="absolute bottom-3 left-3">
-                        <span className="text-xs px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white/90 font-medium">
-                          {matchingArea.emoji} {n.vibe}
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  {/* Left: gradient panel with emoji */}
+                  <div
+                    className="relative h-48 md:h-auto overflow-hidden flex flex-col items-center justify-center gap-3"
+                    style={{
+                      background: `linear-gradient(135deg, ${city.accentColor}20 0%, ${city.accentColor}08 60%, transparent 100%)`,
+                      borderRight: '1px solid rgba(255,255,255,0.06)',
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0 opacity-[0.07]"
+                      style={{
+                        backgroundImage: `radial-gradient(${city.accentColor} 1px, transparent 1px)`,
+                        backgroundSize: '18px 18px',
+                      }}
+                    />
+                    <span className="relative text-6xl select-none">
+                      {matchingArea?.emoji ?? '📍'}
+                    </span>
+                    <span
+                      className="relative text-xs font-semibold px-3 py-1 rounded-full border"
+                      style={{
+                        color: city.accentColor,
+                        borderColor: `${city.accentColor}40`,
+                        backgroundColor: `${city.accentColor}12`,
+                      }}
+                    >
+                      {n.vibe}
+                    </span>
+                  </div>
 
                   {/* Right: content */}
                   <div className="p-5 flex flex-col gap-4">

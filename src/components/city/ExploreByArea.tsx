@@ -1,7 +1,5 @@
 'use client';
 
-import SafeImage from '@/components/SafeImage';
-import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import { Map } from 'lucide-react';
 import { City } from '@/lib/types';
@@ -63,24 +61,29 @@ export default function ExploreByArea({ city }: { city: City }) {
               className="group relative rounded-2xl overflow-hidden border border-border bg-surface hover:border-opacity-60 transition-all duration-300"
               style={{ '--area-accent': area.accentColor } as React.CSSProperties}
             >
-              {/* Image strip */}
-              <div className="relative h-36 overflow-hidden">
-                <SafeImage
-                  src={getCityImageUrl(city.slug, 'card') ?? area.image}
-                  alt={`${area.name}, ${city.name}`}
-                  city={city.slug}
-                  accentColor={area.accentColor}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+              {/* Gradient header — unique per area via accentColor */}
+              <div
+                className="relative h-28 overflow-hidden flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(135deg, ${area.accentColor}22 0%, ${area.accentColor}08 60%, transparent 100%)`,
+                  borderBottom: `1px solid ${area.accentColor}25`,
+                }}
+              >
+                {/* Background pattern dots */}
+                <div
+                  className="absolute inset-0 opacity-10"
+                  style={{
+                    backgroundImage: `radial-gradient(${area.accentColor} 1px, transparent 1px)`,
+                    backgroundSize: '20px 20px',
+                  }}
                 />
-                {/* Gradient over image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
-
-                {/* Emoji badge */}
-                <div className="absolute top-3 left-3 w-9 h-9 rounded-xl bg-dark/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-xl">
-                  {area.emoji}
-                </div>
+                {/* Large emoji centred */}
+                <span className="relative text-5xl select-none">{area.emoji}</span>
+                {/* Accent glow bottom */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-8"
+                  style={{ background: `linear-gradient(to top, ${area.accentColor}12, transparent)` }}
+                />
               </div>
 
               {/* Content */}
