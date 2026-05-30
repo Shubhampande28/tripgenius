@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+
+const GA_ID = "G-GZN2V0V66B";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -80,6 +83,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.skyscanner.net" />
       </head>
       <body className="min-h-screen antialiased">
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+        <Script id="ga-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_ID}');
+        `}</Script>
         {children}
         {/* Site-wide Organization structured data */}
         <script
