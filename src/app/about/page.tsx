@@ -1,0 +1,132 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  title: 'About TripGenius — Honest Travel Guides for Every Destination',
+  description: 'Learn about TripGenius — our mission to provide free, honest, and up-to-date travel guides for 140+ destinations worldwide. No paid rankings, no fluff.',
+};
+
+const values = [
+  {
+    icon: Shield,
+    title: 'Always Honest',
+    desc: 'We never accept payment for rankings or "sponsored" guide positions. Every recommendation reflects genuine experience and research.',
+  },
+  {
+    icon: BookOpen,
+    title: 'Always Free',
+    desc: 'Every guide on TripGenius is free to read, forever. Great travel information shouldn\'t be locked behind a paywall.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Always Updated',
+    desc: 'Travel changes fast. We regularly update our guides with current prices, visa rules, and seasonal tips so you\'re never caught off-guard.',
+  },
+  {
+    icon: Globe,
+    title: 'Global Coverage',
+    desc: 'From hidden Indian gems to iconic world cities — we\'re building the most comprehensive free travel guide on the internet.',
+  },
+  {
+    icon: Heart,
+    title: 'Built for Travellers',
+    desc: 'Every section is written for real people planning real trips — not for search engines or advertisers.',
+  },
+  {
+    icon: Compass,
+    title: 'Independent',
+    desc: 'TripGenius is independently owned and operated. No corporate overlords, no agenda — just a passion for helping people travel better.',
+  },
+];
+
+export default function AboutPage() {
+  return (
+    <>
+      <Navbar />
+      <main className="bg-dark min-h-screen">
+
+        {/* Hero */}
+        <div className="relative overflow-hidden pt-28 pb-16 border-b border-border bg-surface">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-accent/6 blur-3xl" />
+          </div>
+          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
+            <p className="text-xs font-bold uppercase tracking-widest text-accent mb-4">About Us</p>
+            <h1 className="font-heading text-4xl sm:text-5xl font-semibold text-primary-text leading-tight">
+              Travel guides you can actually trust
+            </h1>
+            <p className="mt-4 text-muted text-base max-w-xl mx-auto leading-relaxed">
+              TripGenius was built on a simple idea: everyone deserves access to honest, well-researched travel information — completely free.
+            </p>
+          </div>
+        </div>
+
+        {/* Mission */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+          <div className="prose prose-invert max-w-none">
+            <h2 className="font-heading text-2xl font-semibold text-primary-text mb-4">Our Story</h2>
+            <p className="text-muted leading-relaxed mb-4">
+              TripGenius started as a personal frustration. Too many travel websites bury honest advice under hotel ads, affiliate spam, and clickbait listicles that clearly haven&apos;t been updated since 2019. We wanted something different.
+            </p>
+            <p className="text-muted leading-relaxed mb-4">
+              So we built it. Starting with a handful of destinations and growing to 140+ cities across 15+ countries, TripGenius is now one of the fastest-growing free travel guide platforms on the web. Our readers come to us because they know what they&apos;ll get: real information, real costs, and real advice — not paid promotions dressed up as editorial content.
+            </p>
+            <p className="text-muted leading-relaxed">
+              We cover everything from iconic world cities like Paris and Tokyo to incredible Indian destinations that most travel sites simply ignore. Whether you&apos;re backpacking on a budget or planning a luxury escape, TripGenius has a guide for you.
+            </p>
+          </div>
+        </div>
+
+        {/* Values grid */}
+        <div className="border-t border-border bg-surface">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+            <h2 className="font-heading text-2xl font-semibold text-primary-text text-center mb-10">What we stand for</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {values.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="p-6 bg-elevated border border-border rounded-2xl">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-4">
+                    <Icon size={18} className="text-accent" />
+                  </div>
+                  <h3 className="font-heading text-base font-semibold text-primary-text mb-2">{title}</h3>
+                  <p className="text-sm text-muted leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+          <div className="grid grid-cols-3 gap-8">
+            {[
+              { value: '140+', label: 'Destinations covered' },
+              { value: '15+', label: 'Countries worldwide' },
+              { value: '100%', label: 'Free, always' },
+            ].map(({ value, label }) => (
+              <div key={label}>
+                <p className="font-heading text-4xl font-bold text-accent">{value}</p>
+                <p className="text-sm text-muted mt-1">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="border-t border-border">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 text-center">
+            <p className="text-muted text-sm mb-4">Have a question or want to get in touch?</p>
+            <Link href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
+              Contact Us
+            </Link>
+          </div>
+        </div>
+
+      </main>
+      <Footer />
+    </>
+  );
+}

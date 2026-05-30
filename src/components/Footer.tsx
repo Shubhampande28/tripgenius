@@ -17,10 +17,10 @@ const footerLinks = {
     { label: 'Travel Insurance', href: '#' },
   ],
   Company: [
-    { label: 'About TripGenius', href: '/#how-it-works' },
-    { label: 'Blog', href: '#' },
-    { label: 'Press', href: '#' },
-    { label: 'Careers', href: '#' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms' },
   ],
 };
 
@@ -90,9 +90,9 @@ export default function Footer() {
             The world is waiting.
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">
-            <a href="#" className="hover:text-primary-text transition-colors">Privacy</a>
-            <a href="#" className="hover:text-primary-text transition-colors">Terms</a>
-            <a href="#" className="hover:text-primary-text transition-colors">Cookies</a>
+            <Link href="/privacy-policy" className="hover:text-primary-text transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-primary-text transition-colors">Terms</Link>
+            <Link href="/contact" className="hover:text-primary-text transition-colors">Contact</Link>
           </div>
         </div>
       </div>
