@@ -15,6 +15,7 @@ import WhereToEat from '@/components/city/WhereToEat';
 import GettingAround from '@/components/city/GettingAround';
 import ProTips from '@/components/city/ProTips';
 import CityFAQ from '@/components/city/CityFAQ';
+import BookingPanel from '@/components/city/BookingPanel';
 import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
 import RelatedCities from '@/components/city/RelatedCities';
@@ -177,6 +178,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               <WhereToEat city={city} />
               <GettingAround city={city} />
               <ProTips city={city} />
+              <BookingPanel city={city} />
               <CityFAQ city={city} />
             </div>
             <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-4">

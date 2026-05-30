@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allPosts, getPostBySlug, getRelatedPosts, BlockType, BlogCategory } from '@/lib/blog';
 import AdUnit from '@/components/AdUnit';
 import { AD_SLOTS } from '@/lib/adsense';
+import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
+import { getCityBySlug } from '@/lib/cities';
 
 export async function generateStaticParams() {
   return allPosts.map(p => ({ slug: p.slug }));
@@ -112,6 +114,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   const related = getRelatedPosts(post);
+  const cityData = post.citySlug ? getCityBySlug(post.citySlug) : null;
   const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
     day: 'numeric', month: 'long', year: 'numeric',
   });
@@ -192,6 +195,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
                 <MapPin size={13} /> Open Guide
               </Link>
+            </div>
+          )}
+
+          {/* Affiliate booking links */}
+          {cityData && (
+            <div className="mt-4 p-5 bg-surface border border-border rounded-2xl">
+              <p className="text-xs font-bold uppercase tracking-wider text-muted mb-3">Book Your Trip to {cityData.name}</p>
+              <div className="grid grid-cols-3 gap-2">
+                <a href={hotelUrl(cityData.name)} target="_blank" rel="noopener noreferrer sponsored"
+                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/15 transition-colors group text-center">
+                  <Hotel size={16} className="text-blue-400" />
+                  <p className="text-xs font-semibold text-primary-text group-hover:text-blue-400 transition-colors">Hotels</p>
+                  <p className="text-[10px] text-muted">Booking.com</p>
+                </a>
+                <a href={activitiesUrl(cityData.slug, cityData.name)} target="_blank" rel="noopener noreferrer sponsored"
+                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/15 transition-colors group text-center">
+                  <Ticket size={16} className="text-accent" />
+                  <p className="text-xs font-semibold text-primary-text group-hover:text-accent transition-colors">Tours</p>
+                  <p className="text-[10px] text-muted">{activitiesLabel(cityData.slug)}</p>
+                </a>
+                <a href={flightUrl(cityData.name)} target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-teal/10 border border-teal/20 hover:bg-teal/15 transition-colors group text-center">
+                  <Plane size={16} className="text-teal" />
+                  <p className="text-xs font-semibold text-primary-text group-hover:text-teal transition-colors">Flights</p>
+                  <p className="text-[10px] text-muted">Skyscanner</p>
+                </a>
+              </div>
+              <p className="text-[10px] text-muted/40 mt-2.5 text-center">We earn a small commission — at no extra cost to you.</p>
             </div>
           )}
         </div>
