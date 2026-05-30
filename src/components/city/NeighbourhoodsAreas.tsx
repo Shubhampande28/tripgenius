@@ -4,7 +4,7 @@ import { hotelNeighbourhoodUrl } from '@/lib/affiliateLinks';
 import { motion } from 'framer-motion';
 import { MapPin, Check, X, Hotel } from 'lucide-react';
 import { City } from '@/lib/types';
-import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 const priceLabel: Record<string, { label: string; color: string }> = {
   '$':    { label: 'Budget',    color: 'text-teal bg-teal/10 border-teal/25' },
@@ -41,13 +41,7 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
         </motion.div>
 
         {/* Cards grid — 1 col mobile, 2 col md+ */}
-        <motion.div
-          variants={stagger(0.08)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          className="grid grid-cols-1 md:grid-cols-2 gap-5"
-        >
+        <AnimateList stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {city.neighbourhoods.map((n, i) => {
             const matchingArea = city.areas?.find(
               (a) => a.name.toLowerCase() === n.name.toLowerCase()
@@ -56,13 +50,8 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
             const emoji = matchingArea?.emoji ?? '📍';
 
             return (
-              <motion.div
-                key={n.name}
-                variants={fadeUp}
-                whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.35)' }}
-                whileTap={{ scale: 0.99 }}
-                className="bg-surface border border-border rounded-2xl overflow-hidden flex flex-col group hover:border-accent/25 transition-colors duration-300"
-              >
+              <AnimateItem key={n.name} hover className="h-full">
+                <div className="bg-surface border border-border rounded-2xl overflow-hidden flex flex-col group hover:border-accent/25 transition-colors duration-300 h-full">
                 {/* Card header — gradient strip */}
                 <div
                   className="px-5 pt-5 pb-4 flex items-start justify-between gap-3"
@@ -149,10 +138,11 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </div>
+            </AnimateItem>
             );
           })}
-        </motion.div>
+        </AnimateList>
       </div>
     </section>
   );

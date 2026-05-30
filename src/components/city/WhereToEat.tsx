@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { UtensilsCrossed } from 'lucide-react';
 import { City } from '@/lib/types';
-import { cardHover } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function WhereToEat({ city }: { city: City }) {
   if (!city.restaurants?.length) return null;
@@ -28,18 +28,10 @@ export default function WhereToEat({ city }: { city: City }) {
           </p>
         </motion.div>
 
-        <div className="space-y-5">
-          {city.restaurants.map((r, i) => (
-            <motion.div
-              key={r.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(0,0,0,0.3)' }}
-              whileTap={{ scale: 0.99 }}
-              className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-5 p-6 bg-surface border border-border rounded-2xl items-start group hover:border-gold/30 transition-colors"
-            >
+        <AnimateList stagger={0.09} className="space-y-5">
+          {city.restaurants.map((r) => (
+            <AnimateItem key={r.name} hover>
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-5 p-6 bg-surface border border-border rounded-2xl items-start group hover:border-gold/30 transition-colors">
               {/* Icon */}
               <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
                 <UtensilsCrossed size={20} className="text-gold" />
@@ -67,9 +59,10 @@ export default function WhereToEat({ city }: { city: City }) {
                 <div className="text-xs text-muted mb-1">Price range</div>
                 <div className="text-sm font-semibold text-primary-text">{r.priceRange}</div>
               </div>
-            </motion.div>
+              </div>
+            </AnimateItem>
           ))}
-        </div>
+        </AnimateList>
       </div>
     </section>
   );

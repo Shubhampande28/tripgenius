@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { City } from '@/lib/types';
-import { cardHover } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 const categoryColors: Record<string, string> = {
   Cultural:    'bg-purple-500/10 text-purple-400 border-purple-500/20',
@@ -43,18 +43,10 @@ export default function ThingsToDo({ city }: { city: City }) {
           </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <AnimateList stagger={0.07} variant="row" className="space-y-4">
           {city.thingsToDo.map((item, i) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.04 }}
-              whileHover={{ y: -2, boxShadow: '0 12px 30px rgba(0,0,0,0.3)' }}
-              whileTap={{ scale: 0.99 }}
-              className="flex gap-5 p-5 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group cursor-default"
-            >
+            <AnimateItem key={item.name} variant="row" hover>
+              <div className="flex gap-5 p-5 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group">
               {/* Number */}
               <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-elevated border border-border flex items-center justify-center">
                 <span className="font-heading text-lg font-semibold text-muted group-hover:text-accent transition-colors">
@@ -83,9 +75,10 @@ export default function ThingsToDo({ city }: { city: City }) {
                   <span className="text-xs text-muted/60">{item.duration}</span>
                 </div>
               </div>
-            </motion.div>
+              </div>
+            </AnimateItem>
           ))}
-        </div>
+        </AnimateList>
       </div>
     </section>
   );
