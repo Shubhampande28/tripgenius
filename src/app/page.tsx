@@ -33,7 +33,7 @@ export default function HomePage() {
 
           {/* Globe image — full bleed */}
           <Image
-            src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?auto=format&fit=crop&w=1600&q=85"
+            src="/globe.png"
             alt="Explore the world"
             fill
             priority
