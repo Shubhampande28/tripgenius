@@ -14,11 +14,13 @@ import WhereToStay from '@/components/city/WhereToStay';
 import WhereToEat from '@/components/city/WhereToEat';
 import GettingAround from '@/components/city/GettingAround';
 import ProTips from '@/components/city/ProTips';
+import CityFAQ from '@/components/city/CityFAQ';
 import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
 import RelatedCities from '@/components/city/RelatedCities';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
+import { getCityFaqs } from '@/lib/cityFaqs';
 
 export async function generateStaticParams() {
   return getAllCitySlugs().map((slug) => ({ slug }));
@@ -93,8 +95,9 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     ],
   };
 
-  // 3. FAQPage — shows directly in Google search results as expandable Q&A
-  const faqs = [
+  // 3. FAQPage — use real per-city FAQs when available, fall back to generated
+  const realFaqs = getCityFaqs(slug);
+  const faqs = realFaqs.length ? realFaqs : [
     {
       q: `What is the best time to visit ${city.name}?`,
       a: city.monthByMonth
@@ -109,7 +112,7 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
       q: `What are the top things to do in ${city.name}?`,
       a: city.thingsToDo?.length
         ? `Top things to do in ${city.name} include: ${city.thingsToDo.slice(0, 5).map((t) => t.name).join(', ')}.`
-        : `${city.name} offers world-class cultural, culinary, and natural experiences. Explore the local areas and neighbourhoods for the best experiences.`,
+        : `${city.name} offers world-class cultural, culinary, and natural experiences.`,
     },
     {
       q: `What language do they speak in ${city.name}?`,
@@ -170,6 +173,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               <WhereToEat city={city} />
               <GettingAround city={city} />
               <ProTips city={city} />
+              <CityFAQ city={city} />
             </div>
             <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-0">
               <CityTOC city={city} />

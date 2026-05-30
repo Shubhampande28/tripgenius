@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, ArrowRight, MapPin, Globe, BookOpen, Star, Mail, TrendingUp } from 'lucide-react';
+import { Search, ArrowRight, MapPin, Globe, BookOpen, Star, Mail, TrendingUp, ChevronDown } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
@@ -13,6 +13,43 @@ import { AnimateList, AnimateItem } from '@/components/AnimateList';
 import type { City } from '@/lib/types';
 
 const FEATURED_SLUGS = ['bali', 'paris', 'tokyo'];
+
+const HOME_FAQS = [
+  {
+    q: 'Are TripGenius travel guides really free?',
+    a: 'Yes — every guide on TripGenius is completely free to read, with no paywalls or subscription fees. We are funded by advertising and affiliate links, which means you never pay for the content.',
+  },
+  {
+    q: 'How often are the travel guides updated?',
+    a: 'We review and update our guides regularly — particularly when visa requirements, entry conditions, or major travel advisories change. Every guide shows a "last updated" date. For critical information like visa requirements, we always recommend cross-checking with official government sources before you travel.',
+  },
+  {
+    q: 'What is the best travel destination for first-time international travellers from India?',
+    a: 'Thailand (Bangkok and Phuket) and Bali, Indonesia are the most popular first international destinations for Indian travellers. Both offer visa on arrival, affordable prices, warm weather, excellent food, and well-developed tourist infrastructure. Dubai is also a popular first international trip with easy visa access for Indians and world-class facilities.',
+  },
+  {
+    q: 'Which is the best time to travel internationally from India?',
+    a: 'October to March is the best window for most international destinations — it avoids India\'s summer heat, aligns with dry seasons in Southeast Asia, and catches Europe\'s shoulder season (cheaper than July-August). December-January is peak season globally, so book flights and accommodation well in advance if travelling then.',
+  },
+  {
+    q: 'How do I plan a trip on a budget?',
+    a: 'The biggest savings come from: (1) Booking flights 6-8 weeks ahead and being flexible on travel dates, (2) Choosing accommodation slightly outside the tourist centre, (3) Eating where locals eat rather than tourist-facing restaurants, (4) Using public transport instead of taxis, (5) Visiting free attractions — most cities have world-class free museums, parks, and viewpoints. Our city guides include a full budget breakdown for each destination.',
+  },
+  {
+    q: 'Do I need travel insurance?',
+    a: 'Travel insurance is strongly recommended for any international trip. A good policy covers trip cancellation, medical emergencies abroad (which can be extremely expensive without coverage), lost baggage, and flight delays. In some countries like the Schengen Area, travel insurance is a visa requirement. Compare policies on comparison sites and ensure your policy covers any adventure activities you plan to do.',
+  },
+];
+
+const HOME_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 const POPULAR_CHIPS = ['Bali', 'Paris', 'Tokyo', 'Goa', 'Bangkok', 'Dubai', 'Singapore', 'Jaipur'];
 
 const STATS = [
@@ -85,6 +122,7 @@ export default function HomePage() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [email, setEmail] = useState('');
   const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -306,6 +344,45 @@ export default function HomePage() {
                 ))}
               </AnimateList>
             )}
+          </div>
+        </div>
+
+        {/* ── FAQ Section ── */}
+        <div className="border-t border-border bg-surface">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_FAQ_SCHEMA) }}
+          />
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+            <div className="text-center mb-10">
+              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">FAQ</p>
+              <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
+                Common travel questions
+              </h2>
+              <p className="mt-2 text-muted text-sm">Everything you need to plan a great trip.</p>
+            </div>
+            <div className="space-y-3">
+              {HOME_FAQS.map((faq, i) => {
+                const isOpen = openFaq === i;
+                return (
+                  <div key={i} className={`border rounded-xl overflow-hidden transition-colors duration-200 ${isOpen ? 'border-accent/30 bg-elevated' : 'border-border'}`}>
+                    <button
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      className="w-full flex items-start justify-between gap-4 px-5 py-4 text-left"
+                      aria-expanded={isOpen}
+                    >
+                      <span className="font-semibold text-primary-text text-sm leading-snug">{faq.q}</span>
+                      <ChevronDown size={16} className={`flex-shrink-0 text-muted transition-transform duration-300 mt-0.5 ${isOpen ? 'rotate-180 text-accent' : ''}`} />
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 border-t border-border/50">
+                        <p className="text-sm text-muted leading-relaxed pt-4">{faq.a}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
