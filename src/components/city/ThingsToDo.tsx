@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { City } from '@/lib/types';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
+import SafeImage from '@/components/SafeImage';
+import { getPlaceImageUrl } from '@/lib/placeImages';
 
 const categoryColors: Record<string, string> = {
   Cultural:    'bg-purple-500/10 text-purple-400 border-purple-500/20',
@@ -46,35 +48,50 @@ export default function ThingsToDo({ city }: { city: City }) {
         <AnimateList stagger={0.07} variant="row" className="space-y-4">
           {city.thingsToDo.map((item, i) => (
             <AnimateItem key={item.name} variant="row" hover>
-              <div className="flex gap-5 p-5 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group">
-              {/* Number */}
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-elevated border border-border flex items-center justify-center">
-                <span className="font-heading text-lg font-semibold text-muted group-hover:text-accent transition-colors">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-              </div>
-
-              {/* Icon */}
-              <div className="flex-shrink-0 text-2xl mt-0.5">{item.icon}</div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                  <h3 className="font-semibold text-primary-text text-base">{item.name}</h3>
-                  <span
-                    className={`text-xs px-2.5 py-0.5 rounded-full border ${
-                      categoryColors[item.category] || 'bg-surface text-muted border-border'
-                    }`}
-                  >
-                    {item.category}
-                  </span>
+              <div className="grid grid-cols-1 overflow-hidden bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group md:grid-cols-[180px_1fr]">
+                <div className="relative min-h-40 md:min-h-full">
+                  <SafeImage
+                    src={item.image ?? getPlaceImageUrl(city.slug, item.name, city.image)}
+                    alt={`${item.name} in ${city.name}`}
+                    city={`${city.slug}-${item.name}`}
+                    accentColor={city.accentColor}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 180px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-surface/25" />
                 </div>
-                <p className="text-sm text-muted leading-relaxed">{item.description}</p>
-                <div className="flex items-center gap-1.5 mt-2">
-                  <Clock size={11} className="text-muted/60" />
-                  <span className="text-xs text-muted/60">{item.duration}</span>
+
+                <div className="flex gap-5 p-5">
+                  {/* Number */}
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-elevated border border-border flex items-center justify-center">
+                    <span className="font-heading text-lg font-semibold text-muted group-hover:text-accent transition-colors">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  {/* Icon */}
+                  <div className="flex-shrink-0 text-2xl mt-0.5">{item.icon}</div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <h3 className="font-semibold text-primary-text text-base">{item.name}</h3>
+                      <span
+                        className={`text-xs px-2.5 py-0.5 rounded-full border ${
+                          categoryColors[item.category] || 'bg-surface text-muted border-border'
+                        }`}
+                      >
+                        {item.category}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed">{item.description}</p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <Clock size={11} className="text-muted/60" />
+                      <span className="text-xs text-muted/60">{item.duration}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
               </div>
             </AnimateItem>
           ))}

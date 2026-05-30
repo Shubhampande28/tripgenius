@@ -25,6 +25,7 @@ export interface ThingToDo {
   icon: string;
   duration: string;
   category: string;
+  image?: string;
 }
 
 export interface Hotel {
@@ -122,6 +123,7 @@ export interface OffbeatPlace {
   icon: string;
   type: string;
   tip: string;
+  image?: string;
 }
 
 export interface City {

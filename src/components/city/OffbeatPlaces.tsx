@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 import { City } from '@/lib/types';
+import SafeImage from '@/components/SafeImage';
+import { getPlaceImageUrl } from '@/lib/placeImages';
 
 const typeColors: Record<string, string> = {
   'Hidden Nature':      'bg-teal/10 text-teal border-teal/25',
@@ -126,9 +128,22 @@ export default function OffbeatPlaces({ city }: { city: City }) {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 pb-5 pt-1 grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-border/50 mt-1">
+                        <div className="px-5 pb-5 pt-5 grid grid-cols-1 lg:grid-cols-[240px_1fr_260px] gap-4 border-t border-border/50 mt-1">
+                          <div className="relative min-h-44 overflow-hidden rounded-xl border border-border/50 bg-dark">
+                            <SafeImage
+                              src={place.image ?? getPlaceImageUrl(city.slug, place.name, city.image)}
+                              alt={`${place.name} in ${city.name}`}
+                              city={`${city.slug}-${place.name}`}
+                              accentColor={city.accentColor}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 240px"
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+                          </div>
+
                           {/* Description */}
-                          <div className="md:col-span-2">
+                          <div>
                             <p className="text-sm text-primary-text/80 leading-relaxed mb-4">
                               {place.description}
                             </p>
