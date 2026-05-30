@@ -10,14 +10,6 @@ import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 
-const countries = [
-  'All',
-  'India',
-  ...Array.from(new Set(allCities.map((city) => city.country)))
-    .filter((country) => country !== 'India')
-    .sort((a, b) => a.localeCompare(b)),
-];
-
 const vibeColors: Record<string, string> = {
   Spiritual:    'bg-gold/10 text-gold',
   Romantic:     'bg-pink-500/10 text-pink-400',
@@ -33,16 +25,12 @@ const vibeColors: Record<string, string> = {
 
 export default function CitiesPage() {
   const [query, setQuery] = useState('');
-  const [activeCountry, setActiveCountry] = useState('All');
 
-  const filtered = allCities.filter((city) => {
-    const matchesSearch =
-      query.length === 0 ||
-      city.name.toLowerCase().includes(query.toLowerCase()) ||
-      city.country.toLowerCase().includes(query.toLowerCase());
-    const matchesCountry = activeCountry === 'All' || city.country === activeCountry;
-    return matchesSearch && matchesCountry;
-  });
+  const filtered = allCities.filter((city) =>
+    query.length === 0 ||
+    city.name.toLowerCase().includes(query.toLowerCase()) ||
+    city.country.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <>
@@ -85,27 +73,6 @@ export default function CitiesPage() {
               />
             </motion.div>
 
-            {/* Country filters */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.25 }}
-              className="mt-5 flex flex-wrap justify-center gap-2"
-            >
-              {countries.map((country) => (
-                <button
-                  key={country}
-                  onClick={() => setActiveCountry(country)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    activeCountry === country
-                      ? 'bg-accent text-white shadow-lg shadow-accent/20'
-                      : 'bg-elevated border border-border text-muted hover:text-primary-text'
-                  }`}
-                >
-                  {country}
-                </button>
-              ))}
-            </motion.div>
           </div>
         </div>
 
