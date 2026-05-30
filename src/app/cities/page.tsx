@@ -42,7 +42,7 @@ export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = 
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-primary-text leading-tight tracking-tight">
+              <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-accent leading-tight tracking-tight">
                 Explore the World
               </h1>
               {showHeroGlobe && (
