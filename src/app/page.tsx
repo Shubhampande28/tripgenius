@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Search, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
@@ -14,6 +14,19 @@ import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function HomePage() {
   const [query, setQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, []);
 
   const filtered = useMemo(() => {
     if (!query) return allCities;
@@ -23,15 +36,16 @@ export default function HomePage() {
     );
   }, [query]);
 
+  const dropdownItems = useMemo(() => filtered.slice(0, 8), [filtered]);
+
   return (
     <>
       <Navbar />
       <main style={{ background: '#07090f' }} className="min-h-screen">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden" style={{ minHeight: '90vh' }}>
+        <section className="relative overflow-hidden" style={{ height: '75vh', minHeight: 520 }}>
 
-          {/* Globe image — full bleed */}
           <Image
             src="/globe.png"
             alt="Explore the world"
@@ -41,24 +55,23 @@ export default function HomePage() {
             sizes="100vw"
           />
 
-          {/* Top vignette — keeps navbar readable */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
-
-          {/* Bottom blend — image melts into dark card section */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07090f] via-[#07090f]/60 to-transparent pointer-events-none" />
-
-          {/* Side vignette — frames the globe */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_100%_at_50%_50%,transparent_40%,rgba(7,9,15,0.7)_100%)] pointer-events-none" />
+          {/* Top darkening so navbar reads */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-transparent" />
+          {/* Bottom blend into card section */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#07090f] via-[#07090f]/45 to-transparent" />
+          {/* Side vignette to frame globe */}
+          <div className="pointer-events-none absolute inset-0"
+            style={{ background: 'radial-gradient(ellipse 75% 100% at 50% 50%, transparent 38%, rgba(7,9,15,0.72) 100%)' }} />
 
           {/* Centred content */}
-          <div className="relative flex flex-col items-center justify-center text-center px-4"
-            style={{ minHeight: '90vh' }}>
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-2xl"
             >
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/60 mb-5 drop-shadow">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/55 mb-4">
                 Destination Guides
               </p>
 
@@ -70,45 +83,76 @@ export default function HomePage() {
                 <span className="text-accent">World</span>
               </h1>
 
-              <p className="mt-4 text-white/65 text-base max-w-xs mx-auto drop-shadow-lg">
+              <p className="mt-4 text-white/60 text-base drop-shadow-lg">
                 Honest guides for every destination.
               </p>
 
-              {/* Search */}
-              <div className="mt-8 relative max-w-sm mx-auto w-full">
-                <Search size={15} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/50" />
+              {/* ── Search with live dropdown ── */}
+              <div ref={searchRef} className="relative mt-7 w-full max-w-lg mx-auto">
+                <Search size={15}
+                  className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/50 z-10" />
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => { setQuery(e.target.value); setShowDropdown(true); }}
+                  onFocus={() => { if (query) setShowDropdown(true); }}
                   placeholder="Search a city or country…"
-                  className="w-full pl-11 pr-4 py-3.5 bg-black/35 backdrop-blur-md border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all"
+                  className="w-full pl-11 pr-4 py-4 bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/10 transition-all"
                 />
-              </div>
 
-              {/* Scroll nudge */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-                className="mt-10 flex flex-col items-center gap-1.5"
-              >
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-white/35">Browse destinations</span>
-                <div className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent" />
-              </motion.div>
+                {/* Dropdown results */}
+                {showDropdown && query.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-elevated border border-border rounded-2xl shadow-2xl z-50 overflow-hidden">
+                    {dropdownItems.length > 0 ? (
+                      <>
+                        {dropdownItems.map((city, i) => (
+                          <Link
+                            key={city.slug}
+                            href={`/cities/${city.slug}`}
+                            onClick={() => { setQuery(''); setShowDropdown(false); }}
+                            className={`flex items-center gap-3 px-4 py-3 hover:bg-surface transition-colors text-left ${
+                              i < dropdownItems.length - 1 ? 'border-b border-border/40' : ''
+                            }`}
+                          >
+                            <span className="text-xl flex-shrink-0">{city.flag}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-primary-text">{city.name}</p>
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <MapPin size={9} className="text-muted" />
+                                <p className="text-xs text-muted">{city.country}</p>
+                              </div>
+                            </div>
+                            <ArrowRight size={12} className="text-muted/50 flex-shrink-0" />
+                          </Link>
+                        ))}
+                        {filtered.length > 8 && (
+                          <div className="px-4 py-2.5 text-center text-xs text-muted border-t border-border/40 bg-surface/50">
+                            {filtered.length - 8} more results below ↓
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="px-4 py-6 text-center text-muted text-sm">
+                        No cities found for &ldquo;{query}&rdquo;
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </motion.div>
           </div>
         </section>
 
         {/* ── Cities grid ── */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
 
-          {/* Divider */}
           <div className="flex items-center gap-3 mb-8">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
               All Destinations
               {query && (
-                <span className="text-primary-text ml-2">· {filtered.length} {filtered.length === 1 ? 'result' : 'results'}</span>
+                <span className="text-primary-text ml-2">
+                  · {filtered.length} {filtered.length === 1 ? 'result' : 'results'}
+                </span>
               )}
             </p>
             <div className="flex-1 h-px bg-border" />
@@ -129,9 +173,7 @@ export default function HomePage() {
                     <SafeImage
                       src={getCityImageUrl(city.slug, 'card') ?? city.image}
                       alt={`${city.name} travel guide`}
-                      city={city.slug}
-                      accentColor={city.accentColor}
-                      fill
+                      city={city.slug} accentColor={city.accentColor} fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     />
