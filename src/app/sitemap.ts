@@ -1,14 +1,12 @@
 import { MetadataRoute } from 'next';
 import { allCities, cities } from '@/lib/cities';
+import { allPosts } from '@/lib/blog';
 
 const BASE = 'https://www.tripgenius.in';
 const NOW  = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Exclude stub cities (auto-generated, thin content) from sitemap
   const indexableCities = allCities.filter((c) => !c.stub);
-
-  // Full guide cities get highest priority
   const fullGuideSlugs = new Set(cities.map((c) => c.slug));
 
   const cityPages = indexableCities.map((city) => ({
@@ -18,12 +16,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: fullGuideSlugs.has(city.slug) ? 0.9 : 0.7,
   }));
 
+  const blogPages = allPosts.map((post) => ({
+    url: `${BASE}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
   return [
     // Core pages
-    { url: BASE,               lastModified: NOW, changeFrequency: 'weekly',  priority: 1.0 },
-    { url: `${BASE}/cities`,   lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
+    { url: BASE,                       lastModified: NOW, changeFrequency: 'weekly',  priority: 1.0 },
+    { url: `${BASE}/cities`,           lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
+    { url: `${BASE}/blog`,             lastModified: NOW, changeFrequency: 'weekly',  priority: 0.9 },
+    { url: `${BASE}/about`,            lastModified: NOW, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/contact`,          lastModified: NOW, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE}/privacy-policy`,   lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
+    { url: `${BASE}/terms`,            lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
 
-    // All city guides
+    // Blog articles
+    ...blogPages,
+
+    // City guides
     ...cityPages,
   ];
 }

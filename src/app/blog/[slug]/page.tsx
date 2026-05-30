@@ -1,0 +1,236 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { allPosts, getPostBySlug, getRelatedPosts, BlockType, BlogCategory } from '@/lib/blog';
+
+export async function generateStaticParams() {
+  return allPosts.map(p => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return {};
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.date,
+      images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+    },
+  };
+}
+
+const CATEGORY_COLORS: Record<BlogCategory, string> = {
+  Planning:  'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  Budget:    'bg-teal/10 text-teal border-teal/20',
+  India:     'bg-orange-500/10 text-orange-400 border-orange-500/20',
+  Asia:      'bg-purple-500/10 text-purple-400 border-purple-500/20',
+  Europe:    'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+  Tips:      'bg-accent/10 text-accent border-accent/20',
+};
+
+function ContentBlock({ block }: { block: BlockType }) {
+  switch (block.type) {
+    case 'h2':
+      return <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mt-10 mb-4">{block.text}</h2>;
+    case 'h3':
+      return <h3 className="font-heading text-xl font-semibold text-primary-text mt-7 mb-3">{block.text}</h3>;
+    case 'p':
+      return <p className="text-muted leading-relaxed mb-4 text-[15px]">{block.text}</p>;
+    case 'ul':
+      return (
+        <ul className="mb-5 space-y-2">
+          {block.items.map((item, i) => (
+            <li key={i} className="flex gap-2.5 text-[15px] text-muted leading-relaxed">
+              <span className="text-accent mt-1 flex-shrink-0">›</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    case 'ol':
+      return (
+        <ol className="mb-5 space-y-3">
+          {block.items.map((item, i) => (
+            <li key={i} className="flex gap-3 text-[15px] text-muted leading-relaxed">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ol>
+      );
+    case 'callout':
+      return (
+        <div className="my-6 flex gap-3 p-4 bg-accent/8 border border-accent/20 rounded-xl">
+          <span className="text-2xl flex-shrink-0">{block.emoji}</span>
+          <p className="text-sm text-primary-text leading-relaxed">{block.text}</p>
+        </div>
+      );
+    case 'table':
+      return (
+        <div className="my-6 overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead className="bg-elevated">
+              <tr>
+                {block.headers.map(h => (
+                  <th key={h} className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-muted border-b border-border">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, ri) => (
+                <tr key={ri} className={ri % 2 === 0 ? 'bg-surface' : 'bg-dark'}>
+                  {row.map((cell, ci) => (
+                    <td key={ci} className="px-4 py-3 text-muted border-b border-border/40 last:border-b-0 align-top">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    case 'divider':
+      return <hr className="my-8 border-border" />;
+    default:
+      return null;
+  }
+}
+
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) notFound();
+
+  const related = getRelatedPosts(post);
+  const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
+
+  return (
+    <>
+      <Navbar />
+      <main className="bg-dark min-h-screen">
+
+        {/* Cover image */}
+        <div className="relative h-64 sm:h-80 lg:h-96 w-full pt-16">
+          <Image
+            src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1400&q=80`}
+            alt={post.title}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+        </div>
+
+        {/* Article */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 relative z-10 pb-20">
+
+          {/* Back link */}
+          <Link href="/blog" className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors mb-6">
+            <ArrowLeft size={12} /> Back to Blog
+          </Link>
+
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[post.category]}`}>
+              <Tag size={8} /> {post.category}
+            </span>
+            <span className="flex items-center gap-1 text-xs text-muted"><Calendar size={11} /> {formattedDate}</span>
+            <span className="flex items-center gap-1 text-xs text-muted"><Clock size={11} /> {post.readTime} min read</span>
+          </div>
+
+          {/* Title */}
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold text-primary-text leading-tight mb-4">
+            {post.title}
+          </h1>
+
+          <p className="text-muted text-base leading-relaxed mb-8 border-b border-border pb-8">
+            {post.excerpt}
+          </p>
+
+          {/* Content */}
+          <article>
+            {post.content.map((block, i) => (
+              <ContentBlock key={i} block={block} />
+            ))}
+          </article>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mt-10 pt-8 border-t border-border">
+            {post.tags.map(tag => (
+              <span key={tag} className="text-xs px-3 py-1 rounded-full bg-elevated border border-border text-muted">
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          {/* City guide CTA */}
+          {post.citySlug && (
+            <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs text-accent font-bold uppercase tracking-wider mb-1">Full City Guide</p>
+                <p className="text-sm text-primary-text font-medium">Read our complete guide with things to do, where to eat, and where to stay.</p>
+              </div>
+              <Link href={`/cities/${post.citySlug}`}
+                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
+                <MapPin size={13} /> Open Guide
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Related posts */}
+        {related.length > 0 && (
+          <div className="border-t border-border bg-surface">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+              <div className="flex items-center gap-3 mb-8">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">You might also like</p>
+                <div className="flex-1 h-px bg-border" />
+                <Link href="/blog" className="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1">
+                  All articles <ArrowRight size={11} />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {related.map(p => (
+                  <Link key={p.slug} href={`/blog/${p.slug}`}
+                    className="group flex flex-col bg-elevated border border-border rounded-2xl overflow-hidden hover:border-accent/30 transition-colors">
+                    <div className="relative h-40">
+                      <Image
+                        src={`https://images.unsplash.com/${p.coverPhoto}?auto=format&fit=crop&w=400&q=75`}
+                        alt={p.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    </div>
+                    <div className="p-4">
+                      <p className="font-heading text-base font-semibold text-primary-text group-hover:text-accent transition-colors leading-snug line-clamp-2">
+                        {p.title}
+                      </p>
+                      <p className="text-xs text-muted mt-1.5 flex items-center gap-1">
+                        <Clock size={10} /> {p.readTime} min read
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+      </main>
+      <Footer />
+    </>
+  );
+}
