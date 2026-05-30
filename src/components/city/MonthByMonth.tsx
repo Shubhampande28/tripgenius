@@ -23,7 +23,7 @@ export default function MonthByMonth({ city }: { city: City }) {
   const avoid = data.months.filter(m => m.rating === 'avoid');
 
   return (
-    <section className="py-14 bg-surface border-b border-border">
+    <section id="best-time-to-visit" className="py-14 bg-surface border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -39,7 +39,7 @@ export default function MonthByMonth({ city }: { city: City }) {
                 <p className="text-xs font-semibold uppercase tracking-widest text-gold">When to Visit</p>
               </div>
               <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text">
-                Best Time to Visit {city.name}
+                Best Time to Visit {city.name}: Month-by-Month Guide
               </h2>
             </div>
             {/* Quick legend pills */}

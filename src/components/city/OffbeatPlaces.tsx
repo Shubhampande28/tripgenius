@@ -38,7 +38,7 @@ export default function OffbeatPlaces({ city }: { city: City }) {
   if (!city.offbeatPlaces?.length) return null;
 
   return (
-    <section className="py-16">
+    <section id="hidden-gems" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -57,7 +57,7 @@ export default function OffbeatPlaces({ city }: { city: City }) {
             </p>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Offbeat {city.name}
+            Hidden Gems in {city.name}: Offbeat Places Locals Love
           </h2>
           <p className="mt-2 text-muted max-w-2xl leading-relaxed">
             The places locals know and tourists miss. No queues, no crowds —

@@ -20,6 +20,8 @@ import WhereToEat from '@/components/city/WhereToEat';
 import GettingAround from '@/components/city/GettingAround';
 import ProTips from '@/components/city/ProTips';
 import CitySidebar from '@/components/city/CitySidebar';
+import CityTOC from '@/components/city/CityTOC';
+import RelatedCities from '@/components/city/RelatedCities';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
 
 export async function generateStaticParams() {
@@ -181,7 +183,8 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               </div>
 
               {/* Sidebar */}
-              <div className="lg:sticky lg:top-24 lg:self-start">
+              <div className="lg:sticky lg:top-24 lg:self-start space-y-0">
+                <CityTOC city={city} />
                 <CitySidebar city={city} />
               </div>
             </div>
@@ -189,6 +192,9 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
 
           {/* 9. Getting There & Around — full width */}
           <GettingThereAround city={city} />
+
+          {/* Related Cities */}
+          <RelatedCities city={city} />
         </main>
         <Footer />
       </>
@@ -219,11 +225,13 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               <GettingAround city={city} />
               <ProTips city={city} />
             </div>
-            <div className="lg:sticky lg:top-24 lg:self-start">
+            <div className="lg:sticky lg:top-24 lg:self-start space-y-0">
+              <CityTOC city={city} />
               <CitySidebar city={city} />
             </div>
           </div>
         </div>
+        <RelatedCities city={city} />
       </main>
       <Footer />
     </>

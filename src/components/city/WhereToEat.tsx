@@ -7,7 +7,7 @@ import { City } from '@/lib/types';
 export default function WhereToEat({ city }: { city: City }) {
   if (!city.restaurants?.length) return null;
   return (
-    <section className="py-16">
+    <section id="where-to-eat" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -20,8 +20,11 @@ export default function WhereToEat({ city }: { city: City }) {
             Dining
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Where to Eat in {city.name}
+            What to Eat in {city.name}: Best Local Food & Restaurants
           </h2>
+          <p className="mt-2 text-muted text-sm max-w-2xl">
+            From street food to fine dining — the dishes you must try and the restaurants locals actually go to.
+          </p>
         </motion.div>
 
         <div className="space-y-5">

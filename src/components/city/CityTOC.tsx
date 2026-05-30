@@ -1,0 +1,76 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { City } from '@/lib/types';
+
+const SECTIONS = [
+  { id: 'best-time-to-visit', label: 'Best Time to Visit', emoji: '📅' },
+  { id: 'things-to-do',       label: 'Things to Do',       emoji: '🗺️' },
+  { id: 'hidden-gems',        label: 'Hidden Gems',         emoji: '💎' },
+  { id: 'budget',             label: 'Budget Guide',        emoji: '💰' },
+  { id: 'where-to-eat',      label: 'What to Eat',         emoji: '🍜' },
+  { id: 'where-to-stay',     label: 'Where to Stay',       emoji: '🏨' },
+  { id: 'getting-there',     label: 'Getting There',       emoji: '✈️' },
+];
+
+export default function CityTOC({ city }: { city: City }) {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const visible = SECTIONS.filter(({ id }) => {
+    if (id === 'best-time-to-visit') return !!city.monthByMonth;
+    if (id === 'things-to-do')       return !!city.thingsToDo?.length;
+    if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
+    if (id === 'budget')             return !!city.budgetBreakdown;
+    if (id === 'where-to-eat')       return !!city.restaurants?.length;
+    if (id === 'where-to-stay')      return !!city.hotels?.length;
+    if (id === 'getting-there')      return !!city.gettingThere;
+    return true;
+  });
+
+  if (visible.length < 2) return null;
+
+  return (
+    <nav aria-label="Page sections" className="bg-elevated border border-border rounded-2xl p-4 mb-6">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-3 px-1">
+        Jump to Section
+      </p>
+      <ul className="space-y-0.5">
+        {visible.map(({ id, label, emoji }) => (
+          <li key={id}>
+            <a
+              href={`#${id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all duration-200 ${
+                active === id
+                  ? 'bg-accent/10 text-accent font-semibold'
+                  : 'text-muted hover:text-primary-text hover:bg-surface'
+              }`}
+            >
+              <span className="text-base leading-none">{emoji}</span>
+              <span>{label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}

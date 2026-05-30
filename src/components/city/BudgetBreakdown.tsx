@@ -20,7 +20,7 @@ const rows = [
 export default function BudgetBreakdown({ city }: { city: City }) {
   if (!city.budgetBreakdown) return null;
   return (
-    <section className="py-16">
+    <section id="budget" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,7 +38,7 @@ export default function BudgetBreakdown({ city }: { city: City }) {
             </p>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            How Much Does {city.name} Cost?
+            How Much Does a Trip to {city.name} Cost? ({new Date().getFullYear()} Budget Guide)
           </h2>
           <p className="mt-2 text-muted text-sm">{city.budgetBreakdown.disclaimer}</p>
         </motion.div>

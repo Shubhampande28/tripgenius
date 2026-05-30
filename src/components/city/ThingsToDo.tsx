@@ -22,7 +22,7 @@ const categoryColors: Record<string, string> = {
 export default function ThingsToDo({ city }: { city: City }) {
   if (!city.thingsToDo?.length) return null;
   return (
-    <section className="py-16">
+    <section id="things-to-do" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,8 +35,11 @@ export default function ThingsToDo({ city }: { city: City }) {
             Experiences
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Top {city.thingsToDo.length} Things to Do in {city.name}
+            Top {city.thingsToDo.length} Things to Do in {city.name} ({new Date().getFullYear()})
           </h2>
+          <p className="mt-2 text-muted text-sm max-w-2xl">
+            The best experiences in {city.name} — from iconic landmarks to local favourites, ranked by what travellers love most.
+          </p>
         </motion.div>
 
         <div className="space-y-4">
