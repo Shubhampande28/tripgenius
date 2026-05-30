@@ -8,24 +8,28 @@ const SECTIONS = [
   { id: 'things-to-do',       label: 'Things to Do',       emoji: '🗺️' },
   { id: 'hidden-gems',        label: 'Hidden Gems',         emoji: '💎' },
   { id: 'budget',             label: 'Budget Guide',        emoji: '💰' },
-  { id: 'where-to-eat',      label: 'What to Eat',         emoji: '🍜' },
-  { id: 'where-to-stay',     label: 'Where to Stay',       emoji: '🏨' },
-  { id: 'getting-there',     label: 'Getting There',       emoji: '✈️' },
+  { id: 'where-to-stay',      label: 'Where to Stay',       emoji: '🏨' },
+  { id: 'where-to-eat',       label: 'What to Eat',         emoji: '🍜' },
+  { id: 'getting-around',     label: 'Getting Around',      emoji: '🚌' },
+  { id: 'pro-tips',           label: 'Pro Tips',            emoji: '💡' },
 ];
 
 export default function CityTOC({ city }: { city: City }) {
   const [active, setActive] = useState('');
 
   useEffect(() => {
+    const ids = SECTIONS.map((s) => s.id);
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
+        // Pick the topmost intersecting section
+        const intersecting = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (intersecting.length > 0) setActive(intersecting[0].target.id);
       },
-      { rootMargin: '-30% 0px -60% 0px' }
+      { rootMargin: '-10% 0px -80% 0px', threshold: 0 }
     );
-    SECTIONS.forEach(({ id }) => {
+    ids.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -37,9 +41,10 @@ export default function CityTOC({ city }: { city: City }) {
     if (id === 'things-to-do')       return !!city.thingsToDo?.length;
     if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
     if (id === 'budget')             return !!city.budgetBreakdown;
-    if (id === 'where-to-eat')       return !!city.restaurants?.length;
     if (id === 'where-to-stay')      return !!city.hotels?.length;
-    if (id === 'getting-there')      return !!city.gettingThere;
+    if (id === 'where-to-eat')       return !!city.restaurants?.length;
+    if (id === 'getting-around')     return !!city.gettingAround?.length;
+    if (id === 'pro-tips')           return !!city.proTips?.length;
     return true;
   });
 
@@ -57,7 +62,10 @@ export default function CityTOC({ city }: { city: City }) {
               href={`#${id}`}
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const el = document.getElementById(id);
+                if (!el) return;
+                const y = el.getBoundingClientRect().top + window.scrollY - 88;
+                window.scrollTo({ top: y, behavior: 'smooth' });
               }}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all duration-200 ${
                 active === id

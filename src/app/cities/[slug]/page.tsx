@@ -5,14 +5,9 @@ import Footer from '@/components/Footer';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
 import MonthByMonth from '@/components/city/MonthByMonth';
-// New merged components (used for restructured pages)
 import NeighbourhoodsAreas from '@/components/city/NeighbourhoodsAreas';
-import GettingThereAround from '@/components/city/GettingThereAround';
-// Legacy components (kept for old structure)
 import ExploreByArea from '@/components/city/ExploreByArea';
-import Neighbourhoods from '@/components/city/Neighbourhoods';
 import BudgetBreakdown from '@/components/city/BudgetBreakdown';
-import GettingThere from '@/components/city/GettingThere';
 import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
 import WhereToStay from '@/components/city/WhereToStay';
@@ -68,8 +63,6 @@ export async function generateMetadata(
   };
 }
 
-/** Cities using the NEW restructured layout */
-const REDESIGNED_SLUGS = new Set(['bali']);
 
 function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & object; slug: string }) {
   const base = 'https://www.tripgenius.in';
@@ -152,62 +145,6 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   const city = getCityBySlug(slug);
   if (!city) notFound();
 
-  /* ── NEW 9-section layout (Bali demo) ──────────────────────── */
-  if (REDESIGNED_SLUGS.has(slug)) {
-    return (
-      <>
-        <CityJsonLd city={city} slug={slug} />
-        <Navbar />
-        <main className="bg-dark">
-          {/* 1. Hero */}
-          <CityHero city={city} />
-
-          {/* 2. At a Glance */}
-          <AtAGlance city={city} />
-
-          {/* 3. Best Time to Visit */}
-          <MonthByMonth city={city} />
-
-          {/* 4. Neighbourhoods (merged with area spots) */}
-          <NeighbourhoodsAreas city={city} />
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
-              <div>
-                {/* 5. Things To Do */}
-                <ThingsToDo city={city} />
-
-                {/* 6. Offbeat Places */}
-                <OffbeatPlaces city={city} />
-
-                {/* 7. Budget Breakdown */}
-                <BudgetBreakdown city={city} />
-
-                {/* 8. Where to Eat */}
-                <WhereToEat city={city} />
-              </div>
-
-              {/* Sidebar */}
-              <div className="lg:sticky lg:top-24 lg:self-start space-y-0">
-                <CityTOC city={city} />
-                <CitySidebar city={city} />
-              </div>
-            </div>
-          </div>
-
-          {/* 9. Getting There & Around — full width */}
-          <GettingThereAround city={city} />
-
-          {/* Related Cities */}
-          <RelatedCities city={city} />
-        </main>
-        <MobileCTA city={city} />
-        <Footer />
-      </>
-    );
-  }
-
-  /* ── OLD layout (all other cities, unchanged) ───────────────── */
   return (
     <>
       <CityJsonLd city={city} slug={slug} />
@@ -216,18 +153,21 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         <CityHero city={city} />
         <AtAGlance city={city} />
         <MonthByMonth city={city} />
-        <ExploreByArea city={city} />
+
+        {/* Neighbourhoods if available, otherwise area explorer */}
+        {city.neighbourhoods?.length
+          ? <NeighbourhoodsAreas city={city} />
+          : <ExploreByArea city={city} />
+        }
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
-              <Neighbourhoods city={city} />
               <ThingsToDo city={city} />
               <OffbeatPlaces city={city} />
               <BudgetBreakdown city={city} />
               <WhereToStay city={city} />
               <WhereToEat city={city} />
-              <GettingThere city={city} />
               <GettingAround city={city} />
               <ProTips city={city} />
             </div>
@@ -237,6 +177,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
             </div>
           </div>
         </div>
+
         <RelatedCities city={city} />
       </main>
       <MobileCTA city={city} />
