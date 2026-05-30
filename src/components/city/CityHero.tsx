@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
 import { City } from '@/lib/types';
+import Breadcrumb from './Breadcrumb';
+
+const UPDATED = 'May 2026';
 
 export default function CityHero({ city }: { city: City }) {
   return (
@@ -14,7 +17,7 @@ export default function CityHero({ city }: { city: City }) {
       {/* Full-bleed hero photo */}
       <SafeImage
         src={getCityImageUrl(city.slug, 'hero') ?? city.heroImage}
-        alt={`${city.name}, ${city.country}`}
+        alt={`${city.name} travel guide — ${city.tagline}, ${city.country}`}
         city={city.slug}
         accentColor={city.accentColor}
         fill
@@ -41,16 +44,8 @@ export default function CityHero({ city }: { city: City }) {
         }}
       />
 
-      {/* Back nav */}
-      <div className="absolute top-24 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-20">
-        <Link
-          href="/#cities"
-          className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors group backdrop-blur-sm bg-black/20 border border-white/10 px-3 py-1.5 rounded-full"
-        >
-          <ArrowLeft size={13} className="group-hover:-translate-x-1 transition-transform" />
-          All Cities
-        </Link>
-      </div>
+      {/* Breadcrumb nav */}
+      <Breadcrumb cityName={city.name} country={city.country} />
 
       {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-32 w-full">
@@ -91,6 +86,16 @@ export default function CityHero({ city }: { city: City }) {
             className="mt-6 text-white/80 max-w-2xl leading-relaxed text-lg"
           >
             {city.heroDescription}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mt-3 text-xs text-white/40 flex items-center gap-1.5"
+          >
+            <span>📅</span>
+            <span>Updated {UPDATED}</span>
           </motion.p>
 
           {/* Quick stats chips */}

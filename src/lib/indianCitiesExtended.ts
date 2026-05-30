@@ -58,6 +58,7 @@ function quickIndianCity(city: QuickIndianCity): City {
   const heroUrl   = `${basePhoto}?auto=format&fit=crop&w=1600&q=85`;
 
   return {
+    stub: true,
     slug: city.slug,
     name: city.name,
     state: city.state,

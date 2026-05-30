@@ -22,6 +22,7 @@ import ProTips from '@/components/city/ProTips';
 import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
 import RelatedCities from '@/components/city/RelatedCities';
+import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
 
 export async function generateStaticParams() {
@@ -50,6 +51,10 @@ export async function generateMetadata(
       `${city.name} tourist guide`, `${city.name} trip`,
     ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
+    // Stub cities have auto-generated content — keep them out of Google's index
+    ...(city.stub && {
+      robots: { index: false, follow: false },
+    }),
     openGraph: {
       title, description: desc,
       url:  `https://www.tripgenius.in/cities/${slug}`,
@@ -196,6 +201,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
           {/* Related Cities */}
           <RelatedCities city={city} />
         </main>
+        <MobileCTA city={city} />
         <Footer />
       </>
     );
@@ -233,6 +239,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         </div>
         <RelatedCities city={city} />
       </main>
+      <MobileCTA city={city} />
       <Footer />
     </>
   );

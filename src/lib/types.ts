@@ -128,6 +128,7 @@ export interface City {
   slug: string;
   name: string;
   country: string;
+  stub?: boolean;
   flag: string;
   tagline: string;
   description: string;
