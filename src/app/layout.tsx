@@ -73,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable}`}>
       <head>
+        <meta name="google-site-verification" content="4WZXL1e7N4MKzIyyIlMrmHcFrwFiHCoCxqx0ofNoy_o" />
         {/* Preconnect to critical third-party domains */}
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://www.booking.com" />
