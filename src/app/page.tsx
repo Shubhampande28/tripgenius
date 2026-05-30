@@ -1,1 +1,5 @@
-export { default } from './cities/page';
+import CitiesPage from './cities/page';
+
+export default function HomePage() {
+  return <CitiesPage showHeroGlobe />;
+}

@@ -4,14 +4,18 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
-import { Search, Globe, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
-export default function CitiesPage() {
+interface CitiesPageProps {
+  showHeroGlobe?: boolean;
+}
+
+export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = {}) {
   const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
@@ -38,13 +42,21 @@ export default function CitiesPage() {
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              {/* Globe icon */}
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 mb-5 shadow-lg shadow-accent/10">
-                <Globe size={26} className="text-accent" />
-              </div>
               <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-primary-text leading-tight tracking-tight">
                 Explore the World
               </h1>
+              {showHeroGlobe && (
+                <div className="hero-globe" aria-hidden="true">
+                  <div className="hero-globe__sphere">
+                    <span className="hero-globe__land hero-globe__land--one" />
+                    <span className="hero-globe__land hero-globe__land--two" />
+                    <span className="hero-globe__land hero-globe__land--three" />
+                    <span className="hero-globe__grid hero-globe__grid--lat" />
+                    <span className="hero-globe__grid hero-globe__grid--lon" />
+                    <span className="hero-globe__shine" />
+                  </div>
+                </div>
+              )}
               <p className="mt-3 text-muted text-base">
                 Honest guides for every destination.
               </p>
