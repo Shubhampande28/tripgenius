@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, ArrowRight, MapPin } from 'lucide-react';
+import { Search, ArrowRight, MapPin, Globe, BookOpen, Star, Mail, TrendingUp } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
@@ -11,6 +11,16 @@ import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
 import type { City } from '@/lib/types';
+
+const FEATURED_SLUGS = ['bali', 'paris', 'tokyo'];
+const POPULAR_CHIPS = ['Bali', 'Paris', 'Tokyo', 'Goa', 'Bangkok', 'Dubai', 'Singapore', 'Jaipur'];
+
+const STATS = [
+  { icon: Globe, value: '140+', label: 'Destinations' },
+  { icon: BookOpen, value: '100%', label: 'Free Guides' },
+  { icon: Star, value: 'Honest', label: 'No Paid Bias' },
+  { icon: TrendingUp, value: '2025', label: 'Always Updated' },
+];
 
 function CityCard({ city }: { city: City }) {
   return (
@@ -39,9 +49,42 @@ function CityCard({ city }: { city: City }) {
   );
 }
 
+function FeaturedCard({ city, large = false }: { city: City; large?: boolean }) {
+  return (
+    <Link href={`/cities/${city.slug}`}
+      className={`group relative block rounded-2xl overflow-hidden ${large ? 'h-80 sm:h-96' : 'h-40 sm:h-44'}`}>
+      <SafeImage
+        src={getCityImageUrl(city.slug, 'hero') ?? city.image}
+        alt={`${city.name} travel guide`}
+        city={city.slug} accentColor={city.accentColor} fill
+        sizes={large ? '(max-width: 768px) 100vw, 60vw' : '(max-width: 768px) 100vw, 30vw'}
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+      {large && (
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/90 text-white text-[10px] font-bold uppercase tracking-wider">
+          <Star size={9} /> Editor&apos;s Pick
+        </div>
+      )}
+      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300">
+        Explore <ArrowRight size={9} />
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-0.5">{city.country}</p>
+        <h3 className={`font-heading font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight ${large ? 'text-2xl sm:text-3xl' : 'text-base'}`}>
+          {city.name}
+        </h3>
+        <p className={`text-white/60 italic line-clamp-1 ${large ? 'text-sm mt-1' : 'text-[11px] mt-0.5'}`}>{city.tagline}</p>
+      </div>
+    </Link>
+  );
+}
+
 export default function HomePage() {
   const [query, setQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [email, setEmail] = useState('');
+  const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const searchRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +108,27 @@ export default function HomePage() {
 
   const dropdownItems = useMemo(() => filtered.slice(0, 8), [filtered]);
 
+  const featuredCities = useMemo(
+    () => FEATURED_SLUGS.map(s => allCities.find(c => c.slug === s)).filter(Boolean) as City[],
+    []
+  );
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    setSubState('loading');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      setSubState(res.ok ? 'done' : 'error');
+    } catch {
+      setSubState('error');
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -77,7 +141,6 @@ export default function HomePage() {
             <div className="absolute top-8 right-1/4 w-[350px] h-[350px] rounded-full bg-blue-500/6 blur-3xl" />
             <div className="absolute top-20 left-1/4 w-[250px] h-[250px] rounded-full bg-teal/5 blur-3xl" />
           </div>
-          {/* Bottom fade blend into cards section */}
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-dark to-transparent" />
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
@@ -86,11 +149,11 @@ export default function HomePage() {
                 <span className="text-white">Explore the </span><span className="text-accent">World</span>
               </h1>
               <p className="mt-3 text-white/50 text-base">
-                Honest guides for every destination.
+                Honest, free travel guides for every destination.
               </p>
             </motion.div>
 
-            {/* Search with live dropdown */}
+            {/* Search */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -113,10 +176,8 @@ export default function HomePage() {
                   placeholder="Search a city or country…"
                   className="w-full pl-11 pr-4 py-3.5 bg-white/8 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-accent/70 focus:ring-2 focus:ring-accent/15 transition-all backdrop-blur-sm"
                 />
-
-                {/* Dropdown */}
                 {showDropdown && query.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-elevated border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden text-left" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-elevated border border-white/10 rounded-2xl z-50 overflow-hidden text-left" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
                     {dropdownItems.length > 0 ? (
                       <>
                         {dropdownItems.map((city, i) => (
@@ -149,41 +210,155 @@ export default function HomePage() {
                 )}
               </div>
             </motion.div>
+
+            {/* Popular chips */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-5 flex flex-wrap justify-center gap-2"
+            >
+              <span className="text-white/30 text-xs self-center">Popular:</span>
+              {POPULAR_CHIPS.map((name) => {
+                const city = allCities.find(c => c.name === name);
+                if (!city) return null;
+                return (
+                  <Link key={name} href={`/cities/${city.slug}`}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/8 border border-white/12 text-white/70 text-xs hover:bg-white/15 hover:text-white transition-all duration-200">
+                    <span>{city.flag}</span>
+                    <span>{name}</span>
+                  </Link>
+                );
+              })}
+            </motion.div>
+
+            {/* Stats strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="mt-8 flex justify-center gap-6 sm:gap-10"
+            >
+              {STATS.map(({ icon: Icon, value, label }) => (
+                <div key={label} className="flex flex-col items-center gap-0.5">
+                  <Icon size={14} className="text-accent/70" />
+                  <p className="font-heading text-base font-bold text-white">{value}</p>
+                  <p className="text-[10px] text-white/35 uppercase tracking-wider">{label}</p>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
+
+        {/* ── Editor's Picks ── */}
+        {!query && featuredCities.length >= 3 && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Editor&apos;s Picks</p>
+                <h2 className="font-heading text-xl font-semibold text-primary-text mt-0.5">Best Destinations Right Now</h2>
+              </div>
+              <div className="flex-1 h-px bg-border ml-4" />
+              <Link href="/cities" className="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1 whitespace-nowrap">
+                View all <ArrowRight size={11} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2">
+                <FeaturedCard city={featuredCities[0]} large />
+              </div>
+              <div className="flex flex-col gap-4">
+                <FeaturedCard city={featuredCities[1]} />
+                <FeaturedCard city={featuredCities[2]} />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── City cards grid ── */}
         <div ref={resultsRef} className="bg-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-center gap-3 mb-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
-              All Destinations
-              {query && <span className="text-primary-text ml-2">· {filtered.length} {filtered.length === 1 ? 'result' : 'results'}</span>}
-            </p>
-            <div className="flex-1 h-px bg-border" />
-          </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex items-center gap-3 mb-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
+                All Destinations
+                {query && <span className="text-primary-text ml-2">· {filtered.length} {filtered.length === 1 ? 'result' : 'results'}</span>}
+              </p>
+              <div className="flex-1 h-px bg-border" />
+            </div>
 
-          {filtered.length === 0 ? (
-            <div className="text-center py-24">
-              <p className="text-5xl mb-4">🌍</p>
-              <p className="text-muted text-sm">No cities found for &ldquo;{query}&rdquo;</p>
-            </div>
-          ) : query ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filtered.map((city) => <CityCard key={city.slug} city={city} />)}
-            </div>
-          ) : (
-            <AnimateList stagger={0.04}
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filtered.map((city) => (
-                <AnimateItem key={city.slug} hover>
-                  <CityCard city={city} />
-                </AnimateItem>
-              ))}
-            </AnimateList>
-          )}
+            {filtered.length === 0 ? (
+              <div className="text-center py-24">
+                <p className="text-5xl mb-4">🌍</p>
+                <p className="text-muted text-sm">No cities found for &ldquo;{query}&rdquo;</p>
+              </div>
+            ) : query ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => <CityCard key={city.slug} city={city} />)}
+              </div>
+            ) : (
+              <AnimateList stagger={0.04}
+                className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => (
+                  <AnimateItem key={city.slug} hover>
+                    <CityCard city={city} />
+                  </AnimateItem>
+                ))}
+              </AnimateList>
+            )}
+          </div>
         </div>
+
+        {/* ── Newsletter CTA ── */}
+        <div className="border-t border-border bg-surface">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-4">
+                <Mail size={12} /> Free Travel Tips
+              </div>
+              <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
+                Travel smarter, not harder
+              </h2>
+              <p className="mt-3 text-muted text-sm max-w-md mx-auto">
+                Get curated city guides, hidden gems, and money-saving tips delivered to your inbox. No spam — ever.
+              </p>
+
+              {subState === 'done' ? (
+                <div className="mt-8 flex items-center justify-center gap-2 text-teal font-medium">
+                  <span className="text-xl">✓</span> You&apos;re in! Check your inbox.
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="mt-8 flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    className="flex-1 px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/50 focus:outline-none focus:border-accent/60 transition-all"
+                  />
+                  <button
+                    type="submit"
+                    disabled={subState === 'loading'}
+                    className="px-5 py-3 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60 whitespace-nowrap"
+                  >
+                    {subState === 'loading' ? 'Subscribing…' : 'Get Free Tips'}
+                  </button>
+                </form>
+              )}
+              {subState === 'error' && (
+                <p className="mt-3 text-red-400 text-xs">Something went wrong. Please try again.</p>
+              )}
+              <p className="mt-3 text-muted/50 text-xs">Join thousands of travellers. Unsubscribe anytime.</p>
+            </motion.div>
+          </div>
         </div>
+
       </main>
       <Footer />
     </>
