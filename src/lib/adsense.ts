@@ -1,10 +1,9 @@
 // Central AdSense config.
-// After AdSense approval, add to .env.local on the VM:
-//   NEXT_PUBLIC_ADSENSE_PUB_ID=ca-pub-XXXXXXXXXXXXXXXXX
-//
-// Then create ad units in the AdSense dashboard and paste the slot IDs below.
+// Publisher ID is public (appears in page HTML) — safe to hardcode.
+// After AdSense approval, create ad units in adsense.google.com → Ads → By ad unit
+// and replace the placeholder slot IDs below with your real ones.
 
-export const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? '';
+export const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? 'ca-pub-9077452318851477';
 
 // Replace these slot IDs after creating ad units in adsense.google.com → Ads → By ad unit
 export const AD_SLOTS = {
