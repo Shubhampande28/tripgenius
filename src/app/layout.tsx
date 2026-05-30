@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 
 const GA_ID = "G-GZN2V0V66B";
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -83,6 +84,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.skyscanner.net" />
       </head>
       <body className="min-h-screen antialiased">
+        {/* Google AdSense — activates when NEXT_PUBLIC_ADSENSE_PUB_ID is set in .env.local */}
+        {ADSENSE_PUB_ID && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];

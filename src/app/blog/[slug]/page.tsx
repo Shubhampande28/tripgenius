@@ -6,6 +6,8 @@ import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin } from 'lucide-reac
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allPosts, getPostBySlug, getRelatedPosts, BlockType, BlogCategory } from '@/lib/blog';
+import AdUnit from '@/components/AdUnit';
+import { AD_SLOTS } from '@/lib/adsense';
 
 export async function generateStaticParams() {
   return allPosts.map(p => ({ slug: p.slug }));
@@ -161,9 +163,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Content */}
           <article>
             {post.content.map((block, i) => (
-              <ContentBlock key={i} block={block} />
+              <>
+                <ContentBlock key={i} block={block} />
+                {/* Mid-article ad after the 4th block */}
+                {i === 3 && <AdUnit key="mid-ad" slot={AD_SLOTS.blogMidArticle} format="fluid" layout="in-article" className="my-6" />}
+              </>
             ))}
           </article>
+          <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-10 pt-8 border-t border-border">

@@ -21,6 +21,8 @@ import RelatedCities from '@/components/city/RelatedCities';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
 import { getCityFaqs } from '@/lib/cityFaqs';
+import AdUnit from '@/components/AdUnit';
+import { AD_SLOTS } from '@/lib/adsense';
 
 export async function generateStaticParams() {
   return getAllCitySlugs().map((slug) => ({ slug }));
@@ -155,6 +157,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
       <main className="bg-dark">
         <CityHero city={city} />
         <AtAGlance city={city} />
+        <AdUnit slot={AD_SLOTS.cityTopBanner} format="horizontal" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" />
         <MonthByMonth city={city} />
 
         {/* Neighbourhoods if available, otherwise area explorer */}
@@ -169,15 +172,17 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               <ThingsToDo city={city} />
               <OffbeatPlaces city={city} />
               <BudgetBreakdown city={city} />
+              <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" className="py-4" />
               <WhereToStay city={city} />
               <WhereToEat city={city} />
               <GettingAround city={city} />
               <ProTips city={city} />
               <CityFAQ city={city} />
             </div>
-            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-0">
+            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-4">
               <CityTOC city={city} />
               <CitySidebar city={city} />
+              <AdUnit slot={AD_SLOTS.citySidebar} format="rectangle" />
             </div>
           </div>
         </div>
