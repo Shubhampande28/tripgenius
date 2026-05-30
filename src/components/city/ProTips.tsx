@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
 import { City } from '@/lib/types';
+import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
 
 export default function ProTips({ city }: { city: City }) {
   if (!city.proTips?.length) return null;
@@ -24,14 +25,19 @@ export default function ProTips({ city }: { city: City }) {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div
+          variants={stagger(0.07)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           {city.proTips.map((tip, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.06 }}
+              variants={fadeUp}
+              whileHover={{ y: -3, boxShadow: '0 14px 32px rgba(0,0,0,0.28)' }}
+              whileTap={{ scale: 0.99 }}
               className="flex gap-4 p-5 bg-surface border border-border rounded-xl group hover:border-gold/30 transition-colors"
             >
               <div className="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
@@ -40,7 +46,7 @@ export default function ProTips({ city }: { city: City }) {
               <p className="text-sm text-primary-text/80 leading-relaxed pt-1.5">{tip}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

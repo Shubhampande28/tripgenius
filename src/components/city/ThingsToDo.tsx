@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { City } from '@/lib/types';
+import { cardHover } from '@/lib/animations';
 
 const categoryColors: Record<string, string> = {
   Cultural:    'bg-purple-500/10 text-purple-400 border-purple-500/20',
@@ -50,7 +51,9 @@ export default function ThingsToDo({ city }: { city: City }) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.04 }}
-              className="flex gap-5 p-5 bg-surface border border-border rounded-xl hover:border-border/80 transition-colors group"
+              whileHover={{ y: -2, boxShadow: '0 12px 30px rgba(0,0,0,0.3)' }}
+              whileTap={{ scale: 0.99 }}
+              className="flex gap-5 p-5 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group cursor-default"
             >
               {/* Number */}
               <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-elevated border border-border flex items-center justify-center">

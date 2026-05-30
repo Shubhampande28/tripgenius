@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
+import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
 
 const vibeColors: Record<string, string> = {
   Spiritual:    'bg-gold/10 text-gold',
@@ -90,16 +91,21 @@ export default function CitiesPage() {
                 {filtered.length === 1 ? 'city' : 'cities'}
                 {query && ` matching "${query}"`}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {filtered.map((city, i) => (
+              <motion.div
+                variants={stagger(0.04)}
+                initial="hidden"
+                animate="visible"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+              >
+                {filtered.map((city) => (
                   <motion.div
                     key={city.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.5) }}
+                    variants={fadeUp}
+                    whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Link href={`/cities/${city.slug}`}>
-                      <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 h-full">
+                      <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-colors duration-200 h-full">
                         {/* Image */}
                         <div className="relative h-44 overflow-hidden">
                           <SafeImage
@@ -158,7 +164,7 @@ export default function CitiesPage() {
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </>
           )}
         </div>

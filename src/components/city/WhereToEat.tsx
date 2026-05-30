@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { UtensilsCrossed } from 'lucide-react';
 import { City } from '@/lib/types';
+import { cardHover } from '@/lib/animations';
 
 export default function WhereToEat({ city }: { city: City }) {
   if (!city.restaurants?.length) return null;
@@ -35,6 +36,8 @@ export default function WhereToEat({ city }: { city: City }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
+              whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(0,0,0,0.3)' }}
+              whileTap={{ scale: 0.99 }}
               className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-5 p-6 bg-surface border border-border rounded-2xl items-start group hover:border-gold/30 transition-colors"
             >
               {/* Icon */}

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Navigation } from 'lucide-react';
 import { City } from '@/lib/types';
+import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
 
 export default function GettingAround({ city }: { city: City }) {
   if (!city.gettingAround?.length) return null;
@@ -22,14 +23,18 @@ export default function GettingAround({ city }: { city: City }) {
             Getting Around {city.name}
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <motion.div
+            variants={stagger(0.07)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+          >
             {city.gettingAround.map((tip, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
+                variants={fadeUp}
+                whileHover={{ y: -2, boxShadow: '0 10px 24px rgba(0,0,0,0.25)' }}
                 className="flex gap-4 p-4 bg-elevated border border-border rounded-xl"
               >
                 <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -38,7 +43,7 @@ export default function GettingAround({ city }: { city: City }) {
                 <p className="text-sm text-primary-text/80 leading-relaxed">{tip}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
