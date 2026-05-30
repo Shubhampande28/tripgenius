@@ -171,7 +171,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               <GettingAround city={city} />
               <ProTips city={city} />
             </div>
-            <div className="lg:sticky lg:top-24 lg:self-start space-y-0">
+            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-0">
               <CityTOC city={city} />
               <CitySidebar city={city} />
             </div>
