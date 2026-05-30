@@ -88,7 +88,6 @@ export default function CitiesPage() {
               <p className="text-xs text-muted mb-6">
                 Showing <strong className="text-primary-text">{filtered.length}</strong>{' '}
                 {filtered.length === 1 ? 'city' : 'cities'}
-                {activeCountry !== 'All' && ` in ${activeCountry}`}
                 {query && ` matching "${query}"`}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
