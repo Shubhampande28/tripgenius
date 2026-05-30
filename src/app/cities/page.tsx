@@ -34,16 +34,18 @@ export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = 
       <main className="bg-dark min-h-screen">
 
         {/* ── Hero ── */}
-        <div className="relative overflow-hidden border-b border-border bg-surface pt-28 pb-14">
+        <div className="relative overflow-hidden pt-28 pb-20" style={{ background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f1923 100%)' }}>
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full bg-accent/7 blur-3xl" />
-            <div className="absolute top-8 right-1/3 w-[280px] h-[280px] rounded-full bg-teal/4 blur-3xl" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-accent/8 blur-3xl" />
+            <div className="absolute top-8 right-1/4 w-[350px] h-[350px] rounded-full bg-blue-500/6 blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[250px] h-[250px] rounded-full bg-teal/5 blur-3xl" />
           </div>
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-dark to-transparent" />
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-accent leading-tight tracking-tight">
-                Explore the World
+              <h1 className="font-heading text-5xl sm:text-6xl font-semibold leading-tight tracking-tight">
+                <span className="text-white">Explore the </span><span className="text-accent">World</span>
               </h1>
               {showHeroGlobe && (
                 <div className="hero-globe" aria-hidden="true">
@@ -57,7 +59,7 @@ export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = 
                   </div>
                 </div>
               )}
-              <p className="mt-3 text-muted text-base">
+              <p className="mt-3 text-white/50 text-base">
                 Honest guides for every destination.
               </p>
             </motion.div>
@@ -69,13 +71,13 @@ export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = 
               transition={{ duration: 0.5, delay: 0.15 }}
               className="mt-7 relative max-w-sm mx-auto"
             >
-              <Search size={15} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
+              <Search size={15} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search a city or country…"
-                className="w-full pl-11 pr-4 py-3.5 bg-elevated border border-border rounded-2xl text-sm text-primary-text placeholder:text-muted/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/10 transition-all"
+                className="w-full pl-11 pr-4 py-3.5 bg-white/8 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-accent/70 focus:ring-2 focus:ring-accent/15 transition-all backdrop-blur-sm"
               />
             </motion.div>
           </div>
