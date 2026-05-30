@@ -9,7 +9,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
-import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
+import { fadeUp, VIEWPORT } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 const vibeColors: Record<string, string> = {
   Spiritual:    'bg-gold/10 text-gold',
@@ -91,19 +92,12 @@ export default function CitiesPage() {
                 {filtered.length === 1 ? 'city' : 'cities'}
                 {query && ` matching "${query}"`}
               </p>
-              <motion.div
-                variants={stagger(0.04)}
-                initial="hidden"
-                animate="visible"
+              <AnimateList
+                stagger={0.05}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
               >
                 {filtered.map((city) => (
-                  <motion.div
-                    key={city.slug}
-                    variants={fadeUp}
-                    whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
-                    whileTap={{ scale: 0.98 }}
-                  >
+                  <AnimateItem key={city.slug} hover>
                     <Link href={`/cities/${city.slug}`}>
                       <div className="group rounded-2xl overflow-hidden border border-border bg-surface hover:border-accent/30 transition-colors duration-200 h-full">
                         {/* Image */}
@@ -162,9 +156,9 @@ export default function CitiesPage() {
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </AnimateItem>
                 ))}
-              </motion.div>
+              </AnimateList>
             </>
           )}
         </div>

@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Navigation } from 'lucide-react';
 import { City } from '@/lib/types';
-import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
+import { fadeUp, VIEWPORT } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function GettingAround({ city }: { city: City }) {
   if (!city.gettingAround?.length) return null;
@@ -23,27 +24,18 @@ export default function GettingAround({ city }: { city: City }) {
             Getting Around {city.name}
           </h2>
 
-          <motion.div
-            variants={stagger(0.07)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-          >
+          <AnimateList stagger={0.07} variant="row" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {city.gettingAround.map((tip, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                whileHover={{ y: -2, boxShadow: '0 10px 24px rgba(0,0,0,0.25)' }}
-                className="flex gap-4 p-4 bg-elevated border border-border rounded-xl"
-              >
-                <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Navigation size={14} className="text-accent" />
+              <AnimateItem key={i} variant="row" hover>
+                <div className="flex gap-4 p-4 bg-elevated border border-border rounded-xl h-full">
+                  <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Navigation size={14} className="text-accent" />
+                  </div>
+                  <p className="text-sm text-primary-text/80 leading-relaxed">{tip}</p>
                 </div>
-                <p className="text-sm text-primary-text/80 leading-relaxed">{tip}</p>
-              </motion.div>
+              </AnimateItem>
             ))}
-          </motion.div>
+          </AnimateList>
         </motion.div>
       </div>
     </section>

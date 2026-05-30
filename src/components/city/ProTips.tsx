@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
 import { City } from '@/lib/types';
-import { stagger, fadeUp, VIEWPORT } from '@/lib/animations';
+import { fadeUp, VIEWPORT } from '@/lib/animations';
+import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function ProTips({ city }: { city: City }) {
   if (!city.proTips?.length) return null;
@@ -25,28 +26,18 @@ export default function ProTips({ city }: { city: City }) {
           </h2>
         </motion.div>
 
-        <motion.div
-          variants={stagger(0.07)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
+        <AnimateList stagger={0.08} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {city.proTips.map((tip, i) => (
-            <motion.div
-              key={i}
-              variants={fadeUp}
-              whileHover={{ y: -3, boxShadow: '0 14px 32px rgba(0,0,0,0.28)' }}
-              whileTap={{ scale: 0.99 }}
-              className="flex gap-4 p-5 bg-surface border border-border rounded-xl group hover:border-gold/30 transition-colors"
-            >
-              <div className="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
-                <Lightbulb size={16} className="text-gold" />
+            <AnimateItem key={i} hover>
+              <div className="flex gap-4 p-5 bg-surface border border-border rounded-xl group hover:border-gold/30 transition-colors h-full">
+                <div className="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                  <Lightbulb size={16} className="text-gold" />
+                </div>
+                <p className="text-sm text-primary-text/80 leading-relaxed pt-1.5">{tip}</p>
               </div>
-              <p className="text-sm text-primary-text/80 leading-relaxed pt-1.5">{tip}</p>
-            </motion.div>
+            </AnimateItem>
           ))}
-        </motion.div>
+        </AnimateList>
       </div>
     </section>
   );
