@@ -11,11 +11,40 @@ import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
+import type { City } from '@/lib/types';
+
+function CityCard({ city }: { city: City }) {
+  return (
+    <Link href={`/cities/${city.slug}`}
+      className="group relative block rounded-2xl overflow-hidden h-56 sm:h-64">
+      <SafeImage
+        src={getCityImageUrl(city.slug, 'card') ?? city.image}
+        alt={`${city.name} travel guide`}
+        city={city.slug} accentColor={city.accentColor} fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+      <div className="absolute top-3 left-3 text-xl drop-shadow-lg">{city.flag}</div>
+      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+        Explore <ArrowRight size={9} />
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-3.5">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-white/45 mb-0.5">{city.country}</p>
+        <h3 className="font-heading text-lg font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight">
+          {city.name}
+        </h3>
+        <p className="text-[11px] text-white/55 mt-0.5 italic line-clamp-1">{city.tagline}</p>
+      </div>
+    </Link>
+  );
+}
 
 export default function HomePage() {
   const [query, setQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -94,7 +123,13 @@ export default function HomePage() {
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => { setQuery(e.target.value); setShowDropdown(true); }}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setShowDropdown(true);
+                    if (e.target.value) {
+                      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+                    }
+                  }}
                   onFocus={() => { if (query) setShowDropdown(true); }}
                   placeholder="Search a city or country…"
                   className="w-full pl-11 pr-4 py-4 bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/10 transition-all"
@@ -144,7 +179,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Cities grid ── */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
+        <section ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
 
           <div className="flex items-center gap-3 mb-8">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
@@ -163,36 +198,21 @@ export default function HomePage() {
               <p className="text-5xl mb-4">🌍</p>
               <p className="text-muted text-sm">No cities found for &ldquo;{query}&rdquo;</p>
             </div>
+          ) : query ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => (
+                  <CityCard key={city.slug} city={city} />
+                ))}
+              </div>
           ) : (
-            <AnimateList stagger={0.04}
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filtered.map((city) => (
-                <AnimateItem key={city.slug} hover>
-                  <Link href={`/cities/${city.slug}`}
-                    className="group relative block rounded-2xl overflow-hidden h-56 sm:h-64">
-                    <SafeImage
-                      src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                      alt={`${city.name} travel guide`}
-                      city={city.slug} accentColor={city.accentColor} fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                    <div className="absolute top-3 left-3 text-xl drop-shadow-lg">{city.flag}</div>
-                    <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
-                      Explore <ArrowRight size={9} />
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3.5">
-                      <p className="text-[9px] font-bold uppercase tracking-wider text-white/45 mb-0.5">{city.country}</p>
-                      <h3 className="font-heading text-lg font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight">
-                        {city.name}
-                      </h3>
-                      <p className="text-[11px] text-white/55 mt-0.5 italic line-clamp-1">{city.tagline}</p>
-                    </div>
-                  </Link>
-                </AnimateItem>
-              ))}
-            </AnimateList>
+              <AnimateList stagger={0.04}
+                className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => (
+                  <AnimateItem key={city.slug} hover>
+                    <CityCard city={city} />
+                  </AnimateItem>
+                ))}
+              </AnimateList>
           )}
         </section>
       </main>
