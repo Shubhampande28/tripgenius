@@ -131,7 +131,7 @@ export default function OffbeatPlaces({ city }: { city: City }) {
                         <div className="px-5 pb-5 pt-5 grid grid-cols-1 lg:grid-cols-[240px_1fr_260px] gap-4 border-t border-border/50 mt-1">
                           <div className="relative min-h-44 overflow-hidden rounded-xl border border-border/50 bg-dark">
                             <SafeImage
-                              src={place.image ?? getPlaceImageUrl(city.slug, place.name, city.image)}
+                              src={place.image ?? getPlaceImageUrl(city.slug, place.name, place.type) ?? city.image}
                               alt={`${place.name} in ${city.name}`}
                               city={`${city.slug}-${place.name}`}
                               accentColor={city.accentColor}

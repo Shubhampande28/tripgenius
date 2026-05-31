@@ -49,18 +49,37 @@ export default function ThingsToDo({ city }: { city: City }) {
           {city.thingsToDo.map((item, i) => (
             <AnimateItem key={item.name} variant="row" hover>
               <div className="grid grid-cols-1 overflow-hidden bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group md:grid-cols-[180px_1fr]">
-                <div className="relative min-h-40 md:min-h-full">
-                  <SafeImage
-                    src={item.image ?? getPlaceImageUrl(city.slug, item.name, city.image)}
-                    alt={`${item.name} in ${city.name}`}
-                    city={`${city.slug}-${item.name}`}
-                    accentColor={city.accentColor}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 180px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-surface/25" />
-                </div>
+                {(() => {
+                  const imgSrc = item.image ?? getPlaceImageUrl(city.slug, item.name, item.category);
+                  return (
+                    <div className="relative min-h-40 md:min-h-full md:w-[180px] flex-shrink-0 overflow-hidden">
+                      {imgSrc ? (
+                        <>
+                          <SafeImage
+                            src={imgSrc}
+                            alt={`${item.name} in ${city.name}`}
+                            city={city.slug}
+                            accentColor={city.accentColor}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 180px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-surface/25" />
+                        </>
+                      ) : (
+                        /* No photo — show emoji on gradient */
+                        <div
+                          className="absolute inset-0 flex items-center justify-center"
+                          style={{
+                            background: `linear-gradient(135deg, ${city.accentColor}25 0%, ${city.accentColor}10 100%)`,
+                          }}
+                        >
+                          <span className="text-6xl select-none">{item.icon}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 <div className="flex gap-5 p-5">
                   {/* Number */}
