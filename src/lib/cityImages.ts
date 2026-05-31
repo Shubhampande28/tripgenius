@@ -41,25 +41,25 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   cusco:           { card: 'photo-1587595431973-160d0d94add1', hero: 'photo-1587595431973-160d0d94add1' },
 
   // ── Golden Triangle + Major Indian Cities ─────────────────────
-  delhi:     { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  agra:      { card: 'photo-1564507592333-c60657eea523', hero: 'photo-1564507592333-c60657eea523' },
-  jaipur:    { card: 'photo-1599661046827-dacff0c0f09a', hero: 'photo-1599661046827-dacff0c0f09a' },
+  delhi:     { card: 'JdFQZLcfXRg',                    hero: 'JdFQZLcfXRg' },  // Red Fort (Lal Qila) — verified
+  agra:      { card: 'lfvqjziyRwc',                    hero: 'lfvqjziyRwc' },  // Taj Mahal — verified
+  jaipur:    { card: 'OKRWWYe12e4',                    hero: 'OKRWWYe12e4' },  // Hawa Mahal — verified
   mumbai:    { card: 'photo-1529253355930-ddbe423a2ac7', hero: 'photo-1529253355930-ddbe423a2ac7' },
-  varanasi:  { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
-  amritsar:  { card: 'photo-1692782428565-2041cd404ebd', hero: 'photo-1692782428565-2041cd404ebd' },
-  kolkata:   { card: 'photo-1558431382-27e303142255', hero: 'photo-1558431382-27e303142255' },
+  varanasi:  { card: 'TMl8euIQQnk',                    hero: 'TMl8euIQQnk' },  // Ganges ghats with boats — verified
+  amritsar:  { card: 'JDrNTJk8u0s',                    hero: 'JDrNTJk8u0s' },  // Golden Temple reflection — verified
+  kolkata:   { card: 'photo-1558431382-27e303142255',  hero: 'photo-1558431382-27e303142255' },
   rishikesh: { card: 'photo-1724432191302-6133b34c7105', hero: 'photo-1724432191302-6133b34c7105' },
 
   // ── Rajasthan ─────────────────────────────────────────────────
-  udaipur:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  jodhpur:         { card: 'ioKS0yjUesw',                     hero: 'ioKS0yjUesw' },  // Blue city / Mehrangarh
-  jaisalmer:       { card: 'phAEmNvIUGI',                     hero: 'phAEmNvIUGI' },  // Sonar Quila at sunrise
-  bikaner:         { card: 'WgWVaHAYrQQ',                     hero: 'WgWVaHAYrQQ' },  // Junagarh Fort
-  pushkar:         { card: 'EowY84GhE74',                     hero: 'EowY84GhE74' },  // Pushkar Camel Fair
-  ajmer:           { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' }, // fallback — limited Unsplash coverage
+  udaipur:         { card: 'q52DnJSf_Gw',                     hero: 'q52DnJSf_Gw' },  // Lake Pichola + City Palace — verified
+  jodhpur:         { card: 'ioKS0yjUesw',                     hero: 'ioKS0yjUesw' },  // Mehrangarh Fort twilight — verified
+  jaisalmer:       { card: 'ZITclJkZQc0',                     hero: 'ZITclJkZQc0' },  // Jaisalmer Golden Fort — verified
+  bikaner:         { card: 'WgWVaHAYrQQ',                     hero: 'WgWVaHAYrQQ' },  // Junagarh Fort — verified
+  pushkar:         { card: 'xaMvNLU4vzY',                     hero: 'xaMvNLU4vzY' },  // Pushkar sacred lake at sunset — verified
+  ajmer:           { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
   ranthambore:     { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
   'mount-abu':     { card: 'photo-1681204032871-d385acdc114d', hero: 'photo-1681204032871-d385acdc114d' },
-  'rann-of-kutch': { card: 'cSon1ZNHOMs',                     hero: 'cSon1ZNHOMs' },  // Kutch camel/white desert
+  'rann-of-kutch': { card: 'cSon1ZNHOMs',                     hero: 'cSon1ZNHOMs' },
 
   // ── J&K / Himachal Pradesh ────────────────────────────────────
   srinagar:    { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
@@ -103,8 +103,8 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   thrissur:      { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
 
   // ── Uttar Pradesh / North Central ────────────────────────────
-  lucknow:   { card: 'TU8abcaCdbk', hero: 'TU8abcaCdbk' },  // Bara Imambara
-  khajuraho: { card: 'JHoje1cjs7s', hero: 'JHoje1cjs7s' },  // Kandariya Mahadev Temple
+  lucknow:   { card: 'rKd7IXb5xCQ', hero: 'rKd7IXb5xCQ' },  // Bara Imambara — verified explicit title
+  khajuraho: { card: 'JHoje1cjs7s', hero: 'JHoje1cjs7s' },  // Kandariya Mahadev Temple — verified
   puri:      { card: 'II2zd-7Rnmw', hero: 'II2zd-7Rnmw' },  // Puri beach Odisha
   vrindavan: { card: 'xaUQI3OnQZs', hero: 'xaUQI3OnQZs' },  // Holi at Vrindavan temple
   mathura:   { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
