@@ -5,19 +5,19 @@ import { Calendar, Wallet, Languages, Coins, Stamp } from 'lucide-react';
 import { City } from '@/lib/types';
 
 const statsConfig = (city: City) => [
-  { icon: Calendar, label: 'Best Time', value: city.stats.bestTime, color: 'text-gold', bg: 'bg-gold/10', border: 'border-gold/20' },
-  { icon: Wallet, label: 'Daily Budget', value: city.stats.budget, color: 'text-teal', bg: 'bg-teal/10', border: 'border-teal/20' },
-  { icon: Languages, label: 'Language', value: city.stats.language, color: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/20' },
-  { icon: Coins, label: 'Currency', value: city.stats.currency, color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+  { icon: Calendar, label: 'Best Time', value: city.stats.bestTime, color: 'text-gold', bg: 'bg-gold/20', border: 'border-gold/40' },
+  { icon: Wallet, label: 'Daily Budget', value: city.stats.budget, color: 'text-teal', bg: 'bg-teal/15', border: 'border-teal/35' },
+  { icon: Languages, label: 'Language', value: city.stats.language, color: 'text-accent', bg: 'bg-accent/15', border: 'border-accent/35' },
+  { icon: Coins, label: 'Currency', value: city.stats.currency, color: 'text-purple-400', bg: 'bg-purple-500/15', border: 'border-purple-500/35' },
 ];
 
 // Visa badge colour based on keywords
 function visaColor(visa: string) {
   const v = visa.toLowerCase();
-  if (v.includes('visa free') || v.includes('no visa')) return { dot: 'bg-teal', text: 'text-teal', bg: 'bg-teal/10 border-teal/25' };
-  if (v.includes('on arrival') || v.includes('voa')) return { dot: 'bg-gold', text: 'text-gold', bg: 'bg-gold/10 border-gold/25' };
-  if (v.includes('e-visa') || v.includes('evisa')) return { dot: 'bg-blue-400', text: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/25' };
-  return { dot: 'bg-accent', text: 'text-accent', bg: 'bg-accent/10 border-accent/25' };
+  if (v.includes('visa free') || v.includes('no visa')) return { dot: 'bg-teal', text: 'text-teal', bg: 'bg-teal/15 border-teal/35' };
+  if (v.includes('on arrival') || v.includes('voa')) return { dot: 'bg-gold', text: 'text-gold', bg: 'bg-gold/20 border-gold/40' };
+  if (v.includes('e-visa') || v.includes('evisa')) return { dot: 'bg-blue-400', text: 'text-blue-400', bg: 'bg-blue-500/15 border-blue-500/35' };
+  return { dot: 'bg-accent', text: 'text-accent', bg: 'bg-accent/15 border-accent/35' };
 }
 
 export default function AtAGlance({ city }: { city: City }) {

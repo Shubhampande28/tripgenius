@@ -48,49 +48,6 @@ html.light {
   --color-muted:        #6B7280;
 }
 
-/*
-  Root cause fix: colored backgrounds at /8–/10 opacity are nearly invisible
-  on white (#FFF). These overrides double the effective tint in light mode
-  so every component (AtAGlance, MonthByMonth, chips, badges…) looks vivid
-  without touching any individual component file.
-*/
-html.light .bg-teal\/10    { background-color: color-mix(in srgb, #00C9A7 22%, transparent) !important; }
-html.light .bg-teal\/8     { background-color: color-mix(in srgb, #00C9A7 18%, transparent) !important; }
-html.light .bg-teal\/15    { background-color: color-mix(in srgb, #00C9A7 28%, transparent) !important; }
-html.light .bg-teal\/20    { background-color: color-mix(in srgb, #00C9A7 32%, transparent) !important; }
-
-html.light .bg-accent\/10  { background-color: color-mix(in srgb, #FF6B35 18%, transparent) !important; }
-html.light .bg-accent\/8   { background-color: color-mix(in srgb, #FF6B35 15%, transparent) !important; }
-html.light .bg-accent\/15  { background-color: color-mix(in srgb, #FF6B35 24%, transparent) !important; }
-html.light .bg-accent\/20  { background-color: color-mix(in srgb, #FF6B35 30%, transparent) !important; }
-
-html.light .bg-gold\/10    { background-color: color-mix(in srgb, #FFD166 26%, transparent) !important; }
-html.light .bg-gold\/8     { background-color: color-mix(in srgb, #FFD166 20%, transparent) !important; }
-
-html.light .bg-blue-500\/10 { background-color: color-mix(in srgb, #3B82F6 18%, transparent) !important; }
-html.light .bg-blue-500\/8  { background-color: color-mix(in srgb, #3B82F6 15%, transparent) !important; }
-
-html.light .bg-purple-500\/10 { background-color: color-mix(in srgb, #8B5CF6 18%, transparent) !important; }
-html.light .bg-purple-500\/8  { background-color: color-mix(in srgb, #8B5CF6 15%, transparent) !important; }
-
-html.light .bg-red-500\/10 { background-color: color-mix(in srgb, #EF4444 16%, transparent) !important; }
-html.light .bg-red-500\/8  { background-color: color-mix(in srgb, #EF4444 13%, transparent) !important; }
-
-html.light .bg-indigo-500\/10 { background-color: color-mix(in srgb, #6366F1 18%, transparent) !important; }
-html.light .bg-orange-500\/10 { background-color: color-mix(in srgb, #F97316 18%, transparent) !important; }
-html.light .bg-green-500\/10  { background-color: color-mix(in srgb, #22C55E 18%, transparent) !important; }
-
-/* Borders — make them crisper on white */
-html.light .border-teal\/20   { border-color: color-mix(in srgb, #00C9A7 40%, transparent) !important; }
-html.light .border-teal\/25   { border-color: color-mix(in srgb, #00C9A7 45%, transparent) !important; }
-html.light .border-accent\/20 { border-color: color-mix(in srgb, #FF6B35 35%, transparent) !important; }
-html.light .border-accent\/25 { border-color: color-mix(in srgb, #FF6B35 40%, transparent) !important; }
-html.light .border-gold\/20   { border-color: color-mix(in srgb, #FFD166 45%, transparent) !important; }
-html.light .border-gold\/25   { border-color: color-mix(in srgb, #FFD166 50%, transparent) !important; }
-html.light .border-blue-500\/20 { border-color: color-mix(in srgb, #3B82F6 38%, transparent) !important; }
-html.light .border-blue-500\/25 { border-color: color-mix(in srgb, #3B82F6 42%, transparent) !important; }
-html.light .border-purple-500\/20 { border-color: color-mix(in srgb, #8B5CF6 35%, transparent) !important; }
-html.light .border-red-500\/20  { border-color: color-mix(in srgb, #EF4444 32%, transparent) !important; }
 
 html.light .glass {
   background: rgba(255, 255, 255, 0.88);

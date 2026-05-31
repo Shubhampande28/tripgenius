@@ -119,11 +119,10 @@ export default function WhereToStay({ city }: { city: City }) {
                       </div>
 
                       {/* CTA */}
-                      <div className="mt-auto flex items-center justify-between pt-3 border-t border-border/50">
-                        <span className="text-xs text-muted">Booking.com</span>
+                      <div className="mt-auto flex items-center justify-end pt-3 border-t border-border/50">
                         <span className="flex items-center gap-1.5 text-xs font-semibold text-teal group-hover:underline">
                           <Hotel size={12} />
-                          Find Hotels
+                          Find Hotels →
                         </span>
                       </div>
                     </div>

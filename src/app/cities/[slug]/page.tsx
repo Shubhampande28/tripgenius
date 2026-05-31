@@ -173,7 +173,6 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               }
 
               <OffbeatPlaces city={city} />
-              <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" className="py-2" />
               <WhereToStay city={city} />
               <WhereToEat city={city} />
               <GettingAround city={city} />

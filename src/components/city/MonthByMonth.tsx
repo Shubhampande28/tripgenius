@@ -5,10 +5,10 @@ import { CalendarDays } from 'lucide-react';
 import { City, MonthRating } from '@/lib/types';
 
 const GROUP_CONFIG: Record<string, { rating: MonthRating[]; label: string; color: string; bg: string; border: string }> = {
-  best:  { rating: ['excellent'],          label: 'Best Months',  color: 'text-teal',     bg: 'bg-teal/10',     border: 'border-teal/25' },
-  good:  { rating: ['good'],               label: 'Good',         color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/25' },
-  okay:  { rating: ['average'],            label: 'Okay',         color: 'text-gold',     bg: 'bg-gold/10',     border: 'border-gold/25' },
-  avoid: { rating: ['avoid'],              label: 'Avoid',        color: 'text-red-400',  bg: 'bg-red-500/10',  border: 'border-red-500/25' },
+  best:  { rating: ['excellent'],          label: 'Best Months',  color: 'text-teal',     bg: 'bg-teal/20',     border: 'border-teal/40' },
+  good:  { rating: ['good'],               label: 'Good',         color: 'text-blue-400', bg: 'bg-blue-500/15', border: 'border-blue-500/35' },
+  okay:  { rating: ['average'],            label: 'Okay',         color: 'text-gold',     bg: 'bg-gold/25',     border: 'border-gold/45' },
+  avoid: { rating: ['avoid'],              label: 'Avoid',        color: 'text-red-400',  bg: 'bg-red-500/15',  border: 'border-red-500/30' },
 };
 
 export default function MonthByMonth({ city }: { city: City }) {
