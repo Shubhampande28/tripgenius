@@ -164,8 +164,8 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
-              <ThingsToDo city={city} />
               <MonthByMonth city={city} />
+              <ThingsToDo city={city} />
 
               {/* Neighbourhoods if available, otherwise area explorer */}
               {city.neighbourhoods?.length

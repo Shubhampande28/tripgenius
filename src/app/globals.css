@@ -59,6 +59,68 @@ html.light .card-glow:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+/* ── Hero theme adaptations (CSS-only, no JS flash) ─────────────── */
+.hero-bg {
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f1923 100%);
+}
+html.light .hero-bg {
+  background: linear-gradient(160deg, #ffffff 0%, #fdf8f5 50%, #f9f6ff 100%);
+}
+
+.hero-glow { opacity: 1; }
+html.light .hero-glow { opacity: 0; }
+
+.hero-title { color: #ffffff; }
+html.light .hero-title { color: #111827; }
+
+.hero-subtitle { color: rgba(255, 255, 255, 0.5); }
+html.light .hero-subtitle { color: rgba(55, 65, 81, 0.7); }
+
+.hero-popular-label { color: rgba(255, 255, 255, 0.3); }
+html.light .hero-popular-label { color: rgba(55, 65, 81, 0.5); }
+
+.hero-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+}
+html.light .hero-chip {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  color: rgba(17, 24, 39, 0.65);
+}
+html.light .hero-chip:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #111827;
+}
+
+.hero-search {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+html.light .hero-search {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #111827;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.hero-search::placeholder { color: rgba(255, 255, 255, 0.35); }
+html.light .hero-search::placeholder { color: rgba(107, 114, 128, 0.65); }
+
+.hero-search-icon { color: rgba(255, 255, 255, 0.4); }
+html.light .hero-search-icon { color: rgba(107, 114, 128, 0.6); }
+
+.hero-stat-val { color: #ffffff; }
+html.light .hero-stat-val { color: #111827; }
+
+.hero-stat-label { color: rgba(255, 255, 255, 0.35); }
+html.light .hero-stat-label { color: rgba(55, 65, 81, 0.55); }
+
+.hero-bottom-fade {
+  background: linear-gradient(to top, var(--color-dark), transparent);
+}
+
 .heading { font-family: var(--font-heading); }
 
 .gradient-text-accent {
