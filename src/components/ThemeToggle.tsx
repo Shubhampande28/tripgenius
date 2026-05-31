@@ -1,20 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
-export default function ThemeToggle() {
-  const [isLight, setIsLight] = useState(false);
-  const [mounted, setMounted] = useState(false);
+const THEME_EVENT = 'tripgenius-theme-change';
 
-  useEffect(() => {
-    setMounted(true);
-    setIsLight(document.documentElement.classList.contains('light'));
-  }, []);
+function getThemeSnapshot() {
+  if (typeof document === 'undefined') return true;
+  return document.documentElement.classList.contains('light');
+}
+
+function subscribeTheme(listener: () => void) {
+  if (typeof window === 'undefined') return () => {};
+
+  window.addEventListener(THEME_EVENT, listener);
+  window.addEventListener('storage', listener);
+
+  return () => {
+    window.removeEventListener(THEME_EVENT, listener);
+    window.removeEventListener('storage', listener);
+  };
+}
+
+export default function ThemeToggle() {
+  const isLight = useSyncExternalStore(subscribeTheme, getThemeSnapshot, () => true);
 
   function toggle() {
     const next = !isLight;
-    setIsLight(next);
     if (next) {
       document.documentElement.classList.add('light');
       localStorage.setItem('theme', 'light');
@@ -22,9 +34,8 @@ export default function ThemeToggle() {
       document.documentElement.classList.remove('light');
       localStorage.setItem('theme', 'dark');
     }
+    window.dispatchEvent(new Event(THEME_EVENT));
   }
-
-  if (!mounted) return <div className="w-9 h-9" />;
 
   return (
     <button
