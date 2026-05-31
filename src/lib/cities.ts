@@ -160,7 +160,7 @@ export const cities: City[] = [
         name: "Ubud",
         emoji: "🌿",
         accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=600&q=80",
         tagline: "Culture, rice terraces & jungle",
         spots: [
           { name: "Tegallalang Rice Terraces", tag: "Iconic" },
@@ -176,7 +176,7 @@ export const cities: City[] = [
         name: "Uluwatu",
         emoji: "🌊",
         accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1604842937136-1648761a6256?auto=format&fit=crop&w=600&q=80",
         tagline: "Clifftop temples & world-class surf",
         spots: [
           { name: "Uluwatu Temple", tag: "Must-see" },
@@ -191,7 +191,7 @@ export const cities: City[] = [
         name: "Seminyak",
         emoji: "🌅",
         accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1573790387438-4da905039392?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1662950267280-0cdf5f7139b4?auto=format&fit=crop&w=600&q=80",
         tagline: "Stylish beach clubs & dining",
         spots: [
           { name: "Seminyak Beach", tag: "Beach" },
@@ -206,7 +206,7 @@ export const cities: City[] = [
         name: "Nusa Penida",
         emoji: "🦅",
         accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1557106160-c533b9d00071?auto=format&fit=crop&w=600&q=80",
         tagline: "Dramatic cliffs & pristine waters",
         spots: [
           { name: "Kelingking Beach", tag: "Iconic" },
@@ -221,7 +221,7 @@ export const cities: City[] = [
         name: "Canggu",
         emoji: "🏄",
         accentColor: "#06B6D4",
-        image: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1564221549673-b43c122d1c29?auto=format&fit=crop&w=600&q=80",
         tagline: "Surf, cafes & digital nomad vibes",
         spots: [
           { name: "Batu Bolong Beach", tag: "Surf" },
@@ -236,7 +236,7 @@ export const cities: City[] = [
         name: "Kuta & Legian",
         emoji: "🎉",
         accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1476158085676-e67f57ed9ed7?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1666873536534-7b1a5a333d24?auto=format&fit=crop&w=600&q=80",
         tagline: "Surf lessons, nightlife & shopping",
         spots: [
           { name: "Kuta Beach", tag: "Surf lessons" },
@@ -527,7 +527,7 @@ export const cities: City[] = [
     areas: [
       {
         name: "Old City", emoji: "🛕", accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1586098311577-520120ba3df3?auto=format&fit=crop&w=600&q=80",
         tagline: "Temples, palaces & river life",
         spots: [
           { name: "Grand Palace & Wat Phra Kaew", tag: "Must-see" },
@@ -540,7 +540,7 @@ export const cities: City[] = [
       },
       {
         name: "Sukhumvit", emoji: "🌃", accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1535953928289-6bac80e96f3c?auto=format&fit=crop&w=600&q=80",
         tagline: "Nightlife, malls & street food",
         spots: [
           { name: "Terminal 21 Mall", tag: "Shopping" },
@@ -553,7 +553,7 @@ export const cities: City[] = [
       },
       {
         name: "Silom & Sathorn", emoji: "🍹", accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1550814669-a61a9167084c?auto=format&fit=crop&w=600&q=80",
         tagline: "Rooftop bars & riverside views",
         spots: [
           { name: "Sky Bar at Lebua Tower", tag: "Iconic rooftop" },
@@ -566,7 +566,7 @@ export const cities: City[] = [
       },
       {
         name: "Chinatown (Yaowarat)", emoji: "🦀", accentColor: "#EF4444",
-        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1513568720563-6a5b8c6caab3?auto=format&fit=crop&w=600&q=80",
         tagline: "Street food heaven after dark",
         spots: [
           { name: "Yaowarat Road night market", tag: "Must-do" },
@@ -579,7 +579,7 @@ export const cities: City[] = [
       },
       {
         name: "Chatuchak & Ari", emoji: "🛍️", accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1696437492959-b9a8c37df4ad?auto=format&fit=crop&w=600&q=80",
         tagline: "World's biggest weekend market",
         spots: [
           { name: "Chatuchak Weekend Market", tag: "15,000 stalls" },
@@ -592,7 +592,7 @@ export const cities: City[] = [
       },
       {
         name: "Thonglor & Ekkamai", emoji: "✨", accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1712487650909-2aaf5c5eac36?auto=format&fit=crop&w=600&q=80",
         tagline: "Bangkok's coolest local scene",
         spots: [
           { name: "72 Courtyard lifestyle mall", tag: "Design" },
@@ -883,7 +883,7 @@ export const cities: City[] = [
     areas: [
       {
         name: "Le Marais", emoji: "🎨", accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1673688242239-4f637f2126c7?auto=format&fit=crop&w=600&q=80",
         tagline: "Galleries, fashion & historic squares",
         spots: [
           { name: "Place des Vosges", tag: "Iconic" },
@@ -896,7 +896,7 @@ export const cities: City[] = [
       },
       {
         name: "Montmartre", emoji: "⛪", accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1753523080829-3d01fdab4270?auto=format&fit=crop&w=600&q=80",
         tagline: "Artists, hilltop views & bohemian charm",
         spots: [
           { name: "Sacré-Cœur Basilica", tag: "Views" },
@@ -909,7 +909,7 @@ export const cities: City[] = [
       },
       {
         name: "Saint-Germain", emoji: "📚", accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1638118845841-79fb03113221?auto=format&fit=crop&w=600&q=80",
         tagline: "Literary cafes & Left Bank elegance",
         spots: [
           { name: "Café de Flore", tag: "Iconic cafe" },
@@ -922,7 +922,7 @@ export const cities: City[] = [
       },
       {
         name: "Eiffel & Trocadéro", emoji: "🗼", accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1570097703229-b195d6dd291f?auto=format&fit=crop&w=600&q=80",
         tagline: "Paris's iconic skyline zone",
         spots: [
           { name: "Eiffel Tower", tag: "Book ahead" },
@@ -935,7 +935,7 @@ export const cities: City[] = [
       },
       {
         name: "Bastille & Oberkampf", emoji: "🍷", accentColor: "#EF4444",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1663785123311-af1df1037e95?auto=format&fit=crop&w=600&q=80",
         tagline: "Local Paris — bars, markets & nightlife",
         spots: [
           { name: "Marché de la Bastille (Sunday)", tag: "Best market" },
@@ -948,7 +948,7 @@ export const cities: City[] = [
       },
       {
         name: "Louvre & Opera", emoji: "🎭", accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1554403464-aa07c1d085f1?auto=format&fit=crop&w=600&q=80",
         tagline: "World-class art & grand boulevards",
         spots: [
           { name: "The Louvre Museum", tag: "Must-do" },
@@ -1239,7 +1239,7 @@ export const cities: City[] = [
     areas: [
       {
         name: "Shinjuku", emoji: "🌃", accentColor: "#EF4444",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1677003714423-cf7f1ce0a27d?auto=format&fit=crop&w=600&q=80",
         tagline: "Neon, nightlife & Golden Gai",
         spots: [
           { name: "Kabukicho neon district", tag: "Nightlife" },
@@ -1252,7 +1252,7 @@ export const cities: City[] = [
       },
       {
         name: "Shibuya & Harajuku", emoji: "🛍️", accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1710026008884-825105d70043?auto=format&fit=crop&w=600&q=80",
         tagline: "Fashion, crossings & youth culture",
         spots: [
           { name: "Shibuya Scramble Crossing", tag: "Iconic" },
@@ -1265,7 +1265,7 @@ export const cities: City[] = [
       },
       {
         name: "Asakusa", emoji: "⛩️", accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1553292770-c3d14b814242?auto=format&fit=crop&w=600&q=80",
         tagline: "Traditional Tokyo & ancient temples",
         spots: [
           { name: "Senso-ji Temple", tag: "Must-see" },
@@ -1278,7 +1278,7 @@ export const cities: City[] = [
       },
       {
         name: "Akihabara", emoji: "🎮", accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1735796788543-f7c76beb16dd?auto=format&fit=crop&w=600&q=80",
         tagline: "Electronics, anime & maid cafes",
         spots: [
           { name: "Multi-floor electronics stores", tag: "Tech" },
@@ -1291,7 +1291,7 @@ export const cities: City[] = [
       },
       {
         name: "Ginza", emoji: "💎", accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1754147388519-212180791a55?auto=format&fit=crop&w=600&q=80",
         tagline: "Luxury shopping & Michelin dining",
         spots: [
           { name: "Ginza Six luxury mall", tag: "Luxury" },
@@ -1304,7 +1304,7 @@ export const cities: City[] = [
       },
       {
         name: "Yanaka & Ueno", emoji: "🏮", accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1566204978576-77f6addcef4d?auto=format&fit=crop&w=600&q=80",
         tagline: "Old Tokyo charm & world-class museums",
         spots: [
           { name: "Yanaka Ginza shotengai", tag: "Local market" },
@@ -1595,7 +1595,7 @@ export const cities: City[] = [
     areas: [
       {
         name: "Downtown", emoji: "🏙️", accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1748373448914-1d7f882700e2?auto=format&fit=crop&w=600&q=80",
         tagline: "Burj Khalifa, fountains & luxury",
         spots: [
           { name: "Burj Khalifa At the Top", tag: "Must-do" },
@@ -1608,7 +1608,7 @@ export const cities: City[] = [
       },
       {
         name: "Marina & JBR", emoji: "⛵", accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=600&q=80",
         tagline: "Waterfront walks & beach clubs",
         spots: [
           { name: "JBR Beach", tag: "Beach" },
@@ -1621,7 +1621,7 @@ export const cities: City[] = [
       },
       {
         name: "Old Dubai (Deira)", emoji: "🕌", accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1636924271402-d639875aa2bb?auto=format&fit=crop&w=600&q=80",
         tagline: "Souks, spices & authentic Dubai",
         spots: [
           { name: "Gold Souk", tag: "Shopping" },
@@ -1634,7 +1634,7 @@ export const cities: City[] = [
       },
       {
         name: "Palm Jumeirah", emoji: "🌴", accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1489516408517-0c0a15662682?auto=format&fit=crop&w=600&q=80",
         tagline: "Man-made island & luxury resorts",
         spots: [
           { name: "Atlantis Aquaventure Waterpark", tag: "Fun" },
@@ -1647,7 +1647,7 @@ export const cities: City[] = [
       },
       {
         name: "Al Quoz & Alserkal", emoji: "🎨", accentColor: "#EF4444",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1739190421122-078fee10ca90?auto=format&fit=crop&w=600&q=80",
         tagline: "Dubai's creative warehouse arts district",
         spots: [
           { name: "Alserkal Avenue galleries", tag: "Art" },
@@ -1660,7 +1660,7 @@ export const cities: City[] = [
       },
       {
         name: "Desert & Day Trips", emoji: "🐪", accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1553796661-17b7fa359f49?auto=format&fit=crop&w=600&q=80",
         tagline: "Red dunes, stargazing & adventure",
         spots: [
           { name: "Desert Safari & dune bashing", tag: "Must-do" },
@@ -1849,8 +1849,8 @@ export const cities: City[] = [
     vibes: ["Beach", "Romantic", "Bohemian"],
     gradient: "from-teal-500 via-cyan-400 to-blue-400",
     accentColor: "#06B6D4",
-    image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=80",
-    heroImage: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1600&q=85",
+    image: "https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?auto=format&fit=crop&w=800&q=80",
+    heroImage: "https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?auto=format&fit=crop&w=1600&q=85",
     thingsToDo: [
       {
         name: "Palolem Beach Kayaking",
@@ -1951,7 +1951,7 @@ export const cities: City[] = [
     areas: [
       {
         name: "Calangute & Baga", emoji: "🎉", accentColor: "#FF6B35",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1597820334272-af87b2d917c1?auto=format&fit=crop&w=600&q=80",
         tagline: "Goa's busiest & most touristy strip",
         spots: [
           { name: "Calangute Beach", tag: "Main beach" },
@@ -1964,7 +1964,7 @@ export const cities: City[] = [
       },
       {
         name: "Anjuna & Vagator", emoji: "🌀", accentColor: "#8B5CF6",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1541738679621-172e4575a81d?auto=format&fit=crop&w=600&q=80",
         tagline: "Bohemian Goa — flea markets & cliff bars",
         spots: [
           { name: "Anjuna Wednesday Flea Market", tag: "Must-do" },
@@ -1977,7 +1977,7 @@ export const cities: City[] = [
       },
       {
         name: "Assagao & Siolim", emoji: "☕", accentColor: "#00C9A7",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1678786100212-620e7f073254?auto=format&fit=crop&w=600&q=80",
         tagline: "Goa's upscale cafe & villa district",
         spots: [
           { name: "Gunpowder restaurant", tag: "Best food" },
@@ -1990,7 +1990,7 @@ export const cities: City[] = [
       },
       {
         name: "Palolem (South Goa)", emoji: "🏖️", accentColor: "#FFD166",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1727193120023-12c48606b803?auto=format&fit=crop&w=600&q=80",
         tagline: "Paradise beach & silent discos",
         spots: [
           { name: "Palolem crescent beach", tag: "Most beautiful" },
@@ -2003,7 +2003,7 @@ export const cities: City[] = [
       },
       {
         name: "Panaji (Panjim)", emoji: "🇵🇹", accentColor: "#EF4444",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1656155316674-d8fab9e65eab?auto=format&fit=crop&w=600&q=80",
         tagline: "Goa's charming colonial capital",
         spots: [
           { name: "Fontainhas Latin Quarter", tag: "Must-see" },
@@ -2016,7 +2016,7 @@ export const cities: City[] = [
       },
       {
         name: "Dudhsagar & Spice Country", emoji: "🌿", accentColor: "#F59E0B",
-        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1652120704209-14cbc87b603f?auto=format&fit=crop&w=600&q=80",
         tagline: "Waterfalls, spices & wildlife",
         spots: [
           { name: "Dudhsagar Falls (monsoon is epic)", tag: "Waterfall" },

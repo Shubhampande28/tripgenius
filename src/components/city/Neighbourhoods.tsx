@@ -36,7 +36,7 @@ export default function Neighbourhoods({ city }: { city: City }) {
           </h2>
           <p className="mt-2 text-muted max-w-2xl leading-relaxed">
             Location shapes your entire trip. Each neighbourhood has a different personality
-            — here's who each one is really for.
+            — here&apos;s who each one is really for.
           </p>
         </motion.div>
 

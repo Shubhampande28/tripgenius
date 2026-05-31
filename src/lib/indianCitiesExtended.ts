@@ -37,9 +37,9 @@ const U = 'https://images.unsplash.com';
  */
 function categoryPhoto(vibes: string[], gradient: string): string {
   if (vibes.includes('Beach'))                      return `${U}/photo-1507525428034-b723cf961d3e`;
-  if (vibes.includes('Wildlife'))                   return `${U}/photo-1549366021-9f761d040a94`;
+  if (vibes.includes('Wildlife'))                   return `${U}/photo-1679451289926-d421c3b5ff43`;
   if (vibes.includes('Adventure') && vibes.includes('Nature')) return `${U}/photo-1626621341517-bbf3d9990a23`;
-  if (vibes.includes('Nature'))                     return `${U}/photo-1544634076-a9c0aa0d8e45`;
+  if (vibes.includes('Nature'))                     return `${U}/photo-1681204032871-d385acdc114d`;
   if (vibes.includes('Spiritual') || vibes.includes('Pilgrimage')) return `${U}/photo-1561361058-c24cecae35ca`;
   if (vibes.includes('Historical') || vibes.includes('Cultural')) {
     if (gradient.includes('amber') || gradient.includes('orange')) return `${U}/photo-1477587458883-47145ed94245`;
@@ -295,11 +295,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Mar – Jun, Sep – Nov', budget: '$15–$50/day', language: 'Hindi, Kumaoni', currency: 'INR (Rupee)' },
     vibes: ['Romantic', 'Nature', 'Wellness'],
     gradient: 'from-blue-900 to-teal-900', accentColor: '#0D9488',
-    image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Naini Lake & Mall Road', emoji: '🚣', accentColor: '#0D9488',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Boating & colonial promenade', spots: [
           { name: 'Naini Lake boating', tag: 'Must-do' },
           { name: 'Naini Devi Temple', tag: 'Sacred' },
@@ -307,7 +307,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Boat house club sunset', tag: 'Views' },
         ]},
       { name: 'Snow View & Tiffin Top', emoji: '🏔️', accentColor: '#2563EB',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Himalayan panoramas', spots: [
           { name: 'Snow View Point (cable car)', tag: 'Views' },
           { name: 'Tiffin Top (Dorothy\'s Seat) trek', tag: 'Short trek' },
@@ -315,7 +315,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Ayarpatta Hill', tag: 'Forest walk' },
         ]},
       { name: 'Corbett Surrounds', emoji: '🐘', accentColor: '#16A34A',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Wildlife & nearby villages', spots: [
           { name: 'Bhimtal Lake (nearby)', tag: 'Day trip' },
           { name: 'Sattal (seven lakes)', tag: 'Birdwatching' },
@@ -602,11 +602,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Mar – Jun · Sep – Nov', budget: '$15–$55/day', language: 'Hindi, Garhwali', currency: 'INR (Rupee)' },
     vibes: ['Romantic', 'Nature', 'Cultural'],
     gradient: 'from-green-900 to-emerald-800', accentColor: '#059669',
-    image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Mall Road & Library Bazaar', emoji: '🛍️', accentColor: '#059669',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Colonial promenade & shops', spots: [
           { name: 'Mall Road evening walk', tag: 'Classic' },
           { name: 'Christ Church (1836)', tag: 'Colonial' },
@@ -614,7 +614,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Library Chowk food stalls', tag: 'Street food' },
         ]},
       { name: 'Landour', emoji: '📚', accentColor: '#166534',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Ruskin Bond\'s village & bakeries', spots: [
           { name: 'Landour cantonment lanes', tag: 'Charming' },
           { name: 'Char Dukan (four shops) bakery', tag: 'Institution' },
@@ -622,7 +622,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Sisters Bazaar', tag: 'Heritage' },
         ]},
       { name: 'Kempty Falls & Surrounds', emoji: '💧', accentColor: '#0D9488',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Waterfalls & viewpoints', spots: [
           { name: 'Kempty Falls (15km)', tag: 'Most visited' },
           { name: 'George Everest peak', tag: 'Historical' },
@@ -640,11 +640,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Sep – Apr', budget: '$10–$35/day', language: 'Hindi, Sanskrit', currency: 'INR (Rupee)' },
     vibes: ['Spiritual', 'Cultural', 'Adventure'],
     gradient: 'from-orange-900 to-amber-900', accentColor: '#EA580C',
-    image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Har Ki Pauri', emoji: '🔥', accentColor: '#EA580C',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Most sacred ghat in Haridwar', spots: [
           { name: 'Ganga Aarti (6pm daily)', tag: 'Must-see' },
           { name: 'Brahma Kund sacred bathing', tag: 'Pilgrimage' },
@@ -652,7 +652,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Astrologers & priests at ghats', tag: 'Cultural' },
         ]},
       { name: 'Temples & Ashrams', emoji: '🛕', accentColor: '#D97706',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Spiritual heart of the city', spots: [
           { name: 'Mansa Devi Temple (cable car)', tag: 'Hilltop' },
           { name: 'Chandi Devi Temple', tag: 'Sacred' },
@@ -660,7 +660,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Patanjali Yogpeeth', tag: 'Yoga' },
         ]},
       { name: 'Rajaji National Park', emoji: '🐘', accentColor: '#16A34A',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Wildlife at the Himalayan foothills', spots: [
           { name: 'Rajaji Tiger Reserve jeep safari', tag: 'Wildlife' },
           { name: 'Elephants & tigers sighting', tag: 'Adventure' },
@@ -678,11 +678,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Nov – Jun', budget: '$25–$150/day', language: 'Hindi, Garhwali', currency: 'INR (Rupee)' },
     vibes: ['Adventure', 'Nature', 'Wildlife'],
     gradient: 'from-green-900 to-stone-800', accentColor: '#166534',
-    image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Dhikala Zone', emoji: '🐅', accentColor: '#166534',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Best tiger sighting zone', spots: [
           { name: 'Dhikala jeep & canter safari', tag: 'Best zone' },
           { name: 'Ramganga Reservoir viewpoint', tag: 'Scenic' },
@@ -690,7 +690,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Overnight forest rest house', tag: 'Unique stay' },
         ]},
       { name: 'Bijrani & Jhirna', emoji: '🦅', accentColor: '#059669',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Year-round accessible zones', spots: [
           { name: 'Bijrani zone jeep safari', tag: 'Day visit' },
           { name: 'Jhirna (open all year)', tag: 'Always open' },
@@ -698,7 +698,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Corbett Museum, Kaladhungi', tag: 'History' },
         ]},
       { name: 'Ramnagar & Resorts', emoji: '🏕️', accentColor: '#D97706',
-        image: 'https://images.unsplash.com/photo-1626015365107-b35bfd13e7ae?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1648566924598-aeb39df9ad79?auto=format&fit=crop&w=600&q=80',
         tagline: 'Base town & jungle lodges', spots: [
           { name: 'Luxury jungle resorts by Ramganga', tag: 'Stay' },
           { name: 'Bird watching (600+ species)', tag: 'Birdwatching' },
@@ -870,11 +870,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Oct – Jun', budget: '$25–$180/day', language: 'Hindi, Rajasthani', currency: 'INR (Rupee)' },
     vibes: ['Wildlife', 'Adventure', 'Historical'],
     gradient: 'from-orange-900 to-stone-900', accentColor: '#C2410C',
-    image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Tiger Safari Zones', emoji: '🐅', accentColor: '#C2410C',
-        image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=600&q=80',
         tagline: 'Jeep and canter safaris', spots: [
           { name: 'Zones 1–5 core tiger habitat', tag: 'Best sightings' },
           { name: 'Padam Talao lake', tag: 'Classic view' },
@@ -890,7 +890,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Ancient stepwells and gates', tag: 'History' },
         ]},
       { name: 'Sawai Madhopur', emoji: '🏕️', accentColor: '#166534',
-        image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=600&q=80',
         tagline: 'Safari base and craft villages', spots: [
           { name: 'Dastkar Ranthambore crafts', tag: 'Shopping' },
           { name: 'Jungle lodges on Ranthambore Road', tag: 'Stay' },
@@ -928,7 +928,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Sunrise swim in quiet coves', tag: 'Peaceful' },
         ]},
       { name: 'Temple Town', emoji: '🛕', accentColor: '#EA580C',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Pilgrimage lanes and local life', spots: [
           { name: 'Mahabaleshwar Temple', tag: 'Sacred' },
           { name: 'Main Beach pilgrimage rituals', tag: 'Cultural' },
@@ -1098,11 +1098,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Oct – Mar', budget: '$10–$45/day', language: 'Hindi, Magahi, English', currency: 'INR (Rupee)' },
     vibes: ['Spiritual', 'Cultural', 'Historical'],
     gradient: 'from-yellow-900 to-red-900', accentColor: '#CA8A04',
-    image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Mahabodhi Complex', emoji: '🛕', accentColor: '#CA8A04',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'The heart of Buddhist pilgrimage', spots: [
           { name: 'Mahabodhi Temple (UNESCO)', tag: 'Sacred' },
           { name: 'Bodhi Tree meditation', tag: 'Must-do' },
@@ -1110,7 +1110,7 @@ export const indianCitiesExtended: City[] = [
           { name: 'Prayer lamps at dusk', tag: 'Atmospheric' },
         ]},
       { name: 'International Monasteries', emoji: '🙏', accentColor: '#DC2626',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Buddhist traditions from across Asia', spots: [
           { name: 'Thai Monastery', tag: 'Architecture' },
           { name: 'Japanese Indosan Nippon Temple', tag: 'Peaceful' },
@@ -1140,7 +1140,7 @@ export const indianCitiesExtended: City[] = [
     heroImage: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Nilachal & Temples', emoji: '🛕', accentColor: '#DC2626',
-        image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=600&q=80',
         tagline: 'Ancient Shakti and hilltop shrines', spots: [
           { name: 'Kamakhya Temple', tag: 'Must-see' },
           { name: 'Umananda Temple on Peacock Island', tag: 'River island' },
@@ -1174,11 +1174,11 @@ export const indianCitiesExtended: City[] = [
     stats: { bestTime: 'Nov – Apr', budget: '$25–$130/day', language: 'Assamese, Hindi, English', currency: 'INR (Rupee)' },
     vibes: ['Wildlife', 'Nature', 'Adventure'],
     gradient: 'from-green-900 to-yellow-900', accentColor: '#4D7C0F',
-    image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=1600&q=85',
+    image: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=800&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=1600&q=85',
     areas: [
       { name: 'Central & Western Ranges', emoji: '🦏', accentColor: '#4D7C0F',
-        image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1679451289926-d421c3b5ff43?auto=format&fit=crop&w=600&q=80',
         tagline: 'Prime rhino country', spots: [
           { name: 'Kohora Central Range safari', tag: 'Popular' },
           { name: 'Bagori Western Range', tag: 'Rhinos' },
@@ -1450,7 +1450,7 @@ export const indianCitiesExtended: City[] = [
     description: 'A sacred Sufi city built around the Ajmer Sharif Dargah, with lakes, Mughal history, and easy pairing with Pushkar.',
     bestTime: 'Oct - Mar', budget: '$10-$40/day', language: 'Hindi, Rajasthani, Urdu',
     vibes: ['Spiritual', 'Cultural', 'Historical'], gradient: 'from-green-900 to-amber-900', accentColor: '#047857',
-    image: 'https://images.unsplash.com/photo-1592635196078-9fdc5f6b01c9?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1724432191302-6133b34c7105?auto=format&fit=crop&w=800&q=80',
     areaTagline: 'Sufi shrines, lakes and Mughal remains',
     highlights: ['Ajmer Sharif Dargah', 'Ana Sagar Lake', 'Adhai Din Ka Jhonpra', 'Taragarh Fort', 'Akbari Fort Museum'],
   }),

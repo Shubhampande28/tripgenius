@@ -42,7 +42,7 @@ export default function ExploreByArea({ city }: { city: City }) {
           </h2>
           <p className="mt-2 text-muted text-sm max-w-2xl leading-relaxed">
             Each area of {city.name} has a completely different personality.
-            Here's exactly what to do — and where — in each one.
+            Here&apos;s exactly what to do — and where — in each one.
           </p>
         </motion.div>
 
