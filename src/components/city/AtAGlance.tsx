@@ -24,7 +24,7 @@ export default function AtAGlance({ city }: { city: City }) {
   const vc = city.visa ? visaColor(city.visa) : null;
 
   return (
-    <section className="py-10 bg-dark border-b border-border">
+    <section className="py-10 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

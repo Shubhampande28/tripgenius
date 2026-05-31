@@ -78,7 +78,7 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable}`}>
       <head>
         {/* Prevent flash of wrong theme — runs before React hydrates */}
-        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light')}catch(e){}` }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('theme')!=='dark')document.documentElement.classList.add('light')}catch(e){document.documentElement.classList.add('light')}` }} />
         <meta name="google-site-verification" content="4WZXL1e7N4MKzIyyIlMrmHcFrwFiHCoCxqx0ofNoy_o" />
         {/* AdSense ownership verification — inline in <head> so Google crawler always finds it */}
         <meta name="google-adsense-account" content={ADSENSE_PUB_ID} />

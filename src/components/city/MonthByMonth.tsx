@@ -16,7 +16,7 @@ export default function MonthByMonth({ city }: { city: City }) {
   const { months, summary } = city.monthByMonth;
 
   return (
-    <section id="best-time-to-visit" className="py-12 bg-surface border-y border-border">
+    <section id="best-time-to-visit" className="py-12 border-y border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

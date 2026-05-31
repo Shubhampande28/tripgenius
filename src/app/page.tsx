@@ -12,8 +12,6 @@ import { getCityImageUrl } from '@/lib/cityImages';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
 import type { City } from '@/lib/types';
 
-const FEATURED_SLUGS = ['bali', 'paris', 'tokyo'];
-
 const HOME_FAQS = [
   {
     q: 'Are TripGenius travel guides really free?',
@@ -86,37 +84,6 @@ function CityCard({ city }: { city: City }) {
   );
 }
 
-function FeaturedCard({ city, large = false }: { city: City; large?: boolean }) {
-  return (
-    <Link href={`/cities/${city.slug}`}
-      className={`group relative block rounded-2xl overflow-hidden ${large ? 'h-80 sm:h-96' : 'h-40 sm:h-44'}`}>
-      <SafeImage
-        src={getCityImageUrl(city.slug, 'hero') ?? city.image}
-        alt={`${city.name} travel guide`}
-        city={city.slug} accentColor={city.accentColor} fill
-        sizes={large ? '(max-width: 768px) 100vw, 60vw' : '(max-width: 768px) 100vw, 30vw'}
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-      {large && (
-        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/90 text-white text-[10px] font-bold uppercase tracking-wider">
-          <Star size={9} /> Editor&apos;s Pick
-        </div>
-      )}
-      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300">
-        Explore <ArrowRight size={9} />
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="text-[9px] font-bold uppercase tracking-wider text-white/50 mb-0.5">{city.country}</p>
-        <h3 className={`font-heading font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight ${large ? 'text-2xl sm:text-3xl' : 'text-base'}`}>
-          {city.name}
-        </h3>
-        <p className={`text-white/60 italic line-clamp-1 ${large ? 'text-sm mt-1' : 'text-[11px] mt-0.5'}`}>{city.tagline}</p>
-      </div>
-    </Link>
-  );
-}
-
 export default function HomePage() {
   const [query, setQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -146,11 +113,6 @@ export default function HomePage() {
 
   const dropdownItems = useMemo(() => filtered.slice(0, 8), [filtered]);
 
-  const featuredCities = useMemo(
-    () => FEATURED_SLUGS.map(s => allCities.find(c => c.slug === s)).filter(Boolean) as City[],
-    []
-  );
-
   async function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
@@ -170,7 +132,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="bg-dark min-h-screen">
+      <main className="min-h-screen">
 
         {/* ── Hero ── */}
         <div className="relative overflow-hidden pt-28 pb-20" style={{ background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f1923 100%)' }}>
@@ -288,34 +250,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── Editor's Picks ── */}
-        {!query && featuredCities.length >= 3 && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-4">
-            <div className="flex items-center gap-3 mb-6">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Editor&apos;s Picks</p>
-                <h2 className="font-heading text-xl font-semibold text-primary-text mt-0.5">Best Destinations Right Now</h2>
-              </div>
-              <div className="flex-1 h-px bg-border ml-4" />
-              <Link href="/cities" className="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1 whitespace-nowrap">
-                View all <ArrowRight size={11} />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="sm:col-span-2">
-                <FeaturedCard city={featuredCities[0]} large />
-              </div>
-              <div className="flex flex-col gap-4">
-                <FeaturedCard city={featuredCities[1]} />
-                <FeaturedCard city={featuredCities[2]} />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* ── City cards grid ── */}
-        <div ref={resultsRef} className="bg-dark">
+        <div ref={resultsRef}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="flex items-center gap-3 mb-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
@@ -348,7 +284,7 @@ export default function HomePage() {
         </div>
 
         {/* ── FAQ Section ── */}
-        <div className="border-t border-border bg-surface">
+        <div className="border-t border-border">
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_FAQ_SCHEMA) }}
@@ -387,7 +323,7 @@ export default function HomePage() {
         </div>
 
         {/* ── Newsletter CTA ── */}
-        <div className="border-t border-border bg-surface">
+        <div className="border-t border-border">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

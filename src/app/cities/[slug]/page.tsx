@@ -18,6 +18,7 @@ import CityFAQ from '@/components/city/CityFAQ';
 import BookingPanel from '@/components/city/BookingPanel';
 import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
+import CityQuickNav from '@/components/city/CityQuickNav';
 import RelatedCities from '@/components/city/RelatedCities';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
@@ -155,22 +156,23 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
     <>
       <CityJsonLd city={city} slug={slug} />
       <Navbar />
-      <main className="bg-dark">
+      <main>
         <CityHero city={city} />
         <AtAGlance city={city} />
-        <AdUnit slot={AD_SLOTS.cityTopBanner} format="horizontal" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" />
-        <MonthByMonth city={city} />
-
-        {/* Neighbourhoods if available, otherwise area explorer */}
-        {city.neighbourhoods?.length
-          ? <NeighbourhoodsAreas city={city} />
-          : <ExploreByArea city={city} />
-        }
+        <CityQuickNav city={city} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
               <ThingsToDo city={city} />
+              <MonthByMonth city={city} />
+
+              {/* Neighbourhoods if available, otherwise area explorer */}
+              {city.neighbourhoods?.length
+                ? <NeighbourhoodsAreas city={city} />
+                : <ExploreByArea city={city} />
+              }
+
               <OffbeatPlaces city={city} />
               <BudgetBreakdown city={city} />
               <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" className="py-4" />

@@ -30,8 +30,8 @@ export default function CityHero({ city }: { city: City }) {
       {/* Dark base overlay so text always reads well */}
       <div className="absolute inset-0 bg-black/50" />
 
-      {/* Bottom gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
+      {/* Bottom gradient — always dark so photo text stays readable in both themes */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
       {/* Subtle top vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
