@@ -2,42 +2,38 @@
 
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-import Image from 'next/image';
 import { City } from '@/lib/types';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
-import { getPlaceImageUrl } from '@/lib/placeImages';
 
-// Category → color token (accent bar + badge tint)
-const CATEGORY_COLOR: Record<string, { bar: string; badge: string; text: string }> = {
-  Cultural:        { bar: 'bg-purple-500',  badge: 'bg-purple-500/12 border-purple-500/25', text: 'text-purple-500' },
-  Nature:          { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
-  Adventure:       { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
-  Culinary:        { bar: 'bg-gold',        badge: 'bg-gold/12 border-gold/25',             text: 'text-gold' },
-  Scenic:          { bar: 'bg-cyan-500',    badge: 'bg-cyan-500/12 border-cyan-500/25',     text: 'text-cyan-500' },
-  Iconic:          { bar: 'bg-yellow-500',  badge: 'bg-yellow-500/12 border-yellow-500/25', text: 'text-yellow-500' },
-  Shopping:        { bar: 'bg-indigo-500',  badge: 'bg-indigo-500/12 border-indigo-500/25', text: 'text-indigo-400' },
-  Relaxation:      { bar: 'bg-blue-400',    badge: 'bg-blue-500/12 border-blue-500/25',     text: 'text-blue-400' },
-  Entertainment:   { bar: 'bg-pink-500',    badge: 'bg-pink-500/12 border-pink-500/25',     text: 'text-pink-400' },
-  Walking:         { bar: 'bg-green-500',   badge: 'bg-green-500/12 border-green-500/25',   text: 'text-green-500' },
-  'Day Trip':      { bar: 'bg-orange-500',  badge: 'bg-orange-500/12 border-orange-500/25', text: 'text-orange-400' },
-  'Art & Culture': { bar: 'bg-rose-500',    badge: 'bg-rose-500/12 border-rose-500/25',     text: 'text-rose-400' },
-  Wellness:        { bar: 'bg-emerald-500', badge: 'bg-emerald-500/12 border-emerald-500/25', text: 'text-emerald-500' },
-  Historical:      { bar: 'bg-amber-600',   badge: 'bg-amber-500/12 border-amber-500/25',   text: 'text-amber-500' },
-  Spiritual:       { bar: 'bg-violet-500',  badge: 'bg-violet-500/12 border-violet-500/25', text: 'text-violet-400' },
-  UNESCO:          { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
-  Festival:        { bar: 'bg-pink-500',    badge: 'bg-pink-500/12 border-pink-500/25',     text: 'text-pink-400' },
-  Nightlife:       { bar: 'bg-purple-600',  badge: 'bg-purple-500/12 border-purple-500/25', text: 'text-purple-400' },
-  Photography:     { bar: 'bg-blue-500',    badge: 'bg-blue-500/12 border-blue-500/25',     text: 'text-blue-400' },
-  Wildlife:        { bar: 'bg-green-600',   badge: 'bg-green-500/12 border-green-500/25',   text: 'text-green-500' },
-  Trekking:        { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
-  Unique:          { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
-  Landmark:        { bar: 'bg-yellow-500',  badge: 'bg-yellow-500/12 border-yellow-500/25', text: 'text-yellow-500' },
-  Essential:       { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
-  'Hidden gem':    { bar: 'bg-cyan-500',    badge: 'bg-cyan-500/12 border-cyan-500/25',     text: 'text-cyan-500' },
-  'UNESCO Experience': { bar: 'bg-teal',   badge: 'bg-teal/12 border-teal/25',              text: 'text-teal' },
+const CATEGORY_STYLE: Record<string, { icon: string; text: string; bg: string; border: string }> = {
+  Cultural:        { icon: 'text-purple-500', text: 'text-purple-500', bg: 'bg-purple-500/12',  border: 'border-purple-500/25' },
+  Nature:          { icon: 'text-teal',       text: 'text-teal',       bg: 'bg-teal/12',        border: 'border-teal/25' },
+  Adventure:       { icon: 'text-accent',     text: 'text-accent',     bg: 'bg-accent/12',      border: 'border-accent/25' },
+  Culinary:        { icon: 'text-gold',       text: 'text-gold',       bg: 'bg-gold/15',        border: 'border-gold/30' },
+  Scenic:          { icon: 'text-cyan-500',   text: 'text-cyan-500',   bg: 'bg-cyan-500/12',    border: 'border-cyan-500/25' },
+  Iconic:          { icon: 'text-yellow-500', text: 'text-yellow-500', bg: 'bg-yellow-500/12',  border: 'border-yellow-500/25' },
+  Shopping:        { icon: 'text-indigo-400', text: 'text-indigo-400', bg: 'bg-indigo-500/12',  border: 'border-indigo-500/25' },
+  Relaxation:      { icon: 'text-blue-400',   text: 'text-blue-400',   bg: 'bg-blue-500/12',    border: 'border-blue-500/25' },
+  Entertainment:   { icon: 'text-pink-400',   text: 'text-pink-400',   bg: 'bg-pink-500/12',    border: 'border-pink-500/25' },
+  Walking:         { icon: 'text-green-500',  text: 'text-green-500',  bg: 'bg-green-500/12',   border: 'border-green-500/25' },
+  'Day Trip':      { icon: 'text-orange-400', text: 'text-orange-400', bg: 'bg-orange-500/12',  border: 'border-orange-500/25' },
+  'Art & Culture': { icon: 'text-rose-400',   text: 'text-rose-400',   bg: 'bg-rose-500/12',    border: 'border-rose-500/25' },
+  Wellness:        { icon: 'text-emerald-500',text: 'text-emerald-500',bg: 'bg-emerald-500/12', border: 'border-emerald-500/25' },
+  Historical:      { icon: 'text-amber-500',  text: 'text-amber-500',  bg: 'bg-amber-500/12',   border: 'border-amber-500/25' },
+  Spiritual:       { icon: 'text-violet-400', text: 'text-violet-400', bg: 'bg-violet-500/12',  border: 'border-violet-500/25' },
+  Nightlife:       { icon: 'text-purple-400', text: 'text-purple-400', bg: 'bg-purple-500/12',  border: 'border-purple-500/25' },
+  Wildlife:        { icon: 'text-green-500',  text: 'text-green-500',  bg: 'bg-green-600/12',   border: 'border-green-600/25' },
+  Trekking:        { icon: 'text-accent',     text: 'text-accent',     bg: 'bg-accent/12',      border: 'border-accent/25' },
+  Festival:        { icon: 'text-pink-400',   text: 'text-pink-400',   bg: 'bg-pink-500/12',    border: 'border-pink-500/25' },
+  UNESCO:          { icon: 'text-teal',       text: 'text-teal',       bg: 'bg-teal/12',        border: 'border-teal/25' },
+  Photography:     { icon: 'text-blue-400',   text: 'text-blue-400',   bg: 'bg-blue-500/12',    border: 'border-blue-500/25' },
+  Unique:          { icon: 'text-accent',     text: 'text-accent',     bg: 'bg-accent/12',      border: 'border-accent/25' },
+  Landmark:        { icon: 'text-yellow-500', text: 'text-yellow-500', bg: 'bg-yellow-500/12',  border: 'border-yellow-500/25' },
+  'Hidden gem':    { icon: 'text-cyan-500',   text: 'text-cyan-500',   bg: 'bg-cyan-500/12',    border: 'border-cyan-500/25' },
+  'UNESCO Experience': { icon: 'text-teal',   text: 'text-teal',       bg: 'bg-teal/12',        border: 'border-teal/25' },
 };
 
-const DEFAULT_COLOR = { bar: 'bg-accent', badge: 'bg-accent/12 border-accent/25', text: 'text-accent' };
+const DEFAULT_STYLE = { icon: 'text-accent', text: 'text-accent', bg: 'bg-accent/12', border: 'border-accent/25' };
 
 export default function ThingsToDo({ city }: { city: City }) {
   if (!city.thingsToDo?.length) return null;
@@ -45,6 +41,7 @@ export default function ThingsToDo({ city }: { city: City }) {
   return (
     <section id="things-to-do" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,61 +54,50 @@ export default function ThingsToDo({ city }: { city: City }) {
             Top {city.thingsToDo.length} Things to Do in {city.name} ({new Date().getFullYear()})
           </h2>
           <p className="mt-2 text-sm text-muted max-w-2xl">
-            The best experiences in {city.name} — from iconic landmarks to local favourites.
+            The best experiences in {city.name} — from iconic landmarks to local favourites, ranked by what travellers love most.
           </p>
         </motion.div>
 
         <AnimateList stagger={0.06} className="space-y-3">
           {city.thingsToDo.map((item, i) => {
-            const col = CATEGORY_COLOR[item.category] ?? DEFAULT_COLOR;
-            const specificImg = item.image ?? getPlaceImageUrl(city.slug, item.name, item.category);
+            const s = CATEGORY_STYLE[item.category] ?? DEFAULT_STYLE;
+            const num = String(i + 1).padStart(2, '0');
 
             return (
               <AnimateItem key={item.name}>
-                <div className="group flex overflow-hidden bg-surface border border-border rounded-2xl hover:border-accent/25 hover:shadow-md transition-all duration-200">
+                <div className="relative overflow-hidden bg-surface border border-border rounded-2xl hover:border-accent/25 hover:shadow-md transition-all duration-200 group">
 
-                  {/* Left accent bar */}
-                  <div className={`w-1 flex-shrink-0 ${col.bar} rounded-l-2xl`} />
+                  {/* Watermark number — faded giant in background */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none select-none absolute right-3 bottom-0 font-heading font-bold leading-none text-[7rem] text-primary-text/[0.04]"
+                  >
+                    {num}
+                  </span>
 
-                  {/* If we have a specific place photo, show it */}
-                  {specificImg && (
-                    <div className="relative w-[140px] sm:w-[180px] flex-shrink-0 overflow-hidden hidden sm:block">
-                      <Image
-                        src={specificImg}
-                        alt={`${item.name} — ${city.name}`}
-                        fill
-                        sizes="180px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/20" />
-                    </div>
-                  )}
+                  <div className="relative z-10 flex items-start gap-4 p-5">
 
-                  {/* Main content */}
-                  <div className="flex items-start gap-4 p-4 sm:p-5 flex-1 min-w-0">
-
-                    {/* Number + Emoji block */}
-                    <div className="flex-shrink-0 flex flex-col items-center gap-1">
-                      <span className={`text-[11px] font-bold tabular-nums ${col.text}`}>
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
+                    {/* Icon box */}
+                    <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${s.bg} border ${s.border} flex items-center justify-center`}>
                       <span className="text-2xl leading-none">{item.icon}</span>
                     </div>
 
-                    {/* Text */}
+                    {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1.5">
+                        {/* Small rank */}
+                        <span className={`text-[11px] font-bold tabular-nums ${s.text}`}>{num}</span>
                         <h3 className="font-semibold text-primary-text text-base leading-snug">
                           {item.name}
                         </h3>
-                        <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full border ${col.badge} ${col.text}`}>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${s.bg} ${s.border} ${s.text}`}>
                           {item.category}
                         </span>
                       </div>
-                      <p className="text-sm text-muted leading-relaxed line-clamp-2 sm:line-clamp-none">
-                        {item.description}
-                      </p>
-                      <div className="flex items-center gap-1.5 mt-2">
+
+                      <p className="text-sm text-muted leading-relaxed">{item.description}</p>
+
+                      <div className="flex items-center gap-1.5 mt-2.5">
                         <Clock size={11} className="text-muted/50" />
                         <span className="text-xs text-muted/60">{item.duration}</span>
                       </div>
