@@ -7,7 +7,6 @@ import AtAGlance from '@/components/city/AtAGlance';
 import MonthByMonth from '@/components/city/MonthByMonth';
 import NeighbourhoodsAreas from '@/components/city/NeighbourhoodsAreas';
 import ExploreByArea from '@/components/city/ExploreByArea';
-import BudgetBreakdown from '@/components/city/BudgetBreakdown';
 import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
 import WhereToStay from '@/components/city/WhereToStay';
@@ -161,7 +160,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         <AtAGlance city={city} />
         <CityQuickNav city={city} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
               <MonthByMonth city={city} />
@@ -174,8 +173,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               }
 
               <OffbeatPlaces city={city} />
-              <BudgetBreakdown city={city} />
-              <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" className="py-4" />
+              <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" className="py-2" />
               <WhereToStay city={city} />
               <WhereToEat city={city} />
               <GettingAround city={city} />

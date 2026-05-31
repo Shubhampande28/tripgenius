@@ -5,8 +5,8 @@ import { City } from '@/lib/types';
 const SECTIONS = [
   { id: 'best-time-to-visit', label: 'Best Time',      emoji: '📅' },
   { id: 'things-to-do',       label: 'Things To Do',   emoji: '🗺️' },
+  { id: 'explore-areas',      label: 'Explore Areas',  emoji: '📍' },
   { id: 'hidden-gems',        label: 'Hidden Gems',     emoji: '💎' },
-  { id: 'budget',             label: 'Budget',          emoji: '💰' },
   { id: 'where-to-stay',      label: 'Where To Stay',   emoji: '🏨' },
   { id: 'where-to-eat',       label: 'Where To Eat',    emoji: '🍜' },
   { id: 'getting-around',     label: 'Getting Around',  emoji: '🚌' },
@@ -23,9 +23,9 @@ export default function CityQuickNav({ city }: { city: City }) {
   const visible = SECTIONS.filter(({ id }) => {
     if (id === 'best-time-to-visit') return !!city.monthByMonth;
     if (id === 'things-to-do')       return !!city.thingsToDo?.length;
+    if (id === 'explore-areas')      return !!(city.neighbourhoods?.length || city.areas?.length);
     if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
-    if (id === 'budget')             return !!city.budgetBreakdown;
-    if (id === 'where-to-stay')      return !!city.hotels?.length;
+    if (id === 'where-to-stay')      return !!(city.hotels?.length || city.neighbourhoods?.length);
     if (id === 'where-to-eat')       return !!city.restaurants?.length;
     if (id === 'getting-around')     return !!city.gettingAround?.length;
     if (id === 'pro-tips')           return !!city.proTips?.length;

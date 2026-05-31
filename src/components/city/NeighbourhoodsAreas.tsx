@@ -28,7 +28,7 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
   });
 
   return (
-    <section className="py-14">
+    <section id="explore-areas" className="py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <motion.div
@@ -39,7 +39,7 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
           className="flex items-center gap-2 mb-6"
         >
           <MapPin size={14} className="text-accent" />
-          <p className="text-xs font-bold uppercase tracking-widest text-accent">Area by Area</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-accent">Explore Areas</p>
         </motion.div>
 
         <motion.div
@@ -51,16 +51,13 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
         >
           {/* Header */}
           <div
-            className="px-6 sm:px-8 py-5 flex items-center justify-between"
+            className="px-6 sm:px-8 py-5"
             style={{ background: `linear-gradient(135deg, ${city.accentColor} 0%, ${city.accentColor}CC 100%)` }}
           >
-            <div>
-              <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-0.5">TripGenius Travel Guide</p>
-              <h2 className="font-heading text-xl sm:text-3xl font-bold text-white">
-                {city.name} — Travel Cheatsheet
-              </h2>
-            </div>
-            <span className="text-4xl sm:text-6xl leading-none opacity-80 hidden sm:block">{city.flag}</span>
+            <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-0.5">TripGenius Destination Guide</p>
+            <h2 className="font-heading text-xl sm:text-3xl font-bold text-white">
+              {city.name} — Where to Go &amp; What to Do
+            </h2>
           </div>
 
           {/* Grid */}
@@ -87,8 +84,7 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      {/* Strong overlay so image is very subtle */}
-                      <div className="absolute inset-0 bg-surface/[0.93]" />
+                      <div className="absolute inset-0 bg-surface/[0.80]" />
                     </>
                   )}
 

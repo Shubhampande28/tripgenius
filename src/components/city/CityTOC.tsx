@@ -6,8 +6,8 @@ import { City } from '@/lib/types';
 const SECTIONS = [
   { id: 'best-time-to-visit', label: 'Best Time to Visit', emoji: '📅' },
   { id: 'things-to-do',       label: 'Things to Do',       emoji: '🗺️' },
+  { id: 'explore-areas',      label: 'Explore Areas',       emoji: '📍' },
   { id: 'hidden-gems',        label: 'Hidden Gems',         emoji: '💎' },
-  { id: 'budget',             label: 'Budget Guide',        emoji: '💰' },
   { id: 'where-to-stay',      label: 'Where to Stay',       emoji: '🏨' },
   { id: 'where-to-eat',       label: 'What to Eat',         emoji: '🍜' },
   { id: 'getting-around',     label: 'Getting Around',      emoji: '🚌' },
@@ -40,7 +40,7 @@ export default function CityTOC({ city }: { city: City }) {
     if (id === 'best-time-to-visit') return !!city.monthByMonth;
     if (id === 'things-to-do')       return !!city.thingsToDo?.length;
     if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
-    if (id === 'budget')             return !!city.budgetBreakdown;
+    if (id === 'explore-areas')      return !!(city.neighbourhoods?.length || city.areas?.length);
     if (id === 'where-to-stay')      return !!city.hotels?.length;
     if (id === 'where-to-eat')       return !!city.restaurants?.length;
     if (id === 'getting-around')     return !!city.gettingAround?.length;
