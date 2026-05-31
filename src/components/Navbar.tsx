@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Compass } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
   { label: 'All Cities', href: '/cities' },
@@ -57,15 +58,20 @@ export default function Navbar() {
               ))}
             </nav>
 
-            <div className="hidden md:flex items-center gap-4" />
+            <div className="hidden md:flex items-center gap-4">
+              <ThemeToggle />
+            </div>
 
-            <button
+            <div className="md:hidden flex items-center gap-2">
+              <ThemeToggle />
+              <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 text-muted hover:text-primary-text transition-colors"
+              className="p-2 text-muted hover:text-primary-text transition-colors"
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
+            </div>
           </div>
         </div>
       </motion.header>
