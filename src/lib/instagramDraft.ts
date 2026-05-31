@@ -78,7 +78,7 @@ export async function generateInstagramDraft(options: DraftOptions): Promise<Ins
   }
 
   const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1200,
     system: 'You are a senior travel social media editor. Always return valid JSON only.',
     messages: [{ role: 'user', content: buildPrompt(city, options.angle) }],

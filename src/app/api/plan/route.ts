@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     }
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 4096,
       system: 'You are an expert travel planner. Always respond with valid JSON only — no markdown code blocks, no explanation text, just a raw JSON object.',
       messages: [
