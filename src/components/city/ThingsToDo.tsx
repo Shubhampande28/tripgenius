@@ -2,28 +2,46 @@
 
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
+import Image from 'next/image';
 import { City } from '@/lib/types';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
-import SafeImage from '@/components/SafeImage';
 import { getPlaceImageUrl } from '@/lib/placeImages';
 
-const categoryColors: Record<string, string> = {
-  Cultural:    'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  Nature:      'bg-teal/10 text-teal border-teal/20',
-  Adventure:   'bg-accent/10 text-accent border-accent/20',
-  Culinary:    'bg-gold/10 text-gold border-gold/20',
-  Relaxation:  'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  Entertainment:'bg-pink-500/10 text-pink-400 border-pink-500/20',
-  Shopping:    'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-  Scenic:      'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-  Iconic:      'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
-  'Art & Culture': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-  Walking:     'bg-green-500/10 text-green-400 border-green-500/20',
-  'Day Trip':  'bg-orange-500/10 text-orange-400 border-orange-500/20',
+// Category → color token (accent bar + badge tint)
+const CATEGORY_COLOR: Record<string, { bar: string; badge: string; text: string }> = {
+  Cultural:        { bar: 'bg-purple-500',  badge: 'bg-purple-500/12 border-purple-500/25', text: 'text-purple-500' },
+  Nature:          { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
+  Adventure:       { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
+  Culinary:        { bar: 'bg-gold',        badge: 'bg-gold/12 border-gold/25',             text: 'text-gold' },
+  Scenic:          { bar: 'bg-cyan-500',    badge: 'bg-cyan-500/12 border-cyan-500/25',     text: 'text-cyan-500' },
+  Iconic:          { bar: 'bg-yellow-500',  badge: 'bg-yellow-500/12 border-yellow-500/25', text: 'text-yellow-500' },
+  Shopping:        { bar: 'bg-indigo-500',  badge: 'bg-indigo-500/12 border-indigo-500/25', text: 'text-indigo-400' },
+  Relaxation:      { bar: 'bg-blue-400',    badge: 'bg-blue-500/12 border-blue-500/25',     text: 'text-blue-400' },
+  Entertainment:   { bar: 'bg-pink-500',    badge: 'bg-pink-500/12 border-pink-500/25',     text: 'text-pink-400' },
+  Walking:         { bar: 'bg-green-500',   badge: 'bg-green-500/12 border-green-500/25',   text: 'text-green-500' },
+  'Day Trip':      { bar: 'bg-orange-500',  badge: 'bg-orange-500/12 border-orange-500/25', text: 'text-orange-400' },
+  'Art & Culture': { bar: 'bg-rose-500',    badge: 'bg-rose-500/12 border-rose-500/25',     text: 'text-rose-400' },
+  Wellness:        { bar: 'bg-emerald-500', badge: 'bg-emerald-500/12 border-emerald-500/25', text: 'text-emerald-500' },
+  Historical:      { bar: 'bg-amber-600',   badge: 'bg-amber-500/12 border-amber-500/25',   text: 'text-amber-500' },
+  Spiritual:       { bar: 'bg-violet-500',  badge: 'bg-violet-500/12 border-violet-500/25', text: 'text-violet-400' },
+  UNESCO:          { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
+  Festival:        { bar: 'bg-pink-500',    badge: 'bg-pink-500/12 border-pink-500/25',     text: 'text-pink-400' },
+  Nightlife:       { bar: 'bg-purple-600',  badge: 'bg-purple-500/12 border-purple-500/25', text: 'text-purple-400' },
+  Photography:     { bar: 'bg-blue-500',    badge: 'bg-blue-500/12 border-blue-500/25',     text: 'text-blue-400' },
+  Wildlife:        { bar: 'bg-green-600',   badge: 'bg-green-500/12 border-green-500/25',   text: 'text-green-500' },
+  Trekking:        { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
+  Unique:          { bar: 'bg-accent',      badge: 'bg-accent/12 border-accent/25',         text: 'text-accent' },
+  Landmark:        { bar: 'bg-yellow-500',  badge: 'bg-yellow-500/12 border-yellow-500/25', text: 'text-yellow-500' },
+  Essential:       { bar: 'bg-teal',        badge: 'bg-teal/12 border-teal/25',             text: 'text-teal' },
+  'Hidden gem':    { bar: 'bg-cyan-500',    badge: 'bg-cyan-500/12 border-cyan-500/25',     text: 'text-cyan-500' },
+  'UNESCO Experience': { bar: 'bg-teal',   badge: 'bg-teal/12 border-teal/25',              text: 'text-teal' },
 };
+
+const DEFAULT_COLOR = { bar: 'bg-accent', badge: 'bg-accent/12 border-accent/25', text: 'text-accent' };
 
 export default function ThingsToDo({ city }: { city: City }) {
   if (!city.thingsToDo?.length) return null;
+
   return (
     <section id="things-to-do" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,89 +49,78 @@ export default function ThingsToDo({ city }: { city: City }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
+          transition={{ duration: 0.5 }}
+          className="mb-8"
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
-            Experiences
-          </p>
+          <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Experiences</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
             Top {city.thingsToDo.length} Things to Do in {city.name} ({new Date().getFullYear()})
           </h2>
-          <p className="mt-2 text-muted text-sm max-w-2xl">
-            The best experiences in {city.name} — from iconic landmarks to local favourites, ranked by what travellers love most.
+          <p className="mt-2 text-sm text-muted max-w-2xl">
+            The best experiences in {city.name} — from iconic landmarks to local favourites.
           </p>
         </motion.div>
 
-        <AnimateList stagger={0.07} variant="row" className="space-y-4">
-          {city.thingsToDo.map((item, i) => (
-            <AnimateItem key={item.name} variant="row" hover>
-              <div className="grid grid-cols-1 overflow-hidden bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group md:grid-cols-[180px_1fr]">
-                {(() => {
-                  const imgSrc = item.image ?? getPlaceImageUrl(city.slug, item.name, item.category);
-                  return (
-                    <div className="relative min-h-40 md:min-h-full md:w-[180px] flex-shrink-0 overflow-hidden">
-                      {imgSrc ? (
-                        <>
-                          <SafeImage
-                            src={imgSrc}
-                            alt={`${item.name} in ${city.name}`}
-                            city={city.slug}
-                            accentColor={city.accentColor}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 180px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-surface/25" />
-                        </>
-                      ) : (
-                        /* No photo — show emoji on gradient */
-                        <div
-                          className="absolute inset-0 flex items-center justify-center"
-                          style={{
-                            background: `linear-gradient(135deg, ${city.accentColor}25 0%, ${city.accentColor}10 100%)`,
-                          }}
-                        >
-                          <span className="text-6xl select-none">{item.icon}</span>
-                        </div>
-                      )}
+        <AnimateList stagger={0.06} className="space-y-3">
+          {city.thingsToDo.map((item, i) => {
+            const col = CATEGORY_COLOR[item.category] ?? DEFAULT_COLOR;
+            const specificImg = item.image ?? getPlaceImageUrl(city.slug, item.name, item.category);
+
+            return (
+              <AnimateItem key={item.name}>
+                <div className="group flex overflow-hidden bg-surface border border-border rounded-2xl hover:border-accent/25 hover:shadow-md transition-all duration-200">
+
+                  {/* Left accent bar */}
+                  <div className={`w-1 flex-shrink-0 ${col.bar} rounded-l-2xl`} />
+
+                  {/* If we have a specific place photo, show it */}
+                  {specificImg && (
+                    <div className="relative w-[140px] sm:w-[180px] flex-shrink-0 overflow-hidden hidden sm:block">
+                      <Image
+                        src={specificImg}
+                        alt={`${item.name} — ${city.name}`}
+                        fill
+                        sizes="180px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/20" />
                     </div>
-                  );
-                })()}
+                  )}
 
-                <div className="flex gap-5 p-5">
-                  {/* Number */}
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-elevated border border-border flex items-center justify-center">
-                    <span className="font-heading text-lg font-semibold text-muted group-hover:text-accent transition-colors">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                  </div>
+                  {/* Main content */}
+                  <div className="flex items-start gap-4 p-4 sm:p-5 flex-1 min-w-0">
 
-                  {/* Icon */}
-                  <div className="flex-shrink-0 text-2xl mt-0.5">{item.icon}</div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <h3 className="font-semibold text-primary-text text-base">{item.name}</h3>
-                      <span
-                        className={`text-xs px-2.5 py-0.5 rounded-full border ${
-                          categoryColors[item.category] || 'bg-surface text-muted border-border'
-                        }`}
-                      >
-                        {item.category}
+                    {/* Number + Emoji block */}
+                    <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                      <span className={`text-[11px] font-bold tabular-nums ${col.text}`}>
+                        {String(i + 1).padStart(2, '0')}
                       </span>
+                      <span className="text-2xl leading-none">{item.icon}</span>
                     </div>
-                    <p className="text-sm text-muted leading-relaxed">{item.description}</p>
-                    <div className="flex items-center gap-1.5 mt-2">
-                      <Clock size={11} className="text-muted/60" />
-                      <span className="text-xs text-muted/60">{item.duration}</span>
+
+                    {/* Text */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                        <h3 className="font-semibold text-primary-text text-base leading-snug">
+                          {item.name}
+                        </h3>
+                        <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full border ${col.badge} ${col.text}`}>
+                          {item.category}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted leading-relaxed line-clamp-2 sm:line-clamp-none">
+                        {item.description}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <Clock size={11} className="text-muted/50" />
+                        <span className="text-xs text-muted/60">{item.duration}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </AnimateItem>
-          ))}
+              </AnimateItem>
+            );
+          })}
         </AnimateList>
       </div>
     </section>
