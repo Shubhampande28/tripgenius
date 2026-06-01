@@ -433,20 +433,29 @@ export async function GET(
         </div>
         <div style={{ fontSize:13, color:AMBER, fontStyle:'italic', marginBottom:24 }}>Screenshot this slide 📸</div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:16 }}>
+        {/* 2-column stat grid — using flex rows since Satori doesn't support CSS grid */}
+        <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:16 }}>
           {[
-            { icon:'📅', label:'Best Time',   val: city.stats.bestTime },
-            { icon:'💰', label:'Daily Budget', val: city.stats.budget },
-            { icon:'💱', label:'Currency',     val: city.stats.currency },
-            { icon:'🗣️', label:'Language',     val: city.stats.language },
-          ].map(f => (
-            <div key={f.label} style={{ background:GLASS, border:GLASS_B, borderRadius:16, padding:'14px 16px',
-              display:'flex', flexDirection:'column', gap:4 }}>
-              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                <span style={{ fontSize:14 }}>{f.icon}</span>
-                <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>{f.label.toUpperCase()}</span>
-              </div>
-              <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{f.val}</span>
+            [
+              { icon:'📅', label:'Best Time',   val: city.stats.bestTime },
+              { icon:'💰', label:'Daily Budget', val: city.stats.budget },
+            ],
+            [
+              { icon:'💱', label:'Currency',     val: city.stats.currency },
+              { icon:'🗣️', label:'Language',     val: city.stats.language },
+            ],
+          ].map((row, ri) => (
+            <div key={ri} style={{ display:'flex', gap:10 }}>
+              {row.map(f => (
+                <div key={f.label} style={{ flex:1, background:GLASS, border:GLASS_B, borderRadius:16, padding:'14px 16px',
+                  display:'flex', flexDirection:'column', gap:4 }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                    <span style={{ fontSize:14 }}>{f.icon}</span>
+                    <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>{f.label.toUpperCase()}</span>
+                  </div>
+                  <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{f.val}</span>
+                </div>
+              ))}
             </div>
           ))}
         </div>
