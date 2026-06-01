@@ -2,6 +2,15 @@ import { MetadataRoute } from 'next';
 import { allCities, cities } from '@/lib/cities';
 import { allPosts } from '@/lib/blog';
 
+const COMPARISONS = [
+  ['goa','bali'],['bali','thailand'],['manali','shimla'],
+  ['rishikesh','haridwar'],['udaipur','jaipur'],['goa','kerala'],
+  ['ooty','munnar'],['bangkok','bali'],['dubai','singapore'],
+  ['paris','rome'],['tokyo','seoul'],['manali','rishikesh'],
+  ['goa','andaman'],['ladakh','spiti'],['darjeeling','ooty'],
+  ['kochi','goa'],['jaipur','udaipur'],['mumbai','delhi'],['bali','singapore'],
+];
+
 const BASE = 'https://www.tripgenius.in';
 const NOW  = new Date();
 
@@ -42,5 +51,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // City guides
     ...cityPages,
+
+    // "Best time to visit X" pages — low competition, high intent
+    ...indexableCities.map(city => ({
+      url: `${BASE}/best-time-to-visit/${city.slug}`,
+      lastModified: NOW,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+
+    // Comparison pages — "Goa vs Bali" etc.
+    ...COMPARISONS.map(([a, b]) => ({
+      url: `${BASE}/compare/${a}-vs-${b}`,
+      lastModified: NOW,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
   ];
 }
