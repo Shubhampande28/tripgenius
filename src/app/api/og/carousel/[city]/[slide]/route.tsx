@@ -196,114 +196,221 @@ export async function GET(
     );
   }
 
-  // ── Slides 2–7: Dark editorial ──────────────────────────────────
+  // ── Slides 2–7: Dark editorial with visual fills ───────────────
   if (n <= 7) {
     const d = data as any;
+
+    // ── Visual fill content per slide ──────────────────────────────
+    function VisualFill() {
+      // Slide 2: Kuta vs Real Bali — two contrast cards
+      if (n === 2) return (
+        <div style={{ display:'flex', gap:16, marginTop:24 }}>
+          <div style={{ display:'flex', flexDirection:'column', flex:1, background:'rgba(248,113,113,0.08)', border:'1px solid rgba(248,113,113,0.25)', borderRadius:20, padding:'22px 20px' }}>
+            <span style={{ fontSize:28, marginBottom:10 }}>❌</span>
+            <span style={{ fontSize:16, fontWeight:800, color:'#F87171', marginBottom:8 }}>KUTA / SEMINYAK</span>
+            <span style={{ fontSize:13, color:'rgba(255,248,238,0.5)', lineHeight:1.6 }}>Crowded bars. Tourist prices. The Bali everyone warns you about.</span>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', flex:1, background:`${ORANGE}10`, border:`1px solid ${ORANGE}30`, borderRadius:20, padding:'22px 20px' }}>
+            <span style={{ fontSize:28, marginBottom:10 }}>✅</span>
+            <span style={{ fontSize:16, fontWeight:800, color:AMBER, marginBottom:8 }}>UBUD / ULUWATU</span>
+            <span style={{ fontSize:13, color:'rgba(255,248,238,0.5)', lineHeight:1.6 }}>Rice terraces. Cliff temples. The Bali that changes you.</span>
+          </div>
+        </div>
+      );
+
+      // Slide 3: Terraces comparison
+      if (n === 3) return (
+        <div style={{ display:'flex', flexDirection:'column', gap:14, marginTop:24 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:16, background:'rgba(248,113,113,0.08)', border:'1px solid rgba(248,113,113,0.25)', borderRadius:20, padding:'20px 22px' }}>
+            <span style={{ fontSize:34 }}>😩</span>
+            <div style={{ display:'flex', flexDirection:'column' }}>
+              <span style={{ fontSize:17, fontWeight:800, color:'#F87171', marginBottom:4 }}>TEGALLALANG</span>
+              <span style={{ fontSize:13, color:'rgba(255,248,238,0.5)' }}>300+ tourists · Selfie queues · Entry fees · Overpriced cafes</span>
+            </div>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:16, background:`${ORANGE}10`, border:`1px solid ${ORANGE}30`, borderRadius:20, padding:'20px 22px' }}>
+            <span style={{ fontSize:34 }}>🌾</span>
+            <div style={{ display:'flex', flexDirection:'column' }}>
+              <span style={{ fontSize:17, fontWeight:800, color:AMBER, marginBottom:4 }}>JATILUWIH</span>
+              <span style={{ fontSize:13, color:'rgba(255,248,238,0.5)' }}>UNESCO · 600 hectares · Almost empty · The real thing</span>
+            </div>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(255,248,238,0.04)', border:'1px solid rgba(255,248,238,0.08)', borderRadius:16, padding:'14px 20px' }}>
+            <span style={{ fontSize:13, color:'rgba(255,248,238,0.45)' }}>🛵  ~90 min from Ubud · Worth every minute</span>
+          </div>
+        </div>
+      );
+
+      // Slide 4: Two seasons — big visual cards
+      if (n === 4) return (
+        <div style={{ display:'flex', flexDirection:'column', gap:14, marginTop:24 }}>
+          <div style={{ display:'flex', gap:14 }}>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1,
+              background:'rgba(0,201,167,0.10)', border:'1px solid rgba(0,201,167,0.30)',
+              borderRadius:20, padding:'24px 16px' }}>
+              <span style={{ fontSize:40, marginBottom:10 }}>☀️</span>
+              <span style={{ fontSize:14, fontWeight:800, color:'#00C9A7', marginBottom:6, letterSpacing:2 }}>DRY SEASON</span>
+              <span style={{ fontSize:22, fontWeight:900, color:'#fff', marginBottom:8 }}>Apr → Oct</span>
+              <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)', textAlign:'center' as const, lineHeight:1.5 }}>Warm · Sunny · Perfect for beaches & trekking</span>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1,
+              background:'rgba(248,113,113,0.08)', border:'1px solid rgba(248,113,113,0.25)',
+              borderRadius:20, padding:'24px 16px' }}>
+              <span style={{ fontSize:40, marginBottom:10 }}>🌧️</span>
+              <span style={{ fontSize:14, fontWeight:800, color:'#F87171', marginBottom:6, letterSpacing:2 }}>MONSOON</span>
+              <span style={{ fontSize:22, fontWeight:900, color:'#fff', marginBottom:8 }}>Nov → Mar</span>
+              <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)', textAlign:'center' as const, lineHeight:1.5 }}>Heavy rain · Flooding · Hotels don&apos;t advertise this</span>
+            </div>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:10,
+            background:`${ORANGE}12`, border:`1px solid ${ORANGE}35`, borderRadius:16, padding:'14px 20px' }}>
+            <span style={{ fontSize:18 }}>💡</span>
+            <span style={{ fontSize:14, color:AMBER, fontWeight:700 }}>Sweet spot: April or September — fewer crowds, 30% cheaper</span>
+          </div>
+        </div>
+      );
+
+      // Slide 5: Nusa Penida highlights
+      if (n === 5) return (
+        <div style={{ display:'flex', flexDirection:'column', gap:13, marginTop:24 }}>
+          {[
+            { emoji:'🦅', place:'Kelingking Beach', desc:'The T-Rex cliff. Most iconic view in all of Indonesia.' },
+            { emoji:'🌊', place:"Angel's Billabong", desc:'Natural infinity pool. Zero entrance fee.' },
+            { emoji:'🐟', place:'Manta Bay', desc:'Snorkel with manta rays the size of a car.' },
+            { emoji:'⛵', place:'How to get there', desc:'45-min fast boat from Sanur · Book the day before' },
+          ].map((item, i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:14,
+              background: i === 0 ? `${ORANGE}14` : 'rgba(255,248,238,0.05)',
+              border: i === 0 ? `1px solid ${ORANGE}35` : '1px solid rgba(255,248,238,0.10)',
+              borderRadius:16, padding:'14px 18px' }}>
+              <span style={{ fontSize:24, flexShrink:0 }}>{item.emoji}</span>
+              <div style={{ display:'flex', flexDirection:'column' }}>
+                <span style={{ fontSize:15, fontWeight:700, color: i === 0 ? AMBER : CREAM, marginBottom:2 }}>{item.place}</span>
+                <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)' }}>{item.desc}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+
+      // Slide 6: Price comparison — big visual numbers
+      if (n === 6) return (
+        <div style={{ display:'flex', flexDirection:'column', gap:16, marginTop:24 }}>
+          <div style={{ display:'flex', gap:14 }}>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1,
+              background:`${ORANGE}14`, border:`1px solid ${ORANGE}40`, borderRadius:20, padding:'28px 16px' }}>
+              <span style={{ fontSize:36, marginBottom:8 }}>🏠</span>
+              <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:2, marginBottom:6 }}>WARUNG</span>
+              <span style={{ fontSize:52, fontWeight:900, color:'#fff', lineHeight:1 }}>$3</span>
+              <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)', marginTop:8 }}>Nasi goreng · Egg · Coconut</span>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1,
+              background:'rgba(248,113,113,0.07)', border:'1px solid rgba(248,113,113,0.20)', borderRadius:20, padding:'28px 16px' }}>
+              <span style={{ fontSize:36, marginBottom:8 }}>🏨</span>
+              <span style={{ fontSize:13, color:'#F87171', fontWeight:700, letterSpacing:2, marginBottom:6 }}>YOUR HOTEL</span>
+              <span style={{ fontSize:52, fontWeight:900, color:'rgba(255,255,255,0.5)', lineHeight:1 }}>$18</span>
+              <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)', marginTop:8 }}>Exact same dish</span>
+            </div>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:10,
+            background:'rgba(255,248,238,0.04)', border:'1px solid rgba(255,248,238,0.08)',
+            borderRadius:16, padding:'16px 20px' }}>
+            <span style={{ fontSize:18 }}>📍</span>
+            <span style={{ fontSize:14, color:'rgba(255,248,238,0.6)' }}>Ask for the nearest <span style={{ color:AMBER, fontWeight:700 }}>warung</span> — locals eat there every day</span>
+          </div>
+        </div>
+      );
+
+      // Slide 7: Checklist
+      if (n === 7 && d.checklist) return (
+        <div style={{ display:'flex', flexDirection:'column', gap:11, marginTop:20 }}>
+          {d.checklist.map((item: any, i: number) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:14,
+              background: item.tick ? `${ORANGE}14` : 'rgba(248,113,113,0.07)',
+              border: item.tick ? `1px solid ${ORANGE}40` : '1px solid rgba(248,113,113,0.22)',
+              borderRadius:16, padding:'16px 20px' }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+                width:32, height:32, borderRadius:10, flexShrink:0,
+                background: item.tick ? ORANGE : 'rgba(248,113,113,0.25)' }}>
+                <span style={{ fontSize:15, color:'#fff', fontWeight:800 }}>{item.tick ? '✓' : '✕'}</span>
+              </div>
+              <span style={{ fontSize:16, color: item.tick ? CREAM : 'rgba(255,248,238,0.55)', lineHeight:1.35, fontWeight: item.tick ? 600 : 400 }}>
+                {item.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      );
+
+      return null;
+    }
+
     return new ImageResponse(
       <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden',
         background:`linear-gradient(155deg,#1A0E04 0%,${DARK} 60%,#080503 100%)` }}>
 
-        {/* Ambient glow shifts each slide */}
+        {/* Decorative large slide number — fills background visually */}
+        <div style={{ display:'flex', position:'absolute', right:-20, bottom:40,
+          fontSize:320, fontWeight:900, color:'rgba(255,122,0,0.04)',
+          lineHeight:1, userSelect:'none' as const }}>
+          {String(n).padStart(2,'0')}
+        </div>
+
+        {/* Ambient glow */}
         <div style={{ display:'flex', position:'absolute', width:500, height:500, borderRadius:'50%',
           top:-60 + n*30, left:-120 + n*20,
-          background:`radial-gradient(circle,${ORANGE}20 0%,transparent 70%)` }} />
+          background:`radial-gradient(circle,${ORANGE}18 0%,transparent 70%)` }} />
 
         {/* Top line */}
-        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3,
+        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:4,
           background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
 
-        {/* Left strip */}
-        <div style={{ display:'flex', position:'absolute', left:0, top:0, bottom:0, width:3,
+        {/* Left accent */}
+        <div style={{ display:'flex', position:'absolute', left:0, top:0, bottom:0, width:4,
           background:`linear-gradient(to bottom,transparent,${ORANGE}80,transparent)` }} />
 
         <div style={{ display:'flex', flexDirection:'column', flex:1, padding:'40px 52px', position:'relative' }}>
 
           {/* Top bar */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:32 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
             <Logo />
             <div style={{ display:'flex', alignItems:'center', gap:5 }}>
               {Array.from({ length: TOTAL }).map((_, i) => (
-                <div key={i} style={{ display:'flex', width: i === n-1 ? 22 : 5, height:5, borderRadius:3,
+                <div key={i} style={{ display:'flex', width: i === n-1 ? 24 : 5, height:5, borderRadius:3,
                   background: i === n-1 ? ORANGE : 'rgba(255,248,238,0.18)' }} />
               ))}
             </div>
           </div>
 
-          {/* Slide tag */}
+          {/* Tag badge */}
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-            background:`${ORANGE}22`, border:`1px solid ${ORANGE}45`,
-            borderRadius:20, padding:'6px 14px', alignSelf:'flex-start', marginBottom:20 }}>
+            background:`${ORANGE}22`, border:`1px solid ${ORANGE}50`,
+            borderRadius:20, padding:'7px 16px', alignSelf:'flex-start', marginBottom:18 }}>
             <span style={{ fontSize:11, color:ORANGE, fontWeight:700, letterSpacing:3 }}>{d.tag}</span>
           </div>
 
           {/* Headline */}
-          <span style={{ fontSize:58, fontWeight:900, color:'#FFFFFF', lineHeight:1.02,
-            marginBottom:14, whiteSpace:'pre-line' as const }}>
+          <span style={{ fontSize:56, fontWeight:900, color:'#FFFFFF', lineHeight:1.02,
+            marginBottom:12, whiteSpace:'pre-line' as const }}>
             {d.headline}
           </span>
 
           {/* Subheadline */}
-          {d.sub && (
-            <span style={{ fontSize:22, color:AMBER, fontWeight:700, marginBottom:26, lineHeight:1.3 }}>
+          {d.sub && !d.checklist && (
+            <span style={{ fontSize:21, color:AMBER, fontWeight:700, marginBottom:6, lineHeight:1.3 }}>
               {d.sub}
             </span>
           )}
 
-          {/* Body */}
-          {d.body && !d.checklist && (
+          {/* Body text — only for slides without visual fill content */}
+          {d.body && !d.checklist && n !== 2 && n !== 3 && n !== 4 && n !== 5 && n !== 6 && (
             <span style={{ fontSize:17, color:'rgba(255,248,238,0.80)', lineHeight:1.75, marginBottom:20 }}>
               {d.body}
             </span>
           )}
 
-          {/* Checklist */}
-          {d.checklist && (
-            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:4 }}>
-              {d.checklist.map((item: any, i: number) => (
-                <div key={i} style={{ display:'flex', alignItems:'center', gap:14,
-                  background: item.tick ? 'rgba(255,122,0,0.10)' : 'rgba(255,248,238,0.06)',
-                  border: item.tick ? `1px solid ${ORANGE}40` : '1px solid rgba(255,248,238,0.12)',
-                  borderRadius:14, padding:'14px 18px' }}>
-                  <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                    width:28, height:28, borderRadius:8, flexShrink:0,
-                    background: item.tick ? ORANGE : 'rgba(255,248,238,0.08)',
-                    border: item.tick ? 'none' : '1px solid rgba(255,248,238,0.15)' }}>
-                    <span style={{ fontSize:13, color:'#fff', fontWeight:700 }}>
-                      {item.tick ? '✓' : '✕'}
-                    </span>
-                  </div>
-                  <span style={{ fontSize:15, color: item.tick ? CREAM : 'rgba(255,248,238,0.55)', lineHeight:1.4 }}>
-                    {item.text}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Month grid for best time slide */}
-          {d.mbm && (
-            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:8 }}>
-              {[
-                { label:'✅ BEST',  months: d.mbm.months.filter((m:any)=>m.rating==='excellent').map((m:any)=>m.short), color:'#00C9A7' },
-                { label:'👍 GOOD',  months: d.mbm.months.filter((m:any)=>m.rating==='good').map((m:any)=>m.short),      color:'#60A5FA' },
-                { label:'❌ AVOID', months: d.mbm.months.filter((m:any)=>m.rating==='avoid').map((m:any)=>m.short),     color:'#F87171' },
-              ].filter((g:any) => g.months.length > 0).map((g:any) => (
-                <div key={g.label} style={{ display:'flex', alignItems:'center', gap:14,
-                  background:`${g.color}15`, border:`1px solid ${g.color}35`, borderRadius:16, padding:'16px 20px' }}>
-                  <div style={{ display:'flex', flexDirection:'column', flex:1, gap:6 }}>
-                    <span style={{ fontSize:10, color:g.color, fontWeight:700, letterSpacing:3 }}>{g.label}</span>
-                    <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                      {g.months.map((m:string) => (
-                        <span key={m} style={{ fontSize:15, color:'rgba(255,248,238,0.9)',
-                          background:`${g.color}25`, border:`1px solid ${g.color}55`,
-                          borderRadius:22, padding:'5px 13px', fontWeight:600 }}>{m}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Visual fill — different per slide */}
+          <VisualFill />
         </div>
 
         {/* Footer */}
@@ -311,7 +418,7 @@ export async function GET(
           borderTop:'1px solid rgba(255,248,238,0.07)', padding:'14px 52px', position:'relative' }}>
           <span style={{ fontSize:10, color:'rgba(255,248,238,0.3)' }}>tripgenius.in</span>
           {n < TOTAL
-            ? <span style={{ fontSize:11, color:ORANGE, fontWeight:700 }}>Swipe →</span>
+            ? <span style={{ fontSize:12, color:ORANGE, fontWeight:700 }}>Swipe →</span>
             : <span style={{ fontSize:11, color:'rgba(255,248,238,0.3)' }}>{n}/{TOTAL}</span>
           }
         </div>
