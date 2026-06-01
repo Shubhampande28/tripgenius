@@ -134,10 +134,11 @@ export async function GET(
 
   // ── Slide 1: Hero cover (photo bg) ─────────────────────────────
   if (n === 1) {
+    const slide1Photo = isBali ? BALI_PHOTOS[1] : heroImg;
     return new ImageResponse(
       <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={heroImg} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
+        <img src={slide1Photo} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
 
         {/* Strong multi-stop overlay — very dark from 45% downward */}
         <div style={{ display:'flex', position:'absolute', inset:0,
