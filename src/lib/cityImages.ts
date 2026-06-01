@@ -79,29 +79,34 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   dehradun:     { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
   'jim-corbett':{ card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
 
-  // ── South India ───────────────────────────────────────────────
-  bengaluru:     { card: 'photo-1596176530529-78163a4f7af2', hero: 'photo-1596176530529-78163a4f7af2' },
-  hyderabad:     { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  // ── South India — verified Pexels photos ─────────────────────
+  bengaluru:     { card: 'px-14845309', hero: 'px-14845309' },  // Bengaluru cityscape sunset
+  hyderabad:     { card: 'px-5615112',  hero: 'px-5615112'  },  // Charminar monument
   chennai:       { card: 'photo-1585468274952-66591eb14165', hero: 'photo-1585468274952-66591eb14165' },
-  kochi:         { card: 'photo-1593693397690-362cb9666fc2', hero: 'photo-1593693397690-362cb9666fc2' },
-  mysuru:        { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  hampi:         { card: 'photo-1615813967515-e1838c1c5116', hero: 'photo-1615813967515-e1838c1c5116' },
-  munnar:        { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  alleppey:      { card: 'photo-1602216056096-3b40cc0c9944', hero: 'photo-1602216056096-3b40cc0c9944' },
-  pondicherry:   { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  madurai:       { card: 'photo-1561361058-c24cecae35ca',   hero: 'photo-1561361058-c24cecae35ca' },
-  ooty:          { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  coorg:         { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
+  kochi:         { card: 'px-34174745', hero: 'px-34174745' },  // Chinese fishing nets Fort Kochi
+  mysuru:        { card: 'px-35080171', hero: 'px-35080171' },  // Mysore Palace illuminated
+  hampi:         { card: 'px-14496561', hero: 'px-14496561' },  // Hampi ruins Virupaksha Temple
+  munnar:        { card: 'px-32262506', hero: 'px-32262506' },  // Munnar tea gardens Kerala
+  alleppey:      { card: 'px-17928231', hero: 'px-17928231' },  // Alleppey backwaters houseboat
+  pondicherry:   { card: 'px-32009229', hero: 'px-32009229' },  // Pondicherry French Quarter
+  madurai:       { card: 'px-5690494',  hero: 'px-5690494'  },  // Meenakshi Temple gopuram
+  ooty:          { card: 'px-9411142',  hero: 'px-9411142'  },  // Ooty Nilgiris lake hills
+  coorg:         { card: 'px-33046721', hero: 'px-33046721' },  // Coorg Madikeri foggy hills
   gokarna:       { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
   thekkady:      { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
   varkala:       { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  mahabalipuram: { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  tirupati:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  mahabalipuram: { card: 'px-24246717', hero: 'px-24246717' },  // Shore Temple by sea
+  tirupati:      { card: 'px-11282396', hero: 'px-11282396' },  // Tirumala temple illuminated
   coimbatore:    { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  visakhapatnam: { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  visakhapatnam: { card: 'px-5667923',  hero: 'px-5667923'  },  // Vizag beach aerial
+  kanyakumari:   { card: 'px-28464762', hero: 'px-28464762' },  // Kanyakumari sunrise southernmost
   trivandrum:    { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
   kozhikode:     { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
   thrissur:      { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  // New South Indian cities
+  thanjavur:     { card: 'px-37824548', hero: 'px-37824548' },  // Brihadeeswarar Temple UNESCO
+  trichy:        { card: 'px-27650165', hero: 'px-27650165' },  // Rock Fort Temple Tiruchirappalli
+  wayanad:       { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' }, // green hills Kerala
 
   // ── Uttar Pradesh / North Central ────────────────────────────
   lucknow:   { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
@@ -150,14 +155,22 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   salem:       { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
 };
 
-const BASE = 'https://images.unsplash.com';
+const UNSPLASH = 'https://images.unsplash.com';
 
 export function getCityImageUrl(slug: string, size: 'card' | 'hero' = 'card'): string | null {
   const entry = verifiedCityImages[slug];
   if (!entry) return null;
   const id = size === 'hero' ? entry.hero : entry.card;
   const w  = size === 'hero' ? 1600 : 800;
-  return `${BASE}/${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+  // Pexels IDs are prefixed with 'px-'
+  if (id.startsWith('px-')) {
+    const pxId = id.slice(3);
+    return `https://images.pexels.com/photos/${pxId}/pexels-photo-${pxId}.jpeg?auto=compress&cs=tinysrgb&w=${w}&q=80`;
+  }
+
+  // Default: Unsplash
+  return `${UNSPLASH}/${id}?auto=format&fit=crop&w=${w}&q=80`;
 }
 
 /** Accent colours used for gradient fallbacks when no photo is available */

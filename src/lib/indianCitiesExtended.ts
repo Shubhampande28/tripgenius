@@ -1871,4 +1871,35 @@ export const indianCitiesExtended: City[] = [
     image: '', areaTagline: 'Adiyogi Shiva, Isha Yoga and Nilgiri gateway',
     highlights: ['Adiyogi Shiva statue (Isha Foundation)', 'Isha Yoga Centre (free tour)', 'Marudamalai Temple', 'VOC Park and Zoo', 'Mettupalayam (Nilgiri toy train start)'],
   }),
+
+  // ── New South India cities ──────────────────────────────────────
+  quickIndianCity({
+    slug: 'thanjavur', name: 'Thanjavur', state: 'Tamil Nadu',
+    tagline: 'City of the Big Temple',
+    description: 'Thanjavur is the cultural capital of Tamil Nadu — home to the 1,000-year-old Brihadeeswarar Temple, one of the greatest architectural achievements in Indian history and a UNESCO World Heritage Site. The Chola dynasty made this city the epicentre of Tamil art, music, and bronze sculpture.',
+    bestTime: 'Oct – Mar', budget: '$12–$40/day', language: 'Tamil',
+    vibes: ['Cultural', 'Historical', 'Spiritual'], gradient: 'from-amber-900 to-orange-900', accentColor: '#D97706',
+    image: '', areaTagline: 'UNESCO Big Temple, Chola bronzes and Carnatic music',
+    highlights: ['Brihadeeswarar Temple (UNESCO Big Temple)', 'Thanjavur Royal Palace & Art Gallery', 'Saraswathi Mahal Library', 'Schwartz Church', 'Bronze workshops (Swamimalai)'],
+  }),
+
+  quickIndianCity({
+    slug: 'trichy', name: 'Tiruchirappalli', state: 'Tamil Nadu',
+    tagline: 'City of the Rock Fort',
+    description: 'Tiruchirappalli (Trichy) is dominated by its magnificent Rock Fort Temple — a Shiva temple carved into a 83-metre natural rock rising from the middle of the city. The Ranganathaswamy Temple complex on Srirangam Island is the largest functioning Hindu temple in the world.',
+    bestTime: 'Oct – Mar', budget: '$10–$40/day', language: 'Tamil',
+    vibes: ['Spiritual', 'Cultural', 'Historical'], gradient: 'from-rose-900 to-red-900', accentColor: '#E11D48',
+    image: '', areaTagline: 'Rock Fort Temple, Srirangam and Kaveri delta temples',
+    highlights: ['Rock Fort Temple (Ucchi Pillayar Temple)', 'Srirangam Ranganathaswamy Temple (world\'s largest)', 'Jambukeswarar Temple (Thiruvanaikaval)', 'Gandhi Market', 'Mukkombu Reservoir'],
+  }),
+
+  quickIndianCity({
+    slug: 'wayanad', name: 'Wayanad', state: 'Kerala',
+    tagline: 'Kerala\'s Green Highlands',
+    description: 'Wayanad is Kerala\'s most pristine wildlife district — misty coffee and tea estates, Edakkal Caves with 6,000-year-old petroglyphs, Chembra Peak, and Wayanad Wildlife Sanctuary where elephants roam free. One of India\'s last genuinely unspoiled green landscapes.',
+    bestTime: 'Oct – May', budget: '$15–$55/day', language: 'Malayalam',
+    vibes: ['Nature', 'Wildlife', 'Adventure'], gradient: 'from-green-900 to-emerald-900', accentColor: '#059669',
+    image: '', areaTagline: 'Wildlife, waterfalls and prehistoric cave art',
+    highlights: ['Edakkal Caves (prehistoric rock art)', 'Chembra Peak trek (heart-shaped lake)', 'Wayanad Wildlife Sanctuary', 'Soochipara & Meenmutty Waterfalls', 'Banasura Sagar Dam (largest earthen dam)'],
+  }),
 ];
