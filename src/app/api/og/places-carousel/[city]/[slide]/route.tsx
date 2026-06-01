@@ -56,16 +56,7 @@ export async function GET(
 
   const s = PLACES[n] as any;
 
-  // Load Inter Bold for premium typography
-  let fontBold: ArrayBuffer | null = null;
-  try {
-    const res = await fetch('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZ9hiJ-Ek-_EeA.woff2');
-    if (res.ok) fontBold = await res.arrayBuffer();
-  } catch { /* use system font if fetch fails */ }
-
-  const imgOpts = fontBold
-    ? { width:W, height:H, fonts:[{ name:'Inter', data:fontBold, weight:900 as const, style:'normal' as const }] }
-    : { width:W, height:H };
+  const imgOpts = { width:W, height:H };
 
   // ── COVER ──────────────────────────────────────────────────────
   if (s.type === 'cover') {
