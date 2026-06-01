@@ -7,41 +7,33 @@ const W = 1080, H = 1350;
 const OR = '#FF7A00';
 const AM = '#FFB347';
 
-// ── High-res Pexels photos — 1080×1350 aspect for crisp rendering ──
+const PX = (id: number) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop`;
+
+// ── AIDA Structure: Hook → Market → Value → Convert ───────────────
 const PLACES = [
   null,
-  // 1 Cover — aerial rice terraces
-  {
-    type:'cover',
-    photo:'https://images.pexels.com/photos/35428411/pexels-photo-35428411.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop',
-  },
-  // 2
-  { type:'place', num:'01', name:'Tanah Lot', sub:'Temple', tag:'Sunset · Cultural',
-    photo:'https://images.pexels.com/photos/33626260/pexels-photo-33626260.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 3
-  { type:'place', num:'02', name:'Tegallalang', sub:'Rice Terraces', tag:'Nature · UNESCO',
-    photo:'https://images.pexels.com/photos/36810327/pexels-photo-36810327.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 4
-  { type:'place', num:'03', name:'Mount Batur', sub:'Sunrise Trek', tag:'Adventure · Volcano',
-    photo:'https://images.pexels.com/photos/3254728/pexels-photo-3254728.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 5
-  { type:'place', num:'04', name:'Uluwatu', sub:'Temple & Cliffs', tag:'Cultural · Sunset',
-    photo:'https://images.pexels.com/photos/6015320/pexels-photo-6015320.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 6
-  { type:'place', num:'05', name:'Kelingking', sub:'Beach · Nusa Penida', tag:'Hidden Gem · Adventure',
-    photo:'https://images.pexels.com/photos/5990051/pexels-photo-5990051.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 7
-  { type:'place', num:'06', name:'Seminyak', sub:'Beach & Sunset', tag:'Beach · Lifestyle',
-    photo:'https://images.pexels.com/photos/12818213/pexels-photo-12818213.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 8
-  { type:'place', num:'07', name:'Ubud', sub:'Jungle & Temple', tag:'Spiritual · Culture',
-    photo:'https://images.pexels.com/photos/18772367/pexels-photo-18772367.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
-  // 9 CTA
-  { type:'cta',
-    photo:'https://images.pexels.com/photos/2077323/pexels-photo-2077323.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop' },
+
+  // ── SLIDE 1: HOOK — stop the scroll ──────────────────────────
+  { type:'cover', photo: PX(35428411) },
+
+  // ── SLIDE 2: MARKETING — sell TripGenius ─────────────────────
+  { type:'marketing', photo: PX(3067621) },
+
+  // ── SLIDES 3-9: DELIVER VALUE — places with photos ───────────
+  { type:'place', num:'01', name:'Tanah Lot',   sub:'Temple',           tag:'Sunset · Cultural',      photo: PX(33626260) },
+  { type:'place', num:'02', name:'Tegallalang', sub:'Rice Terraces',    tag:'Nature · UNESCO',        photo: PX(36810327) },
+  { type:'place', num:'03', name:'Mount Batur', sub:'Sunrise Trek',     tag:'Adventure · Volcano',    photo: PX(3254728)  },
+  { type:'place', num:'04', name:'Uluwatu',     sub:'Temple & Cliffs',  tag:'Cultural · Sunset',      photo: PX(6015320)  },
+  { type:'place', num:'05', name:'Kelingking',  sub:'Nusa Penida',      tag:'Hidden Gem · Adventure', photo: PX(5990051)  },
+  { type:'place', num:'06', name:'Seminyak',    sub:'Beach & Sunset',   tag:'Beach · Lifestyle',      photo: PX(12818213) },
+  { type:'place', num:'07', name:'Ubud',        sub:'Jungle & Temple',  tag:'Spiritual · Culture',    photo: PX(18772367) },
+
+  // ── SLIDE 10: CONVERT — CTA ───────────────────────────────────
+  { type:'cta', photo: PX(2077323) },
 ];
 
-const TOTAL = PLACES.length - 1;
+const TOTAL = PLACES.length - 1; // 10
 
 export async function GET(
   _req: Request,
@@ -138,6 +130,92 @@ export async function GET(
               tripgenius.in
             </span>
           </div>
+        </div>
+
+      </div>,
+      imgOpts
+    );
+  }
+
+  // ── MARKETING SLIDE — cream bg, trust signals, website promo ──
+  if (s.type === 'marketing') {
+    const CREAM = '#FFF8EE';
+    const DARK  = '#1A0804';
+    return new ImageResponse(
+      <div style={{ width:W, height:H, display:'flex', flexDirection:'column', background:CREAM }}>
+
+        {/* TOP CREAM SECTION */}
+        <div style={{ display:'flex', flexDirection:'column', padding:'48px 56px 0 56px',
+          flex:'0 0 680px', background:CREAM }}>
+
+          {/* Logo + dots */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:44 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+                width:38, height:38, borderRadius:10, background:OR }}>
+                <span style={{ fontSize:18 }}>✈️</span>
+              </div>
+              <span style={{ fontSize:15, fontWeight:800, color:DARK, letterSpacing:2 }}>TRIPGENIUS</span>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+              {Array.from({length:TOTAL}).map((_,i) => (
+                <div key={i} style={{ display:'flex',
+                  width:i===n-1?28:6, height:6, borderRadius:3,
+                  background:i===n-1?OR:'rgba(26,8,4,0.15)' }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Pre-headline */}
+          <span style={{ fontSize:16, color:OR, fontWeight:700, letterSpacing:3, marginBottom:12 }}>
+            BEFORE YOU START PLANNING →
+          </span>
+
+          {/* Main headline */}
+          <span style={{ fontSize:66, fontWeight:900, color:DARK, lineHeight:1.0, marginBottom:32 }}>
+            Get the free{'\n'}Bali guide{'\n'}that travellers{'\n'}actually use.
+          </span>
+
+          {/* Trust signals — 4 points */}
+          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+            {[
+              { icon:'🌍', text:'160+ destination guides — all free' },
+              { icon:'✅', text:'No paid reviews. No sponsored picks.' },
+              { icon:'📅', text:'Updated for 2025 — includes new places' },
+              { icon:'💡', text:'Budget tips, best time, hidden gems' },
+            ].map(item => (
+              <div key={item.text} style={{ display:'flex', alignItems:'center', gap:14 }}>
+                <span style={{ fontSize:20, flexShrink:0 }}>{item.icon}</span>
+                <span style={{ fontSize:18, color:DARK, fontWeight:600, lineHeight:1.3 }}>
+                  {item.text}
+                </span>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* BOTTOM: Bali photo with website URL overlay */}
+        <div style={{ display:'flex', position:'relative', flex:1 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={s.photo} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+          {/* Cream fade at top */}
+          <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:160,
+            background:`linear-gradient(to bottom, ${CREAM}, transparent)` }} />
+          {/* Dark overlay for URL text at bottom */}
+          <div style={{ display:'flex', position:'absolute', bottom:0, left:0, right:0, height:140,
+            background:'linear-gradient(to top, rgba(0,0,0,0.85), transparent)',
+            alignItems:'flex-end', justifyContent:'center', padding:'0 0 24px 0' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:OR, borderRadius:32, padding:'14px 40px' }}>
+              <span style={{ fontSize:20, fontWeight:900, color:'#fff' }}>
+                tripgenius.in/cities/bali
+              </span>
+            </div>
+          </div>
+          {/* Orange bottom line */}
+          <div style={{ display:'flex', position:'absolute', bottom:0, left:0, right:0, height:5,
+            background:`linear-gradient(to right, ${OR}, ${AM}, ${OR})` }} />
         </div>
 
       </div>,
