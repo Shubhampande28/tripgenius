@@ -3,17 +3,104 @@ import { getCityBySlug } from '@/lib/cities';
 
 export const runtime = 'edge';
 
-// Satori rules: EVERY div with >1 child needs display:'flex'.
-// Treat it like React Native — nothing is block by default.
-
+// Satori: every div with >1 child needs display:'flex'
 const W = 1080, H = 1350;
 const ORANGE = '#FF7A00';
 const AMBER  = '#FFB347';
 const CREAM  = '#FFF8EE';
-const DARK   = '#0F0A05';
-const WARM   = '#1A0E04';
-const G      = 'rgba(255,248,238,0.08)';
-const GB     = '1px solid rgba(255,248,238,0.14)';
+const DARK   = '#0C0805';
+
+// ── Bali-specific carousel content (editorial, not generic) ────────
+const BALI_SLIDES = [
+  null, // index 0 unused
+  {
+    headline: 'They showed you\nthe wrong Bali.',
+    sub: '8 things nobody posts about.',
+    body: '',
+    tag: 'TRIPGENIUS · TRAVEL GUIDE 2025',
+  },
+  {
+    headline: 'Kuta is not Bali.',
+    sub: "It's where Bali goes to apologise.",
+    body: 'The real island is 45 minutes away — Ubud\'s jungle, Uluwatu\'s cliffs, Canggu\'s paddy fields. Most people never leave the beach strip and wonder why Bali felt crowded.',
+    tag: '01 / 07',
+  },
+  {
+    headline: 'You went to\nthe tourist terraces.',
+    sub: 'The real ones have no Instagram queue.',
+    body: 'Tegallalang — beautiful, overrun by 10am. Jatiluwih is the UNESCO one. 600 hectares. Almost nobody there. The rice terraces you actually came to see.',
+    tag: '02 / 07',
+  },
+  {
+    headline: 'Bali has\ntwo Balis.',
+    sub: 'Most tourists arrive in the wrong one.',
+    body: 'Apr–Oct: warm, dry, perfect. Nov–Mar: monsoon. Apr and Sep are the sweet spot — half the crowds, same weather, 30% lower prices.',
+    tag: '03 / 07',
+  },
+  {
+    headline: "There's an island\nnext to Bali.",
+    sub: "What Bali was 20 years ago.",
+    body: 'Nusa Penida. 45-min fast boat from Sanur. Kelingking Beach cliff. Manta rays the size of a car. Angel\'s Billabong natural pool. Zero overpriced smoothie bowls.',
+    tag: '04 / 07',
+  },
+  {
+    headline: 'The $3 breakfast\nthat beats every resort.',
+    sub: 'Locals eat here every morning.',
+    body: 'A warung serves nasi goreng, fried egg, fresh coconut for ~$3. The same dish at your hotel costs $18. Same recipe. Same Bali.',
+    tag: '05 / 07',
+  },
+  {
+    headline: 'The Bali\ncheatsheet.',
+    sub: 'Screenshot this.',
+    body: '',
+    tag: '06 / 07',
+    checklist: [
+      { tick: true,  text: 'Stay in Ubud or Uluwatu — not Kuta' },
+      { tick: true,  text: 'Visit Apr or Sep — not December' },
+      { tick: true,  text: 'Day trip to Nusa Penida — non-negotiable' },
+      { tick: true,  text: 'Eat at warungs — 6× cheaper, same food' },
+      { tick: false, text: 'Skip Tegallalang — go to Jatiluwih' },
+    ],
+  },
+  {
+    headline: 'Your Bali trip\nstarts here.',
+    sub: 'Free guide. No fluff. Just what works.',
+    body: 'tripgenius.in/cities/bali',
+    tag: 'SAVE THIS POST',
+  },
+];
+
+// Generic slide content for non-Bali cities
+function genericSlide(city: ReturnType<typeof getCityBySlug>, n: number) {
+  if (!city) return null;
+  const mbm    = city.monthByMonth;
+  const places = (city.thingsToDo ?? []).slice(0, 5);
+  const hoods  = ((city.neighbourhoods ?? city.areas ?? []) as any[]).slice(0, 4);
+  const tips   = (city.proTips ?? []).slice(0, 4);
+
+  switch (n) {
+    case 1: return { headline: city.name, sub: city.tagline, body: city.heroDescription?.slice(0, 120) + '...', tag: 'TRAVEL GUIDE 2025' };
+    case 2: return { headline: 'Best Time\nto Visit', sub: city.stats.bestTime, mbm, tag: '01 / 07' };
+    case 3: return { headline: 'Daily Budget', sub: city.stats.budget, body: 'Budget · Mid-range · Luxury breakdown', tag: '02 / 07' };
+    case 4: return { headline: 'Top 5 Places', sub: 'Ranked by travellers', places, tag: '03 / 07' };
+    case 5: return { headline: 'Where to Stay', sub: 'Pick your area first', hoods, tag: '04 / 07' };
+    case 6: return { headline: 'Local Secrets', sub: 'Most tourists miss these', body: city.offbeatPlaces?.[0]?.name ?? 'Check the full guide', tag: '05 / 07' };
+    case 7: return { headline: `${city.name}\nCheatsheet`, sub: 'Screenshot this', checklist: tips.map((t, i) => ({ tick: i % 2 === 0, text: t })), tag: '06 / 07' };
+    case 8: return { headline: 'Your trip\nstarts here.', sub: 'Free guide. No fluff.', body: `tripgenius.in/cities/${city.slug}`, tag: 'SAVE THIS' };
+    default: return null;
+  }
+}
+
+function Logo() {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', width:26, height:26, borderRadius:7, background:ORANGE }}>
+        <span style={{ fontSize:13 }}>✈️</span>
+      </div>
+      <span style={{ fontSize:12, fontWeight:700, color:'rgba(255,248,238,0.7)', letterSpacing:2.5 }}>TRIPGENIUS</span>
+    </div>
+  );
+}
 
 export async function GET(
   _req: Request,
@@ -23,146 +110,50 @@ export async function GET(
   const city = getCityBySlug(slug);
   if (!city) return new Response('City not found', { status: 404 });
 
-  const n     = parseInt(slideStr, 10);
+  const n = parseInt(slideStr, 10);
   if (isNaN(n) || n < 1 || n > 8) return new Response('Slide 1–8', { status: 400 });
 
   const heroImg = city.heroImage || city.image;
-  const mbm     = city.monthByMonth;
-  const places  = (city.thingsToDo ?? []).slice(0, 5);
-  const hoods   = ((city.neighbourhoods ?? city.areas ?? []) as any[]).slice(0, 4);
-  const rests   = (city.restaurants ?? []).slice(0, 3);
-  const gems    = (city.offbeatPlaces ?? []).slice(0, 4);
-  const tips    = (city.proTips ?? []).slice(0, 4);
-  const TOTAL   = 8;
+  const isBali  = slug === 'bali';
+  const data    = isBali ? BALI_SLIDES[n] : genericSlide(city, n);
+  if (!data) return new Response('No data', { status: 404 });
 
-  // ── Common background wrapper (used by slides 2-8) ────────────
-  function bg(children: React.ReactNode) {
-    return (
-      <div style={{ width:W, height:H, display:'flex', flexDirection:'column',
-        background:`linear-gradient(155deg,${WARM} 0%,${DARK} 60%,#0A0500 100%)`,
-        position:'relative', overflow:'hidden' }}>
+  const TOTAL = 8;
 
-        {/* Glow orb */}
-        <div style={{ display:'flex', position:'absolute', width:600, height:600,
-          borderRadius:'50%', top:-80 + n*35, left:-150 + n*25,
-          background:`radial-gradient(circle,${ORANGE}22 0%,transparent 70%)` }} />
-
-        {/* Top accent bar */}
-        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3,
-          background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
-
-        {/* Left accent strip */}
-        <div style={{ display:'flex', position:'absolute', left:0, top:0, bottom:0, width:3,
-          background:`linear-gradient(to bottom,transparent,${ORANGE}70,transparent)` }} />
-
-        {/* All content */}
-        <div style={{ display:'flex', flexDirection:'column', flex:1, padding:'36px 48px', position:'relative' }}>
-
-          {/* Header row */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-            {/* Logo */}
-            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                width:26, height:26, borderRadius:7, background:ORANGE }}>
-                <span style={{ fontSize:13 }}>✈️</span>
-              </div>
-              <span style={{ fontSize:12, fontWeight:700, color:'rgba(255,248,238,0.7)', letterSpacing:2.5 }}>TRIPGENIUS</span>
-            </div>
-            {/* Slide counter dots */}
-            <div style={{ display:'flex', alignItems:'center', gap:5 }}>
-              {Array.from({ length: TOTAL }).map((_, i) => (
-                <div key={i} style={{ display:'flex', width: i === n-1 ? 20 : 5, height:5,
-                  borderRadius:3, background: i === n-1 ? ORANGE : 'rgba(255,248,238,0.2)' }} />
-              ))}
-            </div>
-          </div>
-
-          {/* Slide body */}
-          <div style={{ display:'flex', flexDirection:'column', flex:1 }}>
-            {children}
-          </div>
-
-          {/* Footer */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
-            borderTop:'1px solid rgba(255,248,238,0.08)', paddingTop:14, marginTop:10 }}>
-            <span style={{ fontSize:10, color:'rgba(255,248,238,0.3)' }}>tripgenius.in</span>
-            {n < TOTAL
-              ? <span style={{ fontSize:11, color:ORANGE, fontWeight:700 }}>Swipe →</span>
-              : <span style={{ fontSize:11, color:'rgba(255,248,238,0.3)' }}>{n}/{TOTAL}</span>
-            }
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ── SLIDE 1: Hook — full bleed photo ──────────────────────────
+  // ── Slide 1: Hero cover (photo bg) ─────────────────────────────
   if (n === 1) {
     return new ImageResponse(
       <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={heroImg} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
-        <div style={{ display:'flex', position:'absolute', inset:0,
-          background:'linear-gradient(175deg,rgba(15,10,5,0.3) 0%,rgba(15,10,5,0.96) 100%)' }} />
-        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:4,
-          background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
+        <div style={{ display:'flex', position:'absolute', inset:0, background:'linear-gradient(175deg,rgba(12,8,5,0.2) 0%,rgba(12,8,5,0.97) 100%)' }} />
+        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3, background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
 
-        <div style={{ display:'flex', flexDirection:'column', position:'relative', padding:'40px 48px', height:'100%' }}>
-
-          {/* Nav */}
+        <div style={{ display:'flex', flexDirection:'column', position:'relative', padding:'44px 52px', height:'100%' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'auto' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                width:28, height:28, borderRadius:8, background:ORANGE }}>
-                <span style={{ fontSize:14 }}>✈️</span>
-              </div>
-              <span style={{ fontSize:13, fontWeight:700, color:'rgba(255,248,238,0.75)', letterSpacing:2 }}>TRIPGENIUS</span>
-            </div>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:'rgba(255,122,0,0.2)', border:`1px solid ${ORANGE}55`,
-              borderRadius:20, padding:'6px 14px' }}>
-              <span style={{ fontSize:10, color:AMBER, fontWeight:700, letterSpacing:1.5 }}>TRAVEL GUIDE 2025</span>
-            </div>
+            <Logo />
+            <span style={{ fontSize:11, color:'rgba(255,248,238,0.4)', letterSpacing:2 }}>{(data as any).tag}</span>
           </div>
 
-          {/* Main content block */}
-          <div style={{ display:'flex', flexDirection:'column', marginBottom:32 }}>
-            <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:14 }}>
-              {city.flag} {city.country.toUpperCase()}
+          <div style={{ display:'flex', flexDirection:'column', marginBottom:36 }}>
+            <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:20 }}>{city.flag} {city.country.toUpperCase()}</span>
+            <span style={{ fontSize:isBali ? 76 : 88, fontWeight:900, color:'#fff', lineHeight:1.0, marginBottom:16, whiteSpace:'pre-line' as const }}>
+              {(data as any).headline}
             </span>
-            <span style={{ fontSize:90, fontWeight:900, color:'#fff', lineHeight:1, marginBottom:12 }}>
-              {city.name}
+            <span style={{ fontSize:22, color:AMBER, fontStyle:'italic', marginBottom:20 }}>
+              {(data as any).sub}
             </span>
-            <span style={{ fontSize:20, color:AMBER, fontStyle:'italic', marginBottom:18 }}>
-              &ldquo;{city.tagline}&rdquo;
-            </span>
-            <span style={{ fontSize:15, color:'rgba(255,248,238,0.6)', lineHeight:1.65, maxWidth:540 }}>
-              {city.heroDescription?.slice(0, 110)}...
-            </span>
+            {(data as any).body && (
+              <span style={{ fontSize:15, color:'rgba(255,248,238,0.6)', lineHeight:1.65, maxWidth:560 }}>
+                {(data as any).body}
+              </span>
+            )}
           </div>
 
-          {/* Stat chips */}
-          <div style={{ display:'flex', gap:10, marginBottom:28 }}>
-            {[
-              { icon:'📅', val: city.stats.bestTime },
-              { icon:'💰', val: city.stats.budget },
-              { icon:'✈️', val: city.vibes?.[0] ?? 'Travel' },
-            ].map(s => (
-              <div key={s.val} style={{ display:'flex', alignItems:'center', gap:8,
-                background:G, border:GB, borderRadius:24, padding:'10px 18px' }}>
-                <span style={{ fontSize:14 }}>{s.icon}</span>
-                <span style={{ fontSize:13, color:'rgba(255,248,238,0.85)', fontWeight:600 }}>{s.val}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA strip */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
-            borderTop:'1px solid rgba(255,248,238,0.1)', paddingTop:20 }}>
-            <span style={{ fontSize:13, color:'rgba(255,248,238,0.4)' }}>8 slides inside</span>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:ORANGE, borderRadius:30, padding:'13px 28px' }}>
-              <span style={{ fontSize:14, fontWeight:800, color:'#fff' }}>Swipe to explore →</span>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', borderTop:'1px solid rgba(255,248,238,0.1)', paddingTop:22 }}>
+            <span style={{ fontSize:14, color:'rgba(255,248,238,0.4)' }}>Swipe for the full story →</span>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', background:ORANGE, borderRadius:30, padding:'13px 28px' }}>
+              <span style={{ fontSize:14, fontWeight:800, color:'#fff' }}>1 of {TOTAL} →</span>
             </div>
           </div>
         </div>
@@ -171,320 +162,168 @@ export async function GET(
     );
   }
 
-  // ── SLIDE 2: Best Time ─────────────────────────────────────────
-  if (n === 2) {
-    const groups = [
-      { emoji:'✅', label:'BEST', months: mbm?.months.filter(m=>m.rating==='excellent').map(m=>m.short)??[], color:'#00C9A7' },
-      { emoji:'👍', label:'GOOD', months: mbm?.months.filter(m=>m.rating==='good').map(m=>m.short)??[],      color:'#60A5FA' },
-      { emoji:'❌', label:'AVOID',months: mbm?.months.filter(m=>m.rating==='avoid').map(m=>m.short)??[],    color:'#F87171' },
-    ].filter(g => g.months.length > 0);
-
+  // ── Slides 2–7: Dark editorial ──────────────────────────────────
+  if (n <= 7) {
+    const d = data as any;
     return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>📅 WHEN TO GO</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:6 }}>Best Time to Visit</span>
-          <span style={{ fontSize:48, fontWeight:900, color:ORANGE, lineHeight:1.05, marginBottom:16 }}>{city.name}</span>
-          <span style={{ fontSize:13, color:'rgba(255,248,238,0.45)', marginBottom:28, lineHeight:1.5 }}>
-            {mbm?.summary?.slice(0, 80) ?? `Best: ${city.stats.bestTime}`}
+      <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden',
+        background:`linear-gradient(155deg,#1A0E04 0%,${DARK} 60%,#080503 100%)` }}>
+
+        {/* Ambient glow shifts each slide */}
+        <div style={{ display:'flex', position:'absolute', width:500, height:500, borderRadius:'50%',
+          top:-60 + n*30, left:-120 + n*20,
+          background:`radial-gradient(circle,${ORANGE}20 0%,transparent 70%)` }} />
+
+        {/* Top line */}
+        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3,
+          background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
+
+        {/* Left strip */}
+        <div style={{ display:'flex', position:'absolute', left:0, top:0, bottom:0, width:3,
+          background:`linear-gradient(to bottom,transparent,${ORANGE}80,transparent)` }} />
+
+        <div style={{ display:'flex', flexDirection:'column', flex:1, padding:'40px 52px', position:'relative' }}>
+
+          {/* Top bar */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:32 }}>
+            <Logo />
+            <div style={{ display:'flex', alignItems:'center', gap:5 }}>
+              {Array.from({ length: TOTAL }).map((_, i) => (
+                <div key={i} style={{ display:'flex', width: i === n-1 ? 22 : 5, height:5, borderRadius:3,
+                  background: i === n-1 ? ORANGE : 'rgba(255,248,238,0.18)' }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Slide tag */}
+          <span style={{ fontSize:11, color:ORANGE, fontWeight:700, letterSpacing:3, marginBottom:14 }}>{d.tag}</span>
+
+          {/* Headline */}
+          <span style={{ fontSize:52, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:10, whiteSpace:'pre-line' as const }}>
+            {d.headline}
           </span>
-          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-            {groups.map(g => (
-              <div key={g.label} style={{ display:'flex', alignItems:'center', gap:16,
-                background:`${g.color}15`, border:`1px solid ${g.color}35`,
-                borderRadius:18, padding:'18px 22px' }}>
-                <span style={{ fontSize:26 }}>{g.emoji}</span>
-                <div style={{ display:'flex', flexDirection:'column', flex:1, gap:8 }}>
-                  <span style={{ fontSize:10, color:g.color, fontWeight:700, letterSpacing:3 }}>{g.label} MONTHS</span>
-                  <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                    {g.months.map(m => (
-                      <span key={m} style={{ fontSize:15, color:'rgba(255,248,238,0.9)',
-                        background:`${g.color}25`, border:`1px solid ${g.color}55`,
-                        borderRadius:24, padding:'5px 14px', fontWeight:600 }}>{m}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display:'flex', alignItems:'flex-start', gap:12,
-            background:`${ORANGE}18`, border:`1px solid ${ORANGE}40`,
-            borderRadius:16, padding:'16px 20px', marginTop:20 }}>
-            <span style={{ fontSize:20 }}>💡</span>
-            <span style={{ fontSize:13, color:'rgba(255,248,238,0.8)', lineHeight:1.6 }}>
-              Sweet spot: {city.stats.bestTime} — good weather, fewer tourists than peak.
-            </span>
-          </div>
-        </div>
-      ),
-      { width:W, height:H }
-    );
-  }
 
-  // ── SLIDE 3: Budget ────────────────────────────────────────────
-  if (n === 3) {
-    const tiers = [
-      { icon:'🎒', label:'Budget',    price:'$40–70',  note:'Hostel · Street food · Scooter',  hi:false },
-      { icon:'✈️', label:'Mid-Range', price:'$80–150', note:'Villa · Restaurants · Tours',     hi:true },
-      { icon:'👑', label:'Luxury',    price:'$200+',   note:'5-star · Driver · Fine dining',   hi:false },
-    ];
-    return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>💰 BUDGET</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:6 }}>How Much Does</span>
-          <span style={{ fontSize:48, fontWeight:900, color:ORANGE, lineHeight:1.05, marginBottom:24 }}>{city.name} Cost?</span>
-          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-            {tiers.map(t => (
-              <div key={t.label} style={{ display:'flex', alignItems:'center', gap:18,
-                background: t.hi ? `${ORANGE}22` : G,
-                border: t.hi ? `1px solid ${ORANGE}55` : GB,
-                borderRadius:18, padding:'20px 24px' }}>
-                <span style={{ fontSize:30 }}>{t.icon}</span>
-                <div style={{ display:'flex', flexDirection:'column', flex:1 }}>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:5 }}>
-                    <span style={{ fontSize:17, fontWeight:700, color: t.hi ? AMBER : CREAM }}>{t.label}</span>
-                    <span style={{ fontSize:26, fontWeight:900, color: t.hi ? ORANGE : 'rgba(255,248,238,0.7)' }}>
-                      {t.price}/day
+          {/* Subheadline */}
+          {d.sub && (
+            <span style={{ fontSize:20, color:AMBER, fontStyle:'italic', marginBottom:24 }}>
+              {d.sub}
+            </span>
+          )}
+
+          {/* Body */}
+          {d.body && !d.checklist && (
+            <span style={{ fontSize:16, color:'rgba(255,248,238,0.65)', lineHeight:1.75, marginBottom:20 }}>
+              {d.body}
+            </span>
+          )}
+
+          {/* Checklist */}
+          {d.checklist && (
+            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:4 }}>
+              {d.checklist.map((item: any, i: number) => (
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:14,
+                  background: item.tick ? 'rgba(255,122,0,0.10)' : 'rgba(255,248,238,0.06)',
+                  border: item.tick ? `1px solid ${ORANGE}40` : '1px solid rgba(255,248,238,0.12)',
+                  borderRadius:14, padding:'14px 18px' }}>
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+                    width:28, height:28, borderRadius:8, flexShrink:0,
+                    background: item.tick ? ORANGE : 'rgba(255,248,238,0.08)',
+                    border: item.tick ? 'none' : '1px solid rgba(255,248,238,0.15)' }}>
+                    <span style={{ fontSize:13, color:'#fff', fontWeight:700 }}>
+                      {item.tick ? '✓' : '✕'}
                     </span>
                   </div>
-                  <span style={{ fontSize:13, color:'rgba(255,248,238,0.5)' }}>{t.note}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:12, background:G, border:GB,
-            borderRadius:16, padding:'16px 20px', marginTop:20 }}>
-            <span style={{ fontSize:20 }}>🛵</span>
-            <span style={{ fontSize:13, color:'rgba(255,248,238,0.7)', lineHeight:1.6 }}>
-              Tip: Scooter (~$5/day) + local warungs = half the cost, double the fun.
-            </span>
-          </div>
-        </div>
-      ),
-      { width:W, height:H }
-    );
-  }
-
-  // ── SLIDE 4: Top Places ────────────────────────────────────────
-  if (n === 4) {
-    return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>🗺️ TOP PLACES</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:6 }}>5 Places You</span>
-          <span style={{ fontSize:48, fontWeight:900, color:ORANGE, lineHeight:1.05, marginBottom:24 }}>Cannot Skip</span>
-          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-            {places.map((p, i) => (
-              <div key={p.name} style={{ display:'flex', alignItems:'center', gap:16,
-                background: i === 0 ? `${ORANGE}22` : G,
-                border: i === 0 ? `1px solid ${ORANGE}55` : GB,
-                borderRadius:18, padding:'16px 20px' }}>
-                <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                  width:50, height:50, borderRadius:14, flexShrink:0,
-                  background: i === 0 ? ORANGE : `${ORANGE}28`,
-                  border:`1px solid ${ORANGE}55` }}>
-                  <span style={{ fontSize:18, fontWeight:900, color: i === 0 ? '#fff' : AMBER }}>
-                    {String(i+1).padStart(2,'0')}
+                  <span style={{ fontSize:15, color: item.tick ? CREAM : 'rgba(255,248,238,0.55)', lineHeight:1.4 }}>
+                    {item.text}
                   </span>
                 </div>
-                <span style={{ fontSize:26, flexShrink:0 }}>{p.icon}</span>
-                <div style={{ display:'flex', flexDirection:'column', flex:1 }}>
-                  <span style={{ fontSize:17, fontWeight:800, color:CREAM, lineHeight:1.2, marginBottom:3 }}>{p.name}</span>
-                  <span style={{ fontSize:11, color:'rgba(255,248,238,0.45)' }}>{p.category} · {p.duration}</span>
-                </div>
-                {i === 0 && (
-                  <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                    background:ORANGE, borderRadius:10, padding:'4px 10px' }}>
-                    <span style={{ fontSize:9, color:'#fff', fontWeight:700 }}>TOP PICK</span>
+              ))}
+            </div>
+          )}
+
+          {/* Month grid for best time slide */}
+          {d.mbm && (
+            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:8 }}>
+              {[
+                { label:'✅ BEST',  months: d.mbm.months.filter((m:any)=>m.rating==='excellent').map((m:any)=>m.short), color:'#00C9A7' },
+                { label:'👍 GOOD',  months: d.mbm.months.filter((m:any)=>m.rating==='good').map((m:any)=>m.short),      color:'#60A5FA' },
+                { label:'❌ AVOID', months: d.mbm.months.filter((m:any)=>m.rating==='avoid').map((m:any)=>m.short),     color:'#F87171' },
+              ].filter((g:any) => g.months.length > 0).map((g:any) => (
+                <div key={g.label} style={{ display:'flex', alignItems:'center', gap:14,
+                  background:`${g.color}15`, border:`1px solid ${g.color}35`, borderRadius:16, padding:'16px 20px' }}>
+                  <div style={{ display:'flex', flexDirection:'column', flex:1, gap:6 }}>
+                    <span style={{ fontSize:10, color:g.color, fontWeight:700, letterSpacing:3 }}>{g.label}</span>
+                    <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+                      {g.months.map((m:string) => (
+                        <span key={m} style={{ fontSize:15, color:'rgba(255,248,238,0.9)',
+                          background:`${g.color}25`, border:`1px solid ${g.color}55`,
+                          borderRadius:22, padding:'5px 13px', fontWeight:600 }}>{m}</span>
+                      ))}
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      ),
-      { width:W, height:H }
-    );
-  }
-
-  // ── SLIDE 5: Where to Stay ─────────────────────────────────────
-  if (n === 5) {
-    const pm: Record<string,string> = { '$':'Budget','$$':'Mid-range','$$$':'Upscale','$$$$':'Luxury' };
-    return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>🏨 AREAS</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:6 }}>Which Area Is</span>
-          <span style={{ fontSize:48, fontWeight:900, color:ORANGE, lineHeight:1.05, marginBottom:24 }}>Right for You?</span>
-          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-            {hoods.map((h: any) => (
-              <div key={h.name} style={{ display:'flex', alignItems:'center', gap:14,
-                background:G, border:GB, borderRadius:18, padding:'16px 20px' }}>
-                <span style={{ fontSize:24, flexShrink:0 }}>{h.emoji ?? '📍'}</span>
-                <div style={{ display:'flex', flexDirection:'column', flex:1 }}>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
-                    <span style={{ fontSize:17, fontWeight:800, color:CREAM }}>{h.name}</span>
-                    {h.priceRange && (
-                      <span style={{ fontSize:10, color:ORANGE, background:`${ORANGE}22`,
-                        border:`1px solid ${ORANGE}44`, borderRadius:12, padding:'3px 10px' }}>
-                        {h.priceRange} · {pm[h.priceRange]??''}
-                      </span>
-                    )}
-                  </div>
-                  <span style={{ fontSize:12, color:'rgba(255,248,238,0.5)', lineHeight:1.4 }}>
-                    {(h.vibe||h.tagline||'').slice(0,55)}
-                  </span>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
-      ),
+
+        {/* Footer */}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
+          borderTop:'1px solid rgba(255,248,238,0.07)', padding:'14px 52px', position:'relative' }}>
+          <span style={{ fontSize:10, color:'rgba(255,248,238,0.3)' }}>tripgenius.in</span>
+          {n < TOTAL
+            ? <span style={{ fontSize:11, color:ORANGE, fontWeight:700 }}>Swipe →</span>
+            : <span style={{ fontSize:11, color:'rgba(255,248,238,0.3)' }}>{n}/{TOTAL}</span>
+          }
+        </div>
+      </div>,
       { width:W, height:H }
     );
   }
 
-  // ── SLIDE 6: Hidden Gems ───────────────────────────────────────
-  if (n === 6) {
-    return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>💎 HIDDEN GEMS</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:6 }}>Places Most</span>
-          <span style={{ fontSize:48, fontWeight:900, color:ORANGE, lineHeight:1.05, marginBottom:8 }}>Tourists Miss</span>
-          <span style={{ fontSize:14, color:AMBER, fontStyle:'italic', marginBottom:24 }}>Save this 👇</span>
-          <div style={{ display:'flex', flexDirection:'column', gap:13 }}>
-            {gems.length > 0 ? gems.map((g, i) => (
-              <div key={g.name} style={{ display:'flex', gap:14,
-                background: i===0 ? `${AMBER}15` : G,
-                border: i===0 ? `1px solid ${AMBER}40` : GB,
-                borderRadius:18, padding:'16px 20px' }}>
-                <span style={{ fontSize:26, flexShrink:0, marginTop:2 }}>{g.icon}</span>
-                <div style={{ display:'flex', flexDirection:'column' }}>
-                  <span style={{ fontSize:17, fontWeight:800, color:CREAM, marginBottom:3 }}>{g.name}</span>
-                  <span style={{ fontSize:11, color:ORANGE, marginBottom:4 }}>{g.type}</span>
-                  <span style={{ fontSize:12, color:'rgba(255,248,238,0.55)', lineHeight:1.5 }}>{g.why.slice(0,80)}</span>
-                </div>
-              </div>
-            )) : (
-              <span style={{ fontSize:14, color:'rgba(255,248,238,0.3)' }}>Full list at tripgenius.in</span>
-            )}
-          </div>
-        </div>
-      ),
-      { width:W, height:H }
-    );
-  }
-
-  // ── SLIDE 7: Cheatsheet ────────────────────────────────────────
-  if (n === 7) {
-    return new ImageResponse(
-      bg(
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:8 }}>📋 CHEATSHEET</span>
-          <span style={{ fontSize:48, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:4 }}>{city.name} in 60s</span>
-          <span style={{ fontSize:13, color:AMBER, fontStyle:'italic', marginBottom:22 }}>Screenshot this slide 📸</span>
-
-          {/* Row 1 of stats */}
-          <div style={{ display:'flex', gap:10, marginBottom:10 }}>
-            <div style={{ display:'flex', flexDirection:'column', flex:1, gap:4, background:G, border:GB, borderRadius:16, padding:'14px 16px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                <span style={{ fontSize:14 }}>📅</span>
-                <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>BEST TIME</span>
-              </div>
-              <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{city.stats.bestTime}</span>
-            </div>
-            <div style={{ display:'flex', flexDirection:'column', flex:1, gap:4, background:G, border:GB, borderRadius:16, padding:'14px 16px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                <span style={{ fontSize:14 }}>💰</span>
-                <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>DAILY BUDGET</span>
-              </div>
-              <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{city.stats.budget}</span>
-            </div>
-          </div>
-
-          {/* Row 2 of stats */}
-          <div style={{ display:'flex', gap:10, marginBottom:18 }}>
-            <div style={{ display:'flex', flexDirection:'column', flex:1, gap:4, background:G, border:GB, borderRadius:16, padding:'14px 16px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                <span style={{ fontSize:14 }}>💱</span>
-                <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>CURRENCY</span>
-              </div>
-              <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{city.stats.currency}</span>
-            </div>
-            <div style={{ display:'flex', flexDirection:'column', flex:1, gap:4, background:G, border:GB, borderRadius:16, padding:'14px 16px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                <span style={{ fontSize:14 }}>🗣️</span>
-                <span style={{ fontSize:9, color:'rgba(255,248,238,0.35)', letterSpacing:2 }}>LANGUAGE</span>
-              </div>
-              <span style={{ fontSize:14, fontWeight:700, color:AMBER }}>{city.stats.language}</span>
-            </div>
-          </div>
-
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {tips.map((tip, i) => (
-              <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12,
-                background:G, border:GB, borderRadius:14, padding:'12px 16px' }}>
-                <span style={{ fontSize:15, color:ORANGE, fontWeight:700, marginTop:1 }}>✓</span>
-                <span style={{ fontSize:13, color:'rgba(255,248,238,0.75)', lineHeight:1.5 }}>{tip}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ),
-      { width:W, height:H }
-    );
-  }
-
-  // ── SLIDE 8: CTA ───────────────────────────────────────────────
+  // ── Slide 8: CTA ────────────────────────────────────────────────
   return new ImageResponse(
     <div style={{ width:W, height:H, display:'flex', flexDirection:'column',
       alignItems:'center', justifyContent:'center', overflow:'hidden',
-      background:`linear-gradient(145deg,${DARK} 0%,#1a0800 50%,${DARK} 100%)` }}>
+      background:`linear-gradient(145deg,${DARK} 0%,#1A0800 50%,${DARK} 100%)` }}>
 
-      {/* Rings */}
-      {[280,420,560].map((s, i) => (
-        <div key={s} style={{ display:'flex', position:'absolute', width:s, height:s,
-          borderRadius:'50%', border:`1px solid ${ORANGE}${['55','30','15'][i]}`,
-          top:'50%', left:'50%',
-          transform:`translate(-${s/2}px,-${s/2}px)` }} />
-      ))}
+      <div style={{ display:'flex', position:'absolute', width:280, height:280, borderRadius:'50%',
+        border:`1px solid ${ORANGE}60`, top:'50%', left:'50%',
+        transform:'translate(-140px,-140px)' }} />
+      <div style={{ display:'flex', position:'absolute', width:430, height:430, borderRadius:'50%',
+        border:`1px solid ${ORANGE}35`, top:'50%', left:'50%',
+        transform:'translate(-215px,-215px)' }} />
+      <div style={{ display:'flex', position:'absolute', width:580, height:580, borderRadius:'50%',
+        border:`1px solid ${ORANGE}18`, top:'50%', left:'50%',
+        transform:'translate(-290px,-290px)' }} />
 
-      {/* Glow */}
-      <div style={{ display:'flex', position:'absolute', width:360, height:360,
-        borderRadius:'50%', top:'50%', left:'50%',
-        transform:'translate(-180px,-180px)',
+      <div style={{ display:'flex', position:'absolute', width:340, height:340, borderRadius:'50%',
+        top:'50%', left:'50%', transform:'translate(-170px,-170px)',
         background:`radial-gradient(circle,${ORANGE}28 0%,transparent 65%)` }} />
 
-      {/* Top line */}
       <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3,
         background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
 
       <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative',
-        textAlign:'center' as const, padding:'60px 80px' }}>
-        <span style={{ fontSize:64, marginBottom:18 }}>{city.flag}</span>
-        <span style={{ fontSize:13, color:ORANGE, letterSpacing:4, fontWeight:700, marginBottom:14 }}>FREE TRAVEL GUIDE</span>
-        <span style={{ fontSize:52, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:14 }}>
-          Plan Your {city.name} Trip
+        padding:'60px 80px' }}>
+        <span style={{ fontSize:60, marginBottom:16 }}>{city.flag}</span>
+        <span style={{ fontSize:12, color:ORANGE, letterSpacing:4, fontWeight:700, marginBottom:14 }}>FREE TRAVEL GUIDE</span>
+        <span style={{ fontSize:54, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:12,
+          textAlign:'center' as const }}>
+          Your Bali trip{'\n'}starts here.
         </span>
-        <span style={{ fontSize:14, color:'rgba(255,248,238,0.5)', marginBottom:36, lineHeight:1.9 }}>
-          Things to do · Where to stay · Budget{'\n'}Hidden gems · Local tips · Best time
+        <span style={{ fontSize:15, color:'rgba(255,248,238,0.45)', marginBottom:36,
+          textAlign:'center' as const, lineHeight:1.9 }}>
+          Everything they don&apos;t post about.{'\n'}Free. No fluff.
         </span>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-          background:ORANGE, borderRadius:40, padding:'16px 44px', marginBottom:26 }}>
-          <span style={{ fontSize:18, fontWeight:800, color:'#fff' }}>tripgenius.in/cities/{slug}</span>
+          background:ORANGE, borderRadius:40, padding:'16px 44px', marginBottom:24 }}>
+          <span style={{ fontSize:17, fontWeight:800, color:'#fff' }}>tripgenius.in/cities/{slug}</span>
         </div>
         <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              width:22, height:22, borderRadius:6, background:ORANGE }}>
-              <span style={{ fontSize:11 }}>✈️</span>
-            </div>
-            <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,248,238,0.6)', letterSpacing:2 }}>TRIPGENIUS</span>
-          </div>
-          <span style={{ fontSize:12, color:'rgba(255,248,238,0.35)', lineHeight:1.9 }}>
-            💾 Save · 📤 Share · 🔔 Follow @tripgenius.in
+          <Logo />
+          <span style={{ fontSize:12, color:'rgba(255,248,238,0.3)', textAlign:'center' as const, lineHeight:1.9 }}>
+            💾 Save this · 📤 Share with a friend{'\n'}🔔 Follow @tripgenius.in
           </span>
         </div>
       </div>
