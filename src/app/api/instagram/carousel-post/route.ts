@@ -2,7 +2,7 @@ import { verifyInstagramRequest } from '@/lib/instagramAuth';
 import { getCityBySlug } from '@/lib/cities';
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.tripgenius.in';
-const TOTAL_SLIDES = 9;
+const TOTAL_SLIDES = 8;
 
 function cfg() {
   const accessToken       = process.env.INSTAGRAM_ACCESS_TOKEN;
