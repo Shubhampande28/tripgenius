@@ -79,38 +79,29 @@ export async function GET(
             </div>
           </div>
 
-          {/* Country badge */}
-          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20 }}>
-            <span style={{ fontSize:22 }}>{city.flag}</span>
-            <span style={{ fontSize:15, color:OR, fontWeight:700, letterSpacing:3 }}>
-              BALI, INDONESIA
+            {/* Big decorative number as design element */}
+          <span style={{ fontSize:200, fontWeight:900, color:OR, lineHeight:0.85,
+            marginBottom:0, letterSpacing:-8 }}>
+            7
+          </span>
+
+          {/* Headline — bold, punchy, dark on cream */}
+          <span style={{ fontSize:88, fontWeight:900, color:DARK, lineHeight:0.92,
+            marginBottom:24 }}>
+            Must-see{'\n'}places{'\n'}in Bali 🌴
+          </span>
+
+          {/* Single strong CTA — not 3 generic pills */}
+          <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:OR, borderRadius:32, padding:'14px 36px' }}>
+              <span style={{ fontSize:18, color:'#fff', fontWeight:800 }}>
+                Free guide → Swipe
+              </span>
+            </div>
+            <span style={{ fontSize:16, color:'rgba(26,8,4,0.4)', fontWeight:600 }}>
+              tripgenius.in
             </span>
-          </div>
-
-          {/* Headline — dark on cream = perfect contrast */}
-          <span style={{ fontSize:36, fontWeight:700, color:'rgba(26,8,4,0.5)', lineHeight:1, marginBottom:4 }}>
-            Places to see in
-          </span>
-          <span style={{ fontSize:118, fontWeight:900, color:DARK, lineHeight:0.88, marginBottom:32 }}>
-            Bali
-          </span>
-
-          {/* Pills */}
-          <div style={{ display:'flex', gap:12 }}>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:OR, borderRadius:30, padding:'12px 28px' }}>
-              <span style={{ fontSize:16, color:'#fff', fontWeight:700 }}>7 Spots 🌴</span>
-            </div>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:'transparent', border:`2px solid ${OR}`,
-              borderRadius:30, padding:'12px 28px' }}>
-              <span style={{ fontSize:16, color:OR, fontWeight:700 }}>Free Guide</span>
-            </div>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:'transparent', border:`2px solid rgba(26,8,4,0.2)`,
-              borderRadius:30, padding:'12px 22px' }}>
-              <span style={{ fontSize:16, color:'rgba(26,8,4,0.5)', fontWeight:700 }}>Swipe →</span>
-            </div>
           </div>
         </div>
 
@@ -166,29 +157,34 @@ export async function GET(
             </div>
           </div>
 
-          {/* Pre-headline */}
-          <span style={{ fontSize:16, color:OR, fontWeight:700, letterSpacing:3, marginBottom:12 }}>
-            BEFORE YOU START PLANNING →
+          {/* TripGenius brand mark — large, prominent */}
+          <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:32 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              width:70, height:70, borderRadius:18, background:OR }}>
+              <span style={{ fontSize:36 }}>✈️</span>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column' }}>
+              <span style={{ fontSize:28, fontWeight:900, color:DARK, letterSpacing:1 }}>TRIPGENIUS</span>
+              <span style={{ fontSize:15, color:'rgba(26,8,4,0.45)', fontWeight:500 }}>Free Travel Guides</span>
+            </div>
+          </div>
+
+          {/* Bold single statement — easy to read at a glance */}
+          <span style={{ fontSize:72, fontWeight:900, color:DARK, lineHeight:0.95, marginBottom:28 }}>
+            Plan your{'\n'}Bali trip{'\n'}for free.
           </span>
 
-          {/* Main headline */}
-          <span style={{ fontSize:66, fontWeight:900, color:DARK, lineHeight:1.0, marginBottom:32 }}>
-            Get the free{'\n'}Bali guide{'\n'}that travellers{'\n'}actually use.
-          </span>
-
-          {/* Trust signals — 4 points */}
-          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          {/* 3 short trust points — scannable in 2 seconds */}
+          <div style={{ display:'flex', flexDirection:'column', gap:16, marginBottom:32 }}>
             {[
-              { icon:'🌍', text:'160+ destination guides — all free' },
-              { icon:'✅', text:'No paid reviews. No sponsored picks.' },
-              { icon:'📅', text:'Updated for 2025 — includes new places' },
-              { icon:'💡', text:'Budget tips, best time, hidden gems' },
+              '🌍  160+ free city guides',
+              '✅  No ads. No paid reviews.',
+              '📅  Updated 2025',
             ].map(item => (
-              <div key={item.text} style={{ display:'flex', alignItems:'center', gap:14 }}>
-                <span style={{ fontSize:20, flexShrink:0 }}>{item.icon}</span>
-                <span style={{ fontSize:18, color:DARK, fontWeight:600, lineHeight:1.3 }}>
-                  {item.text}
-                </span>
+              <div key={item} style={{ display:'flex', alignItems:'center',
+                background:'rgba(255,122,0,0.08)', border:`1.5px solid ${OR}25`,
+                borderRadius:14, padding:'13px 20px' }}>
+                <span style={{ fontSize:18, color:DARK, fontWeight:600 }}>{item}</span>
               </div>
             ))}
           </div>
