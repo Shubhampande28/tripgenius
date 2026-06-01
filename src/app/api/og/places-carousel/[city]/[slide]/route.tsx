@@ -10,10 +10,10 @@ const AM = '#FFB347';
 // ── High-res Pexels photos — 1080×1350 aspect for crisp rendering ──
 const PLACES = [
   null,
-  // 1 Cover
+  // 1 Cover — aerial rice terraces
   {
     type:'cover',
-    photo:'https://images.pexels.com/photos/3067621/pexels-photo-3067621.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop',
+    photo:'https://images.pexels.com/photos/35428411/pexels-photo-35428411.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&fit=crop',
   },
   // 2
   { type:'place', num:'01', name:'Tanah Lot', sub:'Temple', tag:'Sunset · Cultural',
@@ -58,74 +58,88 @@ export async function GET(
 
   const imgOpts = { width:W, height:H };
 
-  // ── COVER ──────────────────────────────────────────────────────
+  // ── COVER — cream top + photo bottom (reference style) ────────
   if (s.type === 'cover') {
+    const CREAM = '#FFF8EE';
+    const DARK  = '#1A0804';
     return new ImageResponse(
-      <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden' }}>
-        {/* Full-bleed photo */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={s.photo} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }} />
+      <div style={{ width:W, height:H, display:'flex', flexDirection:'column', background:CREAM }}>
 
-        {/* Cinematic dark gradient — heavy at bottom */}
-        <div style={{ display:'flex', position:'absolute', inset:0,
-          background:'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.97) 100%)' }} />
+        {/* TOP: cream background — 100% readable text */}
+        <div style={{ display:'flex', flexDirection:'column', padding:'48px 56px 32px 56px',
+          flex:'0 0 660px', background:CREAM }}>
 
-        {/* Orange top accent */}
-        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:6,
-          background:`linear-gradient(to right, ${OR}, ${AM}, ${OR})` }} />
-
-        <div style={{ display:'flex', flexDirection:'column', position:'relative', height:'100%', padding:'36px 52px' }}>
-
-          {/* Logo top left */}
-          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:'auto' }}>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              width:38, height:38, borderRadius:10, background:OR }}>
-              <span style={{ fontSize:19 }}>✈️</span>
+          {/* Logo + progress row */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:40 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+                width:38, height:38, borderRadius:10, background:OR }}>
+                <span style={{ fontSize:18 }}>✈️</span>
+              </div>
+              <span style={{ fontSize:15, fontWeight:800, color:DARK, letterSpacing:2 }}>TRIPGENIUS</span>
             </div>
-            <span style={{ fontSize:16, fontWeight:900, color:'#fff', letterSpacing:2.5 }}>TRIPGENIUS</span>
-          </div>
-
-          {/* Bottom content */}
-          <div style={{ display:'flex', flexDirection:'column' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:20 }}>
-              <span style={{ fontSize:16, color:OR, fontWeight:700, letterSpacing:4 }}>
-                {city.flag} BALI, INDONESIA
-              </span>
-            </div>
-
-            {/* Giant headline */}
-            <span style={{ fontSize:42, fontWeight:900, color:'rgba(255,255,255,0.65)', lineHeight:1, marginBottom:6 }}>
-              Places to see in
-            </span>
-            <span style={{ fontSize:120, fontWeight:900, color:'#fff', lineHeight:0.88, marginBottom:28 }}>
-              Bali
-            </span>
-
-            {/* Pills row */}
-            <div style={{ display:'flex', gap:12, marginBottom:32 }}>
-              {[
-                { label:'7 Spots', bg:OR, color:'#fff' },
-                { label:'Free Guide', bg:'transparent', color:'rgba(255,255,255,0.75)', border:'1px solid rgba(255,255,255,0.35)' },
-                { label:'Swipe →', bg:'transparent', color:AM, border:`1px solid ${AM}` },
-              ].map(p => (
-                <div key={p.label} style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                  background:p.bg, border:p.border ?? 'none',
-                  borderRadius:30, padding:'11px 24px' }}>
-                  <span style={{ fontSize:15, color:p.color, fontWeight:700 }}>{p.label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Progress */}
-            <div style={{ display:'flex', gap:7 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
               {Array.from({length:TOTAL}).map((_,i) => (
                 <div key={i} style={{ display:'flex',
-                  width:i===0?32:7, height:7, borderRadius:4,
-                  background:i===0?OR:'rgba(255,255,255,0.3)' }} />
+                  width:i===0?28:6, height:6, borderRadius:3,
+                  background:i===0?OR:'rgba(26,8,4,0.15)' }} />
               ))}
+            </div>
+          </div>
+
+          {/* Country badge */}
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20 }}>
+            <span style={{ fontSize:22 }}>{city.flag}</span>
+            <span style={{ fontSize:15, color:OR, fontWeight:700, letterSpacing:3 }}>
+              BALI, INDONESIA
+            </span>
+          </div>
+
+          {/* Headline — dark on cream = perfect contrast */}
+          <span style={{ fontSize:36, fontWeight:700, color:'rgba(26,8,4,0.5)', lineHeight:1, marginBottom:4 }}>
+            Places to see in
+          </span>
+          <span style={{ fontSize:118, fontWeight:900, color:DARK, lineHeight:0.88, marginBottom:32 }}>
+            Bali
+          </span>
+
+          {/* Pills */}
+          <div style={{ display:'flex', gap:12 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:OR, borderRadius:30, padding:'12px 28px' }}>
+              <span style={{ fontSize:16, color:'#fff', fontWeight:700 }}>7 Spots 🌴</span>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:'transparent', border:`2px solid ${OR}`,
+              borderRadius:30, padding:'12px 28px' }}>
+              <span style={{ fontSize:16, color:OR, fontWeight:700 }}>Free Guide</span>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:'transparent', border:`2px solid rgba(26,8,4,0.2)`,
+              borderRadius:30, padding:'12px 22px' }}>
+              <span style={{ fontSize:16, color:'rgba(26,8,4,0.5)', fontWeight:700 }}>Swipe →</span>
             </div>
           </div>
         </div>
+
+        {/* BOTTOM: photo */}
+        <div style={{ display:'flex', position:'relative', flex:1 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={s.photo} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top' }} />
+          {/* Fade from cream into photo */}
+          <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:180,
+            background:`linear-gradient(to bottom, ${CREAM}, rgba(255,248,238,0))` }} />
+          {/* Orange bottom bar */}
+          <div style={{ display:'flex', position:'absolute', bottom:0, left:0, right:0, height:6,
+            background:`linear-gradient(to right, ${OR}, ${AM}, ${OR})` }} />
+          <div style={{ display:'flex', position:'absolute', bottom:14, left:0, right:0,
+            justifyContent:'center' }}>
+            <span style={{ fontSize:13, color:'rgba(255,255,255,0.6)', fontWeight:600, letterSpacing:1 }}>
+              tripgenius.in
+            </span>
+          </div>
+        </div>
+
       </div>,
       imgOpts
     );
