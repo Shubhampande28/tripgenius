@@ -27,13 +27,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     // Core pages
-    { url: BASE,                       lastModified: NOW, changeFrequency: 'weekly',  priority: 1.0 },
-    { url: `${BASE}/cities`,           lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
-    { url: `${BASE}/blog`,             lastModified: NOW, changeFrequency: 'weekly',  priority: 0.9 },
-    { url: `${BASE}/about`,            lastModified: NOW, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/contact`,          lastModified: NOW, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE}/privacy-policy`,   lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
-    { url: `${BASE}/terms`,            lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
+    { url: BASE,                        lastModified: NOW, changeFrequency: 'weekly',  priority: 1.0 },
+    { url: `${BASE}/cities`,            lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
+    // /destinations = static server-rendered list Google can crawl to discover ALL city links
+    { url: `${BASE}/destinations`,      lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
+    { url: `${BASE}/blog`,              lastModified: NOW, changeFrequency: 'weekly',  priority: 0.9 },
+    { url: `${BASE}/about`,             lastModified: NOW, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/contact`,           lastModified: NOW, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE}/privacy-policy`,    lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
+    { url: `${BASE}/terms`,             lastModified: NOW, changeFrequency: 'yearly',  priority: 0.3 },
 
     // Blog articles
     ...blogPages,

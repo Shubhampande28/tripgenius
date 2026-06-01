@@ -4,6 +4,7 @@ import { Compass, X, Camera, Play, GitBranch } from 'lucide-react';
 const footerLinks = {
   Explore: [
     { label: 'All Cities', href: '/cities' },
+    { label: 'All Destinations', href: '/destinations' },
     { label: 'Bali Guide', href: '/cities/bali' },
     { label: 'Tokyo Guide', href: '/cities/tokyo' },
     { label: 'Paris Guide', href: '/cities/paris' },
