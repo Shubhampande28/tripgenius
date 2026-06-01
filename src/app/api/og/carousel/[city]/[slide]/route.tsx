@@ -126,34 +126,68 @@ export async function GET(
       <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={heroImg} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
-        <div style={{ display:'flex', position:'absolute', inset:0, background:'linear-gradient(175deg,rgba(12,8,5,0.2) 0%,rgba(12,8,5,0.97) 100%)' }} />
-        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:3, background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
+
+        {/* Strong multi-stop overlay — very dark from 45% downward */}
+        <div style={{ display:'flex', position:'absolute', inset:0,
+          background:'linear-gradient(to bottom, rgba(10,6,2,0.15) 0%, rgba(10,6,2,0.3) 30%, rgba(10,6,2,0.75) 50%, rgba(10,6,2,0.97) 70%, rgba(10,6,2,1) 100%)' }} />
+
+        {/* Warm orange glow at bottom left for brand warmth */}
+        <div style={{ display:'flex', position:'absolute', bottom:-60, left:-60, width:400, height:400,
+          borderRadius:'50%', background:`radial-gradient(circle,${ORANGE}30 0%,transparent 65%)` }} />
+
+        {/* Top accent line */}
+        <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:4,
+          background:`linear-gradient(to right,transparent,${ORANGE},${AMBER},transparent)` }} />
 
         <div style={{ display:'flex', flexDirection:'column', position:'relative', padding:'44px 52px', height:'100%' }}>
+
+          {/* Nav */}
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'auto' }}>
             <Logo />
-            <span style={{ fontSize:11, color:'rgba(255,248,238,0.4)', letterSpacing:2 }}>{(data as any).tag}</span>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:'rgba(255,122,0,0.18)', border:`1px solid ${ORANGE}50`,
+              borderRadius:20, padding:'6px 14px' }}>
+              <span style={{ fontSize:11, color:AMBER, fontWeight:700, letterSpacing:1.5 }}>2025 GUIDE</span>
+            </div>
           </div>
 
-          <div style={{ display:'flex', flexDirection:'column', marginBottom:36 }}>
-            <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4, marginBottom:20 }}>{city.flag} {city.country.toUpperCase()}</span>
-            <span style={{ fontSize:isBali ? 76 : 88, fontWeight:900, color:'#fff', lineHeight:1.0, marginBottom:16, whiteSpace:'pre-line' as const }}>
+          {/* Text block — solid dark backing for guaranteed readability */}
+          <div style={{ display:'flex', flexDirection:'column',
+            background:'rgba(10,6,2,0.55)', borderRadius:20,
+            padding:'28px 32px', marginBottom:28 }}>
+
+            {/* Country badge */}
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:18 }}>
+              <span style={{ fontSize:22 }}>{city.flag}</span>
+              <span style={{ fontSize:13, color:ORANGE, fontWeight:700, letterSpacing:4 }}>
+                {city.country.toUpperCase()}
+              </span>
+            </div>
+
+            {/* Headline — large and punchy */}
+            <span style={{ fontSize:80, fontWeight:900, color:'#FFFFFF', lineHeight:0.96,
+              marginBottom:18, whiteSpace:'pre-line' as const,
+              textShadow:'0 2px 20px rgba(0,0,0,0.8)' }}>
               {(data as any).headline}
             </span>
-            <span style={{ fontSize:22, color:AMBER, fontStyle:'italic', marginBottom:20 }}>
+
+            {/* Subheadline — clearly visible amber */}
+            <span style={{ fontSize:26, color:AMBER, fontWeight:700, lineHeight:1.3, marginBottom:0 }}>
               {(data as any).sub}
             </span>
-            {(data as any).body && (
-              <span style={{ fontSize:15, color:'rgba(255,248,238,0.6)', lineHeight:1.65, maxWidth:560 }}>
-                {(data as any).body}
-              </span>
-            )}
           </div>
 
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', borderTop:'1px solid rgba(255,248,238,0.1)', paddingTop:22 }}>
-            <span style={{ fontSize:14, color:'rgba(255,248,238,0.4)' }}>Swipe for the full story →</span>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', background:ORANGE, borderRadius:30, padding:'13px 28px' }}>
-              <span style={{ fontSize:14, fontWeight:800, color:'#fff' }}>1 of {TOTAL} →</span>
+          {/* Bottom CTA row */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
+            borderTop:`1px solid ${ORANGE}30`, paddingTop:20 }}>
+            <span style={{ fontSize:16, color:'rgba(255,248,238,0.7)', fontWeight:500 }}>
+              Swipe for the full story
+            </span>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              background:ORANGE, borderRadius:30, padding:'14px 30px' }}>
+              <span style={{ fontSize:16, fontWeight:800, color:'#fff', letterSpacing:0.5 }}>
+                1 of {TOTAL} →
+              </span>
             </div>
           </div>
         </div>
@@ -196,23 +230,28 @@ export async function GET(
           </div>
 
           {/* Slide tag */}
-          <span style={{ fontSize:11, color:ORANGE, fontWeight:700, letterSpacing:3, marginBottom:14 }}>{d.tag}</span>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+            background:`${ORANGE}22`, border:`1px solid ${ORANGE}45`,
+            borderRadius:20, padding:'6px 14px', alignSelf:'flex-start', marginBottom:20 }}>
+            <span style={{ fontSize:11, color:ORANGE, fontWeight:700, letterSpacing:3 }}>{d.tag}</span>
+          </div>
 
           {/* Headline */}
-          <span style={{ fontSize:52, fontWeight:900, color:CREAM, lineHeight:1.05, marginBottom:10, whiteSpace:'pre-line' as const }}>
+          <span style={{ fontSize:58, fontWeight:900, color:'#FFFFFF', lineHeight:1.02,
+            marginBottom:14, whiteSpace:'pre-line' as const }}>
             {d.headline}
           </span>
 
           {/* Subheadline */}
           {d.sub && (
-            <span style={{ fontSize:20, color:AMBER, fontStyle:'italic', marginBottom:24 }}>
+            <span style={{ fontSize:22, color:AMBER, fontWeight:700, marginBottom:26, lineHeight:1.3 }}>
               {d.sub}
             </span>
           )}
 
           {/* Body */}
           {d.body && !d.checklist && (
-            <span style={{ fontSize:16, color:'rgba(255,248,238,0.65)', lineHeight:1.75, marginBottom:20 }}>
+            <span style={{ fontSize:17, color:'rgba(255,248,238,0.80)', lineHeight:1.75, marginBottom:20 }}>
               {d.body}
             </span>
           )}
