@@ -19,14 +19,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+  const BASE = 'https://www.tripgenius.in';
   return {
     title: post.title,
     description: post.excerpt,
+    keywords: post.tags,
+    alternates: { canonical: `${BASE}/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
       publishedTime: post.date,
+      authors: ['TripGenius'],
+      tags: post.tags,
+      images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
       images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
     },
   };
@@ -119,8 +130,36 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     day: 'numeric', month: 'long', year: 'numeric',
   });
 
+  const BASE = 'https://www.tripgenius.in';
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: `https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { '@type': 'Organization', name: 'TripGenius', url: BASE },
+    publisher: {
+      '@type': 'Organization', name: 'TripGenius', url: BASE,
+      logo: { '@type': 'ImageObject', url: `${BASE}/icon.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE}/blog/${slug}` },
+    keywords: post.tags.join(', '),
+    articleSection: post.category,
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE}/blog` },
+        { '@type': 'ListItem', position: 3, name: post.title, item: `${BASE}/blog/${slug}` },
+      ],
+    },
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <Navbar />
       <main className="bg-dark min-h-screen">
 

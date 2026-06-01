@@ -12,8 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const cityPages = indexableCities.map((city) => ({
     url: `${BASE}/cities/${city.slug}`,
     lastModified: NOW,
-    changeFrequency: 'monthly' as const,
-    priority: fullGuideSlugs.has(city.slug) ? 0.9 : 0.7,
+    // weekly = Google crawls more often = fresher rankings
+    changeFrequency: 'weekly' as const,
+    // Full guide cities get 0.9, stub cities get 0.6
+    priority: fullGuideSlugs.has(city.slug) ? 0.9 : 0.6,
   }));
 
   const blogPages = allPosts.map((post) => ({

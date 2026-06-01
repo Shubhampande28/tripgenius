@@ -37,28 +37,41 @@ export async function generateMetadata(
   if (!city) return { title: 'City Not Found' };
 
   const year = new Date().getFullYear();
-  const title = `${city.name} Travel Guide ${year} — Things To Do, Best Time & Budget`;
-  const desc  = `Plan your ${city.name} trip: best time to visit (${city.stats.bestTime}), daily budget (${city.stats.budget}), top things to do, where to stay, and local insider tips. Free ${city.country} travel guide.`;
+  const n = city.thingsToDo?.length ?? 0;
+
+  // Primary keyword targets: "things to do in X", "X travel guide", "visit X"
+  const title = n > 0
+    ? `${n} Best Things to Do in ${city.name} (${year} Travel Guide)`
+    : `${city.name} Travel Guide ${year} — Best Time, Places & Tips`;
+
+  const desc = `Plan your ${city.name} trip with our free ${year} guide. ` +
+    `Best time to visit: ${city.stats.bestTime}. Budget: ${city.stats.budget}/day. ` +
+    `Top attractions, where to stay, local food and hidden gems in ${city.name}, ${city.country}.`;
 
   return {
     title,
     description: desc,
     keywords: [
-      `${city.name} travel guide`, `things to do in ${city.name}`,
-      `best time to visit ${city.name}`, `${city.name} travel tips`,
-      `${city.name} itinerary`, `${city.name} budget`,
-      `${city.country} travel`, `visit ${city.name} ${year}`,
-      `${city.name} tourist guide`, `${city.name} trip`,
+      `things to do in ${city.name}`,
+      `${city.name} travel guide`,
+      `visit ${city.name}`,
+      `best places in ${city.name}`,
+      `${city.name} trip planner`,
+      `${city.name} tourist attractions`,
+      `best time to visit ${city.name}`,
+      `${city.name} travel tips ${year}`,
+      `${city.name} itinerary`,
+      `${city.name} travel guide ${year}`,
+      `${city.country} travel`,
+      `${city.name} holidays`,
+      `${city.name} tourism`,
     ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
-    // Stub cities have auto-generated content — keep them out of Google's index
-    ...(city.stub && {
-      robots: { index: false, follow: false },
-    }),
+    ...(city.stub && { robots: { index: false, follow: false } }),
     openGraph: {
       title, description: desc,
-      url:  `https://www.tripgenius.in/cities/${slug}`,
-      type: 'article',
+      url:   `https://www.tripgenius.in/cities/${slug}`,
+      type:  'article',
       images: [{ url: `/cities/${slug}/opengraph-image`, width: 1200, height: 630, alt: `${city.name} travel guide — TripGenius` }],
     },
     twitter: {
@@ -137,11 +150,79 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     })),
   };
 
+  // 4. ItemList — "Top things to do in X" → powers Google featured snippets
+  const itemListSchema = city.thingsToDo?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Top ${city.thingsToDo.length} Things to Do in ${city.name}`,
+    description: `The best experiences in ${city.name} ranked by traveller popularity.`,
+    numberOfItems: city.thingsToDo.length,
+    itemListElement: city.thingsToDo.map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'TouristAttraction',
+        name: t.name,
+        description: t.description,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: city.name,
+          addressCountry: city.country,
+        },
+      },
+    })),
+  } : null;
+
+  // 5. LodgingBusiness — ranks for "[city] hotels", "[city] where to stay"
+  const hotelSchemas = (city.hotels ?? []).map(h => ({
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: h.name,
+    description: h.description,
+    priceRange: h.priceRange,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city.name,
+      addressCountry: city.country,
+    },
+    url,
+  }));
+
+  // 6. Restaurant — ranks for "[city] restaurants", "[city] food guide"
+  const restaurantSchemas = (city.restaurants ?? []).map(r => ({
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    name: r.name,
+    description: r.description,
+    servesCuisine: r.cuisine,
+    priceRange: r.priceRange,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city.name,
+      addressCountry: city.country,
+    },
+    url,
+  }));
+
+  // 7. WebPage — helps Google understand page type and author
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TravelAction',
+    name: `Plan a trip to ${city.name}`,
+    description: `Free travel guide for ${city.name} — best time, budget, things to do, where to stay.`,
+    target: { '@type': 'EntryPoint', urlTemplate: url },
+    object: { '@type': 'Place', name: city.name },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(destination) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
+      {hotelSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchemas) }} />}
+      {restaurantSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantSchemas) }} />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
     </>
   );
 }
