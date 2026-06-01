@@ -10,6 +10,18 @@ const AMBER  = '#FFB347';
 const CREAM  = '#FFF8EE';
 const DARK   = '#0C0805';
 
+// ── Verified Pexels images per slide ──────────────────────────────
+const BALI_PHOTOS: Record<number, string> = {
+  1: 'https://images.pexels.com/photos/3067621/pexels-photo-3067621.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  2: 'https://images.pexels.com/photos/27306497/pexels-photo-27306497.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  3: 'https://images.pexels.com/photos/36810327/pexels-photo-36810327.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  4: 'https://images.pexels.com/photos/16395470/pexels-photo-16395470.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  5: 'https://images.pexels.com/photos/5990051/pexels-photo-5990051.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  6: 'https://images.pexels.com/photos/37204728/pexels-photo-37204728.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  7: 'https://images.pexels.com/photos/6407829/pexels-photo-6407829.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+  8: 'https://images.pexels.com/photos/2077323/pexels-photo-2077323.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1350&dpr=1',
+};
+
 // ── Bali-specific carousel content (editorial, not generic) ────────
 const BALI_SLIDES = [
   null, // index 0 unused
@@ -345,21 +357,29 @@ export async function GET(
       return null;
     }
 
+    const slideBg = isBali ? BALI_PHOTOS[n] : null;
+
     return new ImageResponse(
       <div style={{ width:W, height:H, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden',
-        background:`linear-gradient(155deg,#1A0E04 0%,${DARK} 60%,#080503 100%)` }}>
+        background:'#0C0805' }}>
 
-        {/* Decorative large slide number — fills background visually */}
-        <div style={{ display:'flex', position:'absolute', right:-20, bottom:40,
-          fontSize:320, fontWeight:900, color:'rgba(255,122,0,0.04)',
-          lineHeight:1, userSelect:'none' as const }}>
-          {String(n).padStart(2,'0')}
-        </div>
+        {/* Photo background for Bali slides */}
+        {slideBg && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={slideBg} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
+        )}
 
-        {/* Ambient glow */}
-        <div style={{ display:'flex', position:'absolute', width:500, height:500, borderRadius:'50%',
-          top:-60 + n*30, left:-120 + n*20,
-          background:`radial-gradient(circle,${ORANGE}18 0%,transparent 70%)` }} />
+        {/* Dark overlay — heavier at top and bottom, lighter in middle so photo shows */}
+        <div style={{ display:'flex', position:'absolute', inset:0,
+          background:'linear-gradient(to bottom, rgba(8,5,2,0.82) 0%, rgba(8,5,2,0.45) 30%, rgba(8,5,2,0.55) 60%, rgba(8,5,2,0.92) 100%)' }} />
+
+        {/* Extra bottom darkening for text readability */}
+        <div style={{ display:'flex', position:'absolute', bottom:0, left:0, right:0, height:'55%',
+          background:'linear-gradient(to top, rgba(8,5,2,0.95) 0%, transparent 100%)' }} />
+
+        {/* Warm orange bottom-left glow */}
+        <div style={{ display:'flex', position:'absolute', bottom:-80, left:-80, width:380, height:380,
+          borderRadius:'50%', background:`radial-gradient(circle,${ORANGE}25 0%,transparent 65%)` }} />
 
         {/* Top line */}
         <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:4,
@@ -428,10 +448,19 @@ export async function GET(
   }
 
   // ── Slide 8: CTA ────────────────────────────────────────────────
+  const ctaBg = isBali ? BALI_PHOTOS[8] : null;
   return new ImageResponse(
     <div style={{ width:W, height:H, display:'flex', flexDirection:'column',
       alignItems:'center', justifyContent:'center', overflow:'hidden',
-      background:`linear-gradient(145deg,${DARK} 0%,#1A0800 50%,${DARK} 100%)` }}>
+      background:'#0C0805' }}>
+
+      {/* Sunset photo background */}
+      {ctaBg && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={ctaBg} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
+      )}
+      {/* Heavy dark overlay for CTA readability */}
+      <div style={{ display:'flex', position:'absolute', inset:0, background:'rgba(8,5,2,0.88)' }} />
 
       <div style={{ display:'flex', position:'absolute', width:280, height:280, borderRadius:'50%',
         border:`1px solid ${ORANGE}60`, top:'50%', left:'50%',
