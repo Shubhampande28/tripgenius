@@ -15,7 +15,7 @@ const PLACES = [
   null,
 
   // ── SLIDE 1: HOOK — stop the scroll ──────────────────────────
-  { type:'cover', photo: PX(35428411) },
+  { type:'cover', photo: PX(5990051) }, // Kelingking cliff — dramatic stop-scroll
 
   // ── SLIDE 2: MARKETING — sell TripGenius ─────────────────────
   { type:'marketing', photo: PX(3067621) },
@@ -52,77 +52,76 @@ export async function GET(
 
   // ── COVER — cream top + photo bottom (reference style) ────────
   if (s.type === 'cover') {
-    const CREAM = '#FFF8EE';
-    const DARK  = '#1A0804';
     return new ImageResponse(
-      <div style={{ width:W, height:H, display:'flex', flexDirection:'column', background:CREAM }}>
+      <div style={{ width:W, height:H, display:'flex', flexDirection:'column',
+        position:'relative', overflow:'hidden' }}>
 
-        {/* TOP: cream background — 100% readable text */}
-        <div style={{ display:'flex', flexDirection:'column', padding:'48px 56px 32px 56px',
-          flex:'0 0 660px', background:CREAM }}>
+        {/* FULL-BLEED photo — dramatic Kelingking cliff */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={s.photo} alt="" style={{ position:'absolute', inset:0,
+          width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 20%' }} />
 
-          {/* Logo + progress row */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:40 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-                width:38, height:38, borderRadius:10, background:OR }}>
-                <span style={{ fontSize:18 }}>✈️</span>
-              </div>
-              <span style={{ fontSize:15, fontWeight:800, color:DARK, letterSpacing:2 }}>TRIPGENIUS</span>
+        {/* Gradient: light top (for logo), heavy bottom (for text) */}
+        <div style={{ display:'flex', position:'absolute', inset:0,
+          background:'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.6) 65%, rgba(0,0,0,0.92) 100%)' }} />
+
+        <div style={{ display:'flex', flexDirection:'column', position:'relative',
+          height:'100%', padding:'36px 44px' }}>
+
+          {/* Logo — top left like reference */}
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+              width:44, height:44, borderRadius:12, background:OR }}>
+              <span style={{ fontSize:22 }}>✈️</span>
             </div>
-            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-              {Array.from({length:TOTAL}).map((_,i) => (
-                <div key={i} style={{ display:'flex',
-                  width:i===0?28:6, height:6, borderRadius:3,
-                  background:i===0?OR:'rgba(26,8,4,0.15)' }} />
-              ))}
+            <div style={{ display:'flex', flexDirection:'column' }}>
+              <span style={{ fontSize:16, fontWeight:900, color:'#fff', letterSpacing:1.5 }}>TRIPGENIUS</span>
+              <span style={{ fontSize:10, color:'rgba(255,255,255,0.6)', letterSpacing:1 }}>Free Travel Guides</span>
             </div>
           </div>
 
-            {/* Big decorative number as design element */}
-          <span style={{ fontSize:200, fontWeight:900, color:OR, lineHeight:0.85,
-            marginBottom:0, letterSpacing:-8 }}>
-            7
-          </span>
+          {/* Spacer */}
+          <div style={{ display:'flex', flex:1 }} />
 
-          {/* Headline — bold, punchy, dark on cream */}
-          <span style={{ fontSize:88, fontWeight:900, color:DARK, lineHeight:0.92,
-            marginBottom:24 }}>
-            Must-see{'\n'}places{'\n'}in Bali 🌴
-          </span>
+          {/* TEXT BLOCK — bottom, on dark gradient */}
+          <div style={{ display:'flex', flexDirection:'column', marginBottom:20 }}>
 
-          {/* Single strong CTA — not 3 generic pills */}
-          <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
-              background:OR, borderRadius:32, padding:'14px 36px' }}>
-              <span style={{ fontSize:18, color:'#fff', fontWeight:800 }}>
-                Free guide → Swipe
+            {/* Script-style italic line (like reference "50 Incredible") */}
+            <span style={{ fontSize:56, fontWeight:400, color:'#fff',
+              fontStyle:'italic', lineHeight:1.1, marginBottom:4 }}>
+              7 Must-see
+            </span>
+
+            {/* Bold white line (like reference "Things to do in") */}
+            <span style={{ fontSize:62, fontWeight:900, color:'#fff',
+              lineHeight:1.0, marginBottom:8 }}>
+              Places to visit in
+            </span>
+
+            {/* GIANT CITY NAME in gold/orange (like reference "BALI") */}
+            <span style={{ fontSize:160, fontWeight:900, color:'#FFD700',
+              lineHeight:0.82, marginBottom:28, letterSpacing:-4 }}>
+              BALI
+            </span>
+
+            {/* Bottom row: progress dots left, Swipe right */}
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              {/* Dots */}
+              <div style={{ display:'flex', alignItems:'center', gap:7 }}>
+                {Array.from({length:TOTAL}).map((_,i) => (
+                  <div key={i} style={{ display:'flex',
+                    width:i===0?22:7, height:7, borderRadius:4,
+                    background:i===0?OR:'rgba(255,255,255,0.4)' }} />
+                ))}
+              </div>
+              {/* Swipe — script style like reference */}
+              <span style={{ fontSize:52, fontWeight:400, color:'#fff',
+                fontStyle:'italic' }}>
+                Swipe
               </span>
             </div>
-            <span style={{ fontSize:16, color:'rgba(26,8,4,0.4)', fontWeight:600 }}>
-              tripgenius.in
-            </span>
           </div>
         </div>
-
-        {/* BOTTOM: photo */}
-        <div style={{ display:'flex', position:'relative', flex:1 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={s.photo} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top' }} />
-          {/* Fade from cream into photo */}
-          <div style={{ display:'flex', position:'absolute', top:0, left:0, right:0, height:180,
-            background:`linear-gradient(to bottom, ${CREAM}, rgba(255,248,238,0))` }} />
-          {/* Orange bottom bar */}
-          <div style={{ display:'flex', position:'absolute', bottom:0, left:0, right:0, height:6,
-            background:`linear-gradient(to right, ${OR}, ${AM}, ${OR})` }} />
-          <div style={{ display:'flex', position:'absolute', bottom:14, left:0, right:0,
-            justifyContent:'center' }}>
-            <span style={{ fontSize:13, color:'rgba(255,255,255,0.6)', fontWeight:600, letterSpacing:1 }}>
-              tripgenius.in
-            </span>
-          </div>
-        </div>
-
       </div>,
       imgOpts
     );
