@@ -59,29 +59,8 @@ export async function GET(
 
   const s = SLIDES[n] as any;
 
-  // Try loading Anton (condensed ultra-bold) — 2.5s timeout
-  let fontData: ArrayBuffer | null = null;
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 2500);
-    const res = await fetch(
-      'https://fonts.gstatic.com/s/anton/v25/1Ptgg87LROyAm3Kz-C8.woff2',
-      { signal: ctrl.signal }
-    );
-    clearTimeout(timer);
-    if (res.ok) fontData = await res.arrayBuffer();
-  } catch { /* fallback to system font */ }
-
-  const opts = fontData
-    ? {
-        width: W, height: H,
-        fonts: [{ name: 'Anton', data: fontData, weight: 400 as const, style: 'normal' as const }],
-      }
-    : { width: W, height: H };
-
-  const headlineFont = fontData
-    ? { fontFamily: 'Anton', fontWeight: 400 as const }
-    : { fontWeight: 900 as const };
+  const opts = { width: W, height: H };
+  const headlineFont = { fontWeight: 900 as const };
 
   return new ImageResponse(
     <div style={{ width:W, height:H, display:'flex', flexDirection:'column',
@@ -96,12 +75,10 @@ export async function GET(
       <div style={{ display:'flex', position:'absolute', inset:0,
         background:'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.40) 25%, rgba(0,0,0,0.62) 55%, rgba(0,0,0,0.72) 100%)' }} />
 
-      {/* If no Anton, add extra text backing for readability */}
-      {!fontData && (
-        <div style={{ display:'flex', position:'absolute',
-          top:'25%', bottom:'10%', left:0, right:0,
-          background:'rgba(0,0,0,0.25)' }} />
-      )}
+      {/* Extra dark band in center where text sits */}
+      <div style={{ display:'flex', position:'absolute',
+        top:'22%', bottom:'8%', left:0, right:0,
+        background:'rgba(0,0,0,0.22)' }} />
 
       {/* CONTENT */}
       <div style={{ display:'flex', flexDirection:'column', position:'relative',
@@ -133,7 +110,7 @@ export async function GET(
             color: '#FFFFFF',
             textAlign: 'center' as const,
             lineHeight: 1.0,
-            letterSpacing: fontData ? 1 : -1,
+            letterSpacing: -1,
             marginBottom: s.body ? 36 : 0,
             whiteSpace: 'pre-line' as const,
           }}>
