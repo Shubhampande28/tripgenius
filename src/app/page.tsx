@@ -296,7 +296,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURED TRAVEL GUIDES ── */}
-        <section className="py-14">
+        <section className="py-14 bg-surface">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <div className="flex items-end justify-between mb-8">
               <div>
@@ -394,7 +394,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-14">
+        <section className="py-14 bg-surface">
           <div className="max-w-3xl mx-auto px-6">
             <div className="text-center mb-8">
               <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">FAQ</p>
