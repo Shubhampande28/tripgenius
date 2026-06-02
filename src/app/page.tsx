@@ -153,15 +153,15 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            {/* Search */}
+            {/* Search — bigger, more prominent */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="mt-7"
+              className="mt-8"
             >
-              <div ref={searchRef} className="relative max-w-sm mx-auto">
-                <Search size={15} className="hero-search-icon pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+              <div ref={searchRef} className="relative max-w-xl mx-auto">
+                <Search size={17} className="hero-search-icon pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 z-10" />
                 <input
                   type="text"
                   value={query}
@@ -174,7 +174,7 @@ export default function HomePage() {
                   }}
                   onFocus={() => { if (query) setShowDropdown(true); }}
                   placeholder="Search a city or country…"
-                  className="hero-search w-full pl-11 pr-4 py-3.5 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
+                  className="hero-search w-full pl-12 pr-5 py-4 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-accent/25 transition-all shadow-sm"
                 />
                 {showDropdown && query.length > 0 && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-elevated border border-border rounded-2xl z-50 overflow-hidden text-left shadow-xl">
@@ -209,27 +209,6 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
-            </motion.div>
-
-            {/* Popular chips */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-5 flex flex-wrap justify-center gap-2"
-            >
-              <span className="hero-popular-label text-xs self-center">Popular:</span>
-              {POPULAR_CHIPS.map((name) => {
-                const city = allCities.find(c => c.name === name);
-                if (!city) return null;
-                return (
-                  <Link key={name} href={`/cities/${city.slug}`}
-                    className="hero-chip flex items-center gap-1.5 px-3 py-1 rounded-full text-xs transition-all duration-200">
-                    <span>{city.flag}</span>
-                    <span>{name}</span>
-                  </Link>
-                );
-              })}
             </motion.div>
 
             {/* Stats strip */}

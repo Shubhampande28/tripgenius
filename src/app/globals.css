@@ -65,7 +65,7 @@ html.light .card-glow:hover {
   background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f1923 100%);
 }
 html.light .hero-bg {
-  background: linear-gradient(160deg, #ffffff 0%, #fdf8f5 50%, #f9f6ff 100%);
+  background: #ffffff;
 }
 
 .hero-glow { opacity: 1; }
