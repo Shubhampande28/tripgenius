@@ -24,6 +24,11 @@ const SITE = "https://www.tripgenius.in";
 const YEAR = new Date().getFullYear();
 
 export const metadata: Metadata = {
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+    shortcut: '/logo.png',
+  },
   title: {
     default: `TripGenius — Free Travel Guides for India & the World (${YEAR})`,
     template: "%s | TripGenius",

@@ -101,7 +101,7 @@ export default function Navbar() {
       >
         {/* Max 1280px container */}
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-[84px]">
 
             {/* Logo — 60px height */}
             <Link href="/" className="flex items-center flex-shrink-0 group">
@@ -109,7 +109,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="TripGenius"
-                className="h-[60px] w-auto object-contain group-hover:opacity-90 transition-opacity"
+                className="h-[72px] w-auto object-contain group-hover:opacity-90 transition-opacity"
               />
             </Link>
 

@@ -226,13 +226,17 @@ export default function HomePage() {
         <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
 
-            {/* Section header */}
+            {/* Section header — "View all" on right */}
             <div className="flex items-end justify-between mb-8">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Top Picks</p>
                 <h2 className="font-heading text-3xl font-bold text-primary-text">Popular Destinations</h2>
                 <p className="text-muted text-sm mt-1">Hand-picked places travellers love most right now</p>
               </div>
+              <Link href="/destinations"
+                className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
+                View all destinations <ArrowRight size={13} />
+              </Link>
             </div>
 
             {/* Destination card grid — image + name + supporting info */}
@@ -284,13 +288,6 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* View all — same style as section header links */}
-            <div className="mt-8 text-center">
-              <Link href="/destinations"
-                className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1">
-                View all destinations <ArrowRight size={13} />
-              </Link>
-            </div>
 
           </div>
         </section>
