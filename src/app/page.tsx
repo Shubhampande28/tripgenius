@@ -155,11 +155,10 @@ export default function HomePage() {
           <div className="max-w-[900px] mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.55 }}>
               <h1 className="font-heading text-5xl sm:text-6xl font-bold text-primary-text leading-tight tracking-tight mb-4">
-                Discover Your<br />
-                <span className="text-accent">Next Journey</span>
+                Explore the <span className="text-accent">World</span>
               </h1>
               <p className="text-lg text-muted max-w-xl mx-auto mb-8 leading-relaxed">
-                Detailed travel guides, itineraries, things to do, budgets and local tips.
+                Free travel guides for 160+ destinations — things to do, best time, budgets and local tips.
               </p>
 
               {/* ── AUTOCOMPLETE SEARCH ── */}
@@ -285,13 +284,11 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* View More — navigates to destination discovery page */}
-            <div className="mt-10 text-center">
-              <Link
-                href="/destinations"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-accent text-accent font-semibold text-sm hover:bg-accent hover:text-white transition-all duration-200"
-              >
-                View More Destinations <ArrowRight size={15} />
+            {/* View all — same style as section header links */}
+            <div className="mt-8 text-center">
+              <Link href="/destinations"
+                className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1">
+                View all destinations <ArrowRight size={13} />
               </Link>
             </div>
 
@@ -299,7 +296,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURED TRAVEL GUIDES ── */}
-        <section className="py-14 bg-surface">
+        <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <div className="flex items-end justify-between mb-8">
               <div>
@@ -397,7 +394,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-14 bg-surface">
+        <section className="py-14">
           <div className="max-w-3xl mx-auto px-6">
             <div className="text-center mb-8">
               <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">FAQ</p>
