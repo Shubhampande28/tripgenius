@@ -57,12 +57,12 @@ export default function Navbar() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-dark/92 backdrop-blur-xl border-b border-border/40 shadow-sm'
+            ? 'bg-dark/92 backdrop-blur-xl border-b border-border/40 shadow-sm navbar-scrolled'
             : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-18">
+          <div className="flex items-center justify-between h-18 lg:h-20">
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0 group">
@@ -70,7 +70,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="TripGenius — Your Travel Guide"
-                className="h-12 w-auto object-contain group-hover:opacity-90 transition-opacity"
+                className="h-16 w-auto object-contain group-hover:opacity-90 transition-opacity"
               />
             </Link>
 

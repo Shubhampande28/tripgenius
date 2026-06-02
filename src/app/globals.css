@@ -49,6 +49,18 @@ html.light {
 }
 
 
+/* Every page background is pure white in light mode */
+html.light main,
+html.light .bg-dark {
+  background-color: #FFFFFF;
+}
+
+/* Navbar becomes white when scrolled in light mode */
+html.light .navbar-scrolled {
+  background-color: rgba(255,255,255,0.96) !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+
 html.light .glass {
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
