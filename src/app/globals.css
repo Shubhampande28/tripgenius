@@ -5,7 +5,7 @@
   --color-surface:  #161B22;
   --color-elevated: #1C2128;
   --color-border:   #30363D;
-  --color-accent:   #FF6B35;
+  --color-accent:   #DC2626;
   --color-teal:     #00C9A7;
   --color-gold:     #FFD166;
   --color-primary-text: #E6EDF3;
@@ -31,12 +31,12 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-::selection { background-color: #FF6B35; color: #fff; }
+::selection { background-color: #DC2626; color: #fff; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-dark); }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #FF6B35; }
+::-webkit-scrollbar-thumb:hover { background: #DC2626; }
 
 /* ── Light mode ──────────────────────────────────────────────────── */
 html.light {
@@ -74,7 +74,7 @@ html.light .card-glow:hover {
 
 /* ── Hero theme adaptations (CSS-only, no JS flash) ─────────────── */
 .hero-bg {
-  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f1923 100%);
+  background: linear-gradient(160deg, #1a0505 0%, #1a0a0a 40%, #0f0505 100%);
 }
 html.light .hero-bg {
   background: #ffffff;

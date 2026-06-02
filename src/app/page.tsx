@@ -154,11 +154,27 @@ export default function HomePage() {
         <section className="pt-32 pb-12 text-center">
           <div className="max-w-[900px] mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.55 }}>
+              {/* Trust strip — real numbers, not self-claims */}
+              <div className="flex items-center justify-center gap-6 mb-6 flex-wrap">
+                {[
+                  { n: '160+', label: 'Destinations' },
+                  { n: '54',   label: 'Free Guides' },
+                  { n: '0',    label: 'Sponsored Posts' },
+                  { n: '100%', label: 'Free Forever' },
+                ].map(s => (
+                  <div key={s.label} className="flex items-center gap-1.5">
+                    <span className="text-base font-bold text-accent">{s.n}</span>
+                    <span className="text-xs text-muted">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
               <h1 className="font-heading text-5xl sm:text-6xl font-bold text-primary-text leading-tight tracking-tight mb-4">
-                Explore the <span className="text-accent">World</span>
+                Your Free Guide to<br />
+                <span className="text-accent">Every Destination</span>
               </h1>
-              <p className="text-lg text-muted max-w-xl mx-auto mb-8 leading-relaxed">
-                Free travel guides for 160+ destinations — things to do, best time, budgets and local tips.
+              <p className="text-lg text-muted max-w-lg mx-auto mb-8 leading-relaxed">
+                Honest travel guides for 160+ cities — things to do, best time, budgets and local tips. Always free.
               </p>
 
               {/* ── AUTOCOMPLETE SEARCH ── */}
@@ -216,6 +232,23 @@ export default function HomePage() {
                       <p className="text-xs text-muted">↑↓ Navigate · Enter to select · Esc to close</p>
                     </div>
                   </motion.div>
+                )}
+
+                {/* Trending chips — visible before user types */}
+                {!query && (
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    <span className="text-xs text-muted self-center">Trending:</span>
+                    {['Bali', 'Goa in Monsoon', 'Manali Road Trip', 'Udaipur Honeymoon', 'Ladakh', 'Europe Budget'].map(t => {
+                      const city = allCities.find(c => c.name === t.split(' ')[0]);
+                      return (
+                        <Link key={t}
+                          href={city ? `/cities/${city.slug}` : '/destinations'}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent/40 hover:text-accent bg-white transition-all text-muted">
+                          {city?.flag} {t}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
             </motion.div>
@@ -365,24 +398,25 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── NEWSLETTER ── */}
-        <section className="py-14 bg-accent">
+        {/* ── NEWSLETTER ── subtle, not a neon billboard ── */}
+        <section className="py-14 border-t border-border">
           <div className="max-w-xl mx-auto px-6 text-center">
-            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Stay Updated</p>
-            <h2 className="font-heading text-3xl font-bold text-white mb-2">Get Free Travel Tips</h2>
-            <p className="text-white/75 text-sm mb-6">Weekly guides, hidden gems, and money-saving tips. No spam.</p>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-4">
+              <Mail size={12} /> Free Weekly Guide
+            </div>
+            <h2 className="font-heading text-3xl font-bold text-primary-text mb-2">Travel smarter, not harder</h2>
+            <p className="text-muted text-sm mb-6 max-w-sm mx-auto">Get the best destination guides, hidden gems and money-saving tips. No spam, ever.</p>
             {subState === 'done' ? (
-              <p className="text-white font-semibold">✓ You&apos;re in! Check your inbox.</p>
+              <p className="text-accent font-semibold">✓ You&apos;re in! Check your inbox.</p>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
                 <input
                   type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com" required
-                  className="flex-1 px-4 py-3 rounded-xl text-sm text-primary-text bg-white focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="flex-1 px-4 py-3 rounded-xl text-sm border border-border bg-white text-primary-text focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40"
                 />
                 <button type="submit" disabled={subState === 'loading'}
-                  className="px-6 py-3 rounded-xl bg-white text-accent font-semibold text-sm hover:bg-white/90 transition-colors flex items-center gap-2 justify-center flex-shrink-0">
-                  <Mail size={14} />
+                  className="px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors flex items-center gap-2 justify-center flex-shrink-0">
                   {subState === 'loading' ? 'Subscribing…' : 'Subscribe'}
                 </button>
               </form>
