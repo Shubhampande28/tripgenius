@@ -151,7 +151,7 @@ export default function HomePage() {
       <main className="min-h-screen">
 
         {/* ── HERO ── */}
-        <section className="pt-28 pb-12 text-center">
+        <section className="pt-32 pb-12 text-center">
           <div className="max-w-[900px] mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.55 }}>
               <h1 className="font-heading text-5xl sm:text-6xl font-bold text-primary-text leading-tight tracking-tight mb-4">
