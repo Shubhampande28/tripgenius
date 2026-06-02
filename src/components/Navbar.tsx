@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Globe } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 
 const THEME_EVENT = 'tripgenius-theme-change';
-
 function getSnap() {
   if (typeof document === 'undefined') return true;
   return document.documentElement.classList.contains('light');
@@ -19,17 +19,30 @@ function subTheme(cb: () => void) {
   return () => { window.removeEventListener(THEME_EVENT, cb); window.removeEventListener('storage', cb); };
 }
 
-const navLinks = [
-  { label: 'Home',         href: '/' },
-  { label: 'Destinations', href: '/cities' },
-  { label: 'Blog',         href: '/blog' },
-  { label: 'Compare',      href: '/compare/goa-vs-bali' },
+// Destination sub-menu categories
+const DEST_MENU = [
+  { label: 'India', href: '/cities?region=India' },
+  { label: 'Asia', href: '/cities?region=Asia' },
+  { label: 'Europe', href: '/cities?region=Europe' },
+  { label: 'Americas', href: '/cities?region=Americas' },
+  { label: 'All Destinations', href: '/destinations' },
+];
+
+const TODO_MENU = [
+  { label: 'Adventure', href: '/destinations' },
+  { label: 'Beaches', href: '/destinations' },
+  { label: 'Hill Stations', href: '/destinations' },
+  { label: 'Pilgrimage', href: '/destinations' },
+  { label: 'Honeymoon', href: '/destinations' },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled]     = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled]       = useState(false);
+  const [mobileOpen, setMobileOpen]   = useState(false);
+  const [destOpen, setDestOpen]       = useState(false);
+  const [todoOpen, setTodoOpen]       = useState(false);
   const isLight = useSyncExternalStore(subTheme, getSnap, () => true);
+  const router  = useRouter();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -39,14 +52,41 @@ export default function Navbar() {
 
   function toggleTheme() {
     const next = !isLight;
-    if (next) {
-      document.documentElement.classList.add('light');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    }
+    if (next) { document.documentElement.classList.add('light'); localStorage.setItem('theme', 'light'); }
+    else       { document.documentElement.classList.remove('light'); localStorage.setItem('theme', 'dark'); }
     window.dispatchEvent(new Event(THEME_EVENT));
+  }
+
+  function NavDropdown({ label, items, open, setOpen }: {
+    label: string; items: {label:string; href:string}[];
+    open: boolean; setOpen: (v:boolean) => void;
+  }) {
+    return (
+      <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <button className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+          {label} <ChevronDown size={13} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        </button>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity:0, y:6 }}
+              animate={{ opacity:1, y:0 }}
+              exit={{ opacity:0, y:6 }}
+              transition={{ duration:0.15 }}
+              className="absolute top-full left-0 mt-1 w-48 bg-dark border border-border rounded-xl shadow-xl overflow-hidden z-50"
+            >
+              {items.map(item => (
+                <Link key={item.label} href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2.5 text-sm text-muted hover:text-primary-text hover:bg-elevated transition-colors">
+                  {item.label}
+                </Link>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
   }
 
   return (
@@ -56,76 +96,60 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-dark/92 backdrop-blur-xl border-b border-border/40 shadow-sm navbar-scrolled'
-            : 'bg-transparent'
+          scrolled ? 'navbar-scrolled bg-dark/95 backdrop-blur-xl border-b border-border/40 shadow-sm' : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18 lg:h-20">
+        {/* Max 1280px container */}
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
 
-            {/* Logo */}
+            {/* Logo — 60px height */}
             <Link href="/" className="flex items-center flex-shrink-0 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.png"
-                alt="TripGenius — Your Travel Guide"
-                className="h-16 w-auto object-contain group-hover:opacity-90 transition-opacity"
+                alt="TripGenius"
+                className="h-[60px] w-auto object-contain group-hover:opacity-90 transition-opacity"
               />
             </Link>
 
             {/* Desktop nav — centered */}
-            <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <nav className="hidden lg:flex items-center gap-1">
+              <NavDropdown label="Destinations" items={DEST_MENU} open={destOpen} setOpen={setDestOpen} />
+              <NavDropdown label="Things To Do" items={TODO_MENU} open={todoOpen} setOpen={setTodoOpen} />
+              <Link href="/blog"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+                Itineraries
+              </Link>
+              <Link href="/compare/goa-vs-bali"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+                Compare
+              </Link>
             </nav>
 
-            {/* Right: theme toggle + CTA */}
-            <div className="hidden md:flex items-center gap-3">
-
-              {/* Theme toggle — labelled so users know what it does */}
+            {/* Right — theme toggle + CTA */}
+            <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={toggleTheme}
                 aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border hover:border-accent/40 bg-surface hover:bg-elevated text-muted hover:text-primary-text transition-all duration-200 text-xs font-medium"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-accent/40 bg-surface hover:bg-elevated text-muted hover:text-primary-text transition-all duration-200 text-xs font-medium"
               >
-                {isLight
-                  ? <><Moon size={13} strokeWidth={2} /> Dark</>
-                  : <><Sun size={13} strokeWidth={2} /> Light</>
-                }
+                {isLight ? <><Moon size={13} strokeWidth={2} /> Dark</> : <><Sun size={13} strokeWidth={2} /> Light</>}
               </button>
-
-              {/* Primary CTA */}
               <Link
                 href="/destinations"
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors"
+                className="px-5 py-2.5 rounded-lg bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
               >
-                <Globe size={13} />
-                All Guides
+                Explore Guides
               </Link>
             </div>
 
             {/* Mobile */}
-            <div className="md:hidden flex items-center gap-2">
-              <button
-                onClick={toggleTheme}
-                aria-label={isLight ? 'Dark mode' : 'Light mode'}
-                className="p-2 rounded-lg border border-border text-muted hover:text-primary-text transition-colors"
-              >
-                {isLight ? <Moon size={16} strokeWidth={2} /> : <Sun size={16} strokeWidth={2} />}
+            <div className="lg:hidden flex items-center gap-2">
+              <button onClick={toggleTheme} className="p-2 rounded-lg border border-border text-muted">
+                {isLight ? <Moon size={16} /> : <Sun size={16} />}
               </button>
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="p-2 text-muted hover:text-primary-text transition-colors"
-                aria-label="Toggle menu"
-              >
+              <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-muted">
                 {mobileOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
@@ -133,34 +157,32 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile menu */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18 }}
-            className="fixed inset-x-0 top-16 z-40 bg-dark/96 backdrop-blur-xl border-b border-border md:hidden"
+            initial={{ opacity:0, y:-8 }}
+            animate={{ opacity:1, y:0 }}
+            exit={{ opacity:0, y:-8 }}
+            transition={{ duration:0.18 }}
+            className="fixed inset-x-0 top-20 z-40 bg-dark/96 backdrop-blur-xl border-b border-border lg:hidden"
           >
-            <div className="px-4 py-5 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-text hover:text-accent hover:bg-elevated transition-colors"
-                >
-                  {link.label}
+            <div className="max-w-[1280px] mx-auto px-6 py-5 space-y-1">
+              {[
+                { label:'Destinations', href:'/destinations' },
+                { label:'Things To Do', href:'/destinations' },
+                { label:'Itineraries', href:'/blog' },
+                { label:'Compare',      href:'/compare/goa-vs-bali' },
+              ].map(l => (
+                <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-text hover:text-accent hover:bg-elevated transition-colors">
+                  {l.label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-border mt-2">
-                <Link
-                  href="/destinations"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 py-3 rounded-lg bg-accent text-white font-semibold"
-                >
-                  <Globe size={15} /> All Guides
+              <div className="pt-3 border-t border-border">
+                <Link href="/destinations" onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center py-3 rounded-lg bg-accent text-white font-semibold">
+                  Explore Guides
                 </Link>
               </div>
             </div>

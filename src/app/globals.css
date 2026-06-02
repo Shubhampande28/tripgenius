@@ -41,11 +41,11 @@ body {
 /* ── Light mode ──────────────────────────────────────────────────── */
 html.light {
   --color-dark:         #FFFFFF;
-  --color-surface:      #F8F9FA;
-  --color-elevated:     #F0F1F3;
-  --color-border:       #E5E7EB;
-  --color-primary-text: #111827;
-  --color-muted:        #6B7280;
+  --color-surface:      #F8FAFC;
+  --color-elevated:     #F1F5F9;
+  --color-border:       #E2E8F0;
+  --color-primary-text: #334155;
+  --color-muted:        #64748B;
 }
 
 
