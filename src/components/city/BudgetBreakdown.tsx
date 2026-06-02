@@ -33,7 +33,7 @@ export default function BudgetBreakdown({ city }: { city: City }) {
             <div className="w-8 h-8 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
               <Wallet size={15} className="text-teal" />
             </div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-teal">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
               Budget Breakdown
             </p>
           </div>

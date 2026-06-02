@@ -17,7 +17,7 @@ export default function WhereToEat({ city }: { city: City }) {
           transition={{ duration: 0.6 }}
           className="mb-10"
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Dining
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">

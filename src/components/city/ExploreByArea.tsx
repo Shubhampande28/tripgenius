@@ -33,7 +33,7 @@ export default function ExploreByArea({ city }: { city: City }) {
             <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center">
               <Map size={15} className="text-gold" />
             </div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-gold">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
               Explore by Area
             </p>
           </div>

@@ -25,8 +25,8 @@ export default function MonthByMonth({ city }: { city: City }) {
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center gap-2 mb-1">
-            <CalendarDays size={14} className="text-gold" />
-            <p className="text-xs font-semibold uppercase tracking-widest text-gold">When to Visit</p>
+            <CalendarDays size={14} className="text-accent" />
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">When to Visit</p>
           </div>
           <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mb-3">
             Best Time to Visit {city.name}: Month-by-Month Guide

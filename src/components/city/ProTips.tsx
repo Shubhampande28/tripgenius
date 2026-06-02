@@ -18,7 +18,7 @@ export default function ProTips({ city }: { city: City }) {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Insider Knowledge
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
@@ -30,7 +30,7 @@ export default function ProTips({ city }: { city: City }) {
           {city.proTips.map((tip, i) => (
             <AnimateItem key={i} hover>
               <div className="flex gap-4 p-5 bg-surface border border-border rounded-xl group hover:border-gold/30 transition-colors h-full">
-                <div className="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
                   <Lightbulb size={16} className="text-gold" />
                 </div>
                 <p className="text-sm text-primary-text/80 leading-relaxed pt-1.5">{tip}</p>

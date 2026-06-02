@@ -41,7 +41,7 @@ export default function WhereToStay({ city }: { city: City }) {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <p className="text-xs font-bold uppercase tracking-widest text-teal mb-2">Accommodation</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Accommodation</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
             Where to Stay in {city.name}
           </h2>
@@ -69,7 +69,7 @@ export default function WhereToStay({ city }: { city: City }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.45, delay: i * 0.07 }}
-                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-teal/40 hover:shadow-lg transition-all duration-300 flex flex-col"
+                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300 flex flex-col"
                   >
                     {/* Area image */}
                     <div className="relative h-44 overflow-hidden">
@@ -120,7 +120,7 @@ export default function WhereToStay({ city }: { city: City }) {
 
                       {/* CTA */}
                       <div className="mt-auto flex items-center justify-end pt-3 border-t border-border/50">
-                        <span className="flex items-center gap-1.5 text-xs font-semibold text-teal group-hover:underline">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold text-accent group-hover:underline">
                           <Hotel size={12} />
                           Find Hotels →
                         </span>
@@ -137,11 +137,11 @@ export default function WhereToStay({ city }: { city: City }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 flex items-center justify-between gap-4 p-5 rounded-2xl border border-teal/20 bg-teal/5"
+              className="mt-6 flex items-center justify-between gap-4 p-5 rounded-2xl border border-accent/20 bg-accent/5"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-teal/15 flex items-center justify-center flex-shrink-0">
-                  <BedDouble size={18} className="text-teal" />
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <BedDouble size={18} className="text-accent" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-primary-text">Not sure which area?</p>
@@ -152,7 +152,7 @@ export default function WhereToStay({ city }: { city: City }) {
                 href={hotelUrl(city.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="flex items-center gap-2 px-5 py-2.5 bg-teal text-white rounded-xl text-sm font-semibold hover:bg-teal/90 transition-colors flex-shrink-0"
+                className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors flex-shrink-0"
               >
                 <Hotel size={14} />
                 All Hotels
@@ -179,7 +179,7 @@ export default function WhereToStay({ city }: { city: City }) {
                 href={hotelUrl(city.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-xl text-sm font-semibold hover:bg-teal/90 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors"
               >
                 <Hotel size={15} />
                 Browse Hotels on Booking.com
