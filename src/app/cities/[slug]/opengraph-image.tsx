@@ -10,7 +10,7 @@ export default async function CityOGImage(props: { params: Promise<{ slug: strin
   const city = getCityBySlug(slug);
   if (!city) return new Response('Not found', { status: 404 });
 
-  return new ImageResponse(
+  try { return new ImageResponse(
     (
       <div
         style={{
@@ -110,5 +110,14 @@ export default async function CityOGImage(props: { params: Promise<{ slug: strin
       </div>
     ),
     { ...size }
-  );
+  ); } catch {
+    // Fallback: plain colored rectangle if font/rendering fails
+    return new ImageResponse(
+      <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center',
+        justifyContent:'center', background:'#0D1117', color:'#fff', fontSize:48, fontWeight:700 }}>
+        {city.flag} {city.name}
+      </div>,
+      { ...size }
+    );
+  }
 }
