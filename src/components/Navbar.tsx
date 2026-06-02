@@ -7,10 +7,9 @@ import { Menu, X, Compass } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
-  { label: 'Destinations', href: '/destinations' },
-  { label: 'India', href: '/cities?region=india' },
+  { label: 'All Cities', href: '/cities' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Compare', href: '/compare/goa-vs-bali' },
+  { label: 'Newsletter', href: '/#waitlist' },
 ];
 
 export default function Navbar() {

@@ -51,171 +51,36 @@ const HOME_FAQ_SCHEMA = {
 const POPULAR_CHIPS = ['Bali', 'Paris', 'Tokyo', 'Goa', 'Bangkok', 'Dubai', 'Singapore', 'Jaipur'];
 
 const STATS = [
-  { icon: Globe, value: '160+', label: 'Destinations' },
+  { icon: Globe, value: '140+', label: 'Destinations' },
   { icon: BookOpen, value: '100%', label: 'Free Guides' },
   { icon: Star, value: 'Honest', label: 'No Paid Bias' },
   { icon: TrendingUp, value: '2025', label: 'Always Updated' },
 ];
 
-// Featured cities shown as large editorial cards
-const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'delhi', 'dubai'];
-
-// Region-based browsing — instead of dumping 160 cities in one flat grid
-const REGIONS = [
-  { label: 'All', value: 'all' },
-  { label: '🇮🇳 India', value: 'India' },
-  { label: '🌏 Asia', value: 'Asia' },
-  { label: '🌍 Europe', value: 'Europe' },
-  { label: '🌎 Americas', value: 'Americas' },
-];
-
-// Premium city card — shows best time + things to do count + vibe
-// Referenced: Airbnb card anatomy, Google Travel destination cards
-function CityCard({ city, featured = false }: { city: City; featured?: boolean }) {
-  const thingsCount = city.thingsToDo?.length ?? 0;
-  const firstVibe = city.vibes?.[0];
-
+function CityCard({ city }: { city: City }) {
   return (
-    <Link
-      href={`/cities/${city.slug}`}
-      className={`group relative block rounded-2xl overflow-hidden ${
-        featured ? 'h-80 sm:h-96' : 'h-56 sm:h-64'
-      }`}
-    >
+    <Link href={`/cities/${city.slug}`}
+      className="group relative block rounded-2xl overflow-hidden h-56 sm:h-64">
       <SafeImage
         src={getCityImageUrl(city.slug, 'card') ?? city.image}
-        alt={`${city.name}, ${city.country} travel guide — things to do, best time to visit`}
+        alt={`${city.name} travel guide`}
         city={city.slug} accentColor={city.accentColor} fill
-        sizes={featured
-          ? '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-          : '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'}
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
       />
-
-      {/* Gradient — stronger at bottom for readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/10" />
-
-      {/* Top: vibe tag */}
-      {firstVibe && (
-        <div className="absolute top-3 left-3">
-          <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white/80">
-            {firstVibe}
-          </span>
-        </div>
-      )}
-
-      {/* Top right: things to do count */}
-      {thingsCount > 0 && (
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-accent text-white">
-            {thingsCount} things to do
-          </span>
-        </div>
-      )}
-
-      {/* Bottom content */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        {/* Best time badge — KEY info users want */}
-        {city.stats?.bestTime && (
-          <div className="flex items-center gap-1 mb-2">
-            <span className="text-[10px] text-white/60">Best:</span>
-            <span className="text-[10px] font-semibold text-accent">{city.stats.bestTime}</span>
-          </div>
-        )}
-
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-0.5">
-              {city.flag} {city.country}
-            </p>
-            <h3 className={`font-heading font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight ${
-              featured ? 'text-2xl' : 'text-lg'
-            }`}>
-              {city.name}
-            </h3>
-            {featured && (
-              <p className="text-[11px] text-white/55 mt-1 italic line-clamp-1">{city.tagline}</p>
-            )}
-          </div>
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all duration-300 flex-shrink-0">
-            <span className="text-xs text-white/70 font-medium">Explore</span>
-            <ArrowRight size={12} className="text-accent" />
-          </div>
-        </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+      <div className="absolute top-3 left-3 text-xl drop-shadow-lg">{city.flag}</div>
+      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+        Explore <ArrowRight size={9} />
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-3.5">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-white/45 mb-0.5">{city.country}</p>
+        <h3 className="font-heading text-lg font-bold text-white group-hover:text-accent transition-colors duration-200 leading-tight">
+          {city.name}
+        </h3>
+        <p className="text-[11px] text-white/55 mt-0.5 italic line-clamp-1">{city.tagline}</p>
       </div>
     </Link>
-  );
-}
-
-// Region-based city browser — replaces flat grid dump
-function RegionBrowser() {
-  const [activeRegion, setActiveRegion] = useState<string>('all');
-
-  const regionCities = useMemo(() => {
-    if (activeRegion === 'all') return allCities.filter(c => !c.stub).slice(0, 24);
-    if (activeRegion === 'India') return allCities.filter(c => c.country === 'India' && !c.stub);
-    if (activeRegion === 'Asia') return allCities.filter(c =>
-      ['Indonesia','Thailand','Japan','Singapore','South Korea','Vietnam','Malaysia','Philippines','China','Hong Kong','Taiwan','Maldives','Nepal','Sri Lanka'].includes(c.country) && !c.stub
-    );
-    if (activeRegion === 'Europe') return allCities.filter(c =>
-      ['France','Italy','Spain','United Kingdom','Netherlands','Czech Republic','Portugal','Greece','Hungary','Germany','Austria','Switzerland','Sweden','Norway'].includes(c.country) && !c.stub
-    );
-    if (activeRegion === 'Americas') return allCities.filter(c =>
-      ['United States','Brazil','Argentina','Mexico','Peru','Colombia','Canada'].includes(c.country) && !c.stub
-    );
-    return allCities.filter(c => !c.stub).slice(0, 24);
-  }, [activeRegion]);
-
-  return (
-    <div>
-      {/* Section header */}
-      <div className="flex items-end justify-between mb-5">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-muted mb-1">Browse by Region</p>
-          <h2 className="font-heading text-2xl font-semibold text-primary-text">All destinations</h2>
-        </div>
-        <Link href="/destinations" className="text-sm text-accent hover:underline flex items-center gap-1 hidden sm:flex">
-          Full list <ArrowRight size={12} />
-        </Link>
-      </div>
-
-      {/* Region tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-        {REGIONS.map(r => (
-          <button
-            key={r.value}
-            onClick={() => setActiveRegion(r.value)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              activeRegion === r.value
-                ? 'bg-accent text-white'
-                : 'bg-surface border border-border text-muted hover:border-accent/40 hover:text-primary-text'
-            }`}
-          >
-            {r.label}
-          </button>
-        ))}
-      </div>
-
-      {/* City grid */}
-      <AnimateList stagger={0.03} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {regionCities.map(city => (
-          <AnimateItem key={city.slug} hover>
-            <CityCard city={city} />
-          </AnimateItem>
-        ))}
-      </AnimateList>
-
-      {regionCities.length === 0 && (
-        <p className="text-muted text-center py-12">No cities found in this region yet.</p>
-      )}
-
-      <div className="mt-8 text-center">
-        <Link href="/destinations"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border hover:border-accent/40 text-sm font-medium text-muted hover:text-accent transition-all">
-          View all 160+ destinations <ArrowRight size={14} />
-        </Link>
-      </div>
-    </div>
   );
 }
 
@@ -280,25 +145,11 @@ export default function HomePage() {
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              {/* Trust signal — above the fold, before the headline */}
-              <div className="flex items-center justify-center gap-2 mb-5">
-                <div className="flex -space-x-1.5">
-                  {['🇮🇳','🌏','🌍','🌎'].map(f => (
-                    <span key={f} className="text-base w-7 h-7 rounded-full border-2 border-white/20 bg-black/20 flex items-center justify-center">{f}</span>
-                  ))}
-                </div>
-                <span className="hero-popular-label text-xs font-medium">
-                  Trusted by 50,000+ travelers
-                </span>
-              </div>
-
-              {/* H1 — keyword-rich, not decorative */}
               <h1 className="font-heading text-5xl sm:text-6xl font-semibold leading-tight tracking-tight">
-                <span className="hero-title">Free Travel Guides for </span>
-                <span className="text-accent">India & the World</span>
+                <span className="hero-title">Explore the </span><span className="text-accent">World</span>
               </h1>
-              <p className="hero-subtitle mt-3 text-base max-w-lg mx-auto">
-                160+ destinations. Best time to visit, things to do, budget breakdown, and hidden gems — all free.
+              <p className="hero-subtitle mt-3 text-base">
+                Honest, free travel guides for every destination.
               </p>
             </motion.div>
 
@@ -399,61 +250,37 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── Destinations ── */}
-        <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* ── City cards grid ── */}
+        <div ref={resultsRef}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex items-center gap-3 mb-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
+                All Destinations
+                {query && <span className="text-primary-text ml-2">· {filtered.length} {filtered.length === 1 ? 'result' : 'results'}</span>}
+              </p>
+              <div className="flex-1 h-px bg-border" />
+            </div>
 
-          {/* Search results */}
-          {query ? (
-            <>
-              <div className="flex items-center gap-3 mb-6">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted whitespace-nowrap">
-                  {filtered.length} {filtered.length === 1 ? 'result' : 'results'} for &ldquo;{query}&rdquo;
-                </p>
-                <div className="flex-1 h-px bg-border" />
+            {filtered.length === 0 ? (
+              <div className="text-center py-24">
+                <p className="text-5xl mb-4">🌍</p>
+                <p className="text-muted text-sm">No cities found for &ldquo;{query}&rdquo;</p>
               </div>
-              {filtered.length === 0 ? (
-                <div className="text-center py-24">
-                  <p className="text-5xl mb-4">🌍</p>
-                  <p className="text-muted text-sm">No cities found for &ldquo;{query}&rdquo;</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {filtered.map((city) => <CityCard key={city.slug} city={city} />)}
-                </div>
-              )}
-            </>
-          ) : (
-            <>
-              {/* ── Featured destinations (editorial, not a dump) ── */}
-              <div className="mb-12">
-                <div className="flex items-end justify-between mb-5">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Editor&apos;s Picks</p>
-                    <h2 className="font-heading text-2xl font-semibold text-primary-text">Top destinations right now</h2>
-                  </div>
-                  <Link href="/destinations" className="text-sm text-accent hover:underline flex items-center gap-1">
-                    View all <ArrowRight size={12} />
-                  </Link>
-                </div>
-
-                {/* 2-column editorial grid: 1 large + 2 stacked on desktop */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {FEATURED_SLUGS.slice(0, 6).map((slug, i) => {
-                    const city = allCities.find(c => c.slug === slug);
-                    if (!city) return null;
-                    return (
-                      <AnimateItem key={slug} hover>
-                        <CityCard city={city} featured={i === 0} />
-                      </AnimateItem>
-                    );
-                  })}
-                </div>
+            ) : query ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => <CityCard key={city.slug} city={city} />)}
               </div>
-
-              {/* ── Region tabs ── */}
-              <RegionBrowser />
-            </>
-          )}
+            ) : (
+              <AnimateList stagger={0.04}
+                className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filtered.map((city) => (
+                  <AnimateItem key={city.slug} hover>
+                    <CityCard city={city} />
+                  </AnimateItem>
+                ))}
+              </AnimateList>
+            )}
+          </div>
         </div>
 
         {/* ── FAQ Section ── */}
