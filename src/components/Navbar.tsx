@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Compass, Sun, Moon, Globe } from 'lucide-react';
+import { Menu, X, Sun, Moon, Globe } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 
 const THEME_EVENT = 'tripgenius-theme-change';
@@ -65,13 +66,15 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-18">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center group-hover:scale-105 transition-transform">
-                <Compass size={15} className="text-white" strokeWidth={2.5} />
-              </div>
-              <span className="font-heading text-xl font-semibold text-primary-text tracking-tight">
-                TripGenius
-              </span>
+            <Link href="/" className="flex items-center flex-shrink-0 group">
+              <Image
+                src="/logo.svg"
+                alt="TripGenius — Your Travel Guide"
+                width={160}
+                height={50}
+                className="h-11 w-auto object-contain group-hover:opacity-90 transition-opacity"
+                priority
+              />
             </Link>
 
             {/* Desktop nav — centered */}
