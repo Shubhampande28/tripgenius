@@ -27,14 +27,11 @@ export default function CityHero({ city }: { city: City }) {
         style={{ transformOrigin: 'center top' }}
       />
 
-      {/* Dark base overlay so text always reads well */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Single clean gradient — photo shows fully in top 50%, dark enough at bottom for text */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/25 to-black/10" />
 
-      {/* Bottom gradient — always dark so photo text stays readable in both themes */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-
-      {/* Subtle top vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
+      {/* Top nav bar fade — just enough for logo and nav legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-transparent" />
 
       {/* Colour tint matching the city's accent */}
       <div
