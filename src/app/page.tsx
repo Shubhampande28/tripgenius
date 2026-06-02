@@ -159,8 +159,8 @@ export default function HomePage() {
                 Your Free Guide to<br />
                 <span className="text-accent">Every Destination</span>
               </h1>
-              <p className="text-lg text-muted max-w-lg mx-auto mb-8 leading-relaxed">
-                Honest travel guides for 160+ cities — things to do, best time, budgets and local tips.
+              <p className="text-base text-muted max-w-md mx-auto mb-8">
+                160+ free guides — things to do, best time & local tips.
               </p>
 
               {/* ── AUTOCOMPLETE SEARCH ── */}
@@ -254,7 +254,7 @@ export default function HomePage() {
               </div>
               <Link href="/destinations"
                 className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
-                View all destinations <ArrowRight size={13} />
+                View more <ArrowRight size={13} />
               </Link>
             </div>
 
@@ -312,7 +312,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURED TRAVEL GUIDES ── */}
-        <section className="py-14 bg-surface">
+        <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <div className="flex items-end justify-between mb-8">
               <div>
