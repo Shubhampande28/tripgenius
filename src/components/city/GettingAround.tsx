@@ -9,7 +9,7 @@ import { AnimateList, AnimateItem } from '@/components/AnimateList';
 export default function GettingAround({ city }: { city: City }) {
   if (!city.gettingAround?.length) return null;
   return (
-    <section id="getting-around" className="py-16">
+    <section id="getting-around" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

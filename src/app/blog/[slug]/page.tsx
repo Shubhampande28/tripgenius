@@ -184,13 +184,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <ArrowLeft size={12} /> Back to Blog
           </Link>
 
-          {/* Meta */}
+          {/* Meta — no date, travel guides don't expire */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[post.category]}`}>
               <Tag size={8} /> {post.category}
             </span>
-            <span className="flex items-center gap-1 text-xs text-muted"><Calendar size={11} /> {formattedDate}</span>
             <span className="flex items-center gap-1 text-xs text-muted"><Clock size={11} /> {post.readTime} min read</span>
+            <span className="text-xs text-accent font-semibold">Free Guide</span>
           </div>
 
           {/* Title */}

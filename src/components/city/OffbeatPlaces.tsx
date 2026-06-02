@@ -40,7 +40,7 @@ export default function OffbeatPlaces({ city }: { city: City }) {
   if (!city.offbeatPlaces?.length) return null;
 
   return (
-    <section id="hidden-gems" className="py-16">
+    <section id="hidden-gems" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div

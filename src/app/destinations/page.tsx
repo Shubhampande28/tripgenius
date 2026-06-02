@@ -95,9 +95,12 @@ function DestinationCard({ city }: { city: typeof allCities[0] }) {
   );
 }
 
+const PAGE_SIZE = 24;
+
 export default function DestinationsPage() {
-  const [activeTab, setActiveTab]   = useState('all');
+  const [activeTab, setActiveTab]     = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visible, setVisible]         = useState(PAGE_SIZE);
 
   const cities = useMemo(() => {
     let list = allCities.filter(c => !c.stub);
@@ -118,6 +121,9 @@ export default function DestinationsPage() {
 
     return list;
   }, [activeTab, searchQuery]);
+
+  const displayed = cities.slice(0, visible);
+  const hasMore   = visible < cities.length;
 
   return (
     <>
@@ -171,23 +177,38 @@ export default function DestinationsPage() {
 
           {/* Results count */}
           <p className="text-xs text-muted mb-6">
-            Showing <span className="font-semibold text-primary-text">{cities.length}</span> destinations
-            {activeTab !== 'all' && ` in ${activeTab}`}
-            {searchQuery.trim().length >= 2 && ` matching "${searchQuery}"`}
+            Showing <span className="font-semibold text-primary-text">{Math.min(visible, cities.length)}</span> of <span className="font-semibold text-primary-text">{cities.length}</span> destinations
           </p>
 
-          {/* Destination card grid — 4 col desktop, 2 tablet, 1 mobile */}
+          {/* Destination card grid */}
           {cities.length === 0 ? (
             <div className="text-center py-24">
               <p className="text-4xl mb-3">🌍</p>
               <p className="text-muted">No destinations found. Try a different search.</p>
             </div>
           ) : (
+            <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {cities.map(city => (
+              {displayed.map(city => (
                 <DestinationCard key={city.slug} city={city} />
               ))}
             </div>
+
+            {/* Load More */}
+            {hasMore && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => setVisible(v => v + PAGE_SIZE)}
+                  className="px-8 py-3 rounded-xl border-2 border-accent text-accent font-semibold text-sm hover:bg-accent hover:text-white transition-all duration-200"
+                >
+                  Load More Destinations
+                </button>
+                <p className="text-xs text-muted mt-2">
+                  {cities.length - visible} more destinations
+                </p>
+              </div>
+            )}
+            </>
           )}
 
         </div>

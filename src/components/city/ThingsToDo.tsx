@@ -39,7 +39,7 @@ export default function ThingsToDo({ city }: { city: City }) {
   if (!city.thingsToDo?.length) return null;
 
   return (
-    <section id="things-to-do" className="py-16">
+    <section id="things-to-do" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <motion.div

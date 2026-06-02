@@ -32,7 +32,7 @@ export default function WhereToStay({ city }: { city: City }) {
   if (!areas.length && !city.hotels?.length) return null;
 
   return (
-    <section id="where-to-stay" className="py-16">
+    <section id="where-to-stay" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

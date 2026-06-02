@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, ArrowRight, Tag, Search } from 'lucide-react';
+import { Clock, ArrowRight, Tag, Search } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allPosts, BlogCategory } from '@/lib/blog';
@@ -35,12 +35,13 @@ function CategoryBadge({ category }: { category: BlogCategory }) {
   );
 }
 
-function PostMeta({ date, readTime }: { date: string; readTime: number }) {
-  const formatted = new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+// No dates — travel guides don't expire, dates make them feel stale
+function PostMeta({ readTime }: { date: string; readTime: number }) {
   return (
-    <div className="flex items-center gap-3 text-xs text-muted">
-      <span className="flex items-center gap-1"><Calendar size={11} /> {formatted}</span>
+    <div className="flex items-center gap-2 text-xs text-muted">
       <span className="flex items-center gap-1"><Clock size={11} /> {readTime} min read</span>
+      <span className="w-1 h-1 rounded-full bg-border" />
+      <span className="text-accent font-medium">Free Guide</span>
     </div>
   );
 }
