@@ -1,97 +1,194 @@
-// Server component — fully rendered HTML, Google crawls every link perfectly
-import type { Metadata } from 'next';
+'use client';
+
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
+import { getCityImageUrl } from '@/lib/cityImages';
+import { ArrowRight, Search } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'All Travel Destinations — 160+ Free City Guides | TripGenius',
-  description: 'Browse free travel guides for 160+ destinations across India, Asia, Europe and the Americas. Find things to do, best time to visit, budget tips and hidden gems.',
-  alternates: { canonical: 'https://www.tripgenius.in/destinations' },
-};
+// Region tabs for discovery filtering
+const TABS = [
+  { label: 'All',      value: 'all' },
+  { label: '🇮🇳 India',  value: 'India' },
+  { label: '🌏 Asia',   value: 'Asia' },
+  { label: '🌍 Europe', value: 'Europe' },
+  { label: '🌎 Others', value: 'Others' },
+];
 
-// Group cities by region
-const REGIONS: Record<string, string[]> = {
-  'India — Golden Triangle':   ['delhi','agra','jaipur'],
-  'India — Rajasthan':         ['udaipur','jodhpur','jaisalmer','bikaner','pushkar','ranthambore'],
-  'India — Himalayas':         ['manali','shimla','rishikesh','darjeeling','ladakh','spiti','kasol','dharamshala','nainital','mussoorie'],
-  'India — South':             ['goa','mumbai','kochi','bengaluru','mysuru','hampi','munnar','alleppey','pondicherry','madurai','ooty','mahabalipuram','tirupati','kanyakumari','coorg','varkala','gokarna','thekkady','hyderabad','chennai','thanjavur','trichy','wayanad'],
-  'India — East & North-East': ['varanasi','kolkata','amritsar','khajuraho','puri','bhopal','aurangabad','lucknow'],
-  'India — Gujarat & West':    ['ahmedabad','vadodara'],
-  'India — Islands':           ['andaman'],
-  'Asia — Southeast':          ['bali','bangkok','singapore','phuket','chiang-mai','hanoi','ho-chi-minh'],
-  'Asia — East':               ['tokyo','kyoto','seoul','hong-kong'],
-  'Asia — Middle East':        ['dubai','istanbul'],
-  'Europe':                    ['paris','london','barcelona','rome','amsterdam','prague','lisbon','athens','budapest'],
-  'Americas & Others':         ['new-york','rio-de-janeiro','buenos-aires','mexico-city','cusco','marrakech','cape-town','maldives','santorini'],
-};
+const ASIA_COUNTRIES    = new Set(['Indonesia','Thailand','Japan','Singapore','South Korea','Vietnam','Malaysia','Philippines','China','Hong Kong','Taiwan','Maldives','Nepal','Sri Lanka','UAE','Turkey']);
+const EUROPE_COUNTRIES  = new Set(['France','Italy','Spain','United Kingdom','Netherlands','Czech Republic','Portugal','Greece','Hungary','Germany','Austria','Switzerland','Sweden','Norway','Iceland']);
+const AMERICAS_COUNTRIES = new Set(['United States','Brazil','Argentina','Mexico','Peru','Colombia','Canada']);
+
+function getRegion(country: string) {
+  if (country === 'India') return 'India';
+  if (ASIA_COUNTRIES.has(country)) return 'Asia';
+  if (EUROPE_COUNTRIES.has(country)) return 'Europe';
+  return 'Others';
+}
+
+// Destination card — same visual style as homepage Top Picks
+function DestinationCard({ city }: { city: typeof allCities[0] }) {
+  const thingsCount = city.thingsToDo?.length ?? 0;
+
+  return (
+    <Link
+      href={`/cities/${city.slug}`}
+      className="group relative block overflow-hidden rounded-[20px] bg-surface"
+      style={{ aspectRatio: '4/5' }}
+    >
+      {/* Featured image */}
+      <SafeImage
+        src={getCityImageUrl(city.slug, 'card') ?? city.image}
+        alt={`${city.name} travel guide — ${city.tagline}`}
+        city={city.slug}
+        accentColor={city.accentColor}
+        fill
+        sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+
+      {/* Gradient — readable bottom */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+
+      {/* Optional guide count badge */}
+      {thingsCount > 0 && (
+        <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
+          <span className="text-[10px] font-bold text-white bg-black/50 backdrop-blur-sm rounded-full px-2.5 py-1">
+            {thingsCount} things to do
+          </span>
+        </div>
+      )}
+
+      {/* Bottom content */}
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        {/* Country */}
+        <p className="text-white/55 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
+          {city.flag} {city.country}
+        </p>
+
+        {/* Destination name */}
+        <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
+          {city.name}
+        </h3>
+
+        {/* Short description — tagline */}
+        <p className="text-white/65 text-xs leading-snug mb-3 line-clamp-1">
+          {city.tagline}
+        </p>
+
+        {/* Explore button */}
+        <div className="flex items-center justify-between">
+          {city.stats?.bestTime && (
+            <span className="text-[10px] text-white/50">
+              Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+            </span>
+          )}
+          <span className="flex items-center gap-1 text-[11px] font-bold text-white bg-accent rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-200 ml-auto">
+            Explore <ArrowRight size={9} />
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function DestinationsPage() {
-  const cityMap = Object.fromEntries(allCities.map(c => [c.slug, c]));
+  const [activeTab, setActiveTab]   = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const cities = useMemo(() => {
+    let list = allCities.filter(c => !c.stub);
+
+    // Filter by region tab
+    if (activeTab !== 'all') {
+      list = list.filter(c => getRegion(c.country) === activeTab);
+    }
+
+    // Filter by search
+    if (searchQuery.trim().length >= 2) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        c.country.toLowerCase().includes(q)
+      );
+    }
+
+    return list;
+  }, [activeTab, searchQuery]);
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen pt-24 pb-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
 
-          {/* Header */}
-          <div className="mb-12 text-center">
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-primary-text mb-4">
-              All Travel Destinations
+          {/* Page header */}
+          <div className="mb-10 text-center max-w-2xl mx-auto">
+            <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Explore</p>
+            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-primary-text mb-3">
+              All Destinations
             </h1>
-            <p className="text-muted text-lg max-w-2xl mx-auto">
-              Free travel guides for 160+ cities worldwide — things to do, best time to visit,
-              budget breakdown and hidden gems.
+            <p className="text-muted text-base">
+              Free travel guides for 160+ destinations — things to do, best time to visit and local tips.
             </p>
           </div>
 
-          {/* Region groups */}
-          {Object.entries(REGIONS).map(([region, slugs]) => {
-            const cities = slugs.map(s => cityMap[s]).filter(Boolean);
-            if (cities.length === 0) return null;
-            return (
-              <section key={region} className="mb-10">
-                <h2 className="font-heading text-xl font-semibold text-accent mb-4 pb-2 border-b border-border">
-                  {region}
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                  {cities.map(city => (
-                    <Link
-                      key={city.slug}
-                      href={`/cities/${city.slug}`}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-accent/40 hover:bg-surface transition-colors text-sm"
-                    >
-                      <span className="text-base">{city.flag}</span>
-                      <span className="text-primary-text truncate">{city.name}</span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
+          {/* Search + Filter row */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
 
-          {/* Remaining cities not in regions */}
-          <section className="mb-10">
-            <h2 className="font-heading text-xl font-semibold text-accent mb-4 pb-2 border-b border-border">
-              More Destinations
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-              {allCities
-                .filter(c => !c.stub && !Object.values(REGIONS).flat().includes(c.slug))
-                .map(city => (
-                  <Link
-                    key={city.slug}
-                    href={`/cities/${city.slug}`}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-accent/40 hover:bg-surface transition-colors text-sm"
-                  >
-                    <span className="text-base">{city.flag}</span>
-                    <span className="text-primary-text truncate">{city.name}</span>
-                  </Link>
-                ))}
+            {/* Search */}
+            <div className="relative flex-1 max-w-sm">
+              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search destinations…"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-white text-sm text-primary-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40"
+              />
             </div>
-          </section>
+
+            {/* Region tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-1 flex-shrink-0" style={{ scrollbarWidth:'none' }}>
+              {TABS.map(tab => (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150 ${
+                    activeTab === tab.value
+                      ? 'bg-accent text-white shadow-sm'
+                      : 'bg-surface border border-border text-muted hover:border-accent/30 hover:text-primary-text'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Results count */}
+          <p className="text-xs text-muted mb-6">
+            Showing <span className="font-semibold text-primary-text">{cities.length}</span> destinations
+            {activeTab !== 'all' && ` in ${activeTab}`}
+            {searchQuery.trim().length >= 2 && ` matching "${searchQuery}"`}
+          </p>
+
+          {/* Destination card grid — 4 col desktop, 2 tablet, 1 mobile */}
+          {cities.length === 0 ? (
+            <div className="text-center py-24">
+              <p className="text-4xl mb-3">🌍</p>
+              <p className="text-muted">No destinations found. Try a different search.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {cities.map(city => (
+                <DestinationCard key={city.slug} city={city} />
+              ))}
+            </div>
+          )}
 
         </div>
       </main>
