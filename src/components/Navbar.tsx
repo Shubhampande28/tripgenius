@@ -118,11 +118,11 @@ export default function Navbar() {
               <NavDropdown label="Destinations" items={DEST_MENU} open={destOpen} setOpen={setDestOpen} />
               <NavDropdown label="Things To Do" items={TODO_MENU} open={todoOpen} setOpen={setTodoOpen} />
               <Link href="/blog"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-primary-text hover:text-accent transition-all duration-150">
                 Itineraries
               </Link>
               <Link href="/compare/goa-vs-bali"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-primary-text hover:text-accent transition-all duration-150">
                 Compare
               </Link>
             </nav>

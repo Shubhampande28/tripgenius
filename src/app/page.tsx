@@ -150,45 +150,17 @@ export default function HomePage() {
       <Navbar />
       <main className="min-h-screen">
 
-        {/* ── HERO — full photo background, always white text ── */}
-        <section className="relative min-h-[80vh] flex items-center justify-center text-center overflow-hidden">
-
-          {/* Background photo */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-
-          {/* Dark overlay with slight red tint for brand feel */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-black/70" />
-
-          {/* Content — always white on photo bg */}
-          <div className="relative z-10 max-w-[900px] mx-auto px-4 sm:px-6 pt-24 pb-16">
+        {/* ── HERO — clean white, red accents ── */}
+        <section className="pt-36 pb-14 text-center bg-white">
+          <div className="max-w-[800px] mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.55 }}>
 
-              {/* Trust strip */}
-              <div className="flex items-center justify-center gap-6 mb-6 flex-wrap">
-                {[
-                  { n: '160+', label: 'Destinations' },
-                  { n: '54',   label: 'Free Guides' },
-                  { n: '0',    label: 'Sponsored Posts' },
-                  { n: '100%', label: 'Free Forever' },
-                ].map(s => (
-                  <div key={s.label} className="flex items-center gap-1.5">
-                    <span className="text-base font-bold text-accent">{s.n}</span>
-                    <span className="text-xs text-white/65">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-
-              <h1 className="font-heading text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight mb-4">
+              <h1 className="font-heading text-5xl sm:text-6xl font-bold text-primary-text leading-tight tracking-tight mb-4">
                 Your Free Guide to<br />
                 <span className="text-accent">Every Destination</span>
               </h1>
-              <p className="text-lg text-white/75 max-w-lg mx-auto mb-8 leading-relaxed">
-                Honest travel guides for 160+ cities — things to do, best time, budgets and local tips. Always free.
+              <p className="text-lg text-muted max-w-lg mx-auto mb-8 leading-relaxed">
+                Honest travel guides for 160+ cities — things to do, best time, budgets and local tips.
               </p>
 
               {/* ── AUTOCOMPLETE SEARCH ── */}
@@ -208,8 +180,8 @@ export default function HomePage() {
                     onKeyDown={handleKeyDown}
                     placeholder="Search a destination…"
                     autoComplete="off"
-                    className="w-full pl-12 pr-5 py-4 rounded-2xl text-base bg-white border-0 focus:outline-none focus:ring-2 focus:ring-accent/30 transition-all text-gray-800 placeholder:text-gray-400"
-                    style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.25)' }}
+                    className="w-full pl-12 pr-5 py-4 rounded-2xl text-base bg-white border border-border focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40 transition-all text-primary-text placeholder:text-muted"
+                    style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.07)' }}
                   />
                 </div>
 
@@ -251,13 +223,13 @@ export default function HomePage() {
                 {/* Trending chips — visible before user types */}
                 {!query && (
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <span className="text-xs text-white/50 self-center">Trending:</span>
+                    <span className="text-xs text-muted self-center">Trending:</span>
                     {['Bali', 'Goa in Monsoon', 'Manali Road Trip', 'Udaipur Honeymoon', 'Ladakh', 'Europe Budget'].map(t => {
                       const city = allCities.find(c => c.name === t.split(' ')[0]);
                       return (
                         <Link key={t}
                           href={city ? `/cities/${city.slug}` : '/destinations'}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-white/25 hover:border-white/60 bg-white/10 backdrop-blur-sm transition-all text-white/80 hover:text-white hover:bg-white/20">
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent/40 hover:text-accent bg-white transition-all text-muted">
                           {city?.flag} {t}
                         </Link>
                       );
@@ -269,7 +241,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── TOP PICKS ── (white bg content starts here) */}
+        {/* ── TOP PICKS ── */}
         <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
 
