@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Globe } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
@@ -67,13 +66,11 @@ export default function Navbar() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0 group">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/logo.png"
                 alt="TripGenius — Your Travel Guide"
-                width={160}
-                height={50}
-                className="h-11 w-auto object-contain group-hover:opacity-90 transition-opacity"
-                priority
+                className="h-12 w-auto object-contain group-hover:opacity-90 transition-opacity"
               />
             </Link>
 
