@@ -52,16 +52,6 @@ function Highlight({ text, query }: { text: string; query: string }) {
   );
 }
 
-// ── Categories ─────────────────────────────────────────────────────
-const CATEGORIES = [
-  { label: 'Adventure',     emoji: '🏔️', href: '/destinations', photo: 'https://images.pexels.com/photos/1822458/pexels-photo-1822458.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#FF6B35' },
-  { label: 'Pilgrimage',    emoji: '🛕', href: '/destinations', photo: 'https://images.pexels.com/photos/3067621/pexels-photo-3067621.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#F59E0B' },
-  { label: 'Beaches',       emoji: '🏖️', href: '/destinations', photo: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#0EA5E9' },
-  { label: 'Hill Stations', emoji: '🌄', href: '/destinations', photo: 'https://images.pexels.com/photos/1658967/pexels-photo-1658967.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#10B981' },
-  { label: 'Weekend Trips', emoji: '🗓️', href: '/destinations', photo: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#8B5CF6' },
-  { label: 'Honeymoon',     emoji: '💑', href: '/destinations', photo: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop', color: '#EC4899' },
-];
-
 // ── Featured Destinations ──────────────────────────────────────────
 const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
 
@@ -233,69 +223,78 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── EXPLORE BY CATEGORY ── */}
-        <section className="py-14 bg-surface">
-          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-            <div className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Browse by Type</p>
-              <h2 className="font-heading text-3xl font-bold text-primary-text">Explore by Category</h2>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              {CATEGORIES.map(cat => (
-                <Link key={cat.label} href={cat.href}
-                  className="group relative overflow-hidden rounded-[18px] h-[180px] block">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cat.photo} alt={cat.label}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
-                    style={{ transform: 'scale(1.02)' }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-4 px-3 text-center">
-                    <span className="text-2xl mb-1 drop-shadow-lg">{cat.emoji}</span>
-                    <p className="text-white text-sm font-bold leading-tight">{cat.label}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURED DESTINATIONS ── */}
+        {/* ── TOP PICKS ── */}
         <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+
+            {/* Section header */}
             <div className="flex items-end justify-between mb-8">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Top Picks</p>
-                <h2 className="font-heading text-3xl font-bold text-primary-text">Featured Destinations</h2>
+                <h2 className="font-heading text-3xl font-bold text-primary-text">Popular Destinations</h2>
+                <p className="text-muted text-sm mt-1">Hand-picked places travellers love most right now</p>
               </div>
-              <Link href="/destinations" className="text-sm font-medium text-accent hover:underline flex items-center gap-1">
-                View all <ArrowRight size={13} />
-              </Link>
             </div>
 
-            {/* 4-per-row grid, card 320×400, image + name only */}
+            {/* Destination card grid — image + name + supporting info */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
               {featuredCities.map(city => (
-                <Link key={city.slug} href={`/cities/${city.slug}`}
-                  className="group relative block overflow-hidden rounded-[20px]"
-                  style={{ aspectRatio: '320/400' }}
+                <Link
+                  key={city.slug}
+                  href={`/cities/${city.slug}`}
+                  className="group relative block overflow-hidden rounded-[20px] bg-surface"
+                  style={{ aspectRatio: '4/5' }}
                 >
+                  {/* Destination image */}
                   <SafeImage
                     src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                    alt={city.name}
-                    city={city.slug} accentColor={city.accentColor} fill
+                    alt={`${city.name} travel guide`}
+                    city={city.slug}
+                    accentColor={city.accentColor}
+                    fill
                     sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {/* Clean gradient — just enough for name readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  {/* Only destination name, no clutter */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="font-heading text-xl font-bold text-white">{city.name}</h3>
+
+                  {/* Gradient overlay — readable bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                  {/* Bottom content — name + supporting info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
+                      {city.flag} {city.country}
+                    </p>
+                    <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
+                      {city.name}
+                    </h3>
+                    {/* Supporting info — best time */}
+                    {city.stats?.bestTime && (
+                      <p className="text-white/65 text-xs">
+                        Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Hover pill */}
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
+                      Explore <ArrowRight size={9} />
+                    </span>
                   </div>
                 </Link>
               ))}
             </div>
+
+            {/* View More — navigates to destination discovery page */}
+            <div className="mt-10 text-center">
+              <Link
+                href="/destinations"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-accent text-accent font-semibold text-sm hover:bg-accent hover:text-white transition-all duration-200"
+              >
+                View More Destinations <ArrowRight size={15} />
+              </Link>
+            </div>
+
           </div>
         </section>
 
