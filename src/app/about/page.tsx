@@ -4,9 +4,24 @@ import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp } from 'lucide-reac
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+const BASE = 'https://www.tripgenius.in';
+
 export const metadata: Metadata = {
   title: 'About TripGenius — Honest Travel Guides for Every Destination',
   description: 'Learn about TripGenius — our mission to provide free, honest, and up-to-date travel guides for 140+ destinations worldwide. No paid rankings, no fluff.',
+  alternates: { canonical: `${BASE}/about` },
+  openGraph: {
+    title: 'About TripGenius — Honest Travel Guides for Every Destination',
+    description: 'Free, honest, and up-to-date travel guides for 140+ destinations. No paid rankings, no fluff.',
+    url: `${BASE}/about`,
+    siteName: 'TripGenius',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'About TripGenius — Honest Travel Guides for Every Destination',
+    description: 'Free, honest, and up-to-date travel guides for 140+ destinations. No paid rankings, no fluff.',
+  },
 };
 
 const values = [

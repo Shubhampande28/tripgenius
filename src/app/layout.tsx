@@ -58,6 +58,7 @@ export const metadata: Metadata = {
     site: "@tripgenius_in",
     title: "TripGenius — Free Travel Guides for India & the World",
     description: "Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems.",
+    images: [`${SITE}/og-default.png`],
   },
   robots: {
     index: true,
