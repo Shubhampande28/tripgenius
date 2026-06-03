@@ -1,13 +1,7 @@
-/**
- * Verified Unsplash photo IDs for each city.
- * Each ID was searched and confirmed on Unsplash — no guesses.
- * Format: 'photo-XXXXX' for old-style numeric IDs, or short alphanumeric for new-style.
- * URL built as: https://images.unsplash.com/{id}?auto=format&fit=crop&w=...
- */
 export const verifiedCityImages: Record<string, { card: string; hero: string }> = {
 
   // ── 6 Full Guide Cities ───────────────────────────────────────
-  bali:      { card: 'photo-1537996194471-e657df975ab4', hero: 'photo-1537996194471-e657df975ab4' },
+  bali:      { card: 'px-35428411', hero: 'px-10918378' },   // rice terraces / Uluwatu cliff
   bangkok:   { card: 'photo-1563492065599-3520f775eeed', hero: 'photo-1563492065599-3520f775eeed' },
   paris:     { card: 'photo-1502602898657-3e91760cbb34', hero: 'photo-1502602898657-3e91760cbb34' },
   tokyo:     { card: 'photo-1540959733332-eab4deabeeaf', hero: 'photo-1540959733332-eab4deabeeaf' },
@@ -41,7 +35,6 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   cusco:           { card: 'photo-1587595431973-160d0d94add1', hero: 'photo-1587595431973-160d0d94add1' },
 
   // ── Golden Triangle + Major Indian Cities ─────────────────────
-  // Note: Only photo-XXXXXXXX format works with Unsplash CDN
   delhi:     { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
   agra:      { card: 'photo-1564507592333-c60657eea523', hero: 'photo-1564507592333-c60657eea523' },
   jaipur:    { card: 'photo-1599661046827-dacff0c0f09a', hero: 'photo-1599661046827-dacff0c0f09a' },
@@ -54,30 +47,30 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   // ── Rajasthan ─────────────────────────────────────────────────
   udaipur:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
   jodhpur:         { card: 'photo-1590090750575-17b2cd4ceb85', hero: 'photo-1590090750575-17b2cd4ceb85' },
-  jaisalmer:       { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  bikaner:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  pushkar:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  ajmer:           { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
+  jaisalmer:       { card: 'px-35130760', hero: 'px-35130760' },   // Jaisalmer Fort golden sandstone
+  bikaner:         { card: 'px-1011093',  hero: 'px-1011093'  },   // Junagarh Fort
+  pushkar:         { card: 'px-19160125', hero: 'px-19160125' },   // Pushkar Lake aerial
+  ajmer:           { card: 'px-16738847', hero: 'px-16738847' },   // Chandra Ghat waterfront
   ranthambore:     { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
-  'mount-abu':     { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
-  'rann-of-kutch': { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
+  'mount-abu':     { card: 'px-36350293', hero: 'px-36350293' },   // Nakki Lake mountain reflection
+  'rann-of-kutch': { card: 'px-10874408', hero: 'px-10874408' },   // Horse cart on vast salt desert
 
   // ── J&K / Himachal Pradesh ────────────────────────────────────
   srinagar:    { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
-  gulmarg:     { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
-  dharamshala: { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
-  kasol:       { card: 'photo-1617859047452-8510bcf207fd', hero: 'photo-1617859047452-8510bcf207fd' },
-  spiti:       { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
-  manali:      { card: 'photo-1617859047452-8510bcf207fd', hero: 'photo-1617859047452-8510bcf207fd' },
-  shimla:      { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
-  chandigarh:  { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
+  gulmarg:     { card: 'px-35672518', hero: 'px-35672518' },   // Snow meadow alpine mountains
+  dharamshala: { card: 'px-755401',   hero: 'px-755401'   },   // Dhauladhar mountains monastery
+  kasol:       { card: 'px-2961109',  hero: 'px-2961109'  },   // Parvati river pine forest
+  spiti:       { card: 'px-12285067', hero: 'px-12285067' },   // Key Monastery mountain valley
+  manali:      { card: 'px-11538476', hero: 'px-11538476' },   // Snow peaks Rohtang blue sky
+  shimla:      { card: 'px-31216870', hero: 'px-31216870' },   // Colorful hillside cityscape
+  chandigarh:  { card: 'px-33059591', hero: 'px-33059591' },   // Capitol Complex modernist
 
   // ── Uttarakhand ───────────────────────────────────────────────
-  nainital:     { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
-  mussoorie:    { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
-  haridwar:     { card: 'photo-1561361058-c24cecae35ca',   hero: 'photo-1561361058-c24cecae35ca' },
-  dehradun:     { card: 'photo-1648566924598-aeb39df9ad79', hero: 'photo-1648566924598-aeb39df9ad79' },
-  'jim-corbett':{ card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
+  nainital:     { card: 'px-17004229', hero: 'px-17004229' },   // Naini Lake colourful boats
+  mussoorie:    { card: 'px-30695323', hero: 'px-30695323' },   // Green mountain valley panorama
+  haridwar:     { card: 'px-29495753', hero: 'px-29495753' },   // Har Ki Pauri Ganga Aarti
+  dehradun:     { card: 'px-37789735', hero: 'px-37789735' },   // IMA lush greenery
+  'jim-corbett':{ card: 'px-29666809', hero: 'px-29666809' },   // Safari forest rocky stream
 
   // ── South India — verified Pexels photos ─────────────────────
   bengaluru:     { card: 'px-14845309', hero: 'px-14845309' },  // Bengaluru cityscape sunset
@@ -93,52 +86,51 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   ooty:          { card: 'px-9411142',  hero: 'px-9411142'  },  // Ooty Nilgiris lake hills
   coorg:         { card: 'px-33046721', hero: 'px-33046721' },  // Coorg Madikeri foggy hills
   gokarna:       { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  thekkady:      { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
-  varkala:       { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  thekkady:      { card: 'px-26969129', hero: 'px-26969129' },  // Periyar Lake forest reflections
+  varkala:       { card: 'px-6652178',  hero: 'px-6652178'  },  // Varkala cliffs golden sand coast
   mahabalipuram: { card: 'px-24246717', hero: 'px-24246717' },  // Shore Temple by sea
   tirupati:      { card: 'px-11282396', hero: 'px-11282396' },  // Tirumala temple illuminated
   coimbatore:    { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
   visakhapatnam: { card: 'px-5667923',  hero: 'px-5667923'  },  // Vizag beach aerial
-  kanyakumari:   { card: 'px-28464762', hero: 'px-28464762' },  // Kanyakumari sunrise southernmost
-  trivandrum:    { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  kozhikode:     { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  thrissur:      { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  // New South Indian cities
+  kanyakumari:   { card: 'px-28464762', hero: 'px-28464762' },  // Kanyakumari sunrise
+  trivandrum:    { card: 'px-5192213',  hero: 'px-5192213'  },  // Lighthouse rocky coast palm trees
+  kozhikode:     { card: 'px-32617764', hero: 'px-32617764' },  // Rocky Arabian Sea shore
+  thrissur:      { card: 'px-32364201', hero: 'px-32364201' },  // Thrissur Pooram decorated elephant
   thanjavur:     { card: 'px-37824548', hero: 'px-37824548' },  // Brihadeeswarar Temple UNESCO
-  trichy:        { card: 'px-27650165', hero: 'px-27650165' },  // Rock Fort Temple Tiruchirappalli
-  wayanad:       { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' }, // green hills Kerala
+  trichy:        { card: 'px-27650165', hero: 'px-27650165' },  // Rock Fort Temple
+  wayanad:       { card: 'px-34130875', hero: 'px-34130875' },  // Winding road tea plantation hills
 
   // ── Uttar Pradesh / North Central ────────────────────────────
-  lucknow:   { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  khajuraho: { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  puri:      { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  vrindavan: { card: 'photo-1561361058-c24cecae35ca',   hero: 'photo-1561361058-c24cecae35ca' },
-  mathura:   { card: 'photo-1561361058-c24cecae35ca',   hero: 'photo-1561361058-c24cecae35ca' },
-  shirdi:    { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  lucknow:   { card: 'px-6198184',  hero: 'px-6198184'  },   // Historic mosque minarets
+  khajuraho: { card: 'px-15340996', hero: 'px-15340996' },   // Dulhadev Temple UNESCO
+  puri:      { card: 'px-5732287',  hero: 'px-5732287'  },  // Traditional boats on Puri beach
+  vrindavan: { card: 'px-37650566', hero: 'px-37650566' },   // ISKCON Krishna statue
+  mathura:   { card: 'px-31626024', hero: 'px-31626024' },   // Krishna Janmasthan Temple
+  shirdi:    { card: 'px-30598845', hero: 'px-30598845' },   // Sai Baba idol flower garlands temple
 
   // ── Bihar / Odisha / East ─────────────────────────────────────
-  'bodh-gaya':  { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
-  bodh_gaya:    { card: 'photo-1561361058-c24cecae35ca', hero: 'photo-1561361058-c24cecae35ca' },
-  bhubaneswar:  { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  patna:        { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  'bodh-gaya':  { card: 'px-6480363',  hero: 'px-6480363'  },  // Mahabodhi Temple UNESCO
+  bodh_gaya:    { card: 'px-6480363',  hero: 'px-6480363'  },
+  bhubaneswar:  { card: 'px-16560348', hero: 'px-16560348' },  // Lingaraja Temple
+  patna:        { card: 'px-12058309', hero: 'px-12058309' },  // Gandhi Setu Bridge Ganges aerial
 
   // ── Maharashtra ───────────────────────────────────────────────
   pune:        { card: 'photo-1596176530529-78163a4f7af2', hero: 'photo-1596176530529-78163a4f7af2' },
-  nashik:      { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  aurangabad:  { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  nagpur:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  nashik:      { card: 'px-37416162', hero: 'px-37416162' },  // Marble temple Nashik
+  aurangabad:  { card: 'px-32196018', hero: 'px-32196018' },  // Bibi Ka Maqbara gardens
+  nagpur:      { card: 'px-12567423', hero: 'px-12567423' },  // Deekshabhoomi golden Buddha
 
   // ── Madhya Pradesh / Chhattisgarh ─────────────────────────────
-  bhopal:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  indore:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  raipur:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  bhopal:      { card: 'px-37245905', hero: 'px-37245905' },  // Upper Lake boats sunny
+  indore:      { card: 'px-34941076', hero: 'px-34941076' },  // Ancient temple stone carvings
+  raipur:      { card: 'px-31739735', hero: 'px-31739735' },  // Ancient stone temples Ratanpur Chhattisgarh
 
   // ── Andhra Pradesh / Telangana ────────────────────────────────
-  vijayawada:  { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
+  vijayawada:  { card: 'px-36229535', hero: 'px-36229535' },  // Fishermen Krishna River sunset
 
   // ── Gujarat ───────────────────────────────────────────────────
-  ahmedabad:   { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
-  'sasan-gir': { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
+  ahmedabad:   { card: 'px-14473752', hero: 'px-14473752' },  // Adalaj Stepwell
+  'sasan-gir': { card: 'px-5357893',  hero: 'px-5357893'  },  // Asiatic lioness Gir forest
 
   // ── Himalayas / Far North ─────────────────────────────────────
   ladakh:      { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
@@ -146,13 +138,13 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   darjeeling:  { card: 'photo-1681204032871-d385acdc114d', hero: 'photo-1681204032871-d385acdc114d' },
 
   // ── Andaman ───────────────────────────────────────────────────
-  andaman:       { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  'port-blair':  { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
-  lakshadweep:   { card: 'photo-1507525428034-b723cf961d3e', hero: 'photo-1507525428034-b723cf961d3e' },
+  andaman:       { card: 'px-36505898', hero: 'px-36505898' },  // Aerial turquoise water palm trees
+  'port-blair':  { card: 'px-16827207', hero: 'px-16827207' },  // Rocky shore calm ocean island view
+  lakshadweep:   { card: 'px-6189571',  hero: 'px-6189571'  },  // Crystal-clear turquoise lagoon
 
   // ── Misc ──────────────────────────────────────────────────────
-  ranchi:      { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
-  salem:       { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
+  ranchi:      { card: 'px-17777847', hero: 'px-17777847' },  // Hundru Falls waterfall
+  salem:       { card: 'px-774282',   hero: 'px-774282'   },  // Dravidian temple gopuram Salem
 };
 
 const UNSPLASH = 'https://images.unsplash.com';
