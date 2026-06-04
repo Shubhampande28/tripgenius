@@ -1,611 +1,815 @@
-# TripGenius Feature Specification
-**Version:** 1.0  
-**Date:** 2026-06-04  
-**Author:** Product / Engineering  
-**Scope:** Four engagement features to increase session duration, page views per session, and returning visitors.
+# TripGenius.in Engagement Feature Specification
 
----
+Version: 2.0
+Date: 2026-06-04
+Scope: Interactive destination maps, save/bookmark system, itinerary PDF download, and similar destination recommendations.
+Constraint: Do not introduce AI-generated itineraries as part of these features.
 
-## Architecture Baseline
+## Executive Summary
 
-| Dimension | Current State |
+TripGenius is currently a static-content travel discovery site built with Next.js App Router. The strongest engagement strategy is to add low-friction discovery loops and retention mechanics around existing destination content:
+
+- Similar destinations should ship first because it improves page views per session and SEO internal linking with no new backend.
+- Bookmarks should follow because they create returning-user behavior without requiring auth.
+- PDF downloads should target high-intent users who want offline planning material and branded takeaways.
+- Interactive maps should deepen city-page exploration, but they carry the most data-entry and dependency complexity.
+
+The best implementation approach is progressive enhancement. Keep public content server-rendered and crawlable. Add client-only interactivity where required, store anonymous user state in localStorage first, and design backend APIs/schema for future authenticated sync without making auth a launch dependency.
+
+## Existing Architecture Analysis
+
+### Current System
+
+| Area | Current State |
 |---|---|
-| Framework | Next.js 16.2.6 — App Router, React 19, TypeScript |
-| Styling | Tailwind CSS v4, CSS variables, Framer Motion |
-| Data layer | Static TypeScript arrays in `src/lib/` — **no database** |
-| Auth | None — fully anonymous |
-| Analytics | GA4 (`G-GZN2V0V66B`) in `layout.tsx` |
-| Content | ~160 cities, 50+ blog posts — all in-memory at build time |
-| Existing maps | None |
-| Existing bookmarks | None |
-| Existing PDF | None |
-| Existing recommendations | `RelatedCities` — same-country filter only |
+| Framework | Next.js 16.2.6 App Router, React 19, TypeScript |
+| Routing | `src/app` with static routes for cities, blogs, plan, compare, cheatsheet |
+| Styling | Tailwind CSS v4 with global CSS variables |
+| Data source | Static TypeScript data in `src/lib/cities.ts`, `src/lib/indianCities.ts`, `src/lib/worldCities.ts`, `src/lib/blog.ts` |
+| Database | None |
+| Auth | None |
+| Analytics | GA4 through `src/lib/analytics.ts` and layout script |
+| City pages | `src/app/cities/[slug]/page.tsx` server-rendered with JSON-LD |
+| Itinerary page | `/plan` plus `/api/plan`; should not be expanded into new AI itinerary generation for this scope |
+| Current engagement components | City TOC, quick nav, sidebar, mobile CTA, related/similar destination areas |
+| Partial feature work observed | Leaflet/react-leaflet dependencies, map utilities/components, similarity utilities/components, coordinate fields in types/data |
 
-All four features must work within this constraint set. The guiding principle is **progressive enhancement**: features work for anonymous users with localStorage, and optionally sync to a backend if auth is added later.
+### Architecture Implications
 
----
+- Server-render city/blog/recommendation content for SEO.
+- Use client islands only for maps, bookmark state, analytics tracking, and download interactions.
+- Avoid adding a database for the initial version. The site can achieve meaningful engagement gains with static data plus localStorage.
+- Treat the existing static city model as the source of truth. Add optional fields cautiously and support graceful fallbacks for incomplete data.
+- Keep feature components modular under `src/components/city`, `src/components/saved`, `src/components/pdf`, and shared hooks under `src/lib` or `src/hooks`.
+
+### Recommended Implementation Strategy
+
+1. Preserve static rendering for all destination content and recommendations.
+2. Use localStorage for saves/bookmarks with a namespaced key such as `tripgenius:v1:saves`.
+3. Use dynamic client-only loading for Leaflet maps to avoid SSR and hydration issues.
+4. Generate PDFs through a dedicated API route or route handler after a short technical spike.
+5. Track every feature interaction through the existing `trackEvent` wrapper.
+6. Add backend schema only as a future migration path, not as a launch blocker.
 
 ---
 
 # Feature 1: Interactive Destination Maps
 
-## Overview
-Embed an interactive, pannable/zoomable map on every city page showing key attractions, neighbourhoods, and points of interest — allowing users to spatially orient themselves and explore a destination visually.
+## Product Goal
+
+Help users understand where attractions, neighborhoods, restaurants, and areas sit within a destination so they spend longer exploring the city page and jump between sections more naturally.
 
 ## User Journey
-1. User lands on `/cities/bali`.
-2. They scroll past the hero and AtAGlance sections and encounter a sticky "Map" tab in the `CityTOC` / `CityQuickNav` navigation.
-3. Clicking "Map" scrolls to and expands the `CityMap` component (below ThingsToDo).
-4. The map renders centred on the city with cluster pins for each ThingToDo and Neighbourhood.
-5. User taps/clicks a pin → a popup appears with: name, icon, category badge, 1-line description, and a "View Details" link that smooth-scrolls to the relevant section.
-6. User can switch layers: **Attractions**, **Neighbourhoods**, **Restaurants**, **Areas** using a toggle pill row above the map.
-7. On mobile, the map is fullscreen-toggle-capable via a button in the top-right corner.
-8. A "Open in Google Maps" link at bottom-right launches Google Maps with the city's coordinates for turn-by-turn navigation.
+
+1. User opens a city guide such as `/cities/bali`.
+2. The quick nav and table of contents include a "Map" anchor.
+3. User scrolls to "Explore Bali on the Map".
+4. A lightweight skeleton appears while the interactive map loads.
+5. The map centers on the city using city-level coordinates.
+6. Pins appear for attractions with coordinates.
+7. User taps a pin and sees a compact popup with name, category, duration, and a link to the relevant guide section.
+8. User filters pins by layer: Attractions, Areas, Neighborhoods, Food.
+9. On mobile, user can expand the map to a fullscreen overlay.
+10. User can open the destination in Google Maps for external navigation.
 
 ## UX Wireframe Description
 
-```
-┌─────────────────────────────────────────────────────┐
-│  [Attractions] [Neighbourhoods] [Eat] [Areas]        │  ← layer pills
-├─────────────────────────────────────────────────────┤
-│                                                      │
-│       🗺  Interactive Map (400px tall on desktop,    │
-│           240px on mobile, expandable to fullscreen) │
-│                                                      │
-│   📍 Tanah Lot      📍 Tegallalang                   │
-│         ↕ popup on click                             │
-│   ┌──────────────────────────────┐                   │
-│   │ 🛕 Tanah Lot Temple          │                   │
-│   │ Cultural · 2–3 hours         │                   │
-│   │ Watch the sun melt into...   │                   │
-│   │ [View Details ↗]             │                   │
-│   └──────────────────────────────┘                   │
-│                                          [⛶ Expand] │
-│                              [Open in Google Maps ↗] │
-└─────────────────────────────────────────────────────┘
-```
+Desktop section:
 
-## Data Requirements
+```text
+Section: Explore [City] on the Map
 
-### City coordinate data
-Add a `coordinates` field to the `City` type and a `coordinates` field to `ThingToDo`, `Neighbourhood`, and `CityArea`:
+[Attractions] [Neighborhoods] [Food] [Areas]          [Open in Google Maps]
 
-```
-City.coordinates: { lat: number; lng: number }
-ThingToDo.coordinates?: { lat: number; lng: number }
-Neighbourhood.coordinates?: { lat: number; lng: number }
-CityArea.coordinates?: { lat: number; lng: number }
++---------------------------------------------------------------+
+| Interactive map                                                |
+|                                                               |
+|   Pin: Temple         Pin: Beach                              |
+|                                                               |
+|   Popup                                                       |
+|   +-----------------------------+                             |
+|   | Tanah Lot Temple            |                             |
+|   | Cultural | 2-3 hours        |                             |
+|   | Watch the sun melt...       |                             |
+|   | View details                |                             |
+|   +-----------------------------+                             |
+|                                                               |
+|                                             [Fullscreen icon]  |
++---------------------------------------------------------------+
+
+Below map: screen-reader-accessible list of mapped places.
 ```
 
-City-level coordinates cover all 160+ cities. POI-level coordinates are optional — they can be populated gradually (high-value cities first).
+Mobile section:
 
-### Fallback strategy
-If a POI has no coordinates, it is excluded from the map silently. The map still renders with city-level centre and any POIs that do have coordinates.
+```text
+[Explore Bali on the Map]
+[Layer pills in horizontal scroll]
 
-### No schema migration needed
-This is a data enrichment task on the existing static TypeScript files — add fields to the objects.
++---------------------------+
+| 240px map preview         |
+| pins visible              |
+| [expand]                  |
++---------------------------+
+
+Fullscreen mode:
+- Map fills viewport.
+- Bottom sheet shows selected pin.
+- Close button fixed at top right.
+```
+
+## Database Schema Changes
+
+Initial release: no database.
+
+Static data additions:
+
+```ts
+Coordinates {
+  lat: number
+  lng: number
+  isApproximate?: boolean
+}
+
+City.coordinates?: Coordinates
+ThingToDo.coordinates?: Coordinates
+Neighbourhood.coordinates?: Coordinates
+CityArea.coordinates?: Coordinates
+Restaurant.coordinates?: Coordinates
+```
+
+Recommended rollout:
+
+- Add city-level coordinates for all publishable cities.
+- Add POI-level coordinates for the top 20 traffic cities first.
+- Mark approximate coordinates with `isApproximate: true` when exact POI data is not available.
+
+Future database model, if content moves to a CMS:
+
+```sql
+CREATE TABLE destination_pois (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  city_slug TEXT NOT NULL,
+  source_type TEXT NOT NULL CHECK (source_type IN ('thing_to_do', 'neighbourhood', 'restaurant', 'area')),
+  source_key TEXT NOT NULL,
+  name TEXT NOT NULL,
+  category TEXT,
+  lat DOUBLE PRECISION NOT NULL,
+  lng DOUBLE PRECISION NOT NULL,
+  is_approximate BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(city_slug, source_type, source_key)
+);
+```
 
 ## API Endpoints
-None required. All data is static. The map library fetches map tiles directly from the tile provider (OpenStreetMap or Mapbox).
+
+Initial release: no required application API endpoint. City pages already receive static data at build/render time.
 
 Optional future endpoint:
-- `GET /api/cities/[slug]/pois` — returns coordinates JSON for dynamic loading (avoids embedding all coords in the HTML).
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/cities/[slug]/map-pins` | Return map pins only, reducing city-page HTML/data size if coordinates become large |
+
+Response shape:
+
+```json
+{
+  "city": { "slug": "bali", "lat": -8.4095, "lng": 115.1889 },
+  "pins": [
+    {
+      "id": "thing-to-do:tanah-lot-temple",
+      "type": "thing_to_do",
+      "name": "Tanah Lot Temple",
+      "category": "Cultural",
+      "lat": -8.6211,
+      "lng": 115.0868
+    }
+  ]
+}
+```
 
 ## Frontend Component Structure
 
-```
-src/
-  components/
-    city/
-      CityMap.tsx               ← main map component (client component)
-      CityMapPopup.tsx          ← popup card for a pin click
-      CityMapLayerPills.tsx     ← layer toggle pills
-      CityMapFullscreenButton.tsx
-  lib/
-    mapUtils.ts                 ← coordinate helpers, pin colour by category
+Recommended structure:
+
+```text
+src/components/city/
+  CityMapWrapper.tsx          client boundary using dynamic import
+  CityMap.tsx                 Leaflet map, markers, tile layer
+  CityMapPopup.tsx            pin popup content
+  CityMapLayerControls.tsx    layer filters
+  CityMapFullscreen.tsx       mobile/fullscreen overlay
+  MapSkeleton.tsx             loading state
+
+src/lib/
+  mapUtils.ts                 pin building, category color, bounds helpers
 ```
 
-**Library choice:** Leaflet.js via `react-leaflet` v4 (MIT, free, no API key for OSM tiles). Alternative: `mapbox-gl` with a free-tier Mapbox token (better styling, higher bundle cost).
+Placement:
 
-**Rendering:** `'use client'` — the map component must be client-rendered. Use `next/dynamic` with `ssr: false` to avoid hydration mismatch (Leaflet manipulates the DOM directly).
-
-```
-// In city [slug]/page.tsx
-const CityMap = dynamic(() => import('@/components/city/CityMap'), { ssr: false });
-```
+- Add the map after `ThingsToDo` and before neighborhoods/areas.
+- Add `id="city-map"` and ensure quick nav points to the same anchor.
+- Keep the outer section server-rendered; only the Leaflet map is client-rendered.
 
 ## SEO Considerations
-- The `<section>` wrapping the map gets an `id="map"` and an `<h2>` heading ("Explore [City] on the Map") for section anchor indexing.
-- Map pins data (attraction names, categories) is also rendered as a hidden `<ul>` (visually hidden, screen-reader accessible) so crawlers index the place names.
-- Structured data: add `TouristAttraction` schema entries for each ThingToDo that has coordinates.
-- The map itself is `aria-label="Interactive map of [City]"`.
+
+- Use a crawlable section heading: `Explore [City] on the Map`.
+- Render mapped place names as normal HTML or a visually hidden list, not only inside Leaflet popups.
+- Add coordinates to `TouristAttraction` JSON-LD when available.
+- Keep internal "View details" anchors descriptive, such as `Tanah Lot Temple details`.
+- Avoid indexing separate map API URLs if introduced later.
 
 ## Performance Considerations
-- Leaflet + react-leaflet adds ~40KB gzipped. Use `next/dynamic` with a loading skeleton to prevent blocking initial page render.
-- Map tiles are lazy-loaded by Leaflet natively; no action needed.
-- Limit initial visible pins to 20; cluster remaining with `leaflet.markercluster`.
-- For cities without any POI coordinates, render a static Google Maps embed screenshot (image) as a graceful fallback.
-- Do NOT bundle city coordinate data into the global bundle — import per-city coordinates only on the relevant city page.
+
+- Leaflet must be dynamically imported with SSR disabled.
+- Show `MapSkeleton` while the map bundle loads.
+- Do not load the map until the section is near viewport if Core Web Vitals regress.
+- Cap initial markers or cluster when a city has more than 25 pins.
+- Use OSM tiles carefully; for production traffic, consider a paid tile provider or MapTiler/Mapbox to avoid violating fair-use expectations.
+- Keep pin data per city, not in a global client bundle.
 
 ## Mobile Considerations
-- Default map height: 240px on mobile, 400px on desktop (CSS responsive).
-- Fullscreen button opens a `position: fixed` overlay covering the full viewport.
-- Touch interactions: pinch-to-zoom and swipe-pan are native Leaflet behaviours.
-- Popup cards must be thumb-reachable — position anchored to bottom of the map on small screens.
-- "Open in Google Maps" link uses a `geo:` URI on mobile for native maps app handoff.
+
+- Default map height should be 220-260px.
+- Provide a clear fullscreen control.
+- Use bottom-sheet popups on small screens because Leaflet popups can be cramped.
+- Disable scroll-wheel zoom on desktop and avoid trapping page scroll on mobile.
+- Use large tap targets for layer controls and close buttons.
 
 ## Security Considerations
-- If using Mapbox: store token in `NEXT_PUBLIC_MAPBOX_TOKEN` env var. Restrict the token to `tripgenius.in` referrer in the Mapbox dashboard.
-- No user input is processed by the map — no injection risk.
-- CSP: add `tile.openstreetmap.org` (or Mapbox CDN) to `img-src` and `connect-src` directives.
 
-## Analytics Events to Track
+- Sanitize or escape popup content if any content ever becomes user-generated or CMS-authored HTML.
+- If Mapbox/MapTiler is used, restrict public tokens by domain.
+- Update CSP for tile/image/connect domains.
+- Do not expose private location data; all POIs are public travel-guide data.
+
+## Analytics Events
 
 | Event | Parameters |
 |---|---|
-| `map_viewed` | `city_slug`, `city_name` |
-| `map_pin_clicked` | `city_slug`, `poi_name`, `poi_category`, `layer` |
-| `map_layer_changed` | `city_slug`, `layer_name` |
-| `map_fullscreen_toggled` | `city_slug`, `state: 'open' | 'close'` |
-| `map_google_maps_opened` | `city_slug` |
-
----
+| `map_viewed` | `city_slug`, `pin_count` |
+| `map_pin_clicked` | `city_slug`, `pin_type`, `pin_name`, `pin_category` |
+| `map_layer_changed` | `city_slug`, `layer_name`, `visible_pin_count` |
+| `map_fullscreen_opened` | `city_slug` |
+| `map_fullscreen_closed` | `city_slug` |
+| `map_google_maps_clicked` | `city_slug` |
+| `map_detail_anchor_clicked` | `city_slug`, `pin_name`, `target_section` |
 
 ---
 
 # Feature 2: Save Itinerary / Bookmark System
 
-## Overview
-Allow users to bookmark/save city pages and blog posts for later reference, creating a persistent "My Saved Places" collection — accessible without login via localStorage, optionally promotable to an account-based system later.
+## Product Goal
+
+Give users a lightweight way to save destinations, blogs, comparisons, and itinerary pages so they return later and build a personal travel shortlist.
 
 ## User Journey
-1. User is on `/cities/bali`.
-2. A **bookmark icon button** (heart or bookmark shape) appears in:
-   - The `CityHero` component top-right (desktop).
-   - The `MobileCTA` sticky bar on mobile.
-3. User clicks it → icon animates to filled state, a toast notification slides in: *"Bali saved to your list"* with an inline "View saved" link.
-4. Saved state persists across page refreshes (localStorage).
-5. A **"My Saves" link** appears in the `Navbar` (icon + badge count) once ≥1 item is saved.
-6. Clicking "My Saves" opens `/saved` — a page listing all saved cities and blog posts as cards.
-7. On `/saved`, each card has an "X Remove" button, a "Share my list" button (copies a URL with encoded slugs to clipboard).
-8. The shareable URL `/saved?list=bali,tokyo,jaipur` renders a read-only version of the list for anyone who opens it.
+
+1. User opens a city guide, blog post, or itinerary page.
+2. A bookmark icon appears near the page title/hero and in mobile sticky actions.
+3. User clicks save.
+4. The icon changes to a filled state and a toast confirms the item was saved.
+5. Navbar shows a "Saved" link with a count badge after at least one item exists.
+6. User opens `/saved`.
+7. Saved items appear grouped by type: Destinations, Itineraries, Articles.
+8. User removes items, opens saved items, or shares a read-only saved list URL.
+9. Returning users see the same saves restored from localStorage.
 
 ## UX Wireframe Description
 
-### Bookmark button (hero area)
-```
-┌─────────────────────────────────────┐
-│  [city hero image]       [♡ Save]   │  ← top-right button
-│  Bali · Indonesia                   │
-│  Island of the Gods                 │
-└─────────────────────────────────────┘
+City hero:
+
+```text
++-------------------------------------------------------------+
+| [Hero image]                                      [Save icon] |
+| Bali, Indonesia                                             |
+| Island of the Gods                                          |
++-------------------------------------------------------------+
 ```
 
-### Toast notification
-```
-┌──────────────────────────────────────────┐
-│  ✓  Bali saved to your list  [View list] │  ← 3s auto-dismiss, bottom-left
-└──────────────────────────────────────────┘
+Toast:
+
+```text
++--------------------------------------------------+
+| Saved to your list                         View  |
++--------------------------------------------------+
 ```
 
-### /saved page
-```
-┌─────────────────────────────────────────────────────┐
-│  My Saved Places (4)                [Share list ↗]  │
-├──────────────────────────────────────────────────────│
-│  [Bali img]  Bali · Indonesia                [×]    │
-│  [Tokyo img] Tokyo · Japan                   [×]    │
-│  [post img]  Blog: Bali vs Thailand…         [×]    │
-└─────────────────────────────────────────────────────┘
+Saved page:
+
+```text
+My Saved Trips                                           [Share]
+
+Destinations (3)
++----------------+  +----------------+  +----------------+
+| image          |  | image          |  | image          |
+| Bali           |  | Tokyo          |  | Jaipur         |
+| Indonesia      |  | Japan          |  | India          |
+| [Open] [Remove]|  | [Open] [Remove]|  | [Open] [Remove]|
++----------------+  +----------------+  +----------------+
+
+Articles (2)
+...
+
+Empty state:
+"No saved trips yet" + "Explore destinations" CTA.
 ```
 
 ## Database Schema Changes
-**Phase 1 (localStorage only) — no schema changes needed.**
 
-**Phase 2 (optional server sync — design only, not in initial scope):**
+Initial release: no database. Use localStorage.
+
+LocalStorage shape:
+
+```json
+{
+  "version": 1,
+  "items": [
+    {
+      "type": "city",
+      "slug": "bali",
+      "title": "Bali",
+      "subtitle": "Indonesia",
+      "image": "https://...",
+      "url": "/cities/bali",
+      "savedAt": "2026-06-04T10:00:00.000Z"
+    }
+  ]
+}
+```
+
+Future database model for authenticated sync:
 
 ```sql
--- Users table (if auth added via NextAuth / Clerk)
 CREATE TABLE users (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email       TEXT UNIQUE NOT NULL,
-  created_at  TIMESTAMPTZ DEFAULT now()
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Bookmarks table
-CREATE TABLE bookmarks (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id     UUID REFERENCES users(id) ON DELETE CASCADE,
-  item_type   TEXT NOT NULL CHECK (item_type IN ('city', 'blog')),
-  item_slug   TEXT NOT NULL,
-  created_at  TIMESTAMPTZ DEFAULT now(),
-  UNIQUE (user_id, item_type, item_slug)
+CREATE TABLE saved_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  item_type TEXT NOT NULL CHECK (item_type IN ('city', 'blog', 'itinerary', 'compare')),
+  item_slug TEXT NOT NULL,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  saved_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, item_type, item_slug)
 );
 
-CREATE INDEX idx_bookmarks_user ON bookmarks(user_id);
+CREATE INDEX saved_items_user_saved_at_idx ON saved_items(user_id, saved_at DESC);
 ```
 
 ## API Endpoints
-**Phase 1:** None — pure client-side.
 
-**Phase 2 (optional):**
-- `GET  /api/bookmarks` — returns user's saved items (auth required)
-- `POST /api/bookmarks` — body: `{ itemType, itemSlug }` — adds bookmark
-- `DELETE /api/bookmarks/[itemType]/[slug]` — removes bookmark
-- `GET  /api/bookmarks/shared?list=bali,tokyo` — validates slugs and returns public card data
+Initial anonymous release:
+
+| Method | Path | Purpose |
+|---|---|---|
+| None | None | All save state is localStorage-based |
+
+Future authenticated sync:
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/saved` | List current user's saved items |
+| POST | `/api/saved` | Save an item |
+| DELETE | `/api/saved/[type]/[slug]` | Remove an item |
+| POST | `/api/saved/import` | Merge localStorage saves after login |
+
+Shareable list:
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/saved?list=city:bali,city:tokyo,blog:goa-guide` | Client/server resolves slugs into a read-only shared list |
 
 ## Frontend Component Structure
 
-```
-src/
-  components/
-    bookmarks/
-      BookmarkButton.tsx        ← heart/bookmark icon, animated, accepts itemType + slug
-      BookmarkToast.tsx         ← slide-in notification
-      SavedPageCard.tsx         ← card on /saved page
-      ShareListButton.tsx       ← copy-to-clipboard with encoded URL
-  hooks/
-    useBookmarks.ts             ← localStorage read/write, React state, event dispatch
-  app/
-    saved/
-      page.tsx                  ← /saved route — SSR shell, client hydrated
-```
+```text
+src/components/saved/
+  SaveButton.tsx              reusable icon button
+  SaveToast.tsx               confirmation message
+  SavedCountBadge.tsx         navbar count
+  SavedItemsPage.tsx          /saved page UI
+  SavedItemCard.tsx           city/blog/itinerary card
+  ShareSavedListButton.tsx    encoded share URL
 
-### `useBookmarks` hook interface
-```typescript
-interface BookmarkItem {
-  itemType: 'city' | 'blog';
-  slug: string;
-  savedAt: number; // timestamp
-}
+src/hooks/
+  useSavedItems.ts            localStorage state and subscription
 
-// Returns:
-{
-  saved: BookmarkItem[];
-  isSaved: (itemType, slug) => boolean;
-  toggle: (itemType, slug) => void;   // adds or removes
-  remove: (itemType, slug) => void;
-  clear: () => void;
-}
+src/lib/
+  savedItems.ts               serialization, validation, item resolver
+
+src/app/saved/
+  page.tsx                    saved list route
 ```
 
-The hook dispatches a `bookmarks_updated` custom DOM event so all mounted `BookmarkButton` instances update in sync without a global state library.
+Integration points:
+
+- `CityHero`: save button for city.
+- `MobileCTA`: compact save action.
+- `Navbar`: saved link and badge.
+- Blog post pages: save button near title or sticky action area.
+- Itinerary display: save generated or curated itinerary snapshots without creating new AI generation behavior.
 
 ## SEO Considerations
-- `/saved` is `noindex` (user-specific content, no SEO value).
-- The shareable `/saved?list=…` URL is also `noindex`.
-- Bookmark buttons are `aria-label="Save Bali to your list"` / `aria-pressed` for accessibility.
-- No impact on crawlable pages.
+
+- `/saved` should be `noindex` because it is personalized or query-driven.
+- Shared saved-list URLs should also be `noindex` unless the product later supports curated public collections.
+- Save buttons should not hide primary crawlable links or headings.
+- Internal discovery should rely on saved item cards linking to canonical pages.
 
 ## Performance Considerations
-- localStorage read is synchronous — call during client hydration only (inside `useEffect`) to avoid SSR/hydration mismatch.
-- Bookmark state is stored as a JSON string under key `tg_bookmarks`.
-- The `/saved` page fetches city metadata from the static `allCities` array — no network request.
-- `BookmarkButton` is a tiny client component; keep it isolated so the server-rendered city page is not forced to become a full client component.
-- Toast uses CSS transitions only — no animation library dependency.
+
+- Keep localStorage payload small; store item references and display metadata, not full page content.
+- Use `useSyncExternalStore` or a custom browser event so navbar badge and buttons stay in sync.
+- Avoid reading localStorage during server render.
+- Lazy-load saved page groups if the list grows beyond 100 items.
+- Keep share URLs capped; if users save too many items, share only selected items or move to future server-backed share IDs.
 
 ## Mobile Considerations
-- The bookmark button in `MobileCTA` is always thumb-reachable (sticky bar at bottom).
-- On `/saved`, cards are full-width stacked on mobile.
-- "Share list" falls back to `navigator.share()` (Web Share API) on mobile when available; falls back to clipboard copy on desktop.
-- Badge count on Navbar disappears on mobile (space constraints) — replaced by a heart icon without count.
+
+- Save button should be reachable in the sticky mobile CTA.
+- Toast should appear above bottom navigation/sticky CTA.
+- Saved page should use single-column cards with clear remove buttons.
+- Share action should use Web Share API on mobile when available, with clipboard fallback.
 
 ## Security Considerations
-- localStorage is origin-scoped — no cross-site risk.
-- The shareable URL only encodes city/blog slugs (allowlisted values) — no user data is encoded.
-- Phase 2 API endpoints require auth tokens (JWT / session cookie) — validate ownership server-side before every read/write.
-- Rate-limit Phase 2 POST/DELETE endpoints: 60 req/min per IP.
 
-## Analytics Events to Track
+- Validate item type and slug against allowlisted static content before rendering shared query-list items.
+- Do not trust localStorage metadata for URLs; resolve canonical URLs from known content when possible.
+- Escape all displayed text.
+- Prevent oversized query strings from causing rendering or URL parsing issues.
+- Future APIs require authentication and CSRF-conscious handling.
+
+## Analytics Events
 
 | Event | Parameters |
 |---|---|
-| `bookmark_added` | `item_type`, `item_slug`, `item_name`, `source` (hero/mobile_cta/blog) |
-| `bookmark_removed` | `item_type`, `item_slug`, `source` (saved_page/button) |
-| `saved_page_viewed` | `items_count` |
-| `saved_list_shared` | `items_count` |
-| `saved_list_share_opened` | `items_count` (when recipient opens shared URL) |
-
----
+| `save_item_clicked` | `item_type`, `item_slug`, `source_page` |
+| `item_saved` | `item_type`, `item_slug`, `save_count` |
+| `item_unsaved` | `item_type`, `item_slug`, `save_count` |
+| `saved_page_viewed` | `item_count`, `city_count`, `blog_count`, `itinerary_count` |
+| `saved_item_opened` | `item_type`, `item_slug`, `position` |
+| `saved_list_shared` | `item_count`, `share_method` |
+| `saved_empty_cta_clicked` | `target` |
 
 ---
 
 # Feature 3: Download Itinerary as PDF
 
-## Overview
-Allow users to download a print-ready PDF of any city guide page — formatted as a clean travel document with key sections: AtAGlance stats, ThingsToDo, WhereToStay, WhereToEat, ProTips, BudgetBreakdown, and Getting There.
+## Product Goal
 
-Scope also covers downloading AI-generated trip plans from `/plan`.
+Let high-intent users take TripGenius content offline as a polished, branded itinerary or city-guide PDF, increasing perceived value and encouraging return visits through QR/backlinks.
 
 ## User Journey
 
-### City guide PDF
-1. User is on `/cities/bali` (or any city page).
-2. A **"Download Guide (PDF)"** button appears in:
-   - The `CitySidebar` (desktop).
-   - The `MobileCTA` sticky bar (mobile, secondary action).
-3. User clicks → a loading spinner replaces the button label for 1–2 seconds.
-4. A PDF named `TripGenius-Bali-Guide.pdf` downloads automatically.
-5. The PDF opens in a clean 2-column A4 layout with: TripGenius logo/wordmark, city hero image, all key sections, affiliate booking links as QR codes in the footer.
+City guide PDF:
 
-### AI trip plan PDF
-1. User generates a plan on `/plan` — the `ItineraryDisplay` component renders the result.
-2. A **"Download PDF"** button appears at the top-right of the itinerary.
-3. Click → same flow as above. PDF named `TripGenius-Bali-7Day-Itinerary.pdf`.
+1. User reads a city guide.
+2. In the sidebar and mobile CTA, user sees a download icon labeled "PDF".
+3. User clicks download.
+4. A loading state appears: "Preparing PDF".
+5. Browser downloads `tripgenius-bali-guide.pdf`.
+6. PDF includes summary, best time, budget, top things to do, where to stay/eat, tips, and canonical link back to the city page.
+
+Itinerary PDF:
+
+1. User views an existing itinerary page or generated plan result.
+2. User clicks "Download PDF".
+3. PDF is generated from the displayed itinerary only.
+4. User receives a branded day-by-day PDF.
+
+Important: This feature must not create new AI-generated itinerary flows. It only exports content already visible to the user.
 
 ## UX Wireframe Description
 
-### PDF button placement (sidebar)
-```
-┌──────────────────────────────┐
-│  Quick Actions               │
-│  [♡ Save this city]          │
-│  [⬇ Download Guide (PDF)]    │  ← sidebar button
-│  [📤 Share]                  │
-└──────────────────────────────┘
+Desktop city sidebar:
+
+```text
++-----------------------------+
+| Plan Bali                   |
+| [Book stays]                |
+| [Download PDF icon]         |
+| [Save icon]                 |
++-----------------------------+
 ```
 
-### PDF layout (A4 page)
+Mobile sticky CTA:
+
+```text
++--------------------------------------+
+| [Save]        [PDF]        [Explore] |
++--------------------------------------+
 ```
-┌────────────────────────────────────────┐
-│  TripGenius     BALI TRAVEL GUIDE      │  ← header
-│  ─────────────────────────────────     │
-│  [hero image spanning full width]      │
-│                                        │
-│  AT A GLANCE          BEST TIME        │
-│  Budget: $40–200/day  Apr – Oct        │
-│  Language: Balinese   Currency: IDR    │
-│  ─────────────────────────────────     │
-│  THINGS TO DO                          │
-│  🛕 Tanah Lot Temple                   │
-│     Cultural · 2–3 hrs                 │
-│     Watch the sun melt into…           │
-│  ─────────────────────────────────     │
-│  WHERE TO STAY / WHERE TO EAT          │
-│  [two-column layout]                   │
-│  ─────────────────────────────────     │
-│  PRO TIPS                              │
-│  ─────────────────────────────────     │
-│  [footer: tripgenius.in | QR code]     │
-└────────────────────────────────────────┘
+
+PDF document:
+
+```text
+TripGenius logo
+Bali Travel Guide
+Best time: Apr-Oct | Budget: $40-$200/day
+
+1. At a glance
+2. Top things to do
+3. Suggested areas/neighborhoods
+4. Food and stays
+5. Local tips
+
+Footer: tripgenius.in/cities/bali + QR code
 ```
 
 ## Database Schema Changes
-None. PDF is generated entirely from existing static city data.
+
+Initial release: no database.
+
+Optional future table for observability/caching:
+
+```sql
+CREATE TABLE pdf_downloads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  item_type TEXT NOT NULL CHECK (item_type IN ('city', 'itinerary')),
+  item_slug TEXT,
+  user_id UUID,
+  request_hash TEXT,
+  generated_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  ip_hash TEXT,
+  user_agent_hash TEXT
+);
+
+CREATE INDEX pdf_downloads_item_idx ON pdf_downloads(item_type, item_slug, created_at DESC);
+```
 
 ## API Endpoints
 
-### `GET /api/pdf/city/[slug]`
-- Generates a PDF for the given city slug.
-- Returns `Content-Type: application/pdf`, `Content-Disposition: attachment; filename="TripGenius-[CityName]-Guide.pdf"`.
-- Validates slug against `allCities` — 404 if not found.
-- Rate-limited: 10 requests/minute per IP.
+Recommended initial endpoints:
 
-### `POST /api/pdf/itinerary`
-- Body: `TripItinerary` JSON (same shape as `/api/plan` response).
-- Returns PDF of the AI-generated trip plan.
-- Rate-limited: 5 requests/minute per IP (heavier generation).
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/pdf/city/[slug]` | Generate/download city guide PDF |
+| POST | `/api/pdf/itinerary` | Generate/download PDF from displayed itinerary payload |
+
+`GET /api/pdf/city/[slug]`:
+
+- Validate slug against static city data.
+- Return `application/pdf`.
+- Filename: `tripgenius-[slug]-travel-guide.pdf`.
+
+`POST /api/pdf/itinerary`:
+
+- Accept only the already-rendered itinerary data shape.
+- Validate payload size and fields.
+- Return `application/pdf`.
+- Rate-limit because POST can be abused.
+
+Optional future:
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/pdf/city/[slug]/status` | Status for async generation if PDFs are pre-rendered or queued |
 
 ## Frontend Component Structure
 
-```
-src/
-  components/
-    city/
-      DownloadGuideButton.tsx     ← button with loading state, handles fetch + download
-    plan/
-      DownloadItineraryButton.tsx ← same pattern for AI plan
-  lib/
-    pdf/
-      cityPdfTemplate.ts          ← HTML/CSS template string for city PDF
-      itineraryPdfTemplate.ts     ← HTML/CSS template for trip plan PDF
-      pdfHelpers.ts               ← shared: currency format, section builders
-  app/
-    api/
-      pdf/
-        city/[slug]/route.ts      ← server route
-        itinerary/route.ts        ← server route
+```text
+src/components/pdf/
+  DownloadPdfButton.tsx       shared trigger
+  PdfLoadingState.tsx         loading/progress UI
+  PdfErrorToast.tsx           retry/error UI
+
+src/components/city/
+  CityPdfButton.tsx           city-specific wrapper
+
+src/components/plan/
+  ItineraryPdfButton.tsx      exports displayed itinerary
+
+src/lib/
+  pdfPayload.ts               validation-safe payload builders
 ```
 
-### PDF generation library choice
+Server-side PDF module:
 
-**Option A — Puppeteer (headless Chrome):**
-- Renders a hidden HTML page then prints to PDF.
-- Produces pixel-perfect output matching the site's design.
-- Cold start: ~2–3s on serverless. Bundle size: ~300MB (requires a separate Docker layer or `@sparticuz/chromium` for Vercel).
-- Best for: high-quality output, complex layouts.
+```text
+src/lib/pdf/
+  cityGuidePdf.ts             city PDF renderer
+  itineraryPdf.ts             itinerary PDF renderer
+  pdfTheme.ts                 typography, spacing, colors
+```
 
-**Option B — `jsPDF` + `html2canvas` (client-side):**
-- Runs entirely in the browser — no server route needed.
-- Takes a DOM screenshot and converts to PDF.
-- Pros: zero server cost, works offline.
-- Cons: output quality depends on viewport/DPI, heavy bundle (~200KB).
-- Best for: lower infrastructure cost, acceptable quality.
+Library options:
 
-**Option C — `@react-pdf/renderer` (server-side):**
-- Declarative React components rendered to PDF via PDFKit.
-- No Puppeteer dependency — works on serverless with no special config.
-- Cons: custom layout system (not HTML/CSS), requires re-expressing design in `react-pdf` primitives.
-- Best for: serverless-first deployment on Vercel with no Docker.
-
-**Recommendation: Option C (`@react-pdf/renderer`)** for Vercel/serverless compatibility. Fall back to Option B (client-side) if the `react-pdf` output quality is insufficient for the design.
+- Preferred spike: `@react-pdf/renderer` for structured server-side PDFs.
+- Fallback: pre-generated static PDFs for top city guides.
+- Avoid heavy client-side screenshot generation as the default because it hurts mobile performance and often produces brittle output.
 
 ## SEO Considerations
-- PDF download links do not affect crawlable HTML.
-- PDF files themselves can be indexed by Google — include the city name, URL, and date in the PDF metadata (`title`, `author`, `subject` fields).
-- Add `robots: noindex` headers to `/api/pdf/*` routes so the API endpoints are not indexed.
-- The PDF QR code in the footer pointing to `tripgenius.in/cities/[slug]` drives return traffic.
+
+- PDF download URLs should not be indexed unless dedicated PDF landing pages are intentionally created.
+- Add canonical city URL inside the PDF.
+- Include TripGenius branding and QR code linking back to the canonical guide.
+- Do not replace HTML content with PDFs; PDFs are an engagement/export layer.
+- Use `rel="nofollow"` only if external affiliate links are embedded in PDFs.
 
 ## Performance Considerations
-- PDF generation is CPU-intensive — run it on a dedicated API route, never inline.
-- Cache generated PDFs in Vercel KV (or Cloudflare Cache) with a 24-hour TTL, keyed by `city-slug + content-hash` of the city data.
-- Show a loading state in the button (spinner) to prevent double-clicks.
-- For client-side Option B: lazy-load `jsPDF` and `html2canvas` only when the button is clicked (dynamic import).
-- PDF file size target: < 3MB per city guide.
+
+- Spike PDF library compatibility with Next.js route handlers before committing.
+- Keep PDFs text-first and image-light.
+- Avoid embedding large hero images; use compressed low-resolution versions or no hero image.
+- Cache city-guide PDFs because static city content rarely changes.
+- Limit itinerary POST payload size.
+- Add rate limiting to avoid repeated expensive generation.
+- Consider build-time generation for top cities if runtime PDF generation exceeds Vercel limits.
 
 ## Mobile Considerations
-- On iOS Safari, PDFs open inline in the browser rather than downloading — provide a "Tap and hold → Share → Save to Files" hint in a tooltip.
-- On Android Chrome, the `Content-Disposition: attachment` header triggers a native download.
-- The download button is visible and tappable in `MobileCTA`; label shortens to "PDF" on screens < 375px.
-- Consider offering a "Print-friendly" view (`/cities/[slug]/print`) as a simpler alternative that uses `@media print` CSS — lower implementation cost, same utility.
+
+- Use an icon-first PDF action in sticky CTA.
+- Show clear loading state; mobile downloads can feel silent.
+- Provide "Open PDF" after generation if browser download behavior is inconsistent.
+- Keep PDF file size under roughly 2 MB for mobile networks.
 
 ## Security Considerations
-- Rate-limit `/api/pdf/*` aggressively (10 req/min/IP) — PDF generation is expensive and can be DoS'd.
-- Validate all slug inputs against the allowlist (`getAllCitySlugs()`) before generating.
-- If using Puppeteer: run in a sandboxed process, do not allow user-controlled HTML injection.
-- For `/api/pdf/itinerary` (POST): validate the body against the `TripItinerary` schema before rendering — reject payloads with unexpected fields.
-- Set `X-Content-Type-Options: nosniff` and appropriate CORS headers on PDF routes.
 
-## Analytics Events to Track
+- Validate slugs and itinerary payloads.
+- Strip or escape HTML from itinerary text before PDF rendering.
+- Rate-limit PDF endpoints by IP or anonymous session.
+- Do not include secrets in generated PDFs.
+- Use safe filename generation.
+- Avoid server-side fetching of arbitrary URLs from user payloads.
+
+## Analytics Events
 
 | Event | Parameters |
 |---|---|
-| `pdf_download_initiated` | `item_type` (city/itinerary), `item_slug`, `source` |
-| `pdf_download_completed` | `item_type`, `item_slug`, `file_size_kb` |
-| `pdf_download_failed` | `item_type`, `item_slug`, `error_reason` |
-| `print_view_opened` | `item_type`, `item_slug` |
-
----
+| `pdf_download_clicked` | `item_type`, `item_slug`, `source_component` |
+| `pdf_generation_started` | `item_type`, `item_slug` |
+| `pdf_generation_completed` | `item_type`, `item_slug`, `duration_ms`, `file_size_kb` |
+| `pdf_generation_failed` | `item_type`, `item_slug`, `error_type` |
+| `pdf_opened_after_download` | `item_type`, `item_slug` |
 
 ---
 
 # Feature 4: Similar Destinations Recommendations
 
-## Overview
-Replace the current same-country-only `RelatedCities` filter with a smart, attribute-based recommendation engine that surfaces genuinely similar destinations — based on vibe, budget tier, travel season, and activity type — driving cross-destination page views.
+## Product Goal
+
+Increase page views per session and improve SEO internal linking by recommending destinations that are meaningfully similar in vibe, budget, season, and region, not just same-country links.
 
 ## User Journey
-1. User is on `/cities/bali` after reading the full guide.
-2. Before the footer, a **"You might also like"** section presents 4–6 destination cards.
-3. Cards show: city photo, name, country, best time, budget range, matching vibe tags highlighted in accent colour, and a similarity reason ("Also great for beach & spiritual travel").
-4. User clicks a card → navigates to that city page → section view begins again.
-5. On blog posts, a similar "Explore these destinations" widget appears using the blog post's `citySlug` and `tags` as matching signals.
+
+1. User reaches the lower portion of a city guide.
+2. A section titled "Similar destinations to Bali" or "You might also like" appears.
+3. Cards show destinations with image, country, matching vibe tags, and a short reason.
+4. User clicks a destination card.
+5. User lands on another city guide and continues exploring.
 
 ## UX Wireframe Description
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  You Might Also Like                                     │
-│  Based on: Beach · Spiritual · Budget-friendly           │  ← tag chips
-├─────────────────────────────────────────────────────────┤
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐│
-│  │ [img]    │  │ [img]    │  │ [img]    │  │ [img]    ││
-│  │ Phuket   │  │ Lombok   │  │ Goa      │  │ Sri Lanka││
-│  │ Thailand │  │ Indonesia│  │ India    │  │          ││
-│  │ ★ Beach  │  │ ★ Beach  │  │ ★ Beach  │  │ ★ Spiritual│
-│  │ ★ Party  │  │ ★ Nature │  │ ★ Budget │  │ ★ Nature ││
-│  │ $30–100  │  │ $30–80   │  │ $20–60   │  │ $35–120  ││
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘│
-└─────────────────────────────────────────────────────────┘
+```text
+Similar destinations to Bali
+Based on: Spiritual, Romantic, Adventure
+
++----------------+ +----------------+ +----------------+ +----------------+
+| image          | | image          | | image          | | image          |
+| Phuket         | | Goa            | | Sri Lanka      | | Chiang Mai     |
+| Also beachy    | | Similar budget | | Nature + surf  | | Spiritual vibe |
+| [Guide link]   | | [Guide link]   | | [Guide link]   | | [Guide link]   |
++----------------+ +----------------+ +----------------+ +----------------+
 ```
 
-## Similarity Algorithm (Pure TypeScript, no ML)
+Mobile:
 
-Compute a **similarity score** between the current city and every other city using weighted attribute matching:
+- Horizontal scroll row.
+- 2 to 2.5 cards visible.
+- Keep reason text short and avoid tooltips.
 
+## Similarity Algorithm
+
+Use deterministic static scoring, not AI.
+
+```text
+score =
+  vibe_overlap * 40
+  + budget_tier_match * 25
+  + season_overlap * 20
+  + same_region_bonus * 10
+  + same_country_bonus * 5
 ```
-Score = (vibe_overlap × 40)
-      + (budget_tier_match × 25)
-      + (season_overlap × 20)
-      + (region_bonus × 10)
-      + (country_bonus × 5)
-      - (same_city_penalty × 100)
-```
 
-### Attribute definitions
+Definitions:
 
-**Vibe overlap (0–40):** Count of matching `vibes[]` strings divided by max possible, multiplied by 40.  
-Example: Bali vibes = `["Spiritual", "Romantic", "Adventure"]`. Phuket vibes = `["Beach", "Party", "Adventure"]`. Overlap = 1 ("Adventure") → score = 1/3 × 40 ≈ 13.
+- `vibe_overlap`: matched vibes divided by max vibe count.
+- `budget_tier_match`: exact tier = 1, adjacent = 0.5, different = 0.
+- `season_overlap`: overlapping best-time months divided by 12.
+- `same_region_bonus`: same continent or major travel region.
+- `same_country_bonus`: smaller bonus so recommendations do not collapse into only same-country results.
 
-**Budget tier match (0–25):** Normalise `stats.budget` to a tier (Budget / Mid / Luxury). Exact match = 25, adjacent = 12, two apart = 0.
+Manual editorial overrides:
 
-**Season overlap (0–20):** Parse `stats.bestTime` strings (e.g. "Apr – Oct") into month ranges. Count overlapping months / 12 × 20.
-
-**Region bonus (0–10):** Cities in the same geographic region (Asia, Europe, Americas, Africa) get +10.
-
-**Country bonus (0–5):** Same country as current city gets +5 (reinforces the existing "more in Indonesia" discovery).
-
-**Same city penalty:** Ensures the current city never appears.
-
-Return top 6 by score, shuffle the top 3 slightly (add ±random 2) to avoid always showing the same order.
-
-### Explanation string
-Generate a human-readable reason from matched vibes:
-- 1 match: "Also great for [vibe]"
-- 2 matches: "Similar beach & budget destination"
-- 3+ matches: "Very similar vibe to [current city]"
+- Allow a small list of pinned pairs for obvious travel alternatives.
+- Allow exclusions for poor matches that score well accidentally.
+- Keep override data static and documented.
 
 ## Database Schema Changes
-None. The algorithm operates on the existing `allCities` static array at build time.
 
-**Optional:** Pre-compute similarity scores at build time and store as a static JSON map:
+Initial release: no database.
 
+Static data only:
+
+```text
+src/lib/similarity.ts
+src/lib/similarityOverrides.ts
+optional generated: src/lib/similarityMap.ts
 ```
-src/lib/similarityMap.ts
-// { [citySlug]: Array<{ slug: string; score: number; reason: string }> }
-```
 
-This file is generated by a script (`scripts/computeSimilarity.ts`) run as part of `next build` — adds ~50KB to the build output but makes rendering instant.
+Future database model:
+
+```sql
+CREATE TABLE destination_recommendations (
+  source_slug TEXT NOT NULL,
+  target_slug TEXT NOT NULL,
+  score NUMERIC NOT NULL,
+  reason TEXT,
+  algorithm_version TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  PRIMARY KEY(source_slug, target_slug)
+);
+```
 
 ## API Endpoints
-None required for Phase 1 (static pre-computed).
 
-**Optional Phase 2:**
-- `GET /api/recommendations/city/[slug]?limit=6` — returns similar cities with scores. Allows A/B testing algorithm variants without a full rebuild.
+Initial release: no API required. Recommendations should be server-rendered from static data.
+
+Optional future endpoint:
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/recommendations/city/[slug]?limit=6` | Return ranked recommendations for experimentation or dynamic clients |
+
+Security constraints for optional API:
+
+- Validate slug.
+- Cap limit at 12.
+- Return only public destination metadata.
 
 ## Frontend Component Structure
 
-```
-src/
-  components/
-    city/
-      SimilarDestinations.tsx      ← replaces / augments RelatedCities
-      SimilarDestinationCard.tsx   ← card with matched vibe chips
-      SimilarityReasonTag.tsx      ← small "Why similar" chip
-  lib/
-    similarity.ts                  ← scoring algorithm
-    similarityMap.ts               ← pre-computed results (generated at build)
-  scripts/
-    computeSimilarity.ts           ← build-time script
+```text
+src/components/city/
+  SimilarDestinations.tsx
+  SimilarDestinationCard.tsx
+  SimilarDestinationsAnalytics.tsx
+
+src/lib/
+  similarity.ts
+  similarityOverrides.ts
 ```
 
-`SimilarDestinations` accepts `city: City` and returns 4–6 cards. On blog pages, a `BlogRelatedCities` variant accepts `tags: string[]` and `citySlug?: string` and maps tags to vibes for the same algorithm.
+Placement:
+
+- Put section after the main city guide content and before footer.
+- Consider also adding compact recommendation blocks on blog posts and comparison pages.
 
 ## SEO Considerations
-- `SimilarDestinations` is server-rendered — all city names and links are in the HTML source for crawlers.
-- Internal links from high-authority city pages (Bali, Tokyo, Paris) to lower-traffic pages boosts their crawl frequency and PageRank distribution.
-- Add `relatedLink` structured data (or `mentions` in JSON-LD) to connect city pages semantically.
-- The section heading includes target keywords: "Similar destinations to Bali" / "Places like Bali in Asia".
-- Use descriptive anchor text on cards: "Phuket travel guide" not just "Phuket".
+
+- Server-render all recommendation links.
+- Use descriptive anchor text: `Phuket travel guide`, not `Read more`.
+- Section heading should include target entity terms where natural: `Similar destinations to Bali`.
+- Use recommendations to distribute internal links from high-traffic city pages to under-discovered guides.
+- Avoid linking to `stub` or `noindex` city pages.
+- Keep card image alt text destination-specific.
 
 ## Performance Considerations
-- Pre-compute all similarity maps at build time (`scripts/computeSimilarity.ts`). No runtime computation per request.
-- The component is server-rendered — zero client JS for the recommendations themselves.
-- Images use `next/image` with `sizes` tuned to the card grid: `"(max-width: 640px) 50vw, 25vw"`.
-- Cards are below the fold — `loading="lazy"` on images.
-- The similarity map JSON adds ~50KB to the build; this is negligible at build time but does not affect bundle size (it's server-only data).
+
+- Precompute or memoize recommendations at module load/build time.
+- Do not ship the full city array to the browser for scoring.
+- Use lazy-loaded optimized images.
+- Keep analytics in a tiny client island rather than making the whole section client-side.
+- Unit-test parsing/scoring utilities because silent recommendation bugs hurt UX and SEO.
 
 ## Mobile Considerations
-- Cards render in a horizontal scroll row on mobile (2.5 cards visible, peek of 3rd → invites scroll).
-- On desktop: 4-column grid.
-- Vibe tags on cards truncate to 2 max on mobile screens < 375px.
-- "Why similar" tooltip is omitted on mobile; vibe tags carry that meaning.
+
+- Horizontal scroll cards with stable widths.
+- Avoid long reason text.
+- Keep card tap target large.
+- Ensure image aspect ratios are stable to avoid layout shift.
 
 ## Security Considerations
-- Algorithm uses only allowlisted city data — no user input involved.
-- No risk of injection or data exposure.
-- If Phase 2 API is built: validate `slug` param against `getAllCitySlugs()`, cap `limit` at 12.
 
-## Analytics Events to Track
+- Static trusted data only in initial version.
+- If future API exists, validate all params and avoid exposing unpublished destinations.
+- Escape all displayed reason text if editorial overrides are ever managed through a CMS.
+
+## Analytics Events
 
 | Event | Parameters |
 |---|---|
-| `similar_destinations_viewed` | `source_city`, `recommended_cities[]` (array of slugs) |
-| `similar_destination_clicked` | `source_city`, `target_city`, `similarity_score`, `rank_position` |
-| `similar_recommendation_shown` | `source_city`, `algorithm_version`, `count` |
-| `blog_related_city_clicked` | `blog_slug`, `target_city`, `source_tags[]` |
-
----
+| `similar_destinations_viewed` | `source_city`, `recommended_slugs`, `algorithm_version` |
+| `similar_destination_clicked` | `source_city`, `target_city`, `rank`, `score`, `matched_vibes` |
+| `similar_destination_card_viewed` | `source_city`, `target_city`, `rank` |
+| `similar_algorithm_empty_result` | `source_city` |
 
 ---
 
@@ -613,108 +817,144 @@ src/
 
 | Risk | Severity | Mitigation |
 |---|---|---|
-| Leaflet hydration mismatch on SSR | High | Always use `next/dynamic` with `ssr: false` |
-| PDF generation timeouts on Vercel (10s limit) | High | Use `@react-pdf/renderer` (sync) or pre-generate PDFs at build time for known cities |
-| localStorage unavailable (private browsing, iOS restrictions) | Medium | Wrap all localStorage calls in try/catch; degrade gracefully (bookmarks not persisted) |
-| City coordinate data entry effort (160+ cities) | High | Start with top-20 cities; render a static map screenshot for others |
-| Similarity algorithm producing obviously wrong results | Medium | Unit-test the scoring function; add a manual override array in `src/lib/similarity.ts` to pin specific pairs |
-| PDF size bloat (hero images) | Medium | Compress images before embedding; use low-res versions for PDF |
-| `@react-pdf/renderer` incompatible with Next.js 16 App Router | Medium | Test early in a spike; have client-side jsPDF as a fallback |
-| Bookmark localStorage collisions (key name conflicts) | Low | Namespace all keys under `tg_v1_*` |
-| Similarity pre-compute script adding significant build time | Low | Script is O(n²) for ~160 cities = ~25,600 comparisons — completes in < 1s |
-
----
+| Coordinate data is incomplete or inaccurate | High | Start with city-level coordinates and top-20 POI enrichment; show graceful fallback |
+| Leaflet hydration or CSS issues | High | Keep Leaflet behind a client-only dynamic wrapper and test city pages on desktop/mobile |
+| OSM tile usage at scale | Medium | Use production tile provider if traffic grows; cache and attribution must be correct |
+| Bookmark state lost across devices | Medium | Accept for Phase 1; design future auth sync |
+| localStorage corruption or quota issues | Low | Validate payload, use try/catch, allow reset |
+| Share URLs become too long | Medium | Cap shared items or add future server-backed share IDs |
+| PDF generation exceeds runtime limits | High | Spike early; cache city PDFs; consider build-time PDFs |
+| PDF endpoint abuse | Medium | Rate-limit and validate payload sizes |
+| Recommendation algorithm feels wrong | Medium | Add editorial overrides, tests, and analytics monitoring |
+| Feature scope creep into AI itinerary generation | High | PDF exports only displayed content; no new itinerary-generation UX in this scope |
 
 # Dependencies
 
-## External Libraries to Add
-
-| Feature | Library | License | Size |
-|---|---|---|---|
-| Maps | `leaflet` + `react-leaflet` | BSD-2 / MIT | ~150KB minified |
-| Maps (optional) | `leaflet.markercluster` | MIT | ~30KB |
-| PDF (server) | `@react-pdf/renderer` | MIT | ~400KB server-only |
-| PDF (client fallback) | `jsPDF` + `html2canvas` | MIT | ~200KB gzipped |
-| Rate limiting | `@upstash/ratelimit` + `@upstash/redis` | MIT | Requires Upstash account |
-
 ## Internal Dependencies
 
-| Feature | Depends On |
+| Feature | Dependency |
 |---|---|
-| Maps | City coordinate data in `src/lib/cities.ts`, `indianCities.ts`, etc. |
-| Maps | `CityQuickNav` / `CityTOC` must add "Map" as a section anchor |
-| Bookmarks | `MobileCTA` must add bookmark button slot |
-| Bookmarks | `Navbar` must add "My Saves" icon |
-| PDF (city) | All city page section components must remain self-contained |
-| PDF (itinerary) | `ItineraryDisplay` output shape must stay stable |
-| Similar Destinations | Build script must run as part of `npm run build` |
-| Similar Destinations | `RelatedCities` component replaced or augmented |
+| Maps | City and POI coordinate data |
+| Maps | `CityQuickNav` / `CityTOC` anchor support |
+| Maps | CSP/tile-provider decision |
+| Saves | Shared save-state hook and localStorage validation |
+| Saves | Navbar and mobile CTA integration |
+| Saves | `/saved` route |
+| PDF | PDF library spike |
+| PDF | Route handler support and deployment limits |
+| PDF | Stable city and itinerary payload builders |
+| Similar destinations | City data quality: vibes, budget, best time, country |
+| Similar destinations | Analytics event wrapper |
 
-## Environment Variables to Add
+## External Dependencies
 
-```
-# Required for Maps (if Mapbox chosen over OSM)
-NEXT_PUBLIC_MAPBOX_TOKEN=
+| Feature | Dependency | Notes |
+|---|---|---|
+| Maps | `leaflet`, `react-leaflet` | Already present in current dependencies |
+| Maps | Tile provider | OSM for prototype; consider MapTiler/Mapbox for production |
+| PDF | `@react-pdf/renderer` or equivalent | Needs compatibility spike |
+| PDF | Optional rate limiting | Upstash or platform-native middleware |
+| Saves | None for Phase 1 | Future auth provider if cross-device sync is added |
+| Analytics | GA4 | Existing wrapper can be extended |
 
-# Required for PDF rate limiting
-UPSTASH_REDIS_REST_URL=
-UPSTASH_REDIS_REST_TOKEN=
-```
+# Implementation Effort Estimate
 
----
+| Feature | Complexity | Estimated Effort | Notes |
+|---|---:|---:|---|
+| Similar destinations | Low | 3-4 engineering days | Some groundwork appears present; finish tests, copy, analytics, SEO polish |
+| Save/bookmark system | Medium | 4-6 engineering days | No backend needed; includes `/saved`, share URL, navbar/mobile states |
+| PDF download | Medium | 5-8 engineering days | Includes 1-day PDF library spike and route hardening |
+| Interactive maps | Medium-High | 7-12 engineering days | Depends heavily on coordinate quality and mobile/fullscreen polish |
 
-# Implementation Effort Estimates
+Total sequential effort: 19-30 engineering days.
 
-| Feature | Complexity | Engineering Days | Notes |
-|---|---|---|---|
-| **F4 – Similar Destinations** | Low | 3–4 days | Pure TypeScript, no new infra, high SEO impact |
-| **F2 – Bookmark System** | Low–Medium | 4–5 days | localStorage only (Phase 1); no DB or auth needed |
-| **F3 – PDF Download** | Medium | 5–7 days | Includes library spike (react-pdf vs jsPDF), rate limiting, caching |
-| **F1 – Interactive Maps** | Medium–High | 8–10 days | Map library integration + coordinate data entry for top cities |
-| **Total** | — | **~20–26 days** | One engineer, sequential |
-
-*Coordinate data entry for F1 is the largest effort multiplier. Parallel data work can compress the timeline.*
-
----
+With parallel content/data enrichment for coordinates, calendar time can be reduced by roughly 1 week.
 
 # Suggested Implementation Order
 
-## Phase 1 — Immediate impact, low risk (Week 1–2)
-**F4: Similar Destinations**
-- Replaces existing weak `RelatedCities` component.
-- Zero new infrastructure.
-- Immediately increases pages-per-session by surfacing cross-destination links.
-- High SEO value via improved internal linking.
+## Phase 1: Similar Destinations
 
-## Phase 2 — Engagement & retention (Week 2–3)
-**F2: Bookmark System (localStorage)**
-- Gives users a reason to return ("I saved these places").
-- Creates the psychological ownership effect.
-- No backend or auth required — ships fast.
-- Establishes the `/saved` page for Phase 2 server sync later.
+Why first:
 
-## Phase 3 — Conversion & depth (Week 3–5)
-**F3: PDF Download**
-- Targets the high-intent user who has read the full guide.
-- The PDF becomes a brand touchpoint (TripGenius logo, QR code back to site).
-- Spike the library choice first (1 day) before committing to full build.
+- Highest SEO upside.
+- Lowest infrastructure risk.
+- Directly increases page views per session.
+- Can be server-rendered and measured quickly.
 
-## Phase 4 — Visual exploration (Week 5–8)
-**F1: Interactive Maps**
-- Highest complexity and coordinate data burden.
-- Delivers the richest UX but requires the most external dependency management.
-- Build after other features are live so the team has stable city page structure to integrate into.
+Deliverables:
 
----
+- Deterministic scoring.
+- Recommendation cards on city pages.
+- Analytics events.
+- Unit tests for scoring.
+- Manual overrides for editorial control.
+
+## Phase 2: Save/Bookmark System
+
+Why second:
+
+- Creates returning-user behavior.
+- Does not require auth.
+- Builds a durable engagement surface via `/saved`.
+
+Deliverables:
+
+- Save buttons on city/blog/itinerary pages.
+- Navbar count.
+- `/saved` page.
+- Shareable read-only list URL.
+- Analytics events.
+
+## Phase 3: PDF Download
+
+Why third:
+
+- High-value feature for users who are ready to plan.
+- Requires a technical spike and endpoint hardening.
+- Works better once save actions and city content surfaces are stable.
+
+Deliverables:
+
+- City guide PDF.
+- Itinerary export PDF for already displayed plans.
+- Rate limiting.
+- Download analytics.
+- Branded PDF template with canonical links.
+
+## Phase 4: Interactive Maps
+
+Why fourth:
+
+- Richest exploratory UX but highest data and integration burden.
+- Best implemented after city page structure is stable.
+- Can be rolled out city-by-city.
+
+Deliverables:
+
+- Map component with layer controls.
+- Fullscreen mobile mode.
+- POI popups and detail anchors.
+- Coordinate enrichment for top destinations.
+- Map analytics.
 
 # Success Metrics
 
-| Metric | Current Baseline | 90-day Target |
-|---|---|---|
-| Pages per session | Measure at launch | +25% |
-| Session duration | Measure at launch | +20% |
-| Return visitor rate | Measure at launch | +15% |
-| PDF downloads / city page view | 0 | > 1% |
-| Bookmark adds / city page view | 0 | > 2% |
-| Similar destination CTR | ~5% (current RelatedCities) | > 12% |
-| Map section engagement (scroll into view) | 0 | > 40% of city page sessions |
+| Metric | Target |
+|---|---:|
+| Pages per session | +20-30% within 90 days |
+| Average engagement time on city pages | +15-25% within 90 days |
+| Returning visitor rate | +10-15% within 90 days |
+| Similar destination CTR | 10-15% section CTR |
+| Save rate | 2-4% of city/blog page sessions |
+| Saved page return visits | 15% of users with at least 2 saves |
+| PDF download rate | 1-3% of city guide sessions |
+| Map interaction rate | 25-40% of users who reach the map section |
+
+# Open Product Decisions
+
+1. Should saved items include blog posts and comparisons in v1, or only cities and itineraries?
+2. Should PDF downloads require email capture, or stay frictionless for engagement?
+3. Which tile provider should production maps use if traffic exceeds OSM fair-use expectations?
+4. Should similar destinations use the heading "Similar destinations to [City]" for SEO, or the softer "You might also like" for UX?
+5. Should shareable saved lists be anonymous query strings in v1, or postponed until server-backed share IDs exist?
+

@@ -511,6 +511,7 @@ export const cities: City[] = [
         icon: "👑",
         duration: "3–4 hours",
         category: "Cultural",
+        coordinates: { lat: 13.7500, lng: 100.4913 },
       },
       {
         name: "Chatuchak Weekend Market",
@@ -518,6 +519,7 @@ export const cities: City[] = [
         icon: "🛍️",
         duration: "Half day",
         category: "Shopping",
+        coordinates: { lat: 13.7999, lng: 100.5502 },
       },
       {
         name: "Chao Phraya River at Dusk",
@@ -525,6 +527,7 @@ export const cities: City[] = [
         icon: "🚤",
         duration: "2–3 hours",
         category: "Scenic",
+        coordinates: { lat: 13.7457, lng: 100.4928, isApproximate: true },
       },
       {
         name: "Street Food Tour – Yaowarat",
@@ -532,6 +535,7 @@ export const cities: City[] = [
         icon: "🦀",
         duration: "3–4 hours",
         category: "Culinary",
+        coordinates: { lat: 13.7397, lng: 100.5104 },
       },
       {
         name: "Muay Thai at Rajadamnern Stadium",
@@ -539,6 +543,7 @@ export const cities: City[] = [
         icon: "🥊",
         duration: "3 hours",
         category: "Entertainment",
+        coordinates: { lat: 13.7577, lng: 100.5029 },
       },
       {
         name: "Wat Pho — Reclining Buddha",
@@ -546,6 +551,7 @@ export const cities: City[] = [
         icon: "🛕",
         duration: "1–2 hours",
         category: "Cultural",
+        coordinates: { lat: 13.7466, lng: 100.4929 },
       },
       {
         name: "Wat Arun — Temple of Dawn",
@@ -553,6 +559,7 @@ export const cities: City[] = [
         icon: "✨",
         duration: "1.5–2 hours",
         category: "Cultural",
+        coordinates: { lat: 13.7440, lng: 100.4887 },
       },
       {
         name: "Damnoen Saduak Floating Market",
@@ -560,6 +567,7 @@ export const cities: City[] = [
         icon: "⛵",
         duration: "Half day",
         category: "Cultural",
+        coordinates: { lat: 13.5189, lng: 99.9572 },
       },
       {
         name: "Jim Thompson House",
@@ -567,6 +575,7 @@ export const cities: City[] = [
         icon: "🏛️",
         duration: "1.5–2 hours",
         category: "Cultural",
+        coordinates: { lat: 13.7478, lng: 100.5305 },
       },
       {
         name: "Erawan Shrine",
@@ -574,6 +583,7 @@ export const cities: City[] = [
         icon: "🪷",
         duration: "30–45 minutes",
         category: "Cultural",
+        coordinates: { lat: 13.7444, lng: 100.5400 },
       },
       {
         name: "Asiatique The Riverfront",
@@ -581,6 +591,7 @@ export const cities: City[] = [
         icon: "🎡",
         duration: "3–4 hours",
         category: "Shopping",
+        coordinates: { lat: 13.7230, lng: 100.5098 },
       },
     ],
     hotels: [
@@ -910,6 +921,7 @@ export const cities: City[] = [
         icon: "🗼",
         duration: "2–3 hours",
         category: "Iconic",
+        coordinates: { lat: 48.8584, lng: 2.2945 },
       },
       {
         name: "The Louvre",
@@ -917,6 +929,7 @@ export const cities: City[] = [
         icon: "🎨",
         duration: "Half day",
         category: "Cultural",
+        coordinates: { lat: 48.8606, lng: 2.3376 },
       },
       {
         name: "Le Marais Walking Tour",
@@ -924,6 +937,7 @@ export const cities: City[] = [
         icon: "🚶",
         duration: "3–4 hours",
         category: "Walking",
+        coordinates: { lat: 48.8553, lng: 2.3654, isApproximate: true },
       },
       {
         name: "Versailles Day Trip",
@@ -938,6 +952,7 @@ export const cities: City[] = [
         icon: "⛪",
         duration: "Half day",
         category: "Cultural",
+        coordinates: { lat: 48.8867, lng: 2.3431 },
       },
       {
         name: "Musée d'Orsay",
@@ -945,6 +960,7 @@ export const cities: City[] = [
         icon: "🖼️",
         duration: "3–4 hours",
         category: "Cultural",
+        coordinates: { lat: 48.8600, lng: 2.3266 },
       },
       {
         name: "Sainte-Chapelle",
@@ -952,6 +968,7 @@ export const cities: City[] = [
         icon: "🌈",
         duration: "1–2 hours",
         category: "Cultural",
+        coordinates: { lat: 48.8554, lng: 2.3452 },
       },
       {
         name: "Arc de Triomphe",
@@ -959,6 +976,7 @@ export const cities: City[] = [
         icon: "🏛️",
         duration: "2–3 hours",
         category: "Scenic",
+        coordinates: { lat: 48.8738, lng: 2.2950 },
       },
       {
         name: "The Paris Catacombs",
@@ -966,6 +984,7 @@ export const cities: City[] = [
         icon: "💀",
         duration: "1.5–2 hours",
         category: "Adventure",
+        coordinates: { lat: 48.8337, lng: 2.3325 },
       },
       {
         name: "Centre Pompidou",
@@ -973,6 +992,7 @@ export const cities: City[] = [
         icon: "🎭",
         duration: "2–3 hours",
         category: "Cultural",
+        coordinates: { lat: 48.8607, lng: 2.3522 },
       },
       {
         name: "Seine River Cruise",
@@ -980,6 +1000,7 @@ export const cities: City[] = [
         icon: "⛵",
         duration: "1–2 hours",
         category: "Scenic",
+        coordinates: { lat: 48.8631, lng: 2.2988, isApproximate: true },
       },
     ],
     hotels: [
@@ -1309,6 +1330,7 @@ export const cities: City[] = [
         icon: "🚦",
         duration: "1 hour",
         category: "Iconic",
+        coordinates: { lat: 35.6595, lng: 139.7004 },
       },
       {
         name: "Tsukiji Outer Market",
@@ -1316,6 +1338,7 @@ export const cities: City[] = [
         icon: "🐟",
         duration: "2–3 hours",
         category: "Culinary",
+        coordinates: { lat: 35.6654, lng: 139.7707 },
       },
       {
         name: "Meiji Jingu Shrine",
@@ -1323,6 +1346,7 @@ export const cities: City[] = [
         icon: "⛩️",
         duration: "1–2 hours",
         category: "Cultural",
+        coordinates: { lat: 35.6764, lng: 139.6993 },
       },
       {
         name: "TeamLab Borderless",
@@ -1330,6 +1354,7 @@ export const cities: City[] = [
         icon: "✨",
         duration: "3–4 hours",
         category: "Art & Culture",
+        coordinates: { lat: 35.6567, lng: 139.7452, isApproximate: true },
       },
       {
         name: "Arashiyama Bamboo Grove",
@@ -1344,6 +1369,7 @@ export const cities: City[] = [
         icon: "🏮",
         duration: "2–3 hours",
         category: "Cultural",
+        coordinates: { lat: 35.7147, lng: 139.7966 },
       },
       {
         name: "Tokyo Skytree",
@@ -1351,6 +1377,7 @@ export const cities: City[] = [
         icon: "🗼",
         duration: "2–3 hours",
         category: "Scenic",
+        coordinates: { lat: 35.7101, lng: 139.8107 },
       },
       {
         name: "Shinjuku — Kabukicho & Golden Gai",
@@ -1358,6 +1385,7 @@ export const cities: City[] = [
         icon: "🌃",
         duration: "Evening (3–5 hours)",
         category: "Nightlife",
+        coordinates: { lat: 35.6938, lng: 139.7034 },
       },
       {
         name: "Akihabara Electric Town",
@@ -1365,6 +1393,7 @@ export const cities: City[] = [
         icon: "🎮",
         duration: "2–3 hours",
         category: "Shopping",
+        coordinates: { lat: 35.7021, lng: 139.7743 },
       },
       {
         name: "Shinjuku Gyoen National Garden",
@@ -1372,6 +1401,7 @@ export const cities: City[] = [
         icon: "🌸",
         duration: "2–3 hours",
         category: "Nature",
+        coordinates: { lat: 35.6851, lng: 139.7100 },
       },
       {
         name: "Ghibli Museum",
@@ -1379,6 +1409,7 @@ export const cities: City[] = [
         icon: "🐱",
         duration: "2–3 hours",
         category: "Cultural",
+        coordinates: { lat: 35.6963, lng: 139.5706 },
       },
     ],
     hotels: [

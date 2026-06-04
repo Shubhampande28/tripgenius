@@ -6,6 +6,7 @@ export interface AreaSpot {
 export interface Coordinates {
   lat: number;
   lng: number;
+  isApproximate?: boolean;
 }
 
 export interface CityArea {
