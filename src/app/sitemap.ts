@@ -30,13 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogPages = allPosts.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
     lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
+    changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
   return [
     // Core pages
-    { url: BASE,                        lastModified: NOW, changeFrequency: 'weekly',  priority: 1.0 },
+    { url: BASE,                        lastModified: NOW, changeFrequency: 'daily',   priority: 1.0 },
     { url: `${BASE}/cities`,            lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
     // /destinations = static server-rendered list Google can crawl to discover ALL city links
     { url: `${BASE}/destinations`,      lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
