@@ -5,6 +5,7 @@ export const cities: City[] = [
     slug: "bali",
     name: "Bali",
     country: "Indonesia",
+    coordinates: { lat: -8.4095, lng: 115.1889 },
     flag: "🇮🇩",
     tagline: "Island of the Gods",
     description: "Bali is where ancient temples meet emerald rice terraces, sacred ceremonies fill the air with incense, and world-class surf breaks draw adventurers from every corner of the globe.",
@@ -28,6 +29,7 @@ export const cities: City[] = [
         icon: "🛕",
         duration: "2–3 hours",
         category: "Cultural",
+        coordinates: { lat: -8.6211, lng: 115.0868 },
       },
       {
         name: "Tegallalang Rice Terraces",
@@ -35,6 +37,7 @@ export const cities: City[] = [
         icon: "🌾",
         duration: "2–4 hours",
         category: "Nature",
+        coordinates: { lat: -8.4312, lng: 115.2796 },
       },
       {
         name: "Ubud Monkey Forest",
@@ -42,6 +45,7 @@ export const cities: City[] = [
         icon: "🐒",
         duration: "1–2 hours",
         category: "Nature",
+        coordinates: { lat: -8.5185, lng: 115.2582 },
       },
       {
         name: "Mount Batur Sunrise Trek",
@@ -49,6 +53,7 @@ export const cities: City[] = [
         icon: "🌋",
         duration: "Full day",
         category: "Adventure",
+        coordinates: { lat: -8.2422, lng: 115.3750 },
       },
       {
         name: "Seminyak Beach",
@@ -56,6 +61,7 @@ export const cities: City[] = [
         icon: "🌊",
         duration: "Half day",
         category: "Relaxation",
+        coordinates: { lat: -8.6879, lng: 115.1595 },
       },
       {
         name: "Tirta Empul Temple",
@@ -63,6 +69,7 @@ export const cities: City[] = [
         icon: "💧",
         duration: "1–2 hours",
         category: "Cultural",
+        coordinates: { lat: -8.4151, lng: 115.3152 },
       },
       {
         name: "Kuta Surf Lessons",
@@ -70,6 +77,7 @@ export const cities: City[] = [
         icon: "🏄",
         duration: "2–3 hours",
         category: "Adventure",
+        coordinates: { lat: -8.7182, lng: 115.1686 },
       },
       {
         name: "Sacred Monkey Forest Sanctuary",
@@ -77,6 +85,7 @@ export const cities: City[] = [
         icon: "🌿",
         duration: "1–2 hours",
         category: "Nature",
+        coordinates: { lat: -8.5190, lng: 115.2591 },
       },
       {
         name: "Cooking Class in Ubud",
@@ -84,6 +93,7 @@ export const cities: City[] = [
         icon: "🍜",
         duration: "4–5 hours",
         category: "Culinary",
+        coordinates: { lat: -8.5069, lng: 115.2625 },
       },
       {
         name: "Traditional Kecak Fire Dance",
@@ -91,6 +101,7 @@ export const cities: City[] = [
         icon: "🔥",
         duration: "1.5 hours",
         category: "Cultural",
+        coordinates: { lat: -8.8289, lng: 115.0849 },
       },
       {
         name: "Uluwatu Temple",
@@ -98,6 +109,7 @@ export const cities: City[] = [
         icon: "🌅",
         duration: "2–3 hours",
         category: "Cultural",
+        coordinates: { lat: -8.8293, lng: 115.0848 },
       },
       {
         name: "Nusa Penida Day Trip",
@@ -105,6 +117,7 @@ export const cities: City[] = [
         icon: "🏝️",
         duration: "Full day",
         category: "Adventure",
+        coordinates: { lat: -8.7275, lng: 115.5444 },
       },
       {
         name: "Sekumpul Waterfall",
@@ -112,6 +125,7 @@ export const cities: City[] = [
         icon: "💦",
         duration: "4–5 hours",
         category: "Nature",
+        coordinates: { lat: -8.1538, lng: 115.1523 },
       },
       {
         name: "Handara Gate",
@@ -119,6 +133,7 @@ export const cities: City[] = [
         icon: "⛩️",
         duration: "1–2 hours",
         category: "Scenic",
+        coordinates: { lat: -8.2344, lng: 115.1658 },
       },
       {
         name: "Jatiluwih Rice Terraces",
@@ -126,6 +141,7 @@ export const cities: City[] = [
         icon: "🌾",
         duration: "2–4 hours",
         category: "Nature",
+        coordinates: { lat: -8.3727, lng: 115.1307 },
       },
       {
         name: "Balinese Spa & Wellness",
@@ -474,6 +490,7 @@ export const cities: City[] = [
     country: "Thailand",
     flag: "🇹🇭",
     tagline: "City of Angels",
+    coordinates: { lat: 13.7563, lng: 100.5018 },
     description: "Bangkok is a city of dazzling contradictions — gilded temples rising above neon-lit street markets, serene monks navigating chaotic traffic, and world-class cuisine available for $1 on any corner.",
     heroDescription: "Asia's most electrifying metropolis pulses with ancient grandeur and hypermodern ambition. Every sense is assaulted in the best possible way.",
     stats: {
@@ -872,6 +889,7 @@ export const cities: City[] = [
     country: "France",
     flag: "🇫🇷",
     tagline: "City of Light",
+    coordinates: { lat: 48.8566, lng: 2.3522 },
     description: "Paris is where Haussmann boulevards frame the Eiffel Tower at dusk, where every corner café serves a perfect crème brûlée, and where centuries of art and fashion have created the world's most romantic city.",
     heroDescription: "The city that invented the art of living well. Every arrondissement holds a lifetime of discovery — from the Louvre's labyrinth to hidden passages and rooftop gardens.",
     stats: {
@@ -1270,6 +1288,7 @@ export const cities: City[] = [
     country: "Japan",
     flag: "🇯🇵",
     tagline: "Future in Tradition",
+    coordinates: { lat: 35.6762, lng: 139.6503 },
     description: "Tokyo is where ancient Shinto shrines stand in the shadow of neon skyscrapers, where a bowl of ramen can be Michelin-starred, and where the world's most efficient city somehow feels perfectly human.",
     heroDescription: "The city that proves the future and the past can share the same street. Fourteen million people, infinite neighborhoods, and a level of craft that elevates everything from convenience store food to garden design.",
     stats: {
@@ -1668,6 +1687,7 @@ export const cities: City[] = [
     country: "UAE",
     flag: "🇦🇪",
     tagline: "Where the Future Lives",
+    coordinates: { lat: 25.2048, lng: 55.2708 },
     description: "Dubai is a city built on audacity — the world's tallest building, the world's largest mall, man-made islands visible from space, and a skyline that didn't exist 40 years ago.",
     heroDescription: "Excess, ambition, and Arabic hospitality combine in the world's most dramatic city. The desert backdrop makes every architectural achievement look even more impossible.",
     stats: {
@@ -2059,6 +2079,7 @@ export const cities: City[] = [
     country: "India",
     flag: "🇮🇳",
     tagline: "Sun, Sea & Soul",
+    coordinates: { lat: 15.2993, lng: 74.1240 },
     description: "India's smallest state is its most hedonistic — Portuguese colonial churches, endless palm-fringed beaches, seafood so fresh it came out of the water this morning, and a nightlife culture unlike anywhere else in India.",
     heroDescription: "Where the Arabian Sea meets four centuries of colonial history. Goa moves at its own unhurried pace between feast days, feni-fueled beach parties, and languorous beach village life.",
     stats: {

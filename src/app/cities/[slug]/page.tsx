@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CityMapWrapper from '@/components/city/CityMapWrapper';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
 import MonthByMonth from '@/components/city/MonthByMonth';
@@ -246,6 +247,17 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
             <div>
               <MonthByMonth city={city} />
               <ThingsToDo city={city} />
+
+              {/* Map — server-renders the section shell; Leaflet loads client-side only */}
+              <section id="city-map" className="py-8 border-t border-border">
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Interactive Map</p>
+                  <h2 className="font-heading text-2xl font-semibold text-primary-text">
+                    Explore {city.name} on the Map
+                  </h2>
+                </div>
+                <CityMapWrapper city={city} />
+              </section>
 
               {/* Neighbourhoods if available, otherwise area explorer */}
               {city.neighbourhoods?.length

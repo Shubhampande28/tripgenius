@@ -3,6 +3,11 @@ export interface AreaSpot {
   tag?: string;
 }
 
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
 export interface CityArea {
   name: string;
   emoji: string;
@@ -26,6 +31,7 @@ export interface ThingToDo {
   duration: string;
   category: string;
   image?: string;
+  coordinates?: Coordinates;
 }
 
 export interface Hotel {
@@ -154,6 +160,7 @@ export interface City {
   budgetBreakdown?: CityBudget;
   monthByMonth?: MonthByMonth;
   gettingThere?: GettingThere;
+  coordinates?: Coordinates;
 }
 
 export interface TripPlanRequest {
