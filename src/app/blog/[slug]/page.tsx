@@ -116,6 +116,18 @@ function ContentBlock({ block }: { block: BlockType }) {
       );
     case 'divider':
       return <hr className="my-8 border-border" />;
+    case 'link-cta':
+      return (
+        <div className="my-5 flex items-center justify-between gap-4 rounded-xl border border-accent/25 bg-elevated px-5 py-3.5">
+          <p className="text-sm text-muted leading-snug">{block.text}</p>
+          <Link
+            href={block.href}
+            className="flex-shrink-0 flex items-center gap-1 text-xs font-semibold text-accent hover:text-accent/80 transition-colors whitespace-nowrap"
+          >
+            Read more <ArrowRight size={11} />
+          </Link>
+        </div>
+      );
     default:
       return null;
   }

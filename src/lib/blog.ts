@@ -6,7 +6,8 @@ export type BlockType =
   | { type: 'ol'; items: string[] }
   | { type: 'callout'; emoji: string; text: string }
   | { type: 'table'; headers: string[]; rows: string[][] }
-  | { type: 'divider' };
+  | { type: 'divider' }
+  | { type: 'link-cta'; text: string; href: string };
 
 export type BlogCategory = 'Planning' | 'Budget' | 'India' | 'Asia' | 'Europe' | 'Tips';
 
@@ -61,6 +62,7 @@ export const allPosts: BlogPost[] = [
         type: 'p',
         text: 'Thailand gives Indians a 30-day visa-free entry (as of 2024, made permanent after a successful trial). No application, no fee — just land and go. Bali (Indonesia) requires a Visa on Arrival at the airport: USD 35 (approximately ₹2,900), paid in cash. Both are easy. Thailand wins slightly on convenience since you save the ₹2,900 and the queue at the VOA counter. For a 2-week trip combining Bali with other Indonesian islands, the VOA is still excellent value.',
       },
+      { type: 'link-cta', text: 'See the full list of visa-free and visa-on-arrival countries for Indian passport holders.', href: '/blog/visa-free-countries-indian-passport-2025' },
       {
         type: 'h2',
         text: 'Cost Comparison in INR',
@@ -159,6 +161,7 @@ export const allPosts: BlogPost[] = [
         type: 'p',
         text: 'Choose Bali if: you are a first-time international traveller wanting a soft landing, you are vegetarian, you want 7–10 days focused on one beautiful island, you appreciate Hindu cultural parallels, or you are travelling April–June. Choose Thailand if: you want more variety in one trip (city + multiple islands), you are flexible on food, you want a slightly cheaper option with better flight connectivity, or you are travelling December–March. Both are exceptional. If you can only go once, Bali is the more complete one-island experience. If you want scope and variety, Thailand wins.',
       },
+      { type: 'link-cta', text: 'Already decided on Bali? Read our 7-day Bali itinerary for Indians with a full cost breakdown in INR.', href: '/blog/bali-itinerary-indian-tourists' },
     ],
     faqs: [
       {
@@ -196,6 +199,8 @@ export const allPosts: BlogPost[] = [
       'Travel Planning',
       'International Travel',
       '2025',
+      'Budget',
+      'Indian Travellers',
     ],
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
@@ -208,6 +213,7 @@ export const allPosts: BlogPost[] = [
         emoji: '📋',
         text: 'Conditions change frequently. Always verify entry requirements on the official embassy website or MoFA (Ministry of Foreign Affairs) of the destination country before booking. The information below is accurate as of mid-2025.',
       },
+      { type: 'link-cta', text: 'Planning a Bali trip? We have a complete 7-day Bali itinerary for Indian tourists with costs in INR.', href: '/blog/bali-itinerary-indian-tourists' },
       {
         type: 'h2',
         text: 'Asia — Visa-Free & Visa on Arrival',
@@ -419,6 +425,7 @@ export const allPosts: BlogPost[] = [
         type: 'p',
         text: 'Thailand made its visa-free access for Indians permanent in 2024. Malaysia introduced an eNTRI and improved visa processes for Indians. Vietnam\'s e-visa now allows 90-day multiple-entry. The general trend for Indian passport access is improving year-on-year as India\'s economy and outbound tourism grow — expect more countries to simplify access for Indians in the coming years.',
       },
+      { type: 'link-cta', text: 'Torn between Bali and Thailand? Read our comparison guide for Indian travellers.', href: '/blog/bali-vs-thailand-indian-travellers' },
     ],
     faqs: [
       {
@@ -482,6 +489,7 @@ export const allPosts: BlogPost[] = [
         emoji: '✈️',
         text: 'Carry exactly USD 35 in crisp notes specifically for the VOA counter. Credit cards are not accepted. Arrive with your return ticket printout and at least one hotel confirmation — immigration occasionally asks to see these.',
       },
+      { type: 'link-cta', text: 'Planning other destinations too? See the full list of countries Indians can visit without a visa.', href: '/blog/visa-free-countries-indian-passport-2025' },
       {
         type: 'h2',
         text: 'Day-by-Day 7-Night Bali Itinerary',
@@ -604,6 +612,7 @@ export const allPosts: BlogPost[] = [
         emoji: '💸',
         text: 'Budget tip: book flights 3–4 months ahead for May or September travel. IndiGo, Air Asia, and Scoot often have Bali deals from Delhi/Mumbai under ₹25,000 return when booked early. Avoid booking in December — Christmas/NYE adds 40–60% to all prices.',
       },
+      { type: 'link-cta', text: 'Comparing Bali with Thailand? Read our honest side-by-side guide for Indian travellers.', href: '/blog/bali-vs-thailand-indian-travellers' },
       {
         type: 'h2',
         text: 'Vegetarian Food Guide for Indians in Bali',
