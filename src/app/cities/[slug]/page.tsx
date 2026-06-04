@@ -18,7 +18,7 @@ import BookingPanel from '@/components/city/BookingPanel';
 import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
 import CityQuickNav from '@/components/city/CityQuickNav';
-import RelatedCities from '@/components/city/RelatedCities';
+import SimilarDestinations from '@/components/city/SimilarDestinations';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
 import { getCityFaqs } from '@/lib/cityFaqs';
@@ -269,7 +269,7 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
           </div>
         </div>
 
-        <RelatedCities city={city} />
+        <SimilarDestinations city={city} />
       </main>
       <MobileCTA city={city} />
       <Footer />
