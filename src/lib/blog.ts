@@ -10,6 +10,11 @@ export type BlockType =
 
 export type BlogCategory = 'Planning' | 'Budget' | 'India' | 'Asia' | 'Europe' | 'Tips';
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -21,6 +26,7 @@ export interface BlogPost {
   coverPhoto: string;
   citySlug?: string;
   content: BlockType[];
+  faqs?: FAQ[];
 }
 
 export const allPosts: BlogPost[] = [
@@ -81,6 +87,28 @@ export const allPosts: BlogPost[] = [
       { type: 'h2', text: 'Our Final Recommendation' },
       { type: 'p', text: 'For first-time visitors who want reliable sunshine and manageable crowds: visit in April or September. For budget travellers who can tolerate afternoon rain: January or February offer the best value. Avoid July and August unless you\'re booking six months in advance and don\'t mind paying a premium.' },
       { type: 'p', text: 'Whatever month you choose, Bali will deliver: extraordinary temples, world-class food, and a warmth — both climatic and human — that keeps travellers coming back year after year.' },
+    ],
+    faqs: [
+      {
+        question: 'What is the best month to visit Bali?',
+        answer: 'April, May, and September are the sweet spots — you get dry-season sunshine without July/August peak-season crowds and prices. If budget is the priority, January and February offer the lowest rates despite afternoon rain showers.',
+      },
+      {
+        question: 'Is Bali safe for Indian tourists?',
+        answer: 'Yes, Bali is very safe for Indian tourists. It is one of the most visited destinations in Asia and has well-established tourist infrastructure. Standard precautions apply — watch your belongings in crowded areas and use reputable transport.',
+      },
+      {
+        question: 'Do Indians need a visa for Bali?',
+        answer: 'Indian passport holders receive a Visa on Arrival (VOA) at Bali\'s Ngurah Rai International Airport. It costs USD 35, grants a 30-day stay, and can be extended once for another 30 days. No prior application is needed.',
+      },
+      {
+        question: 'How many days are enough for Bali?',
+        answer: 'Seven to ten days is ideal for a first Bali trip — enough time to cover Seminyak/Canggu on the coast, spend two or three days in Ubud for culture and rice terraces, and do a day trip to Nusa Penida. Five days is the comfortable minimum.',
+      },
+      {
+        question: 'What is the average daily budget for Bali?',
+        answer: 'Budget travellers can manage on USD 40–60/day (guesthouse, local warungs, scooter rental). A mid-range trip with a private villa, western restaurants, and tours runs USD 100–150/day. Luxury villas with private pools start around USD 200/day.',
+      },
     ],
   },
 

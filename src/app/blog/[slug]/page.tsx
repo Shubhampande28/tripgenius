@@ -6,6 +6,7 @@ import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin, Hotel, Plane, Tick
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { allPosts, getPostBySlug, getRelatedPosts, BlockType, BlogCategory } from '@/lib/blog';
+import { ChevronDown } from 'lucide-react';
 import AdUnit from '@/components/AdUnit';
 import { AD_SLOTS } from '@/lib/adsense';
 import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
@@ -161,10 +162,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ],
   };
 
+  const faqSchema = post.faqs?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faqs.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  } : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       <Navbar />
       <main className="bg-dark min-h-screen">
 
@@ -227,6 +239,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </span>
             ))}
           </div>
+
+          {/* FAQ accordion */}
+          {post.faqs && post.faqs.length > 0 && (
+            <div className="mt-10 pt-8 border-t border-border">
+              <h2 className="font-heading text-xl font-semibold text-primary-text mb-5">Frequently Asked Questions</h2>
+              <div className="space-y-2">
+                {post.faqs.map(({ question, answer }, i) => (
+                  <details key={i} className="group border border-border rounded-xl bg-elevated overflow-hidden">
+                    <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none text-primary-text font-medium text-sm hover:text-accent transition-colors">
+                      <span>{question}</span>
+                      <ChevronDown size={16} className="flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" />
+                    </summary>
+                    <p className="px-5 pb-4 text-sm text-muted leading-relaxed border-t border-border pt-3">
+                      {answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* City guide CTA */}
           {post.citySlug && (
