@@ -151,10 +151,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt,
+    url: postUrl,
     image: `https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
     datePublished: post.date,
     dateModified: post.date,
-    author: { '@type': 'Organization', name: 'TripGenius', url: BASE },
+    author: { '@type': 'Person', name: 'TripGenius' },
     publisher: {
       '@type': 'Organization', name: 'TripGenius', url: BASE,
       logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
