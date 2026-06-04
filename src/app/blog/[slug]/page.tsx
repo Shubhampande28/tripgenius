@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: post.title,
       description: post.excerpt,
+      url: `${BASE}/blog/${slug}`,
       type: 'article',
       publishedTime: post.date,
       authors: ['TripGenius'],
@@ -131,6 +132,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   });
 
   const BASE = 'https://www.tripgenius.in';
+  const postUrl = `${BASE}/blog/${slug}`;
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -142,24 +144,27 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     author: { '@type': 'Organization', name: 'TripGenius', url: BASE },
     publisher: {
       '@type': 'Organization', name: 'TripGenius', url: BASE,
-      logo: { '@type': 'ImageObject', url: `${BASE}/icon.png` },
+      logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE}/blog/${slug}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     keywords: post.tags.join(', '),
     articleSection: post.category,
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE },
-        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE}/blog` },
-        { '@type': 'ListItem', position: 3, name: post.title, item: `${BASE}/blog/${slug}` },
-      ],
-    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+    ],
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Navbar />
       <main className="bg-dark min-h-screen">
 
