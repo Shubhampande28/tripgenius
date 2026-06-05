@@ -10,7 +10,7 @@ import Breadcrumb from './Breadcrumb';
 
 const UPDATED = 'May 2026';
 
-export default function CityHero({ city }: { city: City }) {
+export default function CityHero({ city, countrySlug }: { city: City; countrySlug?: string }) {
   return (
     <section className="relative min-h-[80vh] flex items-end overflow-hidden">
 
@@ -42,7 +42,7 @@ export default function CityHero({ city }: { city: City }) {
       />
 
       {/* Breadcrumb nav */}
-      <Breadcrumb cityName={city.name} country={city.country} />
+      <Breadcrumb cityName={city.name} country={city.country} countrySlug={countrySlug} />
 
       {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-32 w-full">

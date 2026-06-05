@@ -22,6 +22,7 @@ import CityQuickNav from '@/components/city/CityQuickNav';
 import SimilarDestinations from '@/components/city/SimilarDestinations';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
+import { getCountrySlugForCity } from '@/lib/getCountrySlug';
 import { getCityFaqs } from '@/lib/cityFaqs';
 import AdUnit from '@/components/AdUnit';
 import { AD_SLOTS } from '@/lib/adsense';
@@ -233,12 +234,14 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
   const city = getCityBySlug(slug);
   if (!city) notFound();
 
+  const countrySlug = getCountrySlugForCity(slug) ?? undefined;
+
   return (
     <>
       <CityJsonLd city={city} slug={slug} />
       <Navbar />
       <main>
-        <CityHero city={city} />
+        <CityHero city={city} countrySlug={countrySlug} />
         <AtAGlance city={city} />
         <CityQuickNav city={city} />
 

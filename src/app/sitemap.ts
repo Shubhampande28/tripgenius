@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { allCities, cities } from '@/lib/cities';
 import { allPosts } from '@/lib/blog';
+import { countries } from '@/data/countries';
 
 const COMPARISONS = [
   ['goa','bali'],['bali','thailand'],['manali','shimla'],
@@ -66,6 +67,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: NOW,
       changeFrequency: 'monthly' as const,
       priority: 0.75,
+    })),
+
+    // Country hub pages — rank for "X travel guide", "places to visit in X"
+    ...countries.map((country) => ({
+      url: `${BASE}/countries/${country.slug}`,
+      lastModified: NOW,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
     })),
   ];
 }

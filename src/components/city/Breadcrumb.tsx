@@ -4,9 +4,10 @@ import { ChevronRight } from 'lucide-react';
 interface BreadcrumbProps {
   cityName: string;
   country: string;
+  countrySlug?: string;
 }
 
-export default function Breadcrumb({ cityName, country }: BreadcrumbProps) {
+export default function Breadcrumb({ cityName, country, countrySlug }: BreadcrumbProps) {
   return (
     <nav aria-label="Breadcrumb" className="absolute top-20 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <ol className="flex items-center gap-1.5 text-xs text-white/60" itemScope itemType="https://schema.org/BreadcrumbList">
@@ -18,9 +19,15 @@ export default function Breadcrumb({ cityName, country }: BreadcrumbProps) {
         </li>
         <li aria-hidden><ChevronRight size={12} /></li>
         <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-          <Link href="/cities" itemProp="item" className="hover:text-white/90 transition-colors">
-            <span itemProp="name">Cities</span>
-          </Link>
+          {countrySlug ? (
+            <Link href={`/countries/${countrySlug}`} itemProp="item" className="hover:text-white/90 transition-colors">
+              <span itemProp="name">{country}</span>
+            </Link>
+          ) : (
+            <Link href="/cities" itemProp="item" className="hover:text-white/90 transition-colors">
+              <span itemProp="name">Cities</span>
+            </Link>
+          )}
           <meta itemProp="position" content="2" />
         </li>
         <li aria-hidden><ChevronRight size={12} /></li>

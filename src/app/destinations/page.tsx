@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
+import { countries } from '@/data/countries';
 import { ArrowRight, Search } from 'lucide-react';
 
 // Region tabs for discovery filtering
@@ -141,6 +142,43 @@ export default function DestinationsPage() {
               Free travel guides for 160+ destinations — things to do, best time to visit and local tips.
             </p>
           </div>
+
+          {/* Browse by Country */}
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Browse by country</p>
+                <h2 className="font-heading text-xl font-bold text-primary-text">Explore by Destination</h2>
+              </div>
+              <Link
+                href="/countries/india"
+                className="text-xs font-medium text-accent hover:underline hidden sm:block"
+              >
+                View all countries →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              {countries
+                .filter((c) => c.cities.length >= 2)
+                .map((country) => (
+                  <Link
+                    key={country.slug}
+                    href={`/countries/${country.slug}`}
+                    className="group flex items-center gap-3 px-4 py-3 bg-surface border border-border rounded-xl hover:border-accent/40 hover:bg-elevated transition-all duration-150"
+                  >
+                    <span className="text-2xl flex-shrink-0 select-none">{country.flag}</span>
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-primary-text group-hover:text-accent transition-colors truncate">
+                        {country.name}
+                      </div>
+                      <div className="text-[10px] text-muted">
+                        {country.cities.length} {country.cities.length === 1 ? 'city' : 'cities'}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          </section>
 
           {/* Search + Filter row */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
