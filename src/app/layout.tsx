@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const GA_ID = "G-GZN2V0V66B";
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     url: SITE,
     title: `TripGenius — Free Travel Guides for India & the World`,
     description: `Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
-    images: [{ url: `${SITE}/og-default.png`, width: 1200, height: 630, alt: "TripGenius — Free Travel Guides" }],
+    images: [{ url: `${SITE}/opengraph-image`, width: 1200, height: 630, alt: "TripGenius — Free Travel Guides" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -104,7 +105,7 @@ export default function RootLayout({
           gtag('js', new Date());
           gtag('config', '${GA_ID}');
         `}</Script>
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         {/* Site-wide Organization structured data */}
         <script
           type="application/ld+json"

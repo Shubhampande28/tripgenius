@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { Search, ArrowRight, MapPin, Globe } from 'lucide-react';
 import { allCities } from '@/lib/cities';
 
@@ -114,7 +115,10 @@ export default function Hero() {
               onBlur={() => setTimeout(() => setFocused(false), 150)}
               onKeyDown={handleKeyDown}
               placeholder="Search a city — Bali, Tokyo, Paris…"
-              className="flex-1 bg-transparent px-4 py-4 text-primary-text placeholder:text-muted/60 focus:outline-none text-base"
+              aria-label="Search destinations"
+              aria-autocomplete="list"
+              aria-expanded={focused && filtered.length > 0}
+              className="flex-1 bg-transparent px-4 py-4 text-primary-text placeholder:text-muted/60 focus:outline-none focus-visible:ring-0 text-base"
             />
             <button
               onClick={() => handleSearch()}
@@ -147,14 +151,15 @@ export default function Hero() {
           transition={{ delay: 0.9 }}
           className="mt-6 flex items-center justify-center gap-6 text-xs text-muted"
         >
-          {['Bali', 'Tokyo', 'Paris', 'Dubai'].map((city) => (
-            <button
-              key={city}
-              onClick={() => handleSearch(city)}
-              className="hover:text-accent transition-colors"
-            >
-              {city}
-            </button>
+          {[
+            { name: 'Bali', slug: 'bali' },
+            { name: 'Tokyo', slug: 'tokyo' },
+            { name: 'Paris', slug: 'paris' },
+            { name: 'Dubai', slug: 'dubai' },
+          ].map(({ name, slug }) => (
+            <Link key={name} href={`/cities/${slug}`} className="hover:text-accent transition-colors">
+              {name}
+            </Link>
           ))}
         </motion.div>
 

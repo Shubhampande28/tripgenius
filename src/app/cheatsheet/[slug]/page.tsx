@@ -16,6 +16,7 @@ export async function generateMetadata(
   return {
     title: `${city.name} Travel Cheatsheet — TripGenius`,
     description: `Your ultimate ${city.name} travel cheatsheet. Save and share this guide.`,
+    robots: { index: false, follow: false },
   };
 }
 

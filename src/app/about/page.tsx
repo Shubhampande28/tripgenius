@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp } from 'lucide-react';
+import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp, Search, RefreshCw, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
-  title: 'About TripGenius — Honest Travel Guides for Every Destination',
-  description: 'Learn about TripGenius — our mission to provide free, honest, and up-to-date travel guides for 140+ destinations worldwide. No paid rankings, no fluff.',
+  title: 'About TripGenius — Editorial Standards & Research Process',
+  description: 'Learn how TripGenius researches and writes travel guides. Our editorial process, fact-checking standards, and commitment to honest, up-to-date information for 160+ destinations.',
   alternates: { canonical: `${BASE}/about` },
   openGraph: {
     title: 'About TripGenius — Honest Travel Guides for Every Destination',
@@ -57,9 +57,46 @@ const values = [
   },
 ];
 
+const editorialSteps = [
+  {
+    icon: Search,
+    title: 'Primary Research',
+    desc: 'Every guide starts with in-depth research: local tourism boards, firsthand traveller accounts, recent trip reports, and cross-referencing multiple sources to verify costs, timings, and logistics.',
+  },
+  {
+    icon: RefreshCw,
+    title: 'Regular Updates',
+    desc: 'Travel information expires fast. We review and update guides for prices, visa rules, seasonal conditions, and new attractions on a rolling basis — not just when we remember to.',
+  },
+  {
+    icon: Users,
+    title: 'Community Vetted',
+    desc: 'Reader feedback and corrections are taken seriously. If something on a guide is wrong or outdated, we fix it. Our goal is accuracy over volume.',
+  },
+];
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'TripGenius',
+  url: BASE,
+  logo: `${BASE}/logo.png`,
+  description: 'Free travel guides for 160+ cities worldwide. Honest, well-researched information with no paid rankings.',
+  foundingDate: '2025',
+  knowsAbout: ['Travel', 'Tourism', 'India Travel', 'Asia Travel', 'Europe Travel', 'Travel Planning'],
+  areaServed: 'Worldwide',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'Editorial',
+    url: `${BASE}/contact`,
+  },
+  publishingPrinciples: `${BASE}/about`,
+};
+
 export default function AboutPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       <Navbar />
       <main className="bg-dark min-h-screen">
 
@@ -95,8 +132,32 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Values grid */}
+        {/* Editorial process */}
         <div className="border-t border-border bg-surface">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+            <div className="text-center mb-10">
+              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">How We Work</p>
+              <h2 className="font-heading text-2xl font-semibold text-primary-text">Our editorial process</h2>
+              <p className="text-muted text-sm mt-2 max-w-xl mx-auto">
+                Every guide on TripGenius follows the same research and review process — no shortcuts, no filler.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {editorialSteps.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="p-6 bg-elevated border border-border rounded-2xl">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-4">
+                    <Icon size={18} className="text-accent" />
+                  </div>
+                  <h3 className="font-heading text-base font-semibold text-primary-text mb-2">{title}</h3>
+                  <p className="text-sm text-muted leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Values grid */}
+        <div className="border-t border-border bg-dark">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
             <h2 className="font-heading text-2xl font-semibold text-primary-text text-center mb-10">What we stand for</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

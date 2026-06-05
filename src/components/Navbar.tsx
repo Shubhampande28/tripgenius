@@ -63,7 +63,11 @@ export default function Navbar() {
   }) {
     return (
       <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-        <button className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-all duration-150">
+        <button
+          aria-haspopup="true"
+          aria-expanded={open}
+          className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        >
           {label} <ChevronDown size={13} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
         </button>
         <AnimatePresence>
@@ -95,7 +99,7 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
           scrolled ? 'navbar-scrolled bg-dark/95 backdrop-blur-xl border-b border-border/40 shadow-sm' : 'bg-transparent'
         }`}
       >
@@ -146,10 +150,19 @@ export default function Navbar() {
 
             {/* Mobile */}
             <div className="lg:hidden flex items-center gap-2">
-              <button onClick={toggleTheme} className="p-2 rounded-lg border border-border text-muted">
+              <button
+                onClick={toggleTheme}
+                aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+                className="p-2 rounded-lg border border-border text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
                 {isLight ? <Moon size={16} /> : <Sun size={16} />}
               </button>
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-muted">
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileOpen}
+                className="p-2 text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
                 {mobileOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>

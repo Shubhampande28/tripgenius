@@ -85,10 +85,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted" suppressHydrationWarning>
             © {new Date().getFullYear()} TripGenius. All rights reserved.
           </p>
-          <p className="text-xs text-muted italic font-heading text-lg">
+          <p className="text-lg text-muted italic font-heading">
             The world is waiting.
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">

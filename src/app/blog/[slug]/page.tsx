@@ -155,7 +155,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     image: `https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
     datePublished: post.date,
     dateModified: post.date,
-    author: { '@type': 'Person', name: 'TripGenius' },
+    author: { '@type': 'Organization', name: 'TripGenius', url: BASE },
     publisher: {
       '@type': 'Organization', name: 'TripGenius', url: BASE,
       logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
@@ -221,6 +221,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
             <span className="flex items-center gap-1 text-xs text-muted"><Clock size={11} /> {post.readTime} min read</span>
             <span className="text-xs text-accent font-semibold">Free Guide</span>
+            <span className="text-xs text-muted">By <span className="text-primary-text font-medium">TripGenius Editorial Team</span></span>
           </div>
 
           {/* Title */}

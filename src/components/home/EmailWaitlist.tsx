@@ -92,9 +92,12 @@ export default function EmailWaitlist() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="Enter your email…"
+                  aria-label="Email address"
+                  autoComplete="email"
+                  spellCheck={false}
                   required
-                  className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-xl text-primary-text placeholder:text-muted/60 focus:outline-none focus:border-accent transition-colors text-sm"
+                  className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-xl text-primary-text placeholder:text-muted/60 focus:outline-none focus:border-accent focus-visible:ring-2 focus-visible:ring-accent/50 transition-colors text-sm"
                 />
               </div>
               <button

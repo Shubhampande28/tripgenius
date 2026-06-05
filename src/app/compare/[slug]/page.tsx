@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ],
     alternates: { canonical: `${BASE}/compare/${slug}` },
     openGraph: { title, description: desc, url: `${BASE}/compare/${slug}`, type: 'article' },
+    robots: { index: false, follow: false },
   };
 }
 

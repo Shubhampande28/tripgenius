@@ -96,45 +96,54 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="p-6 sm:p-8 bg-surface border border-border rounded-2xl space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Your Name</label>
+                    <label htmlFor="contact-name" className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Your Name</label>
                     <input
+                      id="contact-name"
                       type="text" required value={form.name} onChange={e => update('name', e.target.value)}
-                      placeholder="Jane Smith"
-                      className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 transition-all"
+                      placeholder="Jane Smith…"
+                      autoComplete="name"
+                      className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-accent/50 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Email Address</label>
+                    <label htmlFor="contact-email" className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Email Address</label>
                     <input
+                      id="contact-email"
                       type="email" required value={form.email} onChange={e => update('email', e.target.value)}
-                      placeholder="jane@example.com"
-                      className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 transition-all"
+                      placeholder="jane@example.com…"
+                      autoComplete="email"
+                      spellCheck={false}
+                      className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-accent/50 transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Subject</label>
+                  <label htmlFor="contact-subject" className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Subject</label>
                   <select
+                    id="contact-subject"
                     value={form.subject} onChange={e => update('subject', e.target.value)}
-                    className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text focus:outline-none focus:border-accent/60 transition-all"
+                    className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text focus:outline-none focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-accent/50 transition-colors"
                   >
                     {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Message</label>
+                  <label htmlFor="contact-message" className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Message</label>
                   <textarea
+                    id="contact-message"
                     required rows={5} value={form.message} onChange={e => update('message', e.target.value)}
                     placeholder="Tell us what's on your mind…"
-                    className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 transition-all resize-none"
+                    className="w-full px-4 py-3 bg-elevated border border-border rounded-xl text-sm text-primary-text placeholder:text-muted/40 focus:outline-none focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-accent/50 transition-colors resize-none"
                   />
                 </div>
 
-                {state === 'error' && (
-                  <p className="text-red-400 text-xs">Something went wrong. Please try emailing us directly at hello@tripgenius.in</p>
-                )}
+                <div aria-live="polite" aria-atomic="true">
+                  {state === 'error' && (
+                    <p className="text-red-400 text-xs">Something went wrong. Please try emailing us directly at hello@tripgenius.in</p>
+                  )}
+                </div>
 
                 <button
                   type="submit" disabled={state === 'loading'}
