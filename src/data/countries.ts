@@ -89,7 +89,7 @@ export const countries: CountryData[] = [
     bestTime: 'Nov – Mar',
     currency: 'THB (Baht)',
     language: 'Thai',
-    visaForIndians: 'Visa on arrival',
+    visaForIndians: 'Visa exempt for short stays',
     description: 'Thailand enchants with gilded temples, white-sand beaches, and street food that rivals any fine dining in the world. From the electric chaos of Bangkok to the mist-wrapped mountains of Chiang Mai, every corner rewards curious travellers.',
     cities: ['bangkok', 'phuket', 'chiang-mai'],
   },
