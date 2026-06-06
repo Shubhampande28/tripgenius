@@ -102,7 +102,7 @@ export const countries: CountryData[] = [
     bestTime: 'Apr – Oct',
     currency: 'IDR (Rupiah)',
     language: 'Indonesian',
-    visaForIndians: 'Visa on arrival',
+    visaForIndians: 'Visa on arrival with eligibility; otherwise apply in advance',
     description: 'Indonesia is the world\'s largest archipelago — 17,000 islands stretching across three time zones, with ancient Hindu temples, active volcanoes, world-class surf, and some of the richest biodiversity on earth.',
     cities: ['bali'],
   },
