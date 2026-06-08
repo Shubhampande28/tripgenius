@@ -17,7 +17,7 @@ const COMPARISONS = [
   ['ooty', 'munnar'], ['bangkok', 'bali'], ['dubai', 'singapore'],
   ['paris', 'rome'], ['tokyo', 'seoul'], ['manali', 'rishikesh'],
   ['goa', 'andaman'], ['ladakh', 'spiti'], ['darjeeling', 'ooty'],
-  ['kochi', 'goa'], ['rishikesh', 'manali'], ['jaipur', 'udaipur'],
+  ['kochi', 'goa'],
   ['mumbai', 'delhi'], ['bali', 'singapore'],
 ];
 

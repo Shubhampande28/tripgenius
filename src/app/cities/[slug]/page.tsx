@@ -60,7 +60,6 @@ export async function generateMetadata(
       `best places in ${city.name}`,
       `${city.name} trip planner`,
       `${city.name} tourist attractions`,
-      `best time to visit ${city.name}`,
       `${city.name} travel tips ${year}`,
       `${city.name} itinerary`,
       `${city.name} travel guide ${year}`,
@@ -116,12 +115,6 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
   // 3. FAQPage — use real per-city FAQs when available, fall back to generated
   const realFaqs = getCityFaqs(slug);
   const faqs = realFaqs.length ? realFaqs : [
-    {
-      q: `What is the best time to visit ${city.name}?`,
-      a: city.monthByMonth
-        ? `The best time to visit ${city.name} is ${city.monthByMonth.bestMonths.join(', ')}. ${city.monthByMonth.summary}`
-        : `The best time to visit ${city.name} is ${city.stats.bestTime}.`,
-    },
     {
       q: `How much does a trip to ${city.name} cost per day?`,
       a: `A trip to ${city.name} typically costs ${city.stats.budget} per person per day. Budget travellers can explore on the lower end, while luxury travellers will spend more.`,

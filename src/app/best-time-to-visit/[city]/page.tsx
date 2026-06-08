@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
       `${city.name} off season`,
     ],
     alternates: { canonical: `${BASE}/best-time-to-visit/${slug}` },
+    ...(city.stub && { robots: { index: false, follow: false } }),
     openGraph: {
       title, description: desc,
       url: `${BASE}/best-time-to-visit/${slug}`,
