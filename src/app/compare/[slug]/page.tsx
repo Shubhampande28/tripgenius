@@ -7,22 +7,14 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getCityBySlug } from '@/lib/cities';
+import { allPosts } from '@/lib/blog';
+import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 
 const BASE = 'https://www.tripgenius.in';
 
-// All comparison pairs we support
-const COMPARISONS = [
-  ['goa', 'bali'], ['bali', 'thailand'], ['manali', 'shimla'],
-  ['rishikesh', 'haridwar'], ['udaipur', 'jaipur'], ['goa', 'kerala'],
-  ['ooty', 'munnar'], ['bangkok', 'bali'], ['dubai', 'singapore'],
-  ['paris', 'rome'], ['tokyo', 'seoul'], ['manali', 'rishikesh'],
-  ['goa', 'andaman'], ['ladakh', 'spiti'], ['darjeeling', 'ooty'],
-  ['kochi', 'goa'],
-  ['mumbai', 'delhi'], ['bali', 'singapore'],
-];
 
 export function generateStaticParams() {
-  return COMPARISONS.map(([a, b]) => ({ slug: `${a}-vs-${b}` }));
+  return COMPARISONS.map(([a, b]) => ({ slug: comparisonSlug(a, b) }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -49,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ],
     alternates: { canonical: `${BASE}/compare/${slug}` },
     openGraph: { title, description: desc, url: `${BASE}/compare/${slug}`, type: 'article' },
-    robots: { index: false, follow: false },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -63,6 +55,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
   if (!city1 || !city2) notFound();
 
   const year = new Date().getFullYear();
+  const narrativeGuide = allPosts.find(post => post.slug === slug);
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -118,6 +111,14 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
           <p className="text-muted mb-8 text-base leading-relaxed">
             Can&apos;t decide between {city1.name} and {city2.name}? We compare both destinations
             honestly — costs, best time, things to do, and which one suits your travel style.
+            {narrativeGuide ? (
+              <>
+                {' '}For a deeper narrative breakdown, read our{' '}
+                <Link href={`/blog/${narrativeGuide.slug}`} className="text-accent font-medium hover:underline">
+                  {narrativeGuide.title}
+                </Link>.
+              </>
+            ) : null}
           </p>
 
           {/* Side-by-side header */}
@@ -198,8 +199,9 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
                   const c1 = getCityBySlug(a);
                   const c2 = getCityBySlug(b);
                   if (!c1 || !c2) return null;
+                  const hrefSlug = comparisonSlug(a, b);
                   return (
-                    <Link key={`${a}-vs-${b}`} href={`/compare/${a}-vs-${b}`}
+                    <Link key={hrefSlug} href={`/compare/${hrefSlug}`}
                       className="text-sm px-3 py-1.5 rounded-full border border-border hover:border-accent/40 text-muted hover:text-accent transition-colors">
                       {c1.flag} {c1.name} vs {c2.flag} {c2.name}
                     </Link>

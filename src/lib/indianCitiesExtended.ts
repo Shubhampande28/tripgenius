@@ -134,43 +134,6 @@ export const indianCitiesExtended: City[] = [
     ],
   },
 
-  {
-    slug: 'srinagar', name: 'Srinagar', state: 'Jammu & Kashmir',
-    country: 'India', flag: '🇮🇳', tagline: 'Paradise on Earth',
-    description: 'Kashmir\'s capital sits on Dal Lake — houseboats, Mughal gardens, and snow-capped peaks make it India\'s most romantic destination.',
-    heroDescription: 'Wake up on a wooden houseboat as the morning mist lifts off Dal Lake, with the Pir Panjal mountains reflected in the water. There is nowhere else like Srinagar.',
-    stats: { bestTime: 'Apr – Oct', budget: '$20–$80/day', language: 'Kashmiri, Urdu, Hindi', currency: 'INR (Rupee)' },
-    vibes: ['Romantic', 'Cultural', 'Nature'],
-    gradient: 'from-blue-900 to-cyan-900', accentColor: '#0891B2',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1600&q=85',
-    areas: [
-      { name: 'Dal Lake', emoji: '🚣', accentColor: '#0891B2',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80',
-        tagline: 'Houseboats & floating markets', spots: [
-          { name: 'Shikara ride at sunrise', tag: 'Must-do' },
-          { name: 'Floating Vegetable Market (dawn)', tag: 'Unique' },
-          { name: 'Dal Lake houseboats', tag: 'Stay' },
-          { name: 'Nehru Park island', tag: 'Scenic' },
-        ]},
-      { name: 'Mughal Gardens', emoji: '🌸', accentColor: '#7C3AED',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80',
-        tagline: 'Persian paradise gardens', spots: [
-          { name: 'Shalimar Bagh (most famous)', tag: 'Mughal' },
-          { name: 'Nishat Bagh (terraced)', tag: 'Garden' },
-          { name: 'Chashme Shahi (smallest, sweetest water)', tag: 'Sacred' },
-          { name: 'Pari Mahal ruins', tag: 'Views' },
-        ]},
-      { name: 'Old City & Bazaars', emoji: '🛍️', accentColor: '#D97706',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80',
-        tagline: 'Crafts, carpets & Kashmiri food', spots: [
-          { name: 'Jama Masjid', tag: 'Sacred' },
-          { name: 'Lal Chowk (city centre)', tag: 'Shopping' },
-          { name: 'Kashmiri carpet & shawl shops', tag: 'Crafts' },
-          { name: 'Wazwan (royal feast) dinner', tag: 'Culinary' },
-        ]},
-    ],
-  },
 
   {
     slug: 'dharamshala', name: 'Dharamshala', state: 'Himachal Pradesh',

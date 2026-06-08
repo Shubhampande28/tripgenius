@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import { ChevronRight, Clock, Wallet, MapPin, ArrowRight, Globe } from 'lucide-react';
 import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
+import { allPosts } from '@/lib/blog';
+import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 
 const BASE = 'https://www.tripgenius.in';
 const YEAR = new Date().getFullYear();
@@ -68,6 +70,15 @@ export default async function CountryPage({ params }: Props) {
   const relatedCountries = countries
     .filter((c) => c.continent === country.continent && c.slug !== slug)
     .slice(0, 4);
+  const countryCitySlugs = new Set(country.cities);
+  const bestTimeLinks = citiesData.filter((city) => !city.stub).slice(0, 12);
+  const comparisonLinks = COMPARISONS
+    .map(([a, b]) => ({ a, b, cityA: getCityBySlug(a), cityB: getCityBySlug(b), slug: comparisonSlug(a, b) }))
+    .filter(({ a, b, cityA, cityB }) => cityA && cityB && (countryCitySlugs.has(a) || countryCitySlugs.has(b)))
+    .slice(0, 8);
+  const blogLinks = allPosts
+    .filter((post) => (post.citySlug && countryCitySlugs.has(post.citySlug)) || post.tags.some((tag) => tag.toLowerCase() === country.name.toLowerCase()))
+    .slice(0, 6);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -222,6 +233,75 @@ export default async function CountryPage({ params }: Props) {
               ))}
             </div>
           </section>
+
+          {/* Planning links */}
+          {(bestTimeLinks.length > 0 || comparisonLinks.length > 0 || blogLinks.length > 0) && (
+            <section>
+              <div className="mb-8">
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Plan smarter</p>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
+                  Timing, Comparisons &amp; Guides
+                </h2>
+                <p className="text-muted text-sm">
+                  Compare routes, choose the right season, and read detailed planning guides for {country.name}.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                {bestTimeLinks.length > 0 && (
+                  <div className="bg-surface border border-border rounded-2xl p-5">
+                    <h3 className="font-heading text-base font-semibold text-primary-text mb-4">Best Time to Visit</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {bestTimeLinks.map((city) => (
+                        <Link
+                          key={city.slug}
+                          href={`/best-time-to-visit/${city.slug}`}
+                          className="text-xs px-3 py-1 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
+                        >
+                          {city.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {comparisonLinks.length > 0 && (
+                  <div className="bg-surface border border-border rounded-2xl p-5">
+                    <h3 className="font-heading text-base font-semibold text-primary-text mb-4">Compare Destinations</h3>
+                    <div className="space-y-2">
+                      {comparisonLinks.map(({ cityA, cityB, slug: compareSlug }) => (
+                        <Link
+                          key={compareSlug}
+                          href={`/compare/${compareSlug}`}
+                          className="flex items-center justify-between gap-3 text-xs px-3 py-2 rounded-lg bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
+                        >
+                          <span>{cityA?.name} vs {cityB?.name}</span>
+                          <ArrowRight size={12} />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {blogLinks.length > 0 && (
+                  <div className="bg-surface border border-border rounded-2xl p-5">
+                    <h3 className="font-heading text-base font-semibold text-primary-text mb-4">Travel Guides</h3>
+                    <div className="space-y-2">
+                      {blogLinks.map((post) => (
+                        <Link
+                          key={post.slug}
+                          href={`/blog/${post.slug}`}
+                          className="block text-xs leading-relaxed px-3 py-2 rounded-lg bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
+                        >
+                          {post.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
 
           {/* ── Regions (India only) ── */}
           {country.regions && country.regions.length > 0 && (

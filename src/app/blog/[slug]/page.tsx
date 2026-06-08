@@ -11,6 +11,7 @@ import AdUnit from '@/components/AdUnit';
 import { AD_SLOTS } from '@/lib/adsense';
 import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
 import { getCityBySlug } from '@/lib/cities';
+import { hasComparison } from '@/lib/comparisons';
 
 export async function generateStaticParams() {
   return allPosts.map(p => ({ slug: p.slug }));
@@ -140,6 +141,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const related = getRelatedPosts(post);
   const cityData = post.citySlug ? getCityBySlug(post.citySlug) : null;
+  const comparisonGuideSlug = hasComparison(slug) ? slug : null;
   const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
     day: 'numeric', month: 'long', year: 'numeric',
   });
@@ -244,6 +246,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             ))}
           </article>
           <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />
+
+          {comparisonGuideSlug && (
+            <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs text-accent font-bold uppercase tracking-wider mb-1">Quick Comparison</p>
+                <p className="text-sm text-primary-text font-medium">Use the side-by-side comparison for costs, timing, and trip-fit at a glance.</p>
+              </div>
+              <Link href={`/compare/${comparisonGuideSlug}`}
+                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
+                Compare <ArrowRight size={13} />
+              </Link>
+            </div>
+          )}
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-10 pt-8 border-t border-border">
