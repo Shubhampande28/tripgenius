@@ -160,6 +160,107 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   zanzibar:          { card: 'photo-1586771107445-d3ca888129ce', hero: 'photo-1586771107445-d3ca888129ce' }, // Zanzibar turquoise water
   'abu-dhabi':       { card: 'photo-1617555046942-9b7888f55c8e', hero: 'photo-1617555046942-9b7888f55c8e' }, // Sheikh Zayed mosque
   mauritius:         { card: 'photo-1515526959467-a44be8a5c2aa', hero: 'photo-1515526959467-a44be8a5c2aa' }, // Mauritius lagoon beach
+
+  // ── Philippines ──────────────────────────────────────────────────
+  manila:         { card: 'photo-1523731407965-2430cd12f5e4', hero: 'photo-1523731407965-2430cd12f5e4' },
+  palawan:        { card: 'photo-1573408301185-9519eb7ef241', hero: 'photo-1573408301185-9519eb7ef241' },
+  boracay:        { card: 'photo-1559592413-7cec4d0cae2b', hero: 'photo-1559592413-7cec4d0cae2b' },
+  siargao:        { card: 'photo-1596402184320-417e7178b2cd', hero: 'photo-1596402184320-417e7178b2cd' },
+  'el-nido':      { card: 'photo-1559494007-9f5847c49d94', hero: 'photo-1559494007-9f5847c49d94' },
+
+  // ── Cambodia ─────────────────────────────────────────────────────
+  'siem-reap':    { card: 'photo-1564596823821-79b47b1ab14b', hero: 'photo-1564596823821-79b47b1ab14b' },
+  'phnom-penh':   { card: 'photo-1565790347264-6f14f4b52b3e', hero: 'photo-1565790347264-6f14f4b52b3e' },
+
+  // ── Jordan ───────────────────────────────────────────────────────
+  amman:          { card: 'photo-1579606032821-4f93e95b5c80', hero: 'photo-1579606032821-4f93e95b5c80' },
+  petra:          { card: 'photo-1558383331-f520f2888351', hero: 'photo-1558383331-f520f2888351' },
+  'wadi-rum':     { card: 'photo-1509316785289-025f5b846b35', hero: 'photo-1509316785289-025f5b846b35' },
+
+  // ── Switzerland ──────────────────────────────────────────────────
+  zurich:         { card: 'photo-1515488042361-ee00e0ddd4e4', hero: 'photo-1515488042361-ee00e0ddd4e4' },
+  interlaken:     { card: 'photo-1516905041604-7f3f4b1ef50c', hero: 'photo-1516905041604-7f3f4b1ef50c' },
+  geneva:         { card: 'photo-1502602898657-3e91760cbb34', hero: 'photo-1502602898657-3e91760cbb34' },
+  lucerne:        { card: 'photo-1527255907996-5975e6da2cdb', hero: 'photo-1527255907996-5975e6da2cdb' },
+
+  // ── Germany ──────────────────────────────────────────────────────
+  berlin:         { card: 'photo-1560969184-10fe8719e047', hero: 'photo-1560969184-10fe8719e047' },
+  munich:         { card: 'photo-1513622470522-26c3c8a854bc', hero: 'photo-1513622470522-26c3c8a854bc' },
+  hamburg:        { card: 'photo-1467269204594-9661b134dd2b', hero: 'photo-1467269204594-9661b134dd2b' },
+
+  // ── Australia ────────────────────────────────────────────────────
+  sydney:         { card: 'photo-1506973035872-a4ec16b8e8d9', hero: 'photo-1506973035872-a4ec16b8e8d9' },
+  melbourne:      { card: 'photo-1545044846-351ba102b6d5', hero: 'photo-1545044846-351ba102b6d5' },
+  cairns:         { card: 'photo-1587300003388-59208cc962cb', hero: 'photo-1587300003388-59208cc962cb' },
+  'gold-coast':   { card: 'photo-1509021436693-dfce9fd8edfe', hero: 'photo-1509021436693-dfce9fd8edfe' },
+
+  // ── Canada ───────────────────────────────────────────────────────
+  vancouver:      { card: 'photo-1559139355-6dff7e79e7eb', hero: 'photo-1559139355-6dff7e79e7eb' },
+  toronto:        { card: 'photo-1516747773236-7adb06e3c5bd', hero: 'photo-1516747773236-7adb06e3c5bd' },
+  banff:          { card: 'photo-1502989642968-94fbdc9b4bce', hero: 'photo-1502989642968-94fbdc9b4bce' },
+  'quebec-city':  { card: 'photo-1558618666-fcd25c85cd64', hero: 'photo-1558618666-fcd25c85cd64' },
+
+  // ── New Zealand ──────────────────────────────────────────────────
+  auckland:       { card: 'photo-1507699622108-4be3abd695ad', hero: 'photo-1507699622108-4be3abd695ad' },
+  queenstown:     { card: 'photo-1506905925346-21bda4d32df4', hero: 'photo-1506905925346-21bda4d32df4' },
+  rotorua:        { card: 'photo-1597212618440-806262de4f6b', hero: 'photo-1597212618440-806262de4f6b' },
+
+  // ── Croatia ──────────────────────────────────────────────────────
+  dubrovnik:      { card: 'photo-1555990793-da11153b8a4e', hero: 'photo-1555990793-da11153b8a4e' },
+  split:          { card: 'photo-1555990793-da110a1b7f88', hero: 'photo-1555990793-da110a1b7f88' },
+  hvar:           { card: 'photo-1584132967334-10e028bd69f7', hero: 'photo-1584132967334-10e028bd69f7' },
+
+  // ── Bhutan ───────────────────────────────────────────────────────
+  paro:           { card: 'photo-1587474260584-136574528ed5', hero: 'photo-1587474260584-136574528ed5' },
+  thimphu:        { card: 'photo-1568797629192-789acf8e4df3', hero: 'photo-1568797629192-789acf8e4df3' },
+
+  // ── Uzbekistan ───────────────────────────────────────────────────
+  samarkand:      { card: 'photo-1553564552-02656c9e3b7c', hero: 'photo-1553564552-02656c9e3b7c' },
+  bukhara:        { card: 'photo-1573676048232-7c86dca15d7a', hero: 'photo-1573676048232-7c86dca15d7a' },
+  tashkent:       { card: 'photo-1590674899484-d5640e854abe', hero: 'photo-1590674899484-d5640e854abe' },
+
+  // ── Kenya ────────────────────────────────────────────────────────
+  nairobi:        { card: 'photo-1611348524140-53c9a25263d6', hero: 'photo-1611348524140-53c9a25263d6' },
+  'masai-mara':   { card: 'photo-1547471080-7cc2caa01a7e', hero: 'photo-1547471080-7cc2caa01a7e' },
+  mombasa:        { card: 'photo-1571406252241-db0280bd36cd', hero: 'photo-1571406252241-db0280bd36cd' },
+
+  // ── New cities for existing countries ────────────────────────────
+  venice:         { card: 'photo-1514890547357-a9ee288728e0', hero: 'photo-1514890547357-a9ee288728e0' },
+  florence:       { card: 'photo-1541943181603-d8fe267a5dcf', hero: 'photo-1541943181603-d8fe267a5dcf' },
+  milan:          { card: 'photo-1555992336-03a23c7b20ee', hero: 'photo-1555992336-03a23c7b20ee' },
+  amalfi:         { card: 'photo-1633321088355-d0f81134ca3b', hero: 'photo-1633321088355-d0f81134ca3b' },
+  nice:           { card: 'photo-1533104816931-20fa691ff6ca', hero: 'photo-1533104816931-20fa691ff6ca' },
+  marseille:      { card: 'photo-1491557345352-5929e343eb89', hero: 'photo-1491557345352-5929e343eb89' },
+  madrid:         { card: 'photo-1539037116277-4db20889f2d4', hero: 'photo-1539037116277-4db20889f2d4' },
+  seville:        { card: 'photo-1588668214407-6ea9a6d8c272', hero: 'photo-1588668214407-6ea9a6d8c272' },
+  granada:        { card: 'photo-1582211432020-6d0c0cdb0f64', hero: 'photo-1582211432020-6d0c0cdb0f64' },
+  edinburgh:      { card: 'photo-1501891037204-ba8d5956c0da', hero: 'photo-1501891037204-ba8d5956c0da' },
+  hiroshima:      { card: 'photo-1542051841857-5f90071e7989', hero: 'photo-1542051841857-5f90071e7989' },
+  nara:           { card: 'photo-1578270671993-0a50a5e4cb1d', hero: 'photo-1578270671993-0a50a5e4cb1d' },
+  fukuoka:        { card: 'photo-1542640244-7e672d6cef4e', hero: 'photo-1542640244-7e672d6cef4e' },
+  'koh-samui':    { card: 'photo-1488085061387-422e29b40080', hero: 'photo-1488085061387-422e29b40080' },
+  yogyakarta:     { card: 'photo-1585503418537-88331351ad99', hero: 'photo-1585503418537-88331351ad99' },
+  lombok:         { card: 'photo-1571406252241-db0280bd36cd', hero: 'photo-1571406252241-db0280bd36cd' },
+  ella:           { card: 'photo-1600098414523-e3944e7c97b5', hero: 'photo-1600098414523-e3944e7c97b5' },
+  kandy:          { card: 'photo-1580674684081-7617fbf3d745', hero: 'photo-1580674684081-7617fbf3d745' },
+  galle:          { card: 'photo-1586168437785-c73d8e14f832', hero: 'photo-1586168437785-c73d8e14f832' },
+  pokhara:        { card: 'photo-1544735716-392fe2489ffa', hero: 'photo-1544735716-392fe2489ffa' },
+  penang:         { card: 'photo-1562602833-0f4ab2fc46e5', hero: 'photo-1562602833-0f4ab2fc46e5' },
+  langkawi:       { card: 'photo-1574482620826-5f3c61c4a9d9', hero: 'photo-1574482620826-5f3c61c4a9d9' },
+  fes:            { card: 'photo-1548013146-72479768bada', hero: 'photo-1548013146-72479768bada' },
+  chefchaouen:    { card: 'photo-1539020140153-e479b8c22e70', hero: 'photo-1539020140153-e479b8c22e70' },
+  mykonos:        { card: 'photo-1533105079780-92b9be482077', hero: 'photo-1533105079780-92b9be482077' },
+  crete:          { card: 'photo-1533089860892-a7c6f0a88666', hero: 'photo-1533089860892-a7c6f0a88666' },
+  'da-nang':      { card: 'photo-1559826555-74c80bc3e7e2', hero: 'photo-1559826555-74c80bc3e7e2' },
+  'phu-quoc':     { card: 'photo-1537956965359-7573183d1f57', hero: 'photo-1537956965359-7573183d1f57' },
+  busan:          { card: 'photo-1578272531112-e6741da1a95a', hero: 'photo-1578272531112-e6741da1a95a' },
+  jeju:           { card: 'photo-1608647819349-a75e11b40d08', hero: 'photo-1608647819349-a75e11b40d08' },
+  luxor:          { card: 'photo-1596527853976-c6e8e82cbdfd', hero: 'photo-1596527853976-c6e8e82cbdfd' },
+  'los-angeles':  { card: 'photo-1534190760961-74e8c1c5c3da', hero: 'photo-1534190760961-74e8c1c5c3da' },
+  'san-francisco':{ card: 'photo-1501594907352-04cda38ebc29', hero: 'photo-1501594907352-04cda38ebc29' },
+  miami:          { card: 'photo-1514214246283-d8a8c22f0ef4', hero: 'photo-1514214246283-d8a8c22f0ef4' },
+  'las-vegas':    { card: 'photo-1605833556294-ea5c7a74f57d', hero: 'photo-1605833556294-ea5c7a74f57d' },
+  chicago:        { card: 'photo-1494522855154-9297ac14b55f', hero: 'photo-1494522855154-9297ac14b55f' },
 };
 
 const UNSPLASH = 'https://images.unsplash.com';
