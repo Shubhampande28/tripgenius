@@ -101,14 +101,20 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     publisher: { '@type': 'Organization', name: 'TripGenius', url: base },
   };
 
-  // 2. BreadcrumbList — helps Google show "TripGenius > Cities > Bali" in results
+  // 2. BreadcrumbList — Home > Countries > [Country] > [City]
+  const countrySlugForSchema = getCountrySlugForCity(slug);
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: base },
-      { '@type': 'ListItem', position: 2, name: 'Cities', item: `${base}/cities` },
-      { '@type': 'ListItem', position: 3, name: city.name, item: url },
+      { '@type': 'ListItem', position: 1, name: 'Home',      item: base },
+      { '@type': 'ListItem', position: 2, name: 'Countries', item: `${base}/countries` },
+      ...(countrySlugForSchema ? [
+        { '@type': 'ListItem', position: 3, name: city.country, item: `${base}/countries/${countrySlugForSchema}` },
+        { '@type': 'ListItem', position: 4, name: city.name,   item: url },
+      ] : [
+        { '@type': 'ListItem', position: 3, name: city.name,   item: url },
+      ]),
     ],
   };
 

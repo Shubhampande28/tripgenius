@@ -3,6 +3,7 @@ import { allCities, cities } from '@/lib/cities';
 import { allPosts } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
+import { getAllItinerarySlugs } from '@/lib/itineraries';
 
 const BASE = 'https://www.tripgenius.in';
 const NOW  = new Date();
@@ -68,6 +69,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: NOW,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    })),
+
+    // Itinerary pages — rank for "X days in Y", "Y itinerary X days"
+    ...getAllItinerarySlugs().map((slug) => ({
+      url: `${BASE}/itinerary/${slug}`,
+      lastModified: NOW,
+      changeFrequency: 'monthly' as const,
+      priority: 0.85,
     })),
   ];
 }

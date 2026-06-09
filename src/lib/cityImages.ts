@@ -145,6 +145,21 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   // ── Misc ──────────────────────────────────────────────────────
   ranchi:      { card: 'px-17777847', hero: 'px-17777847' },  // Hundru Falls waterfall
   salem:       { card: 'px-774282',   hero: 'px-774282'   },  // Dravidian temple gopuram Salem
+
+  // ── New Tier 1-3 World Cities ─────────────────────────────────
+  colombo:           { card: 'photo-1580674684081-7617fbf3d745', hero: 'photo-1580674684081-7617fbf3d745' }, // Sri Lanka waterfront
+  'kuala-lumpur':    { card: 'photo-1596422846543-75c6fc197f07', hero: 'photo-1596422846543-75c6fc197f07' }, // Petronas Towers
+  muscat:            { card: 'photo-1566159033854-c68f1a2a07c4', hero: 'photo-1566159033854-c68f1a2a07c4' }, // Oman mosque
+  'ho-chi-minh-city':{ card: 'photo-1583417319070-4a69db38a482', hero: 'photo-1583417319070-4a69db38a482' }, // HCMC street life
+  tbilisi:           { card: 'photo-1589656966895-2f33e7653819', hero: 'photo-1589656966895-2f33e7653819' }, // Tbilisi old town
+  kathmandu:         { card: 'photo-1544735716-392fe2489ffa', hero: 'photo-1544735716-392fe2489ffa' },       // Boudhanath stupa
+  osaka:             { card: 'photo-1590559899731-a382839e5549', hero: 'photo-1590559899731-a382839e5549' }, // Dotonbori neon
+  cairo:             { card: 'photo-1572252009286-268acec5ca0a', hero: 'photo-1572252009286-268acec5ca0a' }, // Pyramids of Giza
+  baku:              { card: 'photo-1611348586804-61bf6c080437', hero: 'photo-1611348586804-61bf6c080437' }, // Baku Flame Towers
+  doha:              { card: 'photo-1609137144813-7d9921338f24', hero: 'photo-1609137144813-7d9921338f24' }, // Doha skyline corniche
+  zanzibar:          { card: 'photo-1586771107445-d3ca888129ce', hero: 'photo-1586771107445-d3ca888129ce' }, // Zanzibar turquoise water
+  'abu-dhabi':       { card: 'photo-1617555046942-9b7888f55c8e', hero: 'photo-1617555046942-9b7888f55c8e' }, // Sheikh Zayed mosque
+  mauritius:         { card: 'photo-1515526959467-a44be8a5c2aa', hero: 'photo-1515526959467-a44be8a5c2aa' }, // Mauritius lagoon beach
 };
 
 const UNSPLASH = 'https://images.unsplash.com';

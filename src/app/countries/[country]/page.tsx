@@ -5,8 +5,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
-import ItineraryTabs from '@/components/ItineraryTabs';
-import type { ItineraryPlan } from '@/components/ItineraryTabs';
+import { getItinerarySlug, ITINERARY_DURATIONS } from '@/lib/itineraries';
 import { ChevronRight, Clock, Wallet, MapPin, ArrowRight, Globe, Calendar, BookOpen } from 'lucide-react';
 import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
@@ -57,48 +56,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const SINGLE_CITY_THEMES = [
-  'Arrival & First Impressions',
-  'Deep Dive — Main Attractions',
-  'Hidden Gems & Local Life',
-  'Day Trip & Adventure',
-  'Culture & Cuisine Immersion',
-  'Relaxation & Shopping',
-  'Last Morning & Departure',
-];
-
-// ── Helper: build itinerary plans from city list ──────────────────────────
-function buildItineraries(
-  citiesData: NonNullable<ReturnType<typeof getCityBySlug>>[],
-  countryName: string,
-): ItineraryPlan[] {
-  const nonStub = citiesData.filter((c) => !c.stub);
-  if (nonStub.length === 0) return [];
-
-  const isSingleCity = nonStub.length === 1;
-  const PLANS: [number, string, string][] = [
-    [3, '3 Days', 'Perfect weekend getaway'],
-    [5, '5 Days', 'Comfortable first visit'],
-    [7, '7 Days', `Complete ${countryName} experience`],
-  ];
-
-  return PLANS.map(([duration, label, subtitle]) => ({
-    duration,
-    label,
-    subtitle,
-    days: Array.from({ length: duration }, (_, i) => {
-      const city = nonStub[i] ?? nonStub[nonStub.length - 1];
-      return {
-        day: i + 1,
-        citySlug: city.slug,
-        cityName: city.name,
-        cityFlag: city.flag,
-        cityTagline: city.tagline,
-        theme: isSingleCity ? (SINGLE_CITY_THEMES[i] ?? null) : null,
-      };
-    }),
-  }));
-}
 
 // ── Main page ──────────────────────────────────────────────────────────────
 export default async function CountryPage({ params }: Props) {
@@ -128,7 +85,7 @@ export default async function CountryPage({ params }: Props) {
     )
     .slice(0, 6);
 
-  const itineraryPlans = buildItineraries(citiesData, country.name);
+  const nonStubCities = citiesData.filter((c) => !c.stub);
 
   // ── Structured data ──────────────────────────────────────────────────────
   const breadcrumbSchema = {
@@ -348,8 +305,8 @@ export default async function CountryPage({ params }: Props) {
             </div>
           </section>
 
-          {/* ══ 2. ITINERARIES ══════════════════════════════════════════ */}
-          {itineraryPlans.length > 0 && (
+          {/* ══ 2. ITINERARIES — teaser cards → /itinerary/ pages ══════ */}
+          {nonStubCities.length > 0 && (
             <section>
               <div className="mb-8">
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">trip planning</p>
@@ -357,11 +314,47 @@ export default async function CountryPage({ params }: Props) {
                   {country.name} Itineraries
                 </h2>
                 <p className="text-muted text-sm">
-                  Day-by-day suggested routes — choose how long you have and we&apos;ll show you the best path
+                  Day-by-day guides — pick how long you have and get the optimal route
                 </p>
               </div>
 
-              <ItineraryTabs plans={itineraryPlans} countryName={country.name} />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {ITINERARY_DURATIONS.map((duration) => {
+                  const cities = nonStubCities.slice(0, Math.min(duration, nonStubCities.length));
+                  const label = duration === 3 ? 'Perfect long weekend' : duration === 5 ? 'Comfortable first visit' : `Complete ${country.name}`;
+                  return (
+                    <Link
+                      key={duration}
+                      href={`/itinerary/${getItinerarySlug(slug, duration)}`}
+                      className="group flex flex-col bg-surface border border-border hover:border-accent/50 rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-bold uppercase tracking-widest text-accent">
+                          {duration} Days
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <h3 className="font-heading text-lg font-semibold text-primary-text group-hover:text-accent transition-colors mb-1">
+                        {duration} Days in {country.name}
+                      </h3>
+                      <p className="text-xs text-muted mb-4">{label}</p>
+                      <div className="flex flex-wrap gap-1.5 mt-auto">
+                        {cities.slice(0, 4).map((city) => (
+                          <span key={city.slug}
+                            className="text-[10px] px-2 py-0.5 rounded-full bg-elevated border border-border text-muted">
+                            {city.flag} {city.name}
+                          </span>
+                        ))}
+                        {nonStubCities.length > 4 && duration === 7 && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-elevated border border-border text-muted">
+                            +{nonStubCities.length - 4} more
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </section>
           )}
 
