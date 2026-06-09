@@ -234,7 +234,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   madrid:         { card: 'photo-1539037116277-4db20889f2d4', hero: 'photo-1539037116277-4db20889f2d4' },
   seville:        { card: 'photo-1588668214407-6ea9a6d8c272', hero: 'photo-1588668214407-6ea9a6d8c272' },
   granada:        { card: 'photo-1582211432020-6d0c0cdb0f64', hero: 'photo-1582211432020-6d0c0cdb0f64' },
-  edinburgh:      { card: 'photo-1501891037204-ba8d5956c0da', hero: 'photo-1501891037204-ba8d5956c0da' },
+  edinburgh:      { card: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Edinburgh_Castle_%281%29.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Edinburgh_Castle_%281%29.jpg' },
   hiroshima:      { card: 'photo-1542051841857-5f90071e7989', hero: 'photo-1542051841857-5f90071e7989' },
   nara:           { card: 'photo-1578270671993-0a50a5e4cb1d', hero: 'photo-1578270671993-0a50a5e4cb1d' },
   fukuoka:        { card: 'photo-1542640244-7e672d6cef4e', hero: 'photo-1542640244-7e672d6cef4e' },
@@ -302,7 +302,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   auroville:      { card: 'photo-1500530855697-b586d89ba3ee', hero: 'photo-1500530855697-b586d89ba3ee' },
   ayutthaya:      { card: 'photo-1528181304800-259b08848526', hero: 'photo-1528181304800-259b08848526' },
   badrinath:      { card: 'photo-1544735716-392fe2489ffa', hero: 'photo-1544735716-392fe2489ffa' },
-  bath:           { card: 'photo-1513635269975-59663e0ac1ad', hero: 'photo-1513635269975-59663e0ac1ad' },
+  bath:           { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ba%C3%B1os_Romanos%2C_Bath%2C_Inglaterra%2C_2014-08-12%2C_DD_39-41_HDR.JPG/960px-Ba%C3%B1os_Romanos%2C_Bath%2C_Inglaterra%2C_2014-08-12%2C_DD_39-41_HDR.JPG', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ba%C3%B1os_Romanos%2C_Bath%2C_Inglaterra%2C_2014-08-12%2C_DD_39-41_HDR.JPG/960px-Ba%C3%B1os_Romanos%2C_Bath%2C_Inglaterra%2C_2014-08-12%2C_DD_39-41_HDR.JPG' },
   bekal:          { card: 'photo-1512343879784-a960bf40e7f2', hero: 'photo-1512343879784-a960bf40e7f2' },
   'bir-billing':  { card: 'photo-1544735716-392fe2489ffa', hero: 'photo-1544735716-392fe2489ffa' },
   bordeaux:       { card: 'photo-1500530855697-b586d89ba3ee', hero: 'photo-1500530855697-b586d89ba3ee' },
@@ -337,7 +337,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   lonavala:       { card: 'photo-1500530855697-b586d89ba3ee', hero: 'photo-1500530855697-b586d89ba3ee' },
   maheshwar:      { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
   majuli:         { card: 'photo-1500530855697-b586d89ba3ee', hero: 'photo-1500530855697-b586d89ba3ee' },
-  manchester:     { card: 'photo-1513635269975-59663e0ac1ad', hero: 'photo-1513635269975-59663e0ac1ad' },
+  manchester:     { card: 'https://upload.wikimedia.org/wikipedia/commons/b/b0/Manchester_Skyline_-_geograph.org.uk_-_7560418.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/b/b0/Manchester_Skyline_-_geograph.org.uk_-_7560418.jpg' },
   mandu:          { card: 'photo-1524492412937-b28074a5d7da', hero: 'photo-1524492412937-b28074a5d7da' },
   mawlynnong:     { card: 'photo-1500530855697-b586d89ba3ee', hero: 'photo-1500530855697-b586d89ba3ee' },
   'mcleod-ganj':  { card: 'photo-1544735716-392fe2489ffa', hero: 'photo-1544735716-392fe2489ffa' },
@@ -376,6 +376,7 @@ export function getCityImageUrl(slug: string, size: 'card' | 'hero' = 'card'): s
   const entry = verifiedCityImages[slug];
   if (!entry) return null;
   const id = size === 'hero' ? entry.hero : entry.card;
+  if (id.startsWith('https://')) return id;
   const w  = size === 'hero' ? 1600 : 800;
 
   // Pexels IDs are prefixed with 'px-'
