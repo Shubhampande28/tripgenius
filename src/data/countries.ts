@@ -443,7 +443,7 @@ export const countries: CountryData[] = [
     language: 'Vietnamese',
     visaForIndians: 'E-visa required',
     description: 'Vietnam stretches over 3,000 kilometres of history and coastline — from Hanoi\'s French-colonial old quarter and the limestone karsts of Ha Long Bay, to the lantern-lit streets of Hoi An and the frenetic street-food markets of Ho Chi Minh City.',
-    cities: ['ho-chi-minh-city'],
+    cities: ['hanoi', 'hoi-an', 'ho-chi-minh-city'],
   },
   {
     slug: 'georgia',

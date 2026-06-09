@@ -129,6 +129,24 @@ function ContentBlock({ block }: { block: BlockType }) {
           </Link>
         </div>
       );
+    case 'image':
+      return (
+        <figure className="my-7 rounded-2xl overflow-hidden border border-border">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={block.src}
+            alt={block.alt}
+            loading="lazy"
+            className="w-full object-cover"
+            style={{ maxHeight: '420px' }}
+          />
+          {block.caption && (
+            <figcaption className="bg-surface px-4 py-2 text-xs text-muted text-center border-t border-border">
+              {block.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
     default:
       return null;
   }
