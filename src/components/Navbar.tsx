@@ -21,11 +21,12 @@ function subTheme(cb: () => void) {
 
 // Destination sub-menu categories
 const DEST_MENU = [
-  { label: 'India', href: '/cities?region=India' },
-  { label: 'Asia', href: '/cities?region=Asia' },
-  { label: 'Europe', href: '/cities?region=Europe' },
-  { label: 'Americas', href: '/cities?region=Americas' },
-  { label: 'All Destinations', href: '/destinations' },
+  { label: '🌍 Browse by Country', href: '/countries' },
+  { label: 'India',                href: '/countries/india' },
+  { label: 'Asia',                 href: '/cities?region=Asia' },
+  { label: 'Europe',               href: '/cities?region=Europe' },
+  { label: 'Americas',             href: '/cities?region=Americas' },
+  { label: 'All Cities',           href: '/destinations' },
 ];
 
 const TODO_MENU = [
@@ -182,9 +183,9 @@ export default function Navbar() {
           >
             <div className="max-w-[1280px] mx-auto px-6 py-5 space-y-1">
               {[
+                { label:'Countries',    href:'/countries' },
                 { label:'Destinations', href:'/destinations' },
-                { label:'Things To Do', href:'/destinations' },
-                { label:'Itineraries', href:'/blog' },
+                { label:'Itineraries',  href:'/blog' },
                 { label:'Compare',      href:'/compare/goa-vs-bali' },
               ].map(l => (
                 <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}

@@ -11,31 +11,52 @@ import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
+import { countries } from '@/data/countries';
 import type { City } from '@/lib/types';
 
 // ── Search autocomplete ────────────────────────────────────────────
-// Generates suggestions: city + "Itinerary", "Things To Do", "Budget Guide"
-function getSearchSuggestions(q: string) {
+type Suggestion =
+  | { type: 'city';    label: string; sub: string; href: string; city: City }
+  | { type: 'country'; label: string; sub: string; href: string; flag: string };
+
+function getSearchSuggestions(q: string): Suggestion[] {
   if (!q || q.length < 2) return [];
   const lower = q.toLowerCase();
-  const matched = allCities
-    .filter(c => !c.stub && (
+
+  // Country matches — show first (country page is the destination hub)
+  const matchedCountries = countries
+    .filter((c) =>
       c.name.toLowerCase().startsWith(lower) ||
-      c.country.toLowerCase().startsWith(lower) ||
+      c.name.toLowerCase().includes(lower) ||
+      c.capital.toLowerCase().startsWith(lower),
+    )
+    .slice(0, 3);
+
+  const countrySuggestions: Suggestion[] = matchedCountries.map((c) => ({
+    type: 'country',
+    label: c.name,
+    sub: `${c.continent} · ${c.cities.length} cities`,
+    href: `/countries/${c.slug}`,
+    flag: c.flag,
+  }));
+
+  // City matches
+  const matchedCities = allCities
+    .filter((c) => !c.stub && (
+      c.name.toLowerCase().startsWith(lower) ||
       c.name.toLowerCase().includes(lower)
     ))
-    .slice(0, 4);
+    .slice(0, 3);
 
-  const suggestions: { label: string; sub: string; href: string; city: City }[] = [];
-  matched.forEach(city => {
-    suggestions.push(
-      { label: city.name,                           sub: city.country,         href: `/cities/${city.slug}`,                    city },
-      { label: `${city.name} Things To Do`,         sub: 'Experiences & tours', href: `/cities/${city.slug}#things-to-do`,       city },
-      { label: `${city.name} Itinerary`,            sub: 'Day-by-day plan',    href: `/cities/${city.slug}`,                    city },
-      { label: `${city.name} Budget Guide`,         sub: 'Costs & tips',       href: `/cities/${city.slug}#budget`,             city },
-    );
-  });
-  return suggestions.slice(0, 8);
+  const citySuggestions: Suggestion[] = matchedCities.map((city) => ({
+    type: 'city',
+    label: city.name,
+    sub: city.country,
+    href: `/cities/${city.slug}`,
+    city,
+  }));
+
+  return [...countrySuggestions, ...citySuggestions].slice(0, 7);
 }
 
 // Highlight matching text in suggestion label
@@ -204,11 +225,18 @@ export default function HomePage() {
                           i === activeIdx ? 'bg-accent/8' : 'hover:bg-surface'
                         } ${i > 0 ? 'border-t border-border/40' : ''}`}
                       >
-                        <span className="text-lg flex-shrink-0">{s.city.flag}</span>
+                        <span className="text-lg flex-shrink-0">
+                          {s.type === 'country' ? s.flag : s.city.flag}
+                        </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-primary-text">
-                            <Highlight text={s.label} query={query} />
-                          </p>
+                          <div className="flex items-center gap-1.5">
+                            {s.type === 'country' && (
+                              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-accent/10 text-accent">Country</span>
+                            )}
+                            <p className="text-sm font-medium text-primary-text">
+                              <Highlight text={s.label} query={query} />
+                            </p>
+                          </div>
                           <p className="text-xs text-muted">{s.sub}</p>
                         </div>
                         <ArrowRight size={13} className="text-muted/50 flex-shrink-0" />
@@ -308,6 +336,39 @@ export default function HomePage() {
             </div>
 
 
+          </div>
+        </section>
+
+        {/* ── EXPLORE BY COUNTRY ── */}
+        <section className="py-14 bg-elevated/40">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">37 Countries</p>
+                <h2 className="font-heading text-3xl font-bold text-primary-text">Explore by Country</h2>
+                <p className="text-muted text-sm mt-1">Visa info, best time, top cities — all in one place</p>
+              </div>
+              <Link href="/countries" className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
+                All countries <ArrowRight size={13} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+              {['india','japan','thailand','indonesia','france','italy','united-kingdom','maldives',
+                'singapore','sri-lanka','malaysia','uae','nepal','vietnam','georgia','morocco']
+                .map(slug => countries.find(c => c.slug === slug))
+                .filter(Boolean)
+                .map(country => (
+                  <Link key={country!.slug} href={`/countries/${country!.slug}`}
+                    className="group flex flex-col items-center gap-2 bg-surface border border-border hover:border-accent/40 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md">
+                    <span className="text-3xl">{country!.flag}</span>
+                    <span className="text-xs font-semibold text-primary-text group-hover:text-accent transition-colors leading-tight">
+                      {country!.name}
+                    </span>
+                    <span className="text-[10px] text-muted">{country!.cities.length} cities</span>
+                  </Link>
+                ))}
+            </div>
           </div>
         </section>
 
