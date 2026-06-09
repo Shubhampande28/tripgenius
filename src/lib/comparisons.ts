@@ -1,6 +1,6 @@
 export const COMPARISONS = [
-  ['goa', 'bali'], ['bali', 'thailand'], ['manali', 'shimla'],
-  ['rishikesh', 'haridwar'], ['udaipur', 'jaipur'], ['goa', 'kerala'],
+  ['goa', 'bali'], ['manali', 'shimla'],
+  ['rishikesh', 'haridwar'], ['udaipur', 'jaipur'],
   ['ooty', 'munnar'], ['bangkok', 'bali'], ['dubai', 'singapore'],
   ['paris', 'rome'], ['tokyo', 'seoul'], ['manali', 'rishikesh'],
   ['goa', 'andaman'], ['ladakh', 'spiti'], ['darjeeling', 'ooty'],

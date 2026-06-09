@@ -71,14 +71,18 @@ export default async function CountryPage({ params }: Props) {
     .filter((c) => c.continent === country.continent && c.slug !== slug)
     .slice(0, 4);
   const countryCitySlugs = new Set(country.cities);
+  const countryCityNames = new Set(citiesData.map((c) => c.name.toLowerCase()));
   const bestTimeLinks = citiesData.filter((city) => !city.stub).slice(0, 12);
   const comparisonLinks = COMPARISONS
     .map(([a, b]) => ({ a, b, cityA: getCityBySlug(a), cityB: getCityBySlug(b), slug: comparisonSlug(a, b) }))
     .filter(({ a, b, cityA, cityB }) => cityA && cityB && (countryCitySlugs.has(a) || countryCitySlugs.has(b)))
     .slice(0, 8);
   const blogLinks = allPosts
-    .filter((post) => (post.citySlug && countryCitySlugs.has(post.citySlug)) || post.tags.some((tag) => tag.toLowerCase() === country.name.toLowerCase()))
-    .slice(0, 6);
+    .filter((post) =>
+      (post.citySlug && countryCitySlugs.has(post.citySlug)) ||
+      post.tags.some((tag) => tag.toLowerCase() === country.name.toLowerCase() || countryCityNames.has(tag.toLowerCase()))
+    )
+    .slice(0, 10);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
