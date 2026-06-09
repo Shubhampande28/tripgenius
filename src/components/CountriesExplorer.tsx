@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, Globe, ArrowRight } from 'lucide-react';
 import type { CountryData } from '@/data/countries';
+import { getCityImageUrl } from '@/lib/cityImages';
 
 // ─── Continent tab config ───────────────────────────────────────────────────
 const CONTINENT_TABS = [
@@ -12,6 +13,7 @@ const CONTINENT_TABS = [
   { label: 'Europe',   value: 'Europe',   emoji: '🏰' },
   { label: 'Africa',   value: 'Africa',   emoji: '🦁' },
   { label: 'Americas', value: 'Americas', emoji: '🌎' },
+  { label: 'Oceania',  value: 'Oceania',  emoji: '🦘' },
 ];
 
 const CONTINENT_COLORS: Record<string, { text: string; bg: string; border: string; bar: string }> = {
@@ -19,6 +21,7 @@ const CONTINENT_COLORS: Record<string, { text: string; bg: string; border: strin
   Europe:   { text: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/30',    bar: 'bg-blue-400' },
   Africa:   { text: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/30',   bar: 'bg-amber-400' },
   Americas: { text: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/30', bar: 'bg-emerald-400' },
+  Oceania:  { text: 'text-sky-400',     bg: 'bg-sky-400/10',     border: 'border-sky-400/30',     bar: 'bg-sky-400' },
 };
 
 // ─── Visa badge helper ──────────────────────────────────────────────────────
@@ -157,30 +160,48 @@ export default function CountriesExplorer({ countries }: Props) {
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {featured.map((country) => {
-              const visa = visaInfo(country.visaForIndians);
-              const cc   = CONTINENT_COLORS[country.continent];
+              const visa   = visaInfo(country.visaForIndians);
+              const imgUrl = country.cities.length > 0 ? getCityImageUrl(country.cities[0], 'card') : null;
               return (
                 <Link
                   key={country.slug}
                   href={`/countries/${country.slug}`}
-                  className="group relative overflow-hidden bg-surface border border-border hover:border-accent/50 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
+                  className="group relative overflow-hidden bg-surface border border-border hover:border-accent/50 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
                 >
-                  {/* continent stripe */}
-                  <div className={`absolute top-0 left-0 right-0 h-0.5 ${cc?.bar ?? 'bg-muted/20'}`} />
+                  {/* Photo header */}
+                  <div className="relative h-36 overflow-hidden">
+                    {imgUrl ? (
+                      <img
+                        src={imgUrl}
+                        alt={country.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
+                        <span className="text-5xl">{country.flag}</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xl">{country.flag}</span>
+                        <h3 className="font-heading text-sm font-bold text-white group-hover:text-teal-200 transition-colors leading-tight truncate">
+                          {country.name}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
 
-                  <div className="text-5xl mb-3 mt-1">{country.flag}</div>
-                  <h3 className="font-heading text-lg font-bold text-primary-text group-hover:text-accent transition-colors leading-tight mb-0.5">
-                    {country.name}
-                  </h3>
-                  <p className="text-xs text-muted mb-3">{country.capital}</p>
-
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${visa.cls}`}>
-                    {visa.dot} {visa.label}
-                  </span>
-
-                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent">
-                    <span>{country.cities.length} {country.cities.length === 1 ? 'city' : 'cities'}</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                  {/* Card body */}
+                  <div className="p-3">
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${visa.cls}`}>
+                      {visa.dot} {visa.label}
+                    </span>
+                    <div className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-accent">
+                      <span>{country.cities.length} {country.cities.length === 1 ? 'city' : 'cities'}</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
                   </div>
                 </Link>
               );
@@ -222,40 +243,57 @@ export default function CountriesExplorer({ countries }: Props) {
 
 // ═══════════════════════════════════════════════════════════════════════════
 function CountryCard({ country }: { country: CountryData }) {
-  const visa = visaInfo(country.visaForIndians);
-  const cc   = CONTINENT_COLORS[country.continent];
+  const visa   = visaInfo(country.visaForIndians);
+  const cc     = CONTINENT_COLORS[country.continent];
+  const imgUrl = country.cities.length > 0 ? getCityImageUrl(country.cities[0], 'card') : null;
 
   return (
     <Link
       href={`/countries/${country.slug}`}
       className="group flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/10"
     >
-      {/* continent accent bar */}
-      <div className={`h-0.5 w-full ${cc?.bar ?? 'bg-muted/20'}`} />
-
-      <div className="p-5 flex flex-col flex-1">
-        {/* Header row */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="text-4xl flex-shrink-0">{country.flag}</span>
-            <div className="min-w-0">
-              <h3 className="font-semibold text-primary-text group-hover:text-accent transition-colors truncate">
-                {country.name}
-              </h3>
-              <p className="text-xs text-muted truncate">{country.capital}</p>
-            </div>
+      {/* Photo header */}
+      <div className="relative h-44 overflow-hidden flex-shrink-0">
+        {imgUrl ? (
+          <img
+            src={imgUrl}
+            alt={`${country.name} travel guide`}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
+            <span className="text-6xl">{country.flag}</span>
           </div>
-          <span className={`flex-shrink-0 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border ml-2 ${cc?.text ?? 'text-muted'} ${cc?.border ?? 'border-border'} ${cc?.bg ?? 'bg-elevated'}`}>
-            {country.continent}
-          </span>
+        )}
+        {/* gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+        {/* continent bar */}
+        <div className={`absolute top-0 left-0 right-0 h-0.5 ${cc?.bar ?? 'bg-muted/30'}`} />
+        {/* continent badge */}
+        <span className={`absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm ${cc?.text ?? 'text-white/70'}`}>
+          {country.continent}
+        </span>
+        {/* country name over photo */}
+        <div className="absolute bottom-3 left-4 right-4">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-2xl leading-none">{country.flag}</span>
+            <h3 className="font-heading text-base font-bold text-white group-hover:text-teal-200 transition-colors leading-tight">
+              {country.name}
+            </h3>
+          </div>
+          <p className="text-xs text-white/60 ml-8">{country.capital}</p>
         </div>
+      </div>
 
+      {/* Card body */}
+      <div className="p-4 flex flex-col flex-1">
         {/* Stats */}
-        <div className="space-y-2 mb-4 text-xs">
+        <div className="space-y-1.5 mb-3 text-xs">
           {[
-            { label: 'Best time',  value: country.bestTime },
-            { label: 'Language',   value: country.language },
-            { label: 'Currency',   value: country.currency },
+            { label: 'Best time', value: country.bestTime },
+            { label: 'Currency',  value: country.currency },
+            { label: 'Language',  value: country.language },
           ].map((s) => (
             <div key={s.label} className="flex items-center justify-between gap-4">
               <span className="text-muted flex-shrink-0">{s.label}</span>
@@ -265,7 +303,7 @@ function CountryCard({ country }: { country: CountryData }) {
         </div>
 
         {/* Visa */}
-        <span className={`self-start text-xs font-semibold px-2.5 py-1 rounded-full border ${visa.cls} mb-4`}>
+        <span className={`self-start text-xs font-semibold px-2.5 py-1 rounded-full border ${visa.cls} mb-3`}>
           {visa.dot} {visa.label}
         </span>
 

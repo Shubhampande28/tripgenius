@@ -9,7 +9,7 @@ const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
   title: 'Travel Guides by Country — Best Places to Visit Worldwide | TripGenius',
-  description: 'Explore honest travel guides for 37 countries. Visa requirements for Indians, best time to visit, top cities, daily budgets and local tips — all in one place.',
+  description: 'Explore honest travel guides for 49 countries. Visa requirements for Indians, best time to visit, top cities, daily budgets and local tips — all in one place.',
   keywords: [
     'countries to visit', 'travel guides by country', 'best countries to visit',
     'international travel guide india', 'visa free countries for indians',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${BASE}/countries` },
   openGraph: {
     title: 'Travel Guides by Country | TripGenius',
-    description: 'Honest guides for 37 countries — visa info, best time to visit, top cities, and real budgets.',
+    description: 'Honest guides for 49 countries — visa info, best time to visit, top cities, and real budgets.',
     url: `${BASE}/countries`,
     type: 'website',
   },
