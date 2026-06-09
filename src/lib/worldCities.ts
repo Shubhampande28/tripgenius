@@ -9,6 +9,7 @@ type AddedCityData = {
   gradient: string;
   accentColor: string;
   photo: string;
+  state?: string;
   bestTime: string;
   budget: string;
   language: string;
@@ -20,14 +21,20 @@ type AddedCityData = {
 };
 
 const makeAddedCityGuide = (city: AddedCityData): City => {
-  const icons = ['*', '*', '*', '*', '*', '*'];
-  const durations = ['1-2 hrs', '2-3 hrs', 'Half day', 'Half day', '2-4 hrs', 'Full day'];
-  const categories = ['Iconic', 'Cultural', 'Nature', 'Food', 'Local', 'Day trip'];
+  const icons = ['*', '*', '*', '*', '*', '*', '*', '*'];
+  const durations = ['1-2 hrs', '2-3 hrs', 'Half day', 'Half day', '2-4 hrs', 'Full day', '2-3 hrs', 'Half day'];
+  const categories = ['Iconic', 'Cultural', 'Nature', 'Food', 'Local', 'Day trip', 'Hidden gem', 'Neighbourhood'];
+  const groups = [
+    { name: 'Essential Core', tagline: 'First-time landmarks and classic routes', emoji: '1', items: city.highlights.slice(0, 3) },
+    { name: 'Local Culture & Food', tagline: 'Markets, museums, old quarters, and food streets', emoji: '2', items: city.highlights.slice(3, 6) },
+    { name: 'Nature & Easy Escapes', tagline: 'Viewpoints, beaches, parks, and day trips', emoji: '3', items: city.highlights.slice(6, 9) },
+  ].filter((group) => group.items.length > 0);
 
   return {
     slug: city.slug,
     name: city.name,
     country: city.country,
+    state: city.state,
     flag: city.flag,
     tagline: city.tagline,
     gradient: city.gradient,
@@ -41,9 +48,20 @@ const makeAddedCityGuide = (city: AddedCityData): City => {
     thingsToDo: city.highlights.map((name, index) => ({
       name,
       description: `${name} is one of ${city.name}'s signature experiences. Plan it with a relaxed buffer, book timed-entry or transport ahead in peak season, and pair it with a nearby meal or neighbourhood walk for the best rhythm.`,
-      icon: icons[index],
-      duration: durations[index],
-      category: categories[index],
+      icon: icons[index % icons.length],
+      duration: durations[index % durations.length],
+      category: categories[index % categories.length],
+    })),
+    areas: groups.map((group) => ({
+      name: group.name,
+      emoji: group.emoji,
+      accentColor: city.accentColor,
+      image: `https://images.unsplash.com/${city.photo}?auto=format&fit=crop&w=600&q=80`,
+      tagline: group.tagline,
+      spots: group.items.map((spot, index) => ({
+        name: spot,
+        tag: index === 0 ? 'Must-see' : index === 1 ? 'Pair nearby' : 'Add-on',
+      })),
     })),
   };
 };
@@ -630,6 +648,204 @@ const addedWorldCities: City[] = [
     heroDescription: 'Fujairah faces the Gulf of Oman rather than the Arabian Gulf, giving the UAE a rugged mountain-and-sea escape with forts, beaches, and diving.',
     description: 'It is a strong weekend add-on from Dubai for snorkelling, quieter resorts, and Hajar Mountain scenery.',
     highlights: ['Al Bidya Mosque', 'Fujairah Fort', 'Snoopy Island', 'Dibba Coast', 'Wadi Wurayah', 'Umbrella Beach'],
+  },
+  {
+    slug: 'cebu', name: 'Cebu', country: 'Philippines', state: 'Central Visayas', flag: '🇵🇭', tagline: 'Islands & Waterfalls', gradient: 'from-cyan-700 to-emerald-500', accentColor: '#0891B2', photo: 'photo-1507525428034-b723cf961d3e', bestTime: 'Dec - May', budget: 'PHP 3000-9000/day', language: 'Filipino, Cebuano, English', currency: 'PHP', vibes: ['Islands', 'Diving', 'Food'],
+    heroDescription: 'Cebu blends city history with island-hopping, whale shark routes, waterfalls, sardine runs, and some of the Philippines\' easiest beach logistics.',
+    description: 'Use Cebu City for heritage, then move south or offshore for the best water experiences.',
+    highlights: ['Magellan\'s Cross', 'Basilica del Santo Nino', 'Kawasan Falls', 'Moalboal Sardine Run', 'Oslob Whale Shark Watching', 'Mactan Island Resorts', 'Tops Lookout'],
+  },
+  {
+    slug: 'bohol', name: 'Bohol', country: 'Philippines', state: 'Central Visayas', flag: '🇵🇭', tagline: 'Chocolate Hills & Reefs', gradient: 'from-emerald-700 to-amber-500', accentColor: '#16A34A', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'Dec - May', budget: 'PHP 2800-8500/day', language: 'Filipino, Cebuano, English', currency: 'PHP', vibes: ['Nature', 'Beaches', 'Wildlife'],
+    heroDescription: 'Bohol is a compact island of Chocolate Hills, tiny tarsiers, river cruises, reef beaches, and easy family-friendly touring.',
+    description: 'It pairs well with Cebu and gives a softer nature-focused island experience than Boracay.',
+    highlights: ['Chocolate Hills', 'Philippine Tarsier Sanctuary', 'Loboc River Cruise', 'Panglao Island', 'Alona Beach', 'Balicasag Island', 'Hinagdanan Cave'],
+  },
+  {
+    slug: 'battambang', name: 'Battambang', country: 'Cambodia', state: 'Battambang Province', flag: '🇰🇭', tagline: 'Colonial Cambodia', gradient: 'from-amber-700 to-orange-500', accentColor: '#D97706', photo: 'photo-1528181304800-259b08848526', bestTime: 'Nov - Feb', budget: 'USD 25-80/day', language: 'Khmer, English', currency: 'KHR / USD', vibes: ['Heritage', 'Countryside', 'Food'],
+    heroDescription: 'Battambang is Cambodia at a slower pace: French-era streets, rice fields, hill temples, art cafes, and countryside rides.',
+    description: 'It is a rewarding stop between Phnom Penh and Siem Reap for travellers who like local texture.',
+    highlights: ['Bamboo Train', 'Phnom Sampov Bat Caves', 'Wat Banan', 'Battambang Old Town', 'Romcheik 5 Art Space', 'Local Market Walk', 'Countryside Cycling'],
+  },
+  {
+    slug: 'kampot', name: 'Kampot', country: 'Cambodia', state: 'Kampot Province', flag: '🇰🇭', tagline: 'Pepper & River Town', gradient: 'from-emerald-700 to-cyan-500', accentColor: '#059669', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'Nov - Mar', budget: 'USD 25-90/day', language: 'Khmer, English', currency: 'KHR / USD', vibes: ['River', 'Food', 'Slow travel'],
+    heroDescription: 'Kampot is a riverside town known for pepper farms, colonial shophouses, Bokor Mountain, sunsets, and laid-back guesthouses.',
+    description: 'It is Cambodia\'s best slow-travel base near the coast, with Kep and crab shacks close by.',
+    highlights: ['Kampot Pepper Farm', 'Bokor National Park', 'Kampot River Cruise', 'Old Market Area', 'Kep Crab Market', 'Salt Fields', 'La Plantation'],
+  },
+  {
+    slug: 'aqaba', name: 'Aqaba', country: 'Jordan', state: 'Aqaba Governorate', flag: '🇯🇴', tagline: 'Red Sea Jordan', gradient: 'from-cyan-700 to-orange-500', accentColor: '#0891B2', photo: 'photo-1507525428034-b723cf961d3e', bestTime: 'Oct - Apr', budget: 'JOD 45-140/day', language: 'Arabic, English', currency: 'JOD', vibes: ['Beach', 'Diving', 'Resort'],
+    heroDescription: 'Aqaba gives Jordan a Red Sea finish: coral reefs, resort beaches, glass-bottom boats, diving, and easy access from Wadi Rum.',
+    description: 'It works best as a two-night decompression stop after Petra and desert touring.',
+    highlights: ['South Beach', 'Japanese Garden Reef', 'Aqaba Fort', 'Ayla Marina', 'Glass-Bottom Boat', 'Berenice Beach Club', 'Wadi Rum Transfer'],
+  },
+  {
+    slug: 'dead-sea-jordan', name: 'Dead Sea', country: 'Jordan', state: 'Madaba / Balqa', flag: '🇯🇴', tagline: 'Float at Earth\'s Lowest Point', gradient: 'from-amber-700 to-blue-500', accentColor: '#B45309', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'Mar - May, Sep - Nov', budget: 'JOD 45-170/day', language: 'Arabic, English', currency: 'JOD', vibes: ['Wellness', 'Nature', 'Day trip'],
+    heroDescription: 'Jordan\'s Dead Sea coast is the lowest point on earth, famous for effortless floating, mineral mud, desert cliffs, and dramatic sunsets.',
+    description: 'Most travellers visit from Amman or Madaba, but a resort night makes the experience calmer.',
+    highlights: ['Dead Sea Floating', 'Mineral Mud Bath', 'Wadi Mujib', 'Mount Nebo', 'Madaba Mosaics', 'Resort Day Pass', 'Sunset Viewpoints'],
+  },
+  {
+    slug: 'zermatt', name: 'Zermatt', country: 'Switzerland', state: 'Valais', flag: '🇨🇭', tagline: 'Matterhorn Village', gradient: 'from-slate-800 to-sky-500', accentColor: '#475569', photo: 'photo-1506905925346-21bda4d32df4', bestTime: 'Jun - Sep, Dec - Mar', budget: 'CHF 160-420/day', language: 'German, French, English', currency: 'CHF', vibes: ['Mountains', 'Ski', 'Hiking'],
+    heroDescription: 'Zermatt is Switzerland\'s car-free alpine icon, built around Matterhorn views, mountain railways, glacier routes, skiing, and high-altitude hikes.',
+    description: 'It is expensive, but few mountain towns deliver such reliable spectacle from breakfast to sunset.',
+    highlights: ['Matterhorn Viewpoints', 'Gornergrat Railway', 'Klein Matterhorn', 'Five Lakes Walk', 'Sunnegga', 'Matterhorn Museum', 'Findeln Hamlet'],
+  },
+  {
+    slug: 'lausanne', name: 'Lausanne', country: 'Switzerland', state: 'Vaud', flag: '🇨🇭', tagline: 'Lake Geneva Hills', gradient: 'from-blue-700 to-emerald-500', accentColor: '#2563EB', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'May - Sep', budget: 'CHF 130-330/day', language: 'French, English', currency: 'CHF', vibes: ['Lake', 'Wine', 'Culture'],
+    heroDescription: 'Lausanne climbs from Lake Geneva into steep old-town lanes, with Olympic history, lake promenades, vineyards, and Alps across the water.',
+    description: 'It is a refined Swiss base for slower lake travel and Lavaux wine terraces.',
+    highlights: ['Olympic Museum', 'Lausanne Cathedral', 'Ouchy Promenade', 'Lavaux Vineyards', 'Collection de l\'Art Brut', 'Sauvabelin Tower', 'Lake Geneva Cruise'],
+  },
+  {
+    slug: 'basel', name: 'Basel', country: 'Switzerland', state: 'Basel-Stadt', flag: '🇨🇭', tagline: 'Art on the Rhine', gradient: 'from-red-700 to-blue-500', accentColor: '#B91C1C', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'May - Sep, Dec', budget: 'CHF 130-330/day', language: 'German, English', currency: 'CHF', vibes: ['Art', 'Museums', 'River'],
+    heroDescription: 'Basel is Switzerland\'s museum capital, set on the Rhine with medieval streets, modern architecture, Christmas markets, and easy France-Germany edges.',
+    description: 'It is excellent for art lovers and a smart add-on to northern Switzerland itineraries.',
+    highlights: ['Kunstmuseum Basel', 'Basel Minster', 'Rhine River Walk', 'Tinguely Museum', 'Old Town', 'Vitra Design Museum', 'Marktplatz'],
+  },
+  {
+    slug: 'frankfurt', name: 'Frankfurt', country: 'Germany', state: 'Hesse', flag: '🇩🇪', tagline: 'Skyline & Museums', gradient: 'from-slate-800 to-blue-500', accentColor: '#334155', photo: 'photo-1467269204594-9661b134dd2b', bestTime: 'May - Sep, Dec', budget: 'EUR 80-220/day', language: 'German, English', currency: 'EUR', vibes: ['Museums', 'Finance', 'Transit'],
+    heroDescription: 'Frankfurt is Germany\'s airport gateway and financial capital, but its river museums, old square, apple-wine taverns, and skyline are worth a stop.',
+    description: 'It is especially useful for breaking long-haul journeys into Europe.',
+    highlights: ['Romerberg', 'Main Tower', 'Stadel Museum', 'Museumsufer', 'Sachsenhausen Apple Wine', 'Palmengarten', 'Heidelberg Day Trip'],
+  },
+  {
+    slug: 'cologne', name: 'Cologne', country: 'Germany', state: 'North Rhine-Westphalia', flag: '🇩🇪', tagline: 'Cathedral on the Rhine', gradient: 'from-stone-800 to-amber-500', accentColor: '#B45309', photo: 'photo-1513622470522-26c3c8a854bc', bestTime: 'May - Sep, Dec', budget: 'EUR 75-210/day', language: 'German, English', currency: 'EUR', vibes: ['Cathedral', 'River', 'Beer halls'],
+    heroDescription: 'Cologne is a Rhine city with one of Europe\'s greatest cathedrals, Roman history, riverside walks, museums, and cheerful Kolsch beer halls.',
+    description: 'It is compact, friendly, and easy to combine with Dusseldorf or Bonn.',
+    highlights: ['Cologne Cathedral', 'Hohenzollern Bridge', 'Ludwig Museum', 'Old Town', 'Chocolate Museum', 'Kolsch Beer Hall', 'Rhine Cruise'],
+  },
+  {
+    slug: 'dresden', name: 'Dresden', country: 'Germany', state: 'Saxony', flag: '🇩🇪', tagline: 'Baroque Elbe City', gradient: 'from-amber-800 to-slate-600', accentColor: '#B45309', photo: 'photo-1467269204594-9661b134dd2b', bestTime: 'May - Sep, Dec', budget: 'EUR 70-190/day', language: 'German, English', currency: 'EUR', vibes: ['Baroque', 'Museums', 'River'],
+    heroDescription: 'Dresden is a restored baroque masterpiece on the Elbe, with palaces, galleries, opera, river terraces, and Saxon Switzerland nearby.',
+    description: 'It is one of Germany\'s most handsome cultural cities and good value compared with Munich.',
+    highlights: ['Frauenkirche', 'Zwinger Palace', 'Semperoper', 'Green Vault', 'Bruhl\'s Terrace', 'Neustadt Street Art', 'Saxon Switzerland'],
+  },
+  {
+    slug: 'brisbane', name: 'Brisbane', country: 'Australia', state: 'Queensland', flag: '🇦🇺', tagline: 'River City Sunshine', gradient: 'from-yellow-600 to-blue-500', accentColor: '#CA8A04', photo: 'photo-1506973035872-a4ec16b8e8d9', bestTime: 'Mar - May, Sep - Nov', budget: 'AUD 100-260/day', language: 'English', currency: 'AUD', vibes: ['River', 'Food', 'Gateway'],
+    heroDescription: 'Brisbane is a sunny river city with galleries, rooftop bars, koala encounters, markets, and easy access to Moreton Bay and the Gold Coast.',
+    description: 'It is relaxed, warm, and increasingly strong for food and culture.',
+    highlights: ['South Bank Parklands', 'Lone Pine Koala Sanctuary', 'Gallery of Modern Art', 'Story Bridge', 'Howard Smith Wharves', 'Moreton Island', 'Mount Coot-tha'],
+  },
+  {
+    slug: 'perth', name: 'Perth', country: 'Australia', state: 'Western Australia', flag: '🇦🇺', tagline: 'Indian Ocean Capital', gradient: 'from-cyan-700 to-yellow-500', accentColor: '#0891B2', photo: 'photo-1509021436693-dfce9fd8edfe', bestTime: 'Sep - Nov, Mar - May', budget: 'AUD 110-280/day', language: 'English', currency: 'AUD', vibes: ['Beaches', 'Wine', 'Nature'],
+    heroDescription: 'Perth is Australia\'s west-coast capital, built around Indian Ocean beaches, Kings Park, Swan River, island quokkas, and nearby wine country.',
+    description: 'It suits travellers who want sunshine and space without east-coast crowds.',
+    highlights: ['Kings Park', 'Cottesloe Beach', 'Fremantle', 'Rottnest Island', 'Swan Valley', 'Elizabeth Quay', 'Scarborough Beach'],
+  },
+  {
+    slug: 'adelaide', name: 'Adelaide', country: 'Australia', state: 'South Australia', flag: '🇦🇺', tagline: 'Wine & Festivals', gradient: 'from-red-700 to-amber-500', accentColor: '#B91C1C', photo: 'photo-1545044846-351ba102b6d5', bestTime: 'Mar - May, Sep - Nov', budget: 'AUD 100-250/day', language: 'English', currency: 'AUD', vibes: ['Wine', 'Food', 'Festivals'],
+    heroDescription: 'Adelaide is a graceful, food-loving city ringed by wine regions, beaches, markets, galleries, and festival energy.',
+    description: 'It is quieter than Sydney and Melbourne, but excellent for wine, food, and Kangaroo Island extensions.',
+    highlights: ['Central Market', 'Art Gallery of South Australia', 'Glenelg Beach', 'Barossa Valley', 'Adelaide Hills', 'McLaren Vale', 'Kangaroo Island'],
+  },
+  {
+    slug: 'hobart', name: 'Hobart', country: 'Australia', state: 'Tasmania', flag: '🇦🇺', tagline: 'Tasmanian Harbour', gradient: 'from-blue-800 to-emerald-500', accentColor: '#1D4ED8', photo: 'photo-1506905925346-21bda4d32df4', bestTime: 'Dec - Mar', budget: 'AUD 110-280/day', language: 'English', currency: 'AUD', vibes: ['Harbour', 'Wilderness', 'Food'],
+    heroDescription: 'Hobart sits between a working harbour and kunanyi/Mount Wellington, with convict history, markets, seafood, MONA, and wilderness day trips.',
+    description: 'It is the best base for a Tasmania introduction and feels distinct from mainland Australia.',
+    highlights: ['Salamanca Market', 'MONA', 'Mount Wellington', 'Battery Point', 'Port Arthur', 'Bruny Island', 'Farm Gate Market'],
+  },
+  {
+    slug: 'montreal', name: 'Montreal', country: 'Canada', state: 'Quebec', flag: '🇨🇦', tagline: 'French-Canadian Cool', gradient: 'from-blue-800 to-red-500', accentColor: '#1D4ED8', photo: 'photo-1516747773236-7adb06e3c5bd', bestTime: 'Jun - Oct, Dec', budget: 'CAD 110-280/day', language: 'French, English', currency: 'CAD', vibes: ['Food', 'Festivals', 'Old town'],
+    heroDescription: 'Montreal mixes French language, North American energy, old-port lanes, bagels, festivals, parks, and one of Canada\'s best food scenes.',
+    description: 'It is lively, walkable, and a superb Canada city break.',
+    highlights: ['Old Montreal', 'Notre-Dame Basilica', 'Mount Royal', 'Jean-Talon Market', 'Mile End Bagels', 'Old Port', 'Plateau Murals'],
+  },
+  {
+    slug: 'ottawa', name: 'Ottawa', country: 'Canada', state: 'Ontario', flag: '🇨🇦', tagline: 'Capital by the Canal', gradient: 'from-red-700 to-blue-500', accentColor: '#B91C1C', photo: 'photo-1516747773236-7adb06e3c5bd', bestTime: 'May - Oct, Feb', budget: 'CAD 100-260/day', language: 'English, French', currency: 'CAD', vibes: ['Museums', 'Capital', 'Canal'],
+    heroDescription: 'Ottawa is Canada\'s capital, built around Parliament Hill, national museums, the Rideau Canal, markets, and easy Gatineau nature escapes.',
+    description: 'It is calmer than Toronto or Montreal and very strong for families and museum days.',
+    highlights: ['Parliament Hill', 'National Gallery of Canada', 'ByWard Market', 'Rideau Canal', 'Canadian Museum of History', 'Gatineau Park', 'Diefenbunker Museum'],
+  },
+  {
+    slug: 'calgary', name: 'Calgary', country: 'Canada', state: 'Alberta', flag: '🇨🇦', tagline: 'Rockies Gateway', gradient: 'from-sky-700 to-amber-500', accentColor: '#0284C7', photo: 'photo-1502989642968-94fbdc9b4bce', bestTime: 'Jun - Sep', budget: 'CAD 110-290/day', language: 'English', currency: 'CAD', vibes: ['Gateway', 'Food', 'Mountains'],
+    heroDescription: 'Calgary is the easiest launchpad for Banff and the Rockies, with western heritage, riverside paths, food halls, and the famous Stampede.',
+    description: 'Use it for arrival logistics, but give it a day if your timing allows.',
+    highlights: ['Calgary Tower', 'Stephen Avenue', 'Studio Bell', 'Prince\'s Island Park', 'Heritage Park', 'Calgary Stampede', 'Banff Transfer'],
+  },
+  {
+    slug: 'victoria', name: 'Victoria', country: 'Canada', state: 'British Columbia', flag: '🇨🇦', tagline: 'Garden Harbour City', gradient: 'from-emerald-700 to-pink-500', accentColor: '#059669', photo: 'photo-1559139355-6dff7e79e7eb', bestTime: 'May - Sep', budget: 'CAD 110-300/day', language: 'English', currency: 'CAD', vibes: ['Gardens', 'Harbour', 'Slow travel'],
+    heroDescription: 'Victoria is British Columbia\'s elegant island capital, known for gardens, harbour walks, tea rooms, whale watching, and a mild coastal pace.',
+    description: 'It is a gentle add-on from Vancouver by ferry or seaplane.',
+    highlights: ['Butchart Gardens', 'Inner Harbour', 'Royal BC Museum', 'Fisherman\'s Wharf', 'Craigdarroch Castle', 'Whale Watching', 'Beacon Hill Park'],
+  },
+  {
+    slug: 'christchurch', name: 'Christchurch', country: 'New Zealand', state: 'Canterbury', flag: '🇳🇿', tagline: 'Garden City Reborn', gradient: 'from-emerald-700 to-sky-500', accentColor: '#059669', photo: 'photo-1506905925346-21bda4d32df4', bestTime: 'Nov - Mar', budget: 'NZD 110-280/day', language: 'English', currency: 'NZD', vibes: ['Gardens', 'Gateway', 'Design'],
+    heroDescription: 'Christchurch is a resilient South Island city of gardens, street art, riverside redevelopment, Antarctic history, and road-trip departures.',
+    description: 'It is a practical and pleasant start for South Island routes.',
+    highlights: ['Botanic Gardens', 'Riverside Market', 'Christchurch Tram', 'Quake City', 'International Antarctic Centre', 'Port Hills', 'Akaroa Day Trip'],
+  },
+  {
+    slug: 'wanaka', name: 'Wanaka', country: 'New Zealand', state: 'Otago', flag: '🇳🇿', tagline: 'Lake & Mountain Calm', gradient: 'from-blue-800 to-emerald-500', accentColor: '#1D4ED8', photo: 'photo-1506905925346-21bda4d32df4', bestTime: 'Dec - Mar, Jun - Aug', budget: 'NZD 120-320/day', language: 'English', currency: 'NZD', vibes: ['Lake', 'Hikes', 'Adventure'],
+    heroDescription: 'Wanaka is Queenstown\'s calmer cousin, with lake views, big hikes, ski fields, wineries, and a strong outdoorsy rhythm.',
+    description: 'It is ideal for travellers who want scenery without constant crowds.',
+    highlights: ['That Wanaka Tree', 'Roys Peak', 'Lake Wanaka', 'Puzzling World', 'Rob Roy Glacier Track', 'Cardrona', 'Mount Aspiring National Park'],
+  },
+  {
+    slug: 'dunedin', name: 'Dunedin', country: 'New Zealand', state: 'Otago', flag: '🇳🇿', tagline: 'Wildlife & Heritage', gradient: 'from-slate-800 to-emerald-500', accentColor: '#334155', photo: 'photo-1507699622108-4be3abd695ad', bestTime: 'Dec - Mar', budget: 'NZD 100-260/day', language: 'English', currency: 'NZD', vibes: ['Wildlife', 'Student town', 'Heritage'],
+    heroDescription: 'Dunedin combines Scottish heritage, student energy, dramatic beaches, penguins, albatross colonies, and Otago Peninsula wildlife.',
+    description: 'It adds a wilder, quirkier South Island stop beyond the usual alpine route.',
+    highlights: ['Dunedin Railway Station', 'Otago Peninsula', 'Larnach Castle', 'Tunnel Beach', 'Royal Albatross Centre', 'Baldwin Street', 'Speight\'s Brewery'],
+  },
+  {
+    slug: 'zadar', name: 'Zadar', country: 'Croatia', state: 'Dalmatia', flag: '🇭🇷', tagline: 'Sea Organ Sunsets', gradient: 'from-cyan-700 to-orange-500', accentColor: '#0891B2', photo: 'photo-1555990793-da11153b8a4e', bestTime: 'May - Jun, Sep - Oct', budget: 'EUR 65-200/day', language: 'Croatian, English', currency: 'EUR', vibes: ['Coast', 'Roman', 'Sunsets'],
+    heroDescription: 'Zadar is a compact Dalmatian city of Roman ruins, Venetian gates, island ferries, and sunset art installations on the waterfront.',
+    description: 'It is a good-value coast base with easy access to national parks.',
+    highlights: ['Sea Organ', 'Greeting to the Sun', 'Roman Forum', 'St Donatus Church', 'Zadar Old Town', 'Kornati Islands', 'Krka National Park'],
+  },
+  {
+    slug: 'plitvice-lakes', name: 'Plitvice Lakes', country: 'Croatia', state: 'Lika-Senj / Karlovac', flag: '🇭🇷', tagline: 'Waterfall National Park', gradient: 'from-emerald-700 to-cyan-500', accentColor: '#059669', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'May - Jun, Sep - Oct', budget: 'EUR 60-180/day', language: 'Croatian, English', currency: 'EUR', vibes: ['Waterfalls', 'Nature', 'UNESCO'],
+    heroDescription: 'Plitvice Lakes is Croatia\'s most famous national park, a chain of turquoise lakes, forest boardwalks, cascades, and misty viewpoints.',
+    description: 'Stay nearby overnight to enter early before day-trip crowds arrive.',
+    highlights: ['Lower Lakes', 'Great Waterfall', 'Upper Lakes', 'Boardwalk Trails', 'Electric Boat Ride', 'Veliki Slap Viewpoint', 'Early Morning Walk'],
+  },
+  {
+    slug: 'rovinj', name: 'Rovinj', country: 'Croatia', state: 'Istria', flag: '🇭🇷', tagline: 'Istrian Seaside Romance', gradient: 'from-rose-700 to-cyan-500', accentColor: '#BE123C', photo: 'photo-1555990793-da110a1b7f88', bestTime: 'May - Jun, Sep - Oct', budget: 'EUR 75-230/day', language: 'Croatian, Italian, English', currency: 'EUR', vibes: ['Old town', 'Seafood', 'Romantic'],
+    heroDescription: 'Rovinj is Istria\'s prettiest coastal town, with pastel lanes climbing to a hilltop church, harbour restaurants, pine beaches, and Italian influence.',
+    description: 'It is a strong alternative to crowded Dalmatia for couples and food lovers.',
+    highlights: ['Old Town Lanes', 'St Euphemia Church', 'Rovinj Harbour', 'Punta Corrente Park', 'Golden Cape Beaches', 'Istrian Truffle Trip', 'Lim Fjord'],
+  },
+  {
+    slug: 'gangtey', name: 'Gangtey', country: 'Bhutan', state: 'Wangdue Phodrang', flag: '🇧🇹', tagline: 'Phobjikha Valley', gradient: 'from-emerald-800 to-amber-500', accentColor: '#047857', photo: 'photo-1544735716-392fe2489ffa', bestTime: 'Mar - May, Oct - Nov', budget: 'BTN 6000-18000/day', language: 'Dzongkha, English', currency: 'BTN', vibes: ['Valley', 'Cranes', 'Monastery'],
+    heroDescription: 'Gangtey looks over the wide Phobjikha Valley, a quiet glacial bowl known for black-necked cranes, village trails, and a grand hilltop monastery.',
+    description: 'It is one of Bhutan\'s best slow-travel valleys and a gentle contrast to Paro and Thimphu.',
+    highlights: ['Gangtey Monastery', 'Phobjikha Valley', 'Black-Necked Crane Centre', 'Gangtey Nature Trail', 'Village Homestay', 'Prayer Flag Viewpoints', 'Crane Festival'],
+  },
+  {
+    slug: 'bumthang', name: 'Bumthang', country: 'Bhutan', state: 'Bumthang', flag: '🇧🇹', tagline: 'Spiritual Heartland', gradient: 'from-orange-700 to-emerald-600', accentColor: '#EA580C', photo: 'photo-1544735716-392fe2489ffa', bestTime: 'Mar - May, Sep - Nov', budget: 'BTN 6500-19000/day', language: 'Dzongkha, English', currency: 'BTN', vibes: ['Temples', 'Valleys', 'Culture'],
+    heroDescription: 'Bumthang is Bhutan\'s spiritual heartland, a cluster of valleys filled with ancient temples, farmhouses, festivals, and mountain roads.',
+    description: 'It takes effort to reach, but rewards travellers seeking deeper Bhutan beyond the western circuit.',
+    highlights: ['Jambay Lhakhang', 'Kurjey Lhakhang', 'Jakar Dzong', 'Mebar Tsho', 'Red Panda Brewery', 'Bumthang Valley Walks', 'Local Farmhouse Meal'],
+  },
+  {
+    slug: 'fergana', name: 'Fergana', country: 'Uzbekistan', state: 'Fergana Valley', flag: '🇺🇿', tagline: 'Craft Valley', gradient: 'from-emerald-700 to-cyan-500', accentColor: '#059669', photo: 'photo-1553564552-02656c9e3b7c', bestTime: 'Apr - Jun, Sep - Oct', budget: 'USD 30-90/day', language: 'Uzbek, Russian', currency: 'UZS', vibes: ['Crafts', 'Markets', 'Valley'],
+    heroDescription: 'Fergana opens the fertile Fergana Valley, known for silk, ceramics, bazaars, orchard landscapes, and a more local Uzbekistan rhythm.',
+    description: 'It is best for travellers who have already covered Samarkand and Bukhara and want craft towns.',
+    highlights: ['Margilan Silk Factory', 'Rishtan Ceramics', 'Kokand Palace', 'Fergana Bazaar', 'Al-Fergani Park', 'Valley Food Walk', 'Yodgorlik Workshop'],
+  },
+  {
+    slug: 'nukus', name: 'Nukus', country: 'Uzbekistan', state: 'Karakalpakstan', flag: '🇺🇿', tagline: 'Desert Art Gateway', gradient: 'from-yellow-800 to-slate-500', accentColor: '#A16207', photo: 'photo-1573676048232-7c86dca15d7a', bestTime: 'Apr - Jun, Sep - Oct', budget: 'USD 35-100/day', language: 'Uzbek, Karakalpak, Russian', currency: 'UZS', vibes: ['Art', 'Desert', 'Remote'],
+    heroDescription: 'Nukus is remote but remarkable, famous for the Savitsky Museum and as a gateway to Karakalpakstan and the Aral Sea region.',
+    description: 'It is for curious travellers who want Uzbekistan beyond the classic Silk Road triangle.',
+    highlights: ['Savitsky Museum', 'Nukus Bazaar', 'Mizdakhan Necropolis', 'Aral Sea Day Trip', 'Moynaq Ship Cemetery', 'Karakalpak Culture Museum', 'Desert Road Trip'],
+  },
+  {
+    slug: 'amboseli', name: 'Amboseli', country: 'Kenya', state: 'Kajiado County', flag: '🇰🇪', tagline: 'Elephants Below Kilimanjaro', gradient: 'from-yellow-700 to-emerald-600', accentColor: '#CA8A04', photo: 'photo-1547471080-7cc2caa01a7e', bestTime: 'Jun - Oct, Jan - Feb', budget: 'USD 160-650/day', language: 'Swahili, English', currency: 'KES', vibes: ['Safari', 'Elephants', 'Views'],
+    heroDescription: 'Amboseli is Kenya\'s classic elephant park, where herds move across open plains under the snow-capped silhouette of Kilimanjaro.',
+    description: 'It pairs well with Nairobi and is excellent for photographers when the mountain is clear.',
+    highlights: ['Elephant Herds', 'Kilimanjaro Viewpoints', 'Observation Hill', 'Morning Game Drive', 'Maasai Village Visit', 'Wetland Birding', 'Sundowner Safari'],
+  },
+  {
+    slug: 'nakuru', name: 'Lake Nakuru', country: 'Kenya', state: 'Nakuru County', flag: '🇰🇪', tagline: 'Lake & Rhino Safari', gradient: 'from-pink-700 to-emerald-600', accentColor: '#BE123C', photo: 'photo-1547471080-7cc2caa01a7e', bestTime: 'Jun - Oct, Jan - Feb', budget: 'USD 120-450/day', language: 'Swahili, English', currency: 'KES', vibes: ['Lake', 'Rhinos', 'Birding'],
+    heroDescription: 'Lake Nakuru is a compact national park known for rhinos, lake views, acacia woodland, birdlife, and easy road access from Nairobi.',
+    description: 'It is a strong one-night safari stop on a Kenya circuit.',
+    highlights: ['Lake Nakuru Game Drive', 'Rhino Sanctuary', 'Baboon Cliff', 'Makalia Falls', 'Flamingo Viewpoints', 'Menengai Crater', 'Nakuru Town Market'],
+  },
+  {
+    slug: 'lamu', name: 'Lamu', country: 'Kenya', state: 'Lamu County', flag: '🇰🇪', tagline: 'Swahili Island Town', gradient: 'from-cyan-700 to-amber-500', accentColor: '#0891B2', photo: 'photo-1571406252241-db0280bd36cd', bestTime: 'Jul - Oct, Jan - Mar', budget: 'USD 55-220/day', language: 'Swahili, English', currency: 'KES', vibes: ['Island', 'Heritage', 'Slow travel'],
+    heroDescription: 'Lamu is Kenya\'s most atmospheric Swahili island, with coral-stone lanes, dhow sails, donkeys, carved doors, beaches, and centuries of Indian Ocean trade.',
+    description: 'It is slow, beautiful, and culturally rich, best for travellers comfortable with simple island rhythms.',
+    highlights: ['Lamu Old Town', 'Dhow Sunset Sail', 'Shela Beach', 'Lamu Museum', 'Takwa Ruins', 'Swahili House Museum', 'Manda Island'],
   },
 ].map(makeAddedCityGuide);
 

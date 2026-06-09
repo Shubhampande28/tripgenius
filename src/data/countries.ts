@@ -560,7 +560,7 @@ export const countries: CountryData[] = [
     language: 'Filipino, English',
     visaForIndians: 'Visa on arrival for 30 days',
     description: 'The Philippines is 7,641 islands of extraordinary beauty — Palawan\'s hidden lagoons consistently ranked among the world\'s best beaches, Siargao\'s world-class surf, Boracay\'s white-sand crescent, and a warm Filipino hospitality that makes every traveller feel genuinely welcomed.',
-    cities: ['manila', 'palawan', 'boracay', 'el-nido', 'siargao'],
+    cities: ['manila', 'palawan', 'boracay', 'el-nido', 'siargao', 'cebu', 'bohol'],
   },
   {
     slug: 'cambodia',
@@ -573,7 +573,7 @@ export const countries: CountryData[] = [
     language: 'Khmer',
     visaForIndians: 'e-Visa required (apply at evisa.gov.kh) or visa on arrival',
     description: 'Cambodia holds one of humanity\'s greatest architectural achievements — Angkor Wat, a 12th-century temple city larger than medieval Paris. Beyond the temples, Phnom Penh is a city reborn from tragedy, and Sihanoukville\'s islands offer some of Southeast Asia\'s most affordable turquoise-water escapes.',
-    cities: ['siem-reap', 'phnom-penh', 'sihanoukville'],
+    cities: ['siem-reap', 'phnom-penh', 'sihanoukville', 'battambang', 'kampot'],
   },
   {
     slug: 'jordan',
@@ -586,7 +586,7 @@ export const countries: CountryData[] = [
     language: 'Arabic, English',
     visaForIndians: 'Visa on arrival',
     description: 'Jordan packs extraordinary history into a compact kingdom — Petra, the rose-red Nabataean city carved into sandstone cliffs, the Martian landscape of Wadi Rum where Lawrence of Arabia camped, and the Dead Sea, the lowest point on earth where you float without effort.',
-    cities: ['amman', 'petra', 'wadi-rum'],
+    cities: ['amman', 'petra', 'wadi-rum', 'aqaba', 'dead-sea-jordan'],
   },
   {
     slug: 'switzerland',
@@ -599,7 +599,7 @@ export const countries: CountryData[] = [
     language: 'German, French, Italian, Romansh',
     visaForIndians: 'Visa required (Schengen visa)',
     description: 'Switzerland is where Europe stores its most spectacular scenery — the Eiger\'s north face above Grindelwald, the Matterhorn mirrored in Zermatt\'s lake, Geneva\'s jet d\'Eau over Lake Léman, and Interlaken flanked by turquoise lakes and Alpine giants. Expensive, but incomparably beautiful.',
-    cities: ['zurich', 'interlaken', 'geneva', 'lucerne'],
+    cities: ['zurich', 'interlaken', 'geneva', 'lucerne', 'zermatt', 'lausanne', 'basel'],
   },
   {
     slug: 'germany',
@@ -612,7 +612,7 @@ export const countries: CountryData[] = [
     language: 'German',
     visaForIndians: 'Visa required (Schengen visa)',
     description: 'Germany is Europe\'s cultural and economic heart — Berlin\'s boundary-pushing art and nightlife, Munich\'s baroque palaces and Oktoberfest, Hamburg\'s maritime warehouse districts turned creative hubs, and a Rhine Valley of medieval castles that seem lifted from fairy tales.',
-    cities: ['berlin', 'munich', 'hamburg'],
+    cities: ['berlin', 'munich', 'hamburg', 'frankfurt', 'cologne', 'dresden'],
   },
   {
     slug: 'australia',
@@ -625,7 +625,7 @@ export const countries: CountryData[] = [
     language: 'English',
     visaForIndians: 'Visa required (apply online – ETA or eVisitor)',
     description: 'Australia is a continent-country of staggering scale and diversity — the Great Barrier Reef, Uluru rising from the red centre, Sydney\'s iconic harbour, Melbourne\'s laneways and coffee culture, and a wildlife so unique that kangaroos, koalas, and platypuses exist nowhere else on earth in the wild.',
-    cities: ['sydney', 'melbourne', 'cairns', 'gold-coast'],
+    cities: ['sydney', 'melbourne', 'cairns', 'gold-coast', 'brisbane', 'perth', 'adelaide', 'hobart'],
   },
   {
     slug: 'canada',
@@ -638,7 +638,7 @@ export const countries: CountryData[] = [
     language: 'English, French',
     visaForIndians: 'Visa required (apply at ircc.canada.ca)',
     description: 'Canada is the world\'s second-largest country and one of its most scenically dramatic — Banff\'s turquoise glacial lakes, Vancouver framed between mountains and Pacific, Quebec City\'s perfectly preserved French colonial core, and Toronto\'s multicultural energy that makes it one of the world\'s most liveable cities.',
-    cities: ['vancouver', 'toronto', 'banff', 'quebec-city'],
+    cities: ['vancouver', 'toronto', 'banff', 'quebec-city', 'montreal', 'ottawa', 'calgary', 'victoria'],
   },
   {
     slug: 'new-zealand',
@@ -651,7 +651,7 @@ export const countries: CountryData[] = [
     language: 'English, Māori',
     visaForIndians: 'NZeTA required (apply online before travel)',
     description: 'New Zealand packs more landscapes per square kilometre than almost anywhere on earth — fjords at Milford Sound, volcanic geysers at Rotorua, Queenstown\'s adventure sports above a glacial lake, and Auckland\'s harbour city backed by dormant volcanoes. The Māori culture adds a living Indigenous dimension unlike anywhere else.',
-    cities: ['auckland', 'queenstown', 'rotorua', 'wellington'],
+    cities: ['auckland', 'queenstown', 'rotorua', 'wellington', 'christchurch', 'wanaka', 'dunedin'],
   },
   {
     slug: 'croatia',
@@ -664,7 +664,7 @@ export const countries: CountryData[] = [
     language: 'Croatian',
     visaForIndians: 'Visa required (Schengen visa)',
     description: 'Croatia\'s Dalmatian Coast is one of Europe\'s most beautiful shorelines — Dubrovnik\'s medieval walls rising from the Adriatic, the Roman ruins of Split where people still live and shop inside Diocletian\'s Palace, and the lavender-scented island of Hvar where Venetian history meets turquoise sea.',
-    cities: ['dubrovnik', 'split', 'hvar', 'zagreb'],
+    cities: ['dubrovnik', 'split', 'hvar', 'zagreb', 'zadar', 'plitvice-lakes', 'rovinj'],
   },
   {
     slug: 'bhutan',
@@ -677,7 +677,7 @@ export const countries: CountryData[] = [
     language: 'Dzongkha',
     visaForIndians: 'Visa required + Sustainable Development Fee ($100/day)',
     description: 'Bhutan measures success in Gross National Happiness, not GDP — the last Himalayan Buddhist kingdom is a country of prayer flags snapping in mountain winds, fortress-monasteries clinging to clifftops, and a culture so carefully protected that tourism itself is managed to ensure it enriches rather than erodes.',
-    cities: ['paro', 'thimphu', 'punakha'],
+    cities: ['paro', 'thimphu', 'punakha', 'gangtey', 'bumthang'],
   },
   {
     slug: 'uzbekistan',
@@ -690,7 +690,7 @@ export const countries: CountryData[] = [
     language: 'Uzbek, Russian',
     visaForIndians: 'e-Visa required (apply at e-visa.uz) — free for Indians',
     description: 'Uzbekistan is the jewel of the ancient Silk Road — Samarkand\'s Registan, a trio of madrassas covered in turquoise tilework that outshines any cathedral in Europe, Bukhara\'s medieval trading city unchanged since the Timurid empire, and Khiva, a fortified oasis city that looks exactly as it did a thousand years ago.',
-    cities: ['samarkand', 'bukhara', 'tashkent', 'khiva'],
+    cities: ['samarkand', 'bukhara', 'tashkent', 'khiva', 'fergana', 'nukus'],
   },
   {
     slug: 'kenya',
@@ -703,7 +703,7 @@ export const countries: CountryData[] = [
     language: 'Swahili, English',
     visaForIndians: 'ETA required (apply at etakenya.go.ke)',
     description: 'Kenya is the heart of the African safari experience — the Masai Mara\'s Great Migration where over a million wildebeest cross the Mara River, Amboseli\'s elephants silhouetted against Kilimanjaro, Nairobi\'s vibrant tech and coffee culture, and Mombasa\'s Swahili Coast where Arab and African traditions meet the Indian Ocean.',
-    cities: ['nairobi', 'masai-mara', 'mombasa'],
+    cities: ['nairobi', 'masai-mara', 'mombasa', 'amboseli', 'nakuru', 'lamu'],
   },
 ];
 
