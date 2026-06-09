@@ -33,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/cities`,            lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
     // /destinations = static server-rendered list Google can crawl to discover ALL city links
     { url: `${BASE}/destinations`,      lastModified: NOW, changeFrequency: 'weekly',  priority: 0.95 },
+    { url: `${BASE}/countries`,         lastModified: NOW, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE}/blog`,              lastModified: NOW, changeFrequency: 'weekly',  priority: 0.9 },
     { url: `${BASE}/about`,             lastModified: NOW, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/contact`,           lastModified: NOW, changeFrequency: 'monthly', priority: 0.5 },
@@ -45,8 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // City guides
     ...cityPages,
 
-    // "Best time to visit X" pages — low competition, high intent
-    ...indexableCities.map(city => ({
+    // "Best time to visit X" pages — only submit pages with real month-by-month data
+    ...indexableCities.filter(city => city.monthByMonth).map(city => ({
       url: `${BASE}/best-time-to-visit/${city.slug}`,
       lastModified: NOW,
       changeFrequency: 'monthly' as const,
