@@ -223,10 +223,7 @@ export default async function CountryPage({ params }: Props) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {citiesData.map((city) => {
-                const imgId = getCityImageUrl(city.slug, 'card');
-                const imgSrc = imgId
-                  ? `https://images.unsplash.com/${imgId}?auto=format&fit=crop&w=800&q=75`
-                  : null;
+                const imgSrc = getCityImageUrl(city.slug, 'card');
 
                 return (
                   <Link

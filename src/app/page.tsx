@@ -4,14 +4,14 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Search, ArrowRight, Mail, ChevronDown } from 'lucide-react';
+import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
-import { countries } from '@/data/countries';
+import { countries, type CountryData } from '@/data/countries';
 import type { City } from '@/lib/types';
 
 // ── Search autocomplete ────────────────────────────────────────────
@@ -76,6 +76,21 @@ function Highlight({ text, query }: { text: string; query: string }) {
 // ── Featured Destinations ──────────────────────────────────────────
 const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
 
+// ── Featured Countries ─────────────────────────────────────────────
+const FEATURED_COUNTRY_SLUGS = [
+  'india', 'japan', 'thailand', 'indonesia', 'france', 'italy',
+  'united-kingdom', 'maldives', 'singapore', 'sri-lanka', 'malaysia',
+  'uae', 'nepal', 'vietnam', 'georgia', 'morocco',
+];
+
+function getCountryRepImg(country: CountryData): string | null {
+  for (const citySlug of country.cities) {
+    const url = getCityImageUrl(citySlug, 'card');
+    if (url) return url;
+  }
+  return null;
+}
+
 // ── Compare pairs ──────────────────────────────────────────────────
 const COMPARE_PAIRS = [
   { a: 'goa', b: 'bali',     labelA: 'Goa',     labelB: 'Bali',     flagA: '🇮🇳', flagB: '🇮🇩' },
@@ -102,6 +117,7 @@ export default function HomePage() {
   const [activeIdx, setActiveIdx]     = useState(-1);
   const searchRef                     = useRef<HTMLDivElement>(null);
   const inputRef                      = useRef<HTMLInputElement>(null);
+  const countryScrollRef              = useRef<HTMLDivElement>(null);
 
   // Newsletter
   const [email, setEmail]             = useState('');
@@ -340,7 +356,7 @@ export default function HomePage() {
         </section>
 
         {/* ── EXPLORE BY COUNTRY ── */}
-        <section className="py-14 bg-elevated/40">
+        <section className="py-14 bg-elevated/40 overflow-hidden">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <div className="flex items-end justify-between mb-8">
               <div>
@@ -353,22 +369,74 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-              {['india','japan','thailand','indonesia','france','italy','united-kingdom','maldives',
-                'singapore','sri-lanka','malaysia','uae','nepal','vietnam','georgia','morocco']
-                .map(slug => countries.find(c => c.slug === slug))
-                .filter(Boolean)
-                .map(country => (
-                  <Link key={country!.slug} href={`/countries/${country!.slug}`}
-                    className="group flex flex-col items-center gap-2 bg-surface border border-border hover:border-accent/40 rounded-2xl p-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-md">
-                    <span className="text-3xl">{country!.flag}</span>
-                    <span className="text-xs font-semibold text-primary-text group-hover:text-accent transition-colors leading-tight">
-                      {country!.name}
-                    </span>
-                    <span className="text-[10px] text-muted">{country!.cities.length} cities</span>
-                  </Link>
-                ))}
+            {/* ── Country image slider ── */}
+            <div className="relative -mx-6 lg:-mx-8">
+              {/* Prev arrow */}
+              <button
+                onClick={() => countryScrollRef.current?.scrollBy({ left: -640, behavior: 'smooth' })}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-primary-text hover:text-accent hover:border-accent/40 transition-colors"
+                aria-label="Scroll countries left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <div
+                ref={countryScrollRef}
+                className="flex gap-4 overflow-x-auto scroll-smooth px-6 lg:px-8 pb-2"
+                style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none' } as React.CSSProperties}
+              >
+                {FEATURED_COUNTRY_SLUGS
+                  .map(s => countries.find(c => c.slug === s))
+                  .filter(Boolean)
+                  .map(country => {
+                    const imgUrl = getCountryRepImg(country!);
+                    return (
+                      <Link
+                        key={country!.slug}
+                        href={`/countries/${country!.slug}`}
+                        className="group relative flex-shrink-0 block overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1"
+                        style={{ width: '160px', aspectRatio: '3/4', scrollSnapAlign: 'start' }}
+                      >
+                        {/* Fallback base */}
+                        <div className="absolute inset-0 bg-surface" />
+                        {/* Real photo */}
+                        {imgUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={imgUrl}
+                            alt={`${country!.name} travel guide`}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        )}
+                        {/* Dark gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                        {/* Continent badge */}
+                        <div className="absolute top-2.5 left-2.5">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-white/80 font-semibold">
+                            {country!.continent}
+                          </span>
+                        </div>
+                        {/* Country name */}
+                        <div className="absolute bottom-0 left-0 right-0 p-3">
+                          <p className="text-white text-sm font-bold leading-tight">{country!.name}</p>
+                          <p className="text-white/55 text-[10px] mt-0.5">{country!.cities.length} destinations</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+              </div>
+
+              {/* Next arrow */}
+              <button
+                onClick={() => countryScrollRef.current?.scrollBy({ left: 640, behavior: 'smooth' })}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-primary-text hover:text-accent hover:border-accent/40 transition-colors"
+                aria-label="Scroll countries right"
+              >
+                <ChevronRight size={18} />
+              </button>
             </div>
+
           </div>
         </section>
 

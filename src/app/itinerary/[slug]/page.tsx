@@ -188,10 +188,7 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
 
             <div className="space-y-6">
               {days.map((d) => {
-                const imgId  = getCityImageUrl(d.city.slug, 'card');
-                const imgSrc = imgId
-                  ? `https://images.unsplash.com/${imgId}?auto=format&fit=crop&w=800&q=75`
-                  : null;
+                const imgSrc = getCityImageUrl(d.city.slug, 'card');
                 const activities = d.city.thingsToDo?.slice(
                   d.activityIndex * 3,
                   d.activityIndex * 3 + 3,
@@ -210,9 +207,9 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
                     {/* Content */}
                     <div className="flex-1 flex flex-col sm:flex-row min-w-0">
                       {/* City image */}
-                      {imgSrc && (
-                        <div className="relative sm:w-48 sm:flex-shrink-0 overflow-hidden"
-                          style={{ aspectRatio: '16/9' }}>
+                      <div className="relative sm:w-48 sm:flex-shrink-0 flex-shrink-0 overflow-hidden"
+                        style={{ aspectRatio: '16/9' }}>
+                        {imgSrc ? (
                           <Image
                             src={imgSrc}
                             alt={`${d.city.name} — Day ${d.day}`}
@@ -220,8 +217,13 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
                             sizes="(max-width:640px) 100vw, 192px"
                             className="object-cover"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <div
+                            className="absolute inset-0"
+                            style={{ background: `linear-gradient(135deg, ${d.city.accentColor ?? '#dc2626'}33, ${d.city.accentColor ?? '#dc2626'}88)` }}
+                          />
+                        )}
+                      </div>
 
                       {/* Text */}
                       <div className="flex-1 p-5 min-w-0">
