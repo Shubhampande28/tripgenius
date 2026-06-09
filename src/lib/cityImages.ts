@@ -1,7 +1,7 @@
 export const verifiedCityImages: Record<string, { card: string; hero: string }> = {
 
   // ── 6 Full Guide Cities ───────────────────────────────────────
-  bali:      { card: 'px-35428411', hero: 'px-10918378' },   // rice terraces / Uluwatu cliff
+  bali:      { card: 'photo-1537996194471-e657df975ab4', hero: 'photo-1537996194471-e657df975ab4' },   // Tegallalang rice terraces
   bangkok:   { card: 'photo-1563492065599-3520f775eeed', hero: 'photo-1563492065599-3520f775eeed' },
   paris:     { card: 'photo-1502602898657-3e91760cbb34', hero: 'photo-1502602898657-3e91760cbb34' },
   tokyo:     { card: 'photo-1540959733332-eab4deabeeaf', hero: 'photo-1540959733332-eab4deabeeaf' },
