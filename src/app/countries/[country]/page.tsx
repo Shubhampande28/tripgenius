@@ -5,15 +5,48 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
-import { ChevronRight, Clock, MapPin, ArrowRight, Globe, Calendar, BookOpen } from 'lucide-react';
+import {
+  ChevronRight, ArrowRight, MapPin, Globe, Calendar,
+  BookOpen, Plane, ChevronDown, Clock,
+} from 'lucide-react';
 import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
 
-const BASE = 'https://www.tripgenius.in';
-const YEAR = new Date().getFullYear();
+const BASE  = 'https://www.tripgenius.in';
+const YEAR  = new Date().getFullYear();
 
+// ── static helpers ──────────────────────────────────────────────────────────
+const FLIGHT_FROM_INDIA: Record<string, string> = {
+  india: 'Domestic', thailand: '~4 hrs', japan: '~7–8 hrs',
+  indonesia: '~5–6 hrs', singapore: '~4–5 hrs', uae: '~3–4 hrs',
+  vietnam: '~4–5 hrs', 'sri-lanka': '~2 hrs', nepal: '~1–2 hrs',
+  georgia: '~5–6 hrs', morocco: '~9–10 hrs', france: '~8–9 hrs',
+  italy: '~9–10 hrs', malaysia: '~4–5 hrs', maldives: '~3–4 hrs',
+};
+
+const MONTH_ABR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+type Rating = 'excellent' | 'good' | 'average' | 'avoid';
+
+function ratingBar(r: Rating) {
+  const h = r === 'excellent' ? 52 : r === 'good' ? 40 : r === 'average' ? 26 : 14;
+  const bg = r === 'excellent' ? 'bg-emerald-500' : r === 'good' ? 'bg-teal-400' : r === 'average' ? 'bg-amber-400' : 'bg-muted/25';
+  return { h, bg };
+}
+
+function visaInfo(visa: string) {
+  const v = visa.toLowerCase();
+  if (v.includes('no visa') || v.includes('visa free') || v.includes('visa exempt') || v.includes('not required'))
+    return { badge: 'Visa Free',         pill: 'bg-emerald-500/12 text-emerald-400 border-emerald-500/25' };
+  if (v.includes('e-visa') || v.includes('evisa'))
+    return { badge: 'e-Visa',            pill: 'bg-blue-500/12 text-blue-400 border-blue-500/25' };
+  if (v.includes('on arrival'))
+    return { badge: 'Visa on Arrival',   pill: 'bg-amber-500/12 text-amber-400 border-amber-500/25' };
+  return   { badge: 'Visa Required',     pill: 'bg-rose-500/12 text-rose-400 border-rose-500/25' };
+}
+
+// ── metadata ────────────────────────────────────────────────────────────────
 type Props = { params: Promise<{ country: string }> };
 
 export async function generateStaticParams() {
@@ -24,39 +57,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: slug } = await params;
   const country = getCountryBySlug(slug);
   if (!country) return { title: 'Not Found' };
-
-  const cityCount = country.cities.length;
-  const title = `${country.name} Travel Guide ${YEAR} — Top Cities, Itineraries & Tips | TripGenius`;
-  const description =
-    `Plan your ${country.name} trip: ${cityCount} destination guides, ${country.bestTime} is the best time to visit, visa info for Indians (${country.visaForIndians}), day-by-day itineraries, and honest local tips — all free.`;
-
+  const title = `${country.name} Travel Guide ${YEAR} — Cities, Itineraries & Tips | TripGenius`;
+  const description = `Plan your ${country.name} trip: city guides, visa info for Indians (${country.visaForIndians}), best time ${country.bestTime}, day-by-day itineraries and honest local tips — all free.`;
   return {
-    title,
-    description,
+    title, description,
     keywords: [
       `${country.name.toLowerCase()} travel guide`,
-      `places to visit in ${country.name.toLowerCase()}`,
       `${country.name.toLowerCase()} itinerary`,
       `${country.name.toLowerCase()} trip plan`,
-      `${country.name.toLowerCase()} travel tips`,
       `best time to visit ${country.name.toLowerCase()}`,
       `${country.name.toLowerCase()} visa for indians`,
-      `${country.name.toLowerCase()} tourism`,
+      `places to visit in ${country.name.toLowerCase()}`,
       `${country.name.toLowerCase()} travel ${YEAR}`,
     ],
     alternates: { canonical: `${BASE}/countries/${slug}` },
-    openGraph: {
-      title,
-      description,
-      url: `${BASE}/countries/${slug}`,
-      type: 'website',
-    },
+    openGraph: { title, description, url: `${BASE}/countries/${slug}`, type: 'website' },
     twitter: { card: 'summary_large_image', title, description },
   };
 }
 
-
-// ── Main page ──────────────────────────────────────────────────────────────
+// ── page ────────────────────────────────────────────────────────────────────
 export default async function CountryPage({ params }: Props) {
   const { country: slug } = await params;
   const country = getCountryBySlug(slug);
@@ -66,251 +86,337 @@ export default async function CountryPage({ params }: Props) {
     .map((s) => getCityBySlug(s))
     .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
 
+  const displayCities = citiesData.slice(0, 9);
+  const hasMoreCities  = citiesData.length > 9;
+
   const relatedCountries = countries
     .filter((c) => c.continent === country.continent && c.slug !== slug)
     .slice(0, 4);
 
-  const countryCitySlugs  = new Set(country.cities);
-  const countryCityNames  = new Set(citiesData.map((c) => c.name.toLowerCase()));
-
+  const countryCitySlugs = new Set(country.cities);
+  const countryCityNames = new Set(citiesData.map((c) => c.name.toLowerCase()));
   const blogLinks = allPosts
-    .filter((post) =>
-      (post.citySlug && countryCitySlugs.has(post.citySlug)) ||
-      post.tags.some(
-        (tag) =>
-          tag.toLowerCase() === country.name.toLowerCase() ||
-          countryCityNames.has(tag.toLowerCase()),
-      ),
+    .filter((p) =>
+      (p.citySlug && countryCitySlugs.has(p.citySlug)) ||
+      p.tags.some((t) => t.toLowerCase() === country.name.toLowerCase() || countryCityNames.has(t.toLowerCase())),
     )
     .slice(0, 6);
 
+  // Experiences — pull top thingsToDo from all cities
+  const allExperiences = citiesData
+    .flatMap((c) => (c.thingsToDo ?? []).slice(0, 3).map((t) => ({ ...t, cityName: c.name, citySlug: c.slug })))
+    .slice(0, 6);
 
-  // ── Structured data ──────────────────────────────────────────────────────
+  // Budget — first city that has it
+  const budgetCity  = citiesData.find((c) => c.budgetBreakdown);
+  const budgetTiers = budgetCity?.budgetBreakdown?.tiers ?? null;
+
+  // Monthly calendar — first city with full 12-month data
+  const monthCity = citiesData.find((c) => c.monthByMonth?.months?.length === 12);
+  const monthData = monthCity?.monthByMonth?.months ?? null;
+
+  // Hero image — first city's hero photo
+  const heroBg = citiesData[0] ? getCityImageUrl(citiesData[0].slug, 'hero') : null;
+
+  const visa = visaInfo(country.visaForIndians);
+  const flightHrs = FLIGHT_FROM_INDIA[slug] ?? '—';
+
+  // ── structured data ────────────────────────────────────────────────────────
   const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home',      item: BASE },
       { '@type': 'ListItem', position: 2, name: 'Countries', item: `${BASE}/countries` },
       { '@type': 'ListItem', position: 3, name: `${country.name} Travel Guide`, item: `${BASE}/countries/${slug}` },
     ],
   };
-
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: [
-      {
-        '@type': 'Question',
-        name: `How many days do I need in ${country.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `We recommend at least 5–7 days in ${country.name} to cover the highlights. If you have more time, 10–14 days lets you explore regional destinations at a relaxed pace.`,
-        },
-      },
-      {
-        '@type': 'Question',
-        name: `What is the best time to visit ${country.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `The best time to visit ${country.name} is ${country.bestTime}. This period offers the most pleasant weather for sightseeing and outdoor activities.`,
-        },
-      },
-      {
-        '@type': 'Question',
-        name: `Do Indian passport holders need a visa for ${country.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `${country.visaForIndians}. Always check the latest entry requirements before booking your trip.`,
-        },
-      },
-      {
-        '@type': 'Question',
-        name: `What is the currency in ${country.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `The currency in ${country.name} is the ${country.currency}. It is advisable to carry some local currency for small purchases, markets, and taxis.`,
-        },
-      },
+      { '@type': 'Question', name: `How many days in ${country.name}?`,
+        acceptedAnswer: { '@type': 'Answer', text: `5–7 days to cover the highlights. 10–14 days for a relaxed, deeper trip.` } },
+      { '@type': 'Question', name: `Best time to visit ${country.name}?`,
+        acceptedAnswer: { '@type': 'Answer', text: `${country.bestTime} offers the most pleasant conditions.` } },
+      { '@type': 'Question', name: `Visa for Indians to ${country.name}?`,
+        acceptedAnswer: { '@type': 'Answer', text: country.visaForIndians } },
     ],
   };
 
-  const destinationSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'TouristDestination',
-    name: `${country.name}`,
-    description: country.description,
-    url: `${BASE}/countries/${slug}`,
-    touristType: ['Family', 'Adventure', 'Cultural', 'Luxury'],
-    publisher: { '@type': 'Organization', name: 'TripGenius', url: BASE },
-  };
+  const faqs = [
+    { q: `How many days do I need in ${country.name}?`,
+      a: `5–7 days is ideal to cover the main highlights without rushing. If you have 10–14 days, you can explore regional destinations at a relaxed pace and go deeper into local culture.` },
+    { q: `What is the best time to visit ${country.name}?`,
+      a: `${country.bestTime} is the recommended window — expect the most favourable weather, lower chances of disruption, and ideal conditions for outdoor sightseeing and activities.` },
+    { q: `Do Indian passport holders need a visa for ${country.name}?`,
+      a: `${country.visaForIndians}. Always verify current entry requirements on the official embassy or government website before booking flights.` },
+    { q: `What currency is used in ${country.name}?`,
+      a: `${country.name} uses the ${country.currency}. Carry some local cash for markets, street food, and smaller vendors — card acceptance varies outside major cities.` },
+    { q: `Is ${country.name} safe for Indian tourists?`,
+      a: `${country.name} is generally well-regarded for safety among international travellers. Exercise standard travel precautions, stay aware of your surroundings in tourist areas, and keep digital copies of important documents.` },
+    { q: `What language is spoken in ${country.name}?`,
+      a: `The primary language is ${country.language}. In major tourist areas and hotels, English is widely understood. Learning a few local phrases is always appreciated by locals.` },
+  ];
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationSchema) }} />
       <Navbar />
       <main className="min-h-screen bg-dark">
 
-        {/* ── Breadcrumb ──────────────────────────────────────────────── */}
-        <div className="border-b border-border bg-surface">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        {/* ══ HERO ═══════════════════════════════════════════════════════════ */}
+        <div className="relative flex flex-col" style={{ minHeight: '72vh' }}>
+          {/* Background */}
+          {heroBg ? (
+            <Image
+              src={heroBg}
+              alt={`${country.name} travel guide`}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-elevated to-dark" />
+          )}
+          {/* Gradients */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+
+          {/* Breadcrumb */}
+          <div className="relative z-10 pt-[132px] px-4 sm:px-8 max-w-7xl mx-auto w-full">
             <nav aria-label="Breadcrumb">
-              <ol className="flex items-center gap-1.5 text-xs text-muted flex-wrap">
-                <li><Link href="/" className="hover:text-primary-text transition-colors">Home</Link></li>
-                <li aria-hidden><ChevronRight size={12} /></li>
-                <li><Link href="/countries" className="hover:text-primary-text transition-colors">Countries</Link></li>
-                <li aria-hidden><ChevronRight size={12} /></li>
-                <li><span className="text-primary-text font-medium">{country.name}</span></li>
+              <ol className="flex items-center gap-1.5 text-xs text-white/50 flex-wrap">
+                <li><Link href="/" className="hover:text-white/90 transition-colors">Home</Link></li>
+                <li aria-hidden><ChevronRight size={11} /></li>
+                <li><Link href="/countries" className="hover:text-white/90 transition-colors">Countries</Link></li>
+                <li aria-hidden><ChevronRight size={11} /></li>
+                <li className="text-white/80 font-medium">{country.name}</li>
               </ol>
             </nav>
           </div>
-        </div>
 
-        {/* ── Hero ────────────────────────────────────────────────────── */}
-        <div className="relative overflow-hidden bg-surface border-b border-border py-14 sm:py-20">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(var(--color-accent-rgb,220,38,38),0.08),transparent)]" />
-          </div>
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <div className="text-7xl sm:text-8xl mb-5 select-none" role="img" aria-label={country.name}>
-              {country.flag}
-            </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-text mb-4">
+          {/* Hero content */}
+          <div className="relative z-10 mt-auto pb-14 px-4 sm:px-8 max-w-7xl mx-auto w-full">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/50 mb-3">
+              {country.continent} · {citiesData.length} {citiesData.length === 1 ? 'destination' : 'destinations'}
+            </p>
+            <h1 className="font-heading text-5xl sm:text-7xl lg:text-8xl font-bold text-white mb-4 leading-none tracking-tight">
               {country.name}
             </h1>
-            <p className="text-muted text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+            <p className="text-white/70 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
               {country.description}
             </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="#destinations"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
+                Explore Cities <ArrowRight size={14} />
+              </a>
+              {blogLinks.length > 0 && (
+                <a href="#guides"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm text-white rounded-xl text-sm font-semibold hover:bg-white/18 transition-colors border border-white/20">
+                  View Itineraries
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
 
-            {/* Quick stats bar */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {[
-                { icon: <Calendar size={12} className="text-accent flex-shrink-0" />, label: 'Best time', value: country.bestTime },
-                { icon: <span className="text-accent text-sm flex-shrink-0">🛂</span>, label: 'Visa', value: country.visaForIndians },
-                { icon: <MapPin size={12} className="text-accent flex-shrink-0" />, label: 'Capital', value: country.capital },
-                { icon: <Globe size={12} className="text-accent flex-shrink-0" />, label: 'Currency', value: country.currency },
-              ].map((s) => (
-                <span key={s.label}
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-elevated border border-border text-xs font-medium text-muted">
-                  {s.icon}
-                  {s.label}: <span className="text-primary-text font-semibold ml-0.5">{s.value}</span>
-                </span>
+        {/* ══ AT A GLANCE BAR ════════════════════════════════════════════════ */}
+        <div className="bg-surface border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-8">
+            <div className="flex overflow-x-auto divide-x divide-border" style={{ scrollbarWidth: 'none' }}>
+              {([
+                { icon: <Plane size={13} className="text-accent" />,     label: 'From India',  value: flightHrs },
+                { icon: <span className="text-sm leading-none">🛂</span>, label: 'Visa',        value: visa.badge,            extra: visa.pill },
+                { icon: <Globe size={13} className="text-accent" />,      label: 'Language',    value: country.language },
+                { icon: <span className="text-sm leading-none">💰</span>, label: 'Currency',    value: country.currency },
+                { icon: <MapPin size={13} className="text-accent" />,     label: 'Capital',     value: country.capital },
+                { icon: <Calendar size={13} className="text-accent" />,   label: 'Best Time',   value: country.bestTime },
+              ] as { icon: React.ReactNode; label: string; value: string; extra?: string }[]).map((s) => (
+                <div key={s.label} className="flex items-center gap-3 px-4 sm:px-5 py-4 flex-shrink-0">
+                  <span className="flex-shrink-0">{s.icon}</span>
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted leading-none mb-1">
+                      {s.label}
+                    </p>
+                    {s.extra ? (
+                      <span className={`inline-block text-[11px] font-bold px-2 py-0.5 rounded-full border ${s.extra}`}>
+                        {s.value}
+                      </span>
+                    ) : (
+                      <p className="text-xs font-semibold text-primary-text whitespace-nowrap">{s.value}</p>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ── Body ────────────────────────────────────────────────────── */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+        {/* ══ BODY ═══════════════════════════════════════════════════════════ */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-20">
 
-          {/* ══ 1. TOP DESTINATIONS — image cards ═══════════════════════ */}
-          <section>
-            <div className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">
-                {citiesData.length} {citiesData.length === 1 ? 'destination' : 'destinations'}
-              </p>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                Best Places to Visit in {country.name}
-              </h2>
-              <p className="text-muted text-sm">
-                Curated city guides — things to do, best time to go, budgets &amp; honest local tips
-              </p>
+          {/* ── TOP EXPERIENCES ──────────────────────────────────────────── */}
+          {allExperiences.length >= 3 && (
+            <section>
+              <SectionHeader
+                label="top experiences"
+                heading={`What to Do in ${country.name}`}
+                sub="Iconic activities and unmissable experiences across all destinations"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {allExperiences.map((exp) => (
+                  <Link
+                    key={`${exp.citySlug}-${exp.name}`}
+                    href={`/cities/${exp.citySlug}`}
+                    className="group flex flex-col bg-surface border border-border rounded-2xl p-5 hover:border-accent/35 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg hover:shadow-black/10"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <span className="text-3xl leading-none">{exp.icon}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-elevated border border-border text-muted flex-shrink-0">
+                        {exp.cityName}
+                      </span>
+                    </div>
+                    <h3 className="font-heading text-base font-bold text-primary-text group-hover:text-accent transition-colors mb-1.5 leading-snug">
+                      {exp.name}
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed line-clamp-3 mb-auto">
+                      {exp.description}
+                    </p>
+                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border">
+                      <Clock className="w-3 h-3 text-accent flex-shrink-0" />
+                      <span className="text-[11px] text-muted">{exp.duration}</span>
+                      <span className="ml-auto text-[10px] font-semibold text-accent/70 px-2 py-0.5 rounded-full bg-accent/8 border border-accent/15">
+                        {exp.category}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ── DESTINATIONS ─────────────────────────────────────────────── */}
+          <section id="destinations">
+            <div className="flex items-end justify-between mb-8">
+              <SectionHeader
+                label={`${citiesData.length} ${citiesData.length === 1 ? 'destination' : 'destinations'}`}
+                heading={`Best Places to Visit in ${country.name}`}
+                sub="City guides with things to do, honest costs, and local tips"
+                noMargin
+              />
+              {hasMoreCities && (
+                <Link href="/destinations"
+                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline flex-shrink-0 ml-4">
+                  View all {citiesData.length} <ArrowRight size={12} />
+                </Link>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {citiesData.map((city) => {
+              {displayCities.map((city, idx) => {
                 const imgSrc = getCityImageUrl(city.slug, 'card');
-
+                const isFeatured = idx === 0 && displayCities.length >= 3;
                 return (
                   <Link
                     key={city.slug}
                     href={`/cities/${city.slug}`}
-                    className="group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20"
-                    style={{ aspectRatio: '4/3' }}
+                    className={`group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/25 ${isFeatured ? 'sm:col-span-2 lg:col-span-1' : ''}`}
+                    style={{ aspectRatio: isFeatured ? '16/9' : '4/3' }}
                   >
-                    {/* Image layer */}
                     {imgSrc ? (
                       <SafeImage
                         src={imgSrc}
-                        alt={`${city.name} travel guide — ${city.tagline}`}
+                        alt={`${city.name} — ${city.tagline}`}
                         city={city.slug}
                         accentColor={city.accentColor}
                         fill
                         sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-600 group-hover:scale-108"
                       />
                     ) : (
-                      // Fallback gradient if no image
                       <div
-                        className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-                        style={{ background: `linear-gradient(135deg, ${city.accentColor ?? '#dc2626'}22, ${city.accentColor ?? '#dc2626'}55)` }}
+                        className="absolute inset-0"
+                        style={{ background: `linear-gradient(135deg, ${city.accentColor ?? '#dc2626'}30, ${city.accentColor ?? '#dc2626'}70)` }}
                       />
                     )}
 
                     {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/25 to-transparent" />
 
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white/55 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-                        {city.flag} {city.country}
-                      </p>
-                      <h3 className="font-heading text-xl font-bold text-white mb-1 leading-tight">
-                        {city.name}
-                      </h3>
-                      <p className="text-white/65 text-xs leading-snug mb-3 line-clamp-1">
-                        {city.tagline}
-                      </p>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-wrap gap-1.5">
-                          {city.vibes.slice(0, 2).map((vibe) => (
-                            <span key={vibe}
-                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-white/80 border border-white/15">
-                              {vibe}
-                            </span>
-                          ))}
-                        </div>
-                        <span className="flex items-center gap-1 text-xs font-semibold text-white/90 group-hover:gap-1.5 transition-all">
-                          Explore <ArrowRight className="w-3 h-3" />
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Best time chip — top right */}
-                    <div className="absolute top-3 right-3">
-                      <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white/80">
-                        <Clock className="w-2.5 h-2.5" /> {city.stats.bestTime}
+                    {/* Top chips */}
+                    <div className="absolute top-3 right-3 flex gap-1.5">
+                      <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white/80 border border-white/10">
+                        <Clock className="w-2.5 h-2.5 inline mr-0.5 -mt-0.5" />{city.stats.bestTime}
                       </span>
                     </div>
 
-                    {/* Things to do chip — top left (only if data available) */}
+                    {/* Hover: things count */}
                     {city.thingsToDo && city.thingsToDo.length > 0 && (
                       <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white/80">
+                        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white/80 border border-white/10">
                           {city.thingsToDo.length} things to do
                         </span>
                       </div>
                     )}
+
+                    {/* Bottom content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <h3 className="font-heading text-xl font-bold text-white mb-1 leading-tight tracking-tight">
+                        {city.name}
+                      </h3>
+                      <p className="text-white/60 text-xs leading-snug mb-3 line-clamp-1">
+                        {city.tagline}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap gap-1.5">
+                          {city.vibes.slice(0, 2).map((v) => (
+                            <span key={v}
+                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-white/75 border border-white/12">
+                              {v}
+                            </span>
+                          ))}
+                          {city.stats.budget && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent/30 backdrop-blur-sm text-white/80 border border-accent/25">
+                              {city.stats.budget}
+                            </span>
+                          )}
+                        </div>
+                        <span className="flex items-center gap-1 text-xs font-semibold text-white/80 group-hover:text-white group-hover:gap-1.5 transition-all">
+                          Guide <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </div>
                   </Link>
                 );
               })}
             </div>
+
+            {hasMoreCities && (
+              <div className="mt-6 text-center">
+                <Link href="/destinations"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
+                  View all {citiesData.length} destinations in {country.name} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
           </section>
 
-          {/* ══ 2. TRAVEL GUIDES & ITINERARIES ══════════════════════════ */}
+          {/* ── ITINERARY GUIDES ─────────────────────────────────────────── */}
           {blogLinks.length > 0 && (
-            <section>
-              <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">itineraries &amp; guides</p>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                  Plan Your {country.name} Trip
-                </h2>
-                <p className="text-muted text-sm">
-                  Day-by-day itinerary plans, cost breakdowns in INR, and honest local tips
-                </p>
+            <section id="guides">
+              <div className="flex items-end justify-between mb-8">
+                <SectionHeader
+                  label="itineraries &amp; guides"
+                  heading={`Plan Your ${country.name} Trip`}
+                  sub="Day-by-day itinerary plans, cost breakdowns in INR, and honest local tips"
+                  noMargin
+                />
+                <Link href="/blog"
+                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline flex-shrink-0 ml-4">
+                  All guides <ArrowRight size={12} />
+                </Link>
               </div>
 
               <div className="space-y-4">
@@ -320,19 +426,17 @@ export default async function CountryPage({ params }: Props) {
                     href={`/blog/${post.slug}`}
                     className="group flex bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10"
                   >
-                    {/* Left image */}
-                    <div className="relative w-36 sm:w-56 lg:w-72 flex-shrink-0 overflow-hidden" style={{ minHeight: '140px' }}>
+                    {/* Image */}
+                    <div className="relative w-36 sm:w-56 lg:w-64 flex-shrink-0 overflow-hidden" style={{ minHeight: '148px' }}>
                       <Image
                         src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&q=75`}
                         alt={post.title}
                         fill
-                        sizes="(max-width:640px) 144px, (max-width:1024px) 224px, 288px"
+                        sizes="(max-width:640px) 144px, (max-width:1024px) 224px, 256px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
                     </div>
-
-                    {/* Right content */}
+                    {/* Content */}
                     <div className="flex flex-col flex-1 p-4 sm:p-6 min-w-0">
                       <div className="flex flex-wrap gap-1.5 mb-2.5">
                         {post.tags.slice(0, 3).map((tag) => (
@@ -342,14 +446,14 @@ export default async function CountryPage({ params }: Props) {
                           </span>
                         ))}
                       </div>
-                      <h3 className="font-heading text-base sm:text-xl font-bold text-primary-text group-hover:text-accent transition-colors leading-snug mb-2">
+                      <h3 className="font-heading text-base sm:text-lg font-bold text-primary-text group-hover:text-accent transition-colors leading-snug mb-2">
                         {post.title}
                       </h3>
                       <p className="text-sm text-muted leading-relaxed line-clamp-2 mb-auto hidden sm:block">
                         {post.excerpt}
                       </p>
                       <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 border-t border-border">
-                        <span className="text-[11px] text-muted flex items-center gap-1">
+                        <span className="text-[11px] text-muted flex items-center gap-1.5">
                           <BookOpen className="w-3 h-3" /> {post.readTime} min read
                         </span>
                         <span className="text-xs font-semibold text-accent flex items-center gap-1 group-hover:gap-1.5 transition-all">
@@ -360,37 +464,26 @@ export default async function CountryPage({ params }: Props) {
                   </Link>
                 ))}
               </div>
-
-              <div className="mt-6 text-center">
-                <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
-                  View all travel guides <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
             </section>
           )}
 
-          {/* ══ 4. BROWSE BY REGION (India, etc.) ══════════════════════ */}
+          {/* ── REGIONS ──────────────────────────────────────────────────── */}
           {country.regions && country.regions.length > 0 && (
             <section>
-              <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">explore by region</p>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                  Browse by Region
-                </h2>
-                <p className="text-muted text-sm">
-                  {country.name}&apos;s regions each have their own character, climate and cuisine
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <SectionHeader
+                label="explore by region"
+                heading={`${country.name} by Region`}
+                sub={`${country.name}'s regions each have their own character, climate, and cuisine`}
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {country.regions.map((region) => {
                   const regionCities = region.cities
                     .map((s) => getCityBySlug(s))
                     .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
-
                   return (
-                    <div key={region.slug} className="bg-surface border border-border rounded-2xl p-5">
-                      <h3 className="font-heading text-base font-semibold text-primary-text hover:text-accent transition-colors mb-4">
+                    <div key={region.slug}
+                      className="bg-surface border border-border rounded-2xl p-5 hover:border-accent/25 transition-colors">
+                      <h3 className="font-heading text-base font-semibold text-primary-text mb-3">
                         {region.name}
                       </h3>
                       <div className="flex flex-wrap gap-2">
@@ -398,7 +491,7 @@ export default async function CountryPage({ params }: Props) {
                           <Link
                             key={city.slug}
                             href={`/cities/${city.slug}`}
-                            className="text-xs px-3 py-1 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
+                            className="text-xs px-3 py-1.5 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
                           >
                             {city.name}
                           </Link>
@@ -411,118 +504,236 @@ export default async function CountryPage({ params }: Props) {
             </section>
           )}
 
-          {/* ══ 5. WHEN TO VISIT ════════════════════════════════════════ */}
-          <section>
-            <div className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">seasonal guide</p>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                Best Time to Visit {country.name}
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {/* Best time highlight card */}
-              <div className="bg-teal/5 border border-teal/20 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-teal/15 flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-5 h-5 text-teal" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-teal">Recommended window</p>
-                    <p className="font-heading text-xl font-bold text-primary-text">{country.bestTime}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-muted leading-relaxed">
-                  {country.bestTime} offers the most favourable weather conditions across {country.name}.
-                  Expect pleasant temperatures, lower rainfall, and ideal conditions for outdoor sightseeing.
-                </p>
-              </div>
-
-              {/* Best-time links per city */}
-              {citiesData.filter((c) => !c.stub && c.monthByMonth).length > 0 && (
-                <div className="bg-surface border border-border rounded-2xl p-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-4">Month-by-month guides</p>
-                  <div className="flex flex-wrap gap-2">
-                    {citiesData
-                      .filter((c) => !c.stub && c.monthByMonth)
-                      .slice(0, 12)
-                      .map((city) => (
-                        <Link
-                          key={city.slug}
-                          href={`/best-time-to-visit/${city.slug}`}
-                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
-                        >
-                          <span>{city.flag}</span> {city.name}
-                        </Link>
+          {/* ── BUDGET BREAKDOWN ─────────────────────────────────────────── */}
+          {budgetTiers && budgetTiers.length > 0 && (
+            <section>
+              <SectionHeader
+                label="budget guide"
+                heading={`How Much Does ${country.name} Cost?`}
+                sub="Daily budget estimates — accommodation, food, transport, and activities"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {budgetTiers.map((tier, i) => (
+                  <div key={tier.label}
+                    className={`rounded-2xl p-6 border ${i === 1 ? 'bg-accent/5 border-accent/25' : 'bg-surface border-border'}`}>
+                    <div className="flex items-center gap-2.5 mb-4">
+                      <span className="text-2xl">{tier.icon}</span>
+                      <div>
+                        <p className="font-heading text-base font-bold text-primary-text">{tier.label}</p>
+                        <p className={`text-lg font-bold ${i === 1 ? 'text-accent' : 'text-primary-text'}`}>
+                          {tier.perDay}<span className="text-xs font-normal text-muted">/day</span>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="space-y-2.5 text-xs mb-4">
+                      {([
+                        ['🛏️ Hotel',      tier.accommodation],
+                        ['🍜 Food',        tier.food],
+                        ['🚌 Transport',   tier.transport],
+                        ['🎟️ Activities',  tier.activities],
+                      ] as [string, string][]).map(([label, val]) => (
+                        <div key={label}>
+                          <p className="text-[10px] font-bold text-muted uppercase tracking-wide mb-0.5">{label}</p>
+                          <p className="text-primary-text leading-snug">{val}</p>
+                        </div>
                       ))}
+                    </div>
+                    <div className="border-t border-border pt-3">
+                      <p className="text-[11px] text-muted leading-relaxed italic">{tier.tip}</p>
+                    </div>
                   </div>
-                </div>
+                ))}
+              </div>
+              {budgetCity?.budgetBreakdown?.disclaimer && (
+                <p className="text-xs text-muted mt-3 text-center">{budgetCity.budgetBreakdown.disclaimer}</p>
               )}
+            </section>
+          )}
+
+          {/* ── WHEN TO GO ───────────────────────────────────────────────── */}
+          <section>
+            <SectionHeader
+              label="seasonal guide"
+              heading={`Best Time to Visit ${country.name}`}
+              sub="Month-by-month weather, crowd levels, and highlights"
+            />
+            {monthData ? (
+              <div className="bg-surface border border-border rounded-2xl p-6 sm:p-8">
+                {/* Month bars */}
+                <div className="flex items-end gap-1.5 sm:gap-2 mb-3" style={{ height: '72px' }}>
+                  {monthData.map((m, i) => {
+                    const { h, bg } = ratingBar(m.rating as Rating);
+                    return (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-0 group/month relative">
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover/month:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap bg-dark border border-border rounded-lg px-3 py-2 text-[10px] text-primary-text shadow-xl">
+                          <p className="font-bold mb-0.5">{m.month}</p>
+                          <p className="text-muted">{m.temp} · {m.weather.slice(0, 28)}</p>
+                        </div>
+                        <div
+                          className={`w-full rounded-t-md transition-all duration-150 group-hover/month:brightness-110 cursor-default ${bg}`}
+                          style={{ height: `${h}px` }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Month labels */}
+                <div className="flex gap-1.5 sm:gap-2 mb-5">
+                  {MONTH_ABR.map((m) => (
+                    <div key={m} className="flex-1 text-center text-[9px] sm:text-[10px] font-medium text-muted">
+                      {m}
+                    </div>
+                  ))}
+                </div>
+                {/* Legend */}
+                <div className="flex flex-wrap gap-4 pt-4 border-t border-border">
+                  {([
+                    ['bg-emerald-500', 'Peak season'],
+                    ['bg-teal-400',    'Shoulder season'],
+                    ['bg-amber-400',   'Average'],
+                    ['bg-muted/25',    'Off-season'],
+                  ] as [string, string][]).map(([color, label]) => (
+                    <div key={label} className="flex items-center gap-1.5">
+                      <div className={`w-3 h-3 rounded-sm flex-shrink-0 ${color}`} />
+                      <span className="text-xs text-muted">{label}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* Best months highlight */}
+                {monthCity?.monthByMonth?.bestMonths && (
+                  <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+                    <span className="text-xs font-bold text-emerald-400 mr-1">Best months:</span>
+                    {monthCity.monthByMonth.bestMonths.map((m) => (
+                      <span key={m} className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        {m}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {monthCity?.monthByMonth?.summary && (
+                  <p className="text-sm text-muted leading-relaxed mt-4 pt-4 border-t border-border">
+                    {monthCity.monthByMonth.summary}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="bg-emerald-500/6 border border-emerald-500/18 rounded-2xl p-7 flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/12 flex items-center justify-center flex-shrink-0">
+                  <Calendar className="w-7 h-7 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="font-heading text-xl font-bold text-primary-text mb-1">{country.bestTime}</p>
+                  <p className="text-sm text-muted leading-relaxed max-w-xl">
+                    This window offers the most pleasant temperatures, lower rainfall, and the best conditions for outdoor sightseeing and exploration across {country.name}.
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* ── VISA GUIDE ───────────────────────────────────────────────── */}
+          <section>
+            <SectionHeader
+              label="visa & entry"
+              heading="Entry Requirements for Indians"
+              sub="What Indian passport holders need to know before booking"
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Visa status card */}
+              <div className="bg-surface border border-border rounded-2xl p-6 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-elevated flex items-center justify-center flex-shrink-0 text-2xl">
+                  🛂
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-1">Visa status</p>
+                  <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full border mb-3 ${visa.pill}`}>
+                    {visa.badge}
+                  </span>
+                  <p className="text-sm text-muted leading-relaxed">{country.visaForIndians}</p>
+                </div>
+              </div>
+              {/* Practical tips card */}
+              <div className="bg-surface border border-border rounded-2xl p-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Practical tips</p>
+                <ul className="space-y-2.5">
+                  {[
+                    'Always carry a digital copy of your passport and visa',
+                    'Check the official embassy website for the latest requirements before booking',
+                    'Book return flights before applying for visa',
+                    'Keep proof of sufficient funds (bank statements)',
+                  ].map((tip) => (
+                    <li key={tip} className="flex gap-2.5 text-xs text-muted leading-relaxed">
+                      <span className="text-accent mt-0.5 flex-shrink-0">›</span>
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </section>
 
-          {/* ══ 6. FAQ ══════════════════════════════════════════════════ */}
-          <section>
-            <div className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">common questions</p>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                {country.name} Travel FAQ
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                {
-                  q: `How many days do I need in ${country.name}?`,
-                  a: `We recommend at least 5–7 days to cover the highlights. If possible, 10–14 days lets you explore regional destinations at a relaxed pace without rushing between cities.`,
-                },
-                {
-                  q: `What is the best time to visit ${country.name}?`,
-                  a: `${country.bestTime} is generally the best window. You'll get the most pleasant weather, fewer disruptions, and ideal conditions for outdoor activities and sightseeing.`,
-                },
-                {
-                  q: `Do Indians need a visa for ${country.name}?`,
-                  a: `${country.visaForIndians}. Always verify the current entry requirements on the official embassy website before booking your flights.`,
-                },
-                {
-                  q: `What currency is used in ${country.name}?`,
-                  a: `${country.name} uses the ${country.currency}. We recommend carrying some local cash for markets, smaller restaurants, and taxis, as card acceptance can vary outside major cities.`,
-                },
-              ].map((faq) => (
-                <div key={faq.q} className="bg-surface border border-border rounded-2xl p-5">
-                  <h3 className="font-semibold text-primary-text text-sm mb-2">{faq.q}</h3>
-                  <p className="text-xs text-muted leading-relaxed">{faq.a}</p>
-                </div>
+          {/* ── FAQ ──────────────────────────────────────────────────────── */}
+          <section id="faq">
+            <SectionHeader
+              label="common questions"
+              heading={`${country.name} Travel FAQ`}
+              sub="Answers to what Indian travellers ask most"
+            />
+            <div className="space-y-2">
+              {faqs.map((faq, i) => (
+                <details key={i}
+                  className="group border border-border rounded-2xl bg-surface overflow-hidden hover:border-accent/25 transition-colors">
+                  <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none text-primary-text font-medium text-sm hover:text-accent transition-colors select-none">
+                    <span>{faq.q}</span>
+                    <ChevronDown size={16} className="flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-4 border-t border-border pt-3">
+                    <p className="text-sm text-muted leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
               ))}
             </div>
           </section>
 
-          {/* ══ 7. RELATED COUNTRIES ════════════════════════════════════ */}
+          {/* ── RELATED COUNTRIES ────────────────────────────────────────── */}
           {relatedCountries.length > 0 && (
             <section className="pb-4">
-              <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">keep exploring</p>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text">
-                  More Destinations in {country.continent}
-                </h2>
-              </div>
-
+              <SectionHeader
+                label="keep exploring"
+                heading={`More Destinations in ${country.continent}`}
+              />
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {relatedCountries.map((rc) => (
-                  <Link
-                    key={rc.slug}
-                    href={`/countries/${rc.slug}`}
-                    className="group block bg-surface border border-border rounded-2xl p-5 hover:border-accent/40 hover:shadow-md hover:shadow-accent/5 transition-all duration-200 text-center"
-                  >
-                    <div className="text-4xl mb-3 select-none">{rc.flag}</div>
-                    <div className="font-semibold text-sm text-primary-text group-hover:text-accent transition-colors">
-                      {rc.name}
-                    </div>
-                    <div className="text-xs text-muted mt-1">
-                      {rc.cities.length} {rc.cities.length === 1 ? 'city' : 'cities'}
-                    </div>
-                  </Link>
-                ))}
+                {relatedCountries.map((rc) => {
+                  const rcImg = getCityImageUrl(rc.cities[0], 'card');
+                  return (
+                    <Link
+                      key={rc.slug}
+                      href={`/countries/${rc.slug}`}
+                      className="group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20"
+                      style={{ aspectRatio: '3/4' }}
+                    >
+                      {rcImg ? (
+                        <Image
+                          src={rcImg}
+                          alt={`${rc.name} travel guide`}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width:640px) 50vw, 25vw"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-elevated" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <p className="font-heading text-base font-bold text-white leading-tight">{rc.name}</p>
+                        <p className="text-white/55 text-[11px] mt-0.5">
+                          {rc.cities.length} {rc.cities.length === 1 ? 'destination' : 'destinations'}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </section>
           )}
@@ -531,5 +742,25 @@ export default async function CountryPage({ params }: Props) {
       </main>
       <Footer />
     </>
+  );
+}
+
+// ── Section header component (local) ────────────────────────────────────────
+function SectionHeader({
+  label, heading, sub, noMargin,
+}: {
+  label: string; heading: string; sub?: string; noMargin?: boolean;
+}) {
+  return (
+    <div className={noMargin ? '' : 'mb-8'}>
+      <p
+        className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent mb-2"
+        dangerouslySetInnerHTML={{ __html: label }}
+      />
+      <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text leading-tight">
+        {heading}
+      </h2>
+      {sub && <p className="text-sm text-muted mt-1.5">{sub}</p>}
+    </div>
   );
 }
