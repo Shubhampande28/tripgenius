@@ -29,19 +29,10 @@ const DEST_MENU = [
   { label: 'All Cities',           href: '/destinations' },
 ];
 
-const TODO_MENU = [
-  { label: 'Adventure', href: '/destinations' },
-  { label: 'Beaches', href: '/destinations' },
-  { label: 'Hill Stations', href: '/destinations' },
-  { label: 'Pilgrimage', href: '/destinations' },
-  { label: 'Honeymoon', href: '/destinations' },
-];
-
 export default function Navbar() {
   const [scrolled, setScrolled]       = useState(false);
   const [mobileOpen, setMobileOpen]   = useState(false);
   const [destOpen, setDestOpen]       = useState(false);
-  const [todoOpen, setTodoOpen]       = useState(false);
   const isLight = useSyncExternalStore(subTheme, getSnap, () => true);
   const router  = useRouter();
 
@@ -121,13 +112,12 @@ export default function Navbar() {
             {/* Desktop nav — centered */}
             <nav className="hidden lg:flex items-center gap-1">
               <NavDropdown label="Destinations" items={DEST_MENU} open={destOpen} setOpen={setDestOpen} />
-              <NavDropdown label="Things To Do" items={TODO_MENU} open={todoOpen} setOpen={setTodoOpen} />
               <Link href="/blog"
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-primary-text hover:text-accent transition-all duration-150">
-                Itineraries
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
+                Blog
               </Link>
               <Link href="/compare/goa-vs-bali"
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-primary-text hover:text-accent transition-all duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
                 Compare
               </Link>
             </nav>
@@ -183,9 +173,9 @@ export default function Navbar() {
           >
             <div className="max-w-[1280px] mx-auto px-6 py-5 space-y-1">
               {[
+                { label:'Home',         href:'/' },
                 { label:'Countries',    href:'/countries' },
-                { label:'Destinations', href:'/destinations' },
-                { label:'Itineraries',  href:'/blog' },
+                { label:'Blog',         href:'/blog' },
                 { label:'Compare',      href:'/compare/goa-vs-bali' },
               ].map(l => (
                 <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}

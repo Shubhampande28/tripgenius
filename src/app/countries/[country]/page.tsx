@@ -5,8 +5,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
-import { getItinerarySlug, ITINERARY_DURATIONS } from '@/lib/itineraries';
-import { ChevronRight, Clock, Wallet, MapPin, ArrowRight, Globe, Calendar, BookOpen } from 'lucide-react';
+import { ChevronRight, Clock, MapPin, ArrowRight, Globe, Calendar, BookOpen } from 'lucide-react';
 import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
@@ -85,7 +84,6 @@ export default async function CountryPage({ params }: Props) {
     )
     .slice(0, 6);
 
-  const nonStubCities = citiesData.filter((c) => !c.stub);
 
   // ── Structured data ──────────────────────────────────────────────────────
   const breadcrumbSchema = {
@@ -302,110 +300,60 @@ export default async function CountryPage({ params }: Props) {
             </div>
           </section>
 
-          {/* ══ 2. ITINERARIES — teaser cards → /itinerary/ pages ══════ */}
-          {nonStubCities.length > 0 && (
-            <section>
-              <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">trip planning</p>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                  {country.name} Itineraries
-                </h2>
-                <p className="text-muted text-sm">
-                  Day-by-day guides — pick how long you have and get the optimal route
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {ITINERARY_DURATIONS.map((duration) => {
-                  const cities = nonStubCities.slice(0, Math.min(duration, nonStubCities.length));
-                  const label = duration === 3 ? 'Perfect long weekend' : duration === 5 ? 'Comfortable first visit' : `Complete ${country.name}`;
-                  return (
-                    <Link
-                      key={duration}
-                      href={`/itinerary/${getItinerarySlug(slug, duration)}`}
-                      className="group flex flex-col bg-surface border border-border hover:border-accent/50 rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-bold uppercase tracking-widest text-accent">
-                          {duration} Days
-                        </span>
-                        <ArrowRight className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                      <h3 className="font-heading text-lg font-semibold text-primary-text group-hover:text-accent transition-colors mb-1">
-                        {duration} Days in {country.name}
-                      </h3>
-                      <p className="text-xs text-muted mb-4">{label}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-auto">
-                        {cities.slice(0, 4).map((city) => (
-                          <span key={city.slug}
-                            className="text-[10px] px-2 py-0.5 rounded-full bg-elevated border border-border text-muted">
-                            {city.flag} {city.name}
-                          </span>
-                        ))}
-                        {nonStubCities.length > 4 && duration === 7 && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-elevated border border-border text-muted">
-                            +{nonStubCities.length - 4} more
-                          </span>
-                        )}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* ══ 3. TRAVEL STORIES & BLOG ════════════════════════════════ */}
+          {/* ══ 2. TRAVEL GUIDES & ITINERARIES ══════════════════════════ */}
           {blogLinks.length > 0 && (
             <section>
               <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">travel stories</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">itineraries &amp; guides</p>
                 <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mb-2">
-                  Guides &amp; Stories from {country.name}
+                  Plan Your {country.name} Trip
                 </h2>
                 <p className="text-muted text-sm">
-                  Detailed planning guides, itineraries, and real trip reports
+                  Day-by-day itinerary plans, cost breakdowns in INR, and honest local tips
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="space-y-4">
                 {blogLinks.map((post) => (
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
+                    className="group flex bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10"
                   >
-                    {/* Cover image */}
-                    <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                    {/* Left image */}
+                    <div className="relative w-36 sm:w-56 lg:w-72 flex-shrink-0 overflow-hidden" style={{ minHeight: '140px' }}>
                       <Image
-                        src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=800&q=70`}
+                        src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&q=75`}
                         alt={post.title}
                         fill
-                        sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                        sizes="(max-width:640px) 144px, (max-width:1024px) 224px, 288px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
                     </div>
 
-                    {/* Content */}
-                    <div className="p-4 flex flex-col flex-1">
-                      <div className="flex flex-wrap gap-1.5 mb-2">
-                        {post.tags.slice(0, 2).map((tag) => (
+                    {/* Right content */}
+                    <div className="flex flex-col flex-1 p-4 sm:p-6 min-w-0">
+                      <div className="flex flex-wrap gap-1.5 mb-2.5">
+                        {post.tags.slice(0, 3).map((tag) => (
                           <span key={tag}
                             className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20">
                             {tag}
                           </span>
                         ))}
                       </div>
-                      <h3 className="font-semibold text-primary-text group-hover:text-accent transition-colors text-sm leading-snug mb-2 flex-1">
+                      <h3 className="font-heading text-base sm:text-xl font-bold text-primary-text group-hover:text-accent transition-colors leading-snug mb-2">
                         {post.title}
                       </h3>
-                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+                      <p className="text-sm text-muted leading-relaxed line-clamp-2 mb-auto hidden sm:block">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 border-t border-border">
                         <span className="text-[11px] text-muted flex items-center gap-1">
                           <BookOpen className="w-3 h-3" /> {post.readTime} min read
                         </span>
                         <span className="text-xs font-semibold text-accent flex items-center gap-1 group-hover:gap-1.5 transition-all">
-                          Read <ArrowRight className="w-3 h-3" />
+                          Read guide <ArrowRight className="w-3 h-3" />
                         </span>
                       </div>
                     </div>

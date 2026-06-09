@@ -256,11 +256,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Content */}
           <article>
             {post.content.map((block, i) => (
-              <>
-                <ContentBlock key={i} block={block} />
-                {/* Mid-article ad after the 4th block */}
-                {i === 3 && <AdUnit key="mid-ad" slot={AD_SLOTS.blogMidArticle} format="fluid" layout="in-article" className="my-6" />}
-              </>
+              <ContentBlock key={i} block={block} />
             ))}
           </article>
           <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />
