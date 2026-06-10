@@ -74,10 +74,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
 }
 
 // ── Featured Destinations ──────────────────────────────────────────
-const FEATURED_SLUGS = [
-  'bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives',
-  'singapore', 'rome', 'santorini', 'udaipur', 'london', 'kyoto',
-];
+const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
 
 // ── Featured Countries ─────────────────────────────────────────────
 const FEATURED_COUNTRY_SLUGS = [
@@ -320,57 +317,53 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Destination marquee — auto-scrolls right to left, pauses on hover/focus */}
-            <div className="marquee-container -mx-6 lg:-mx-8 overflow-hidden">
-              <div className="marquee-track flex gap-5 px-6 lg:px-8">
-                {[...featuredCities, ...featuredCities].map((city, i) => (
-                  <Link
-                    key={`${city.slug}-${i}`}
-                    href={`/cities/${city.slug}`}
-                    aria-hidden={i >= featuredCities.length}
-                    tabIndex={i >= featuredCities.length ? -1 : 0}
-                    className="group relative block flex-shrink-0 overflow-hidden rounded-[20px] bg-surface w-[200px] sm:w-[240px]"
-                    style={{ aspectRatio: '4/5' }}
-                  >
-                    {/* Destination image */}
-                    <SafeImage
-                      src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                      alt={`${city.name} travel guide`}
-                      city={city.slug}
-                      accentColor={city.accentColor}
-                      fill
-                      sizes="240px"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
+            {/* Destination card grid — image + name + supporting info */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+              {featuredCities.map(city => (
+                <Link
+                  key={city.slug}
+                  href={`/cities/${city.slug}`}
+                  className="group relative block overflow-hidden rounded-[20px] bg-surface"
+                  style={{ aspectRatio: '4/5' }}
+                >
+                  {/* Destination image */}
+                  <SafeImage
+                    src={getCityImageUrl(city.slug, 'card') ?? city.image}
+                    alt={`${city.name} travel guide`}
+                    city={city.slug}
+                    accentColor={city.accentColor}
+                    fill
+                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
 
-                    {/* Gradient overlay — readable bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* Gradient overlay — readable bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                    {/* Bottom content — name + supporting info */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-                        {city.flag} {city.country}
+                  {/* Bottom content — name + supporting info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
+                      {city.flag} {city.country}
+                    </p>
+                    <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
+                      {city.name}
+                    </h3>
+                    {/* Supporting info — best time */}
+                    {city.stats?.bestTime && (
+                      <p className="text-white/65 text-xs">
+                        Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
                       </p>
-                      <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
-                        {city.name}
-                      </h3>
-                      {/* Supporting info — best time */}
-                      {city.stats?.bestTime && (
-                        <p className="text-white/65 text-xs">
-                          Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
-                        </p>
-                      )}
-                    </div>
+                    )}
+                  </div>
 
-                    {/* Hover pill */}
-                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
-                        Explore <ArrowRight size={9} />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                  {/* Hover pill */}
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
+                      Explore <ArrowRight size={9} />
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
 
           </div>
