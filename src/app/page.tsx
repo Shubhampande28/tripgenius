@@ -74,13 +74,26 @@ function Highlight({ text, query }: { text: string; query: string }) {
 }
 
 // ── Featured Destinations ──────────────────────────────────────────
-const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
+const FEATURED_SLUGS = [
+  'bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives',
+  'singapore', 'rome', 'santorini', 'udaipur', 'london', 'kyoto',
+];
 
 // ── Featured Countries ─────────────────────────────────────────────
 const FEATURED_COUNTRY_SLUGS = [
   'india', 'japan', 'thailand', 'indonesia', 'france', 'italy',
   'united-kingdom', 'maldives', 'singapore', 'sri-lanka', 'malaysia',
   'uae', 'nepal', 'vietnam', 'georgia', 'morocco',
+];
+
+// ── Trending search chips ──────────────────────────────────────────
+const TRENDING_CHIPS: { label: string; slug?: string; href?: string }[] = [
+  { label: 'Bali', slug: 'bali' },
+  { label: 'Goa in Monsoon', slug: 'goa' },
+  { label: 'Manali Road Trip', slug: 'manali' },
+  { label: 'Udaipur Honeymoon', slug: 'udaipur' },
+  { label: 'Ladakh', slug: 'ladakh' },
+  { label: 'Europe on a Budget', href: '/cities?region=Europe' },
 ];
 
 function getCountryRepImg(country: CountryData): string | null {
@@ -90,13 +103,6 @@ function getCountryRepImg(country: CountryData): string | null {
   }
   return null;
 }
-
-// ── Compare pairs ──────────────────────────────────────────────────
-const COMPARE_PAIRS = [
-  { a: 'goa', b: 'bali',     labelA: 'Goa',     labelB: 'Bali',     flagA: '🇮🇳', flagB: '🇮🇩' },
-  { a: 'manali', b: 'shimla', labelA: 'Manali',  labelB: 'Shimla',   flagA: '🇮🇳', flagB: '🇮🇳' },
-  { a: 'goa', b: 'kerala',   labelA: 'Goa',     labelB: 'Kerala',   flagA: '🇮🇳', flagB: '🇮🇳' },
-];
 
 // ── Home FAQ ───────────────────────────────────────────────────────
 const HOME_FAQ_SCHEMA = {
@@ -187,8 +193,8 @@ export default function HomePage() {
       <Navbar />
       <main className="min-h-screen">
 
-        {/* ── HERO — clean white, red accents ── */}
-        <section className="pt-36 pb-14 text-center bg-white">
+        {/* ── HERO — clean, red accents ── */}
+        <section className="pt-36 pb-14 text-center bg-dark">
           <div className="max-w-[800px] mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.55 }}>
 
@@ -217,7 +223,13 @@ export default function HomePage() {
                     onKeyDown={handleKeyDown}
                     placeholder="Search a destination…"
                     autoComplete="off"
-                    className="w-full pl-12 pr-5 py-4 rounded-2xl text-base bg-white border border-border focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40 transition-all text-primary-text placeholder:text-muted"
+                    aria-label="Search destinations"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded={showDrop && suggestions.length > 0}
+                    aria-controls="search-suggestions-listbox"
+                    aria-activedescendant={activeIdx >= 0 ? `search-option-${activeIdx}` : undefined}
+                    className="w-full pl-12 pr-5 py-4 rounded-2xl text-base bg-surface border border-border focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40 transition-all text-primary-text placeholder:text-muted"
                     style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.07)' }}
                   />
                 </div>
@@ -229,16 +241,21 @@ export default function HomePage() {
                     animate={{ opacity:1, y:0 }}
                     exit={{ opacity:0, y:8 }}
                     transition={{ duration:0.15 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white border border-border rounded-2xl shadow-xl overflow-hidden z-50 text-left"
+                    id="search-suggestions-listbox"
+                    role="listbox"
+                    className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-2xl shadow-xl overflow-hidden z-50 text-left"
                     style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}
                   >
                     {suggestions.map((s, i) => (
-                      <button
+                      <div
                         key={`${s.href}-${i}`}
+                        id={`search-option-${i}`}
+                        role="option"
+                        aria-selected={i === activeIdx}
                         onMouseDown={() => { router.push(s.href); setShowDrop(false); setQuery(''); }}
                         onMouseEnter={() => setActiveIdx(i)}
-                        className={`w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors ${
-                          i === activeIdx ? 'bg-accent/8' : 'hover:bg-surface'
+                        className={`w-full flex items-center gap-3 px-5 py-3.5 text-left cursor-pointer transition-colors ${
+                          i === activeIdx ? 'bg-accent/8' : 'hover:bg-elevated'
                         } ${i > 0 ? 'border-t border-border/40' : ''}`}
                       >
                         <span className="text-lg flex-shrink-0">
@@ -256,9 +273,9 @@ export default function HomePage() {
                           <p className="text-xs text-muted">{s.sub}</p>
                         </div>
                         <ArrowRight size={13} className="text-muted/50 flex-shrink-0" />
-                      </button>
+                      </div>
                     ))}
-                    <div className="px-5 py-2.5 border-t border-border/40 bg-surface">
+                    <div className="px-5 py-2.5 border-t border-border/40 bg-elevated">
                       <p className="text-xs text-muted">↑↓ Navigate · Enter to select · Esc to close</p>
                     </div>
                   </motion.div>
@@ -268,13 +285,14 @@ export default function HomePage() {
                 {!query && (
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
                     <span className="text-xs text-muted self-center">Trending:</span>
-                    {['Bali', 'Goa in Monsoon', 'Manali Road Trip', 'Udaipur Honeymoon', 'Ladakh', 'Europe Budget'].map(t => {
-                      const city = allCities.find(c => c.name === t.split(' ')[0]);
+                    {TRENDING_CHIPS.map(chip => {
+                      const city = chip.slug ? allCities.find(c => c.slug === chip.slug) : undefined;
+                      const href = city ? `/cities/${city.slug}` : (chip.href ?? '/destinations');
                       return (
-                        <Link key={t}
-                          href={city ? `/cities/${city.slug}` : '/destinations'}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent/40 hover:text-accent bg-white transition-all text-muted">
-                          {city?.flag} {t}
+                        <Link key={chip.label}
+                          href={href}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent/40 hover:text-accent bg-surface transition-all text-muted">
+                          {city?.flag} {chip.label}
                         </Link>
                       );
                     })}
@@ -302,55 +320,58 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Destination card grid — image + name + supporting info */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-              {featuredCities.map(city => (
-                <Link
-                  key={city.slug}
-                  href={`/cities/${city.slug}`}
-                  className="group relative block overflow-hidden rounded-[20px] bg-surface"
-                  style={{ aspectRatio: '4/5' }}
-                >
-                  {/* Destination image */}
-                  <SafeImage
-                    src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                    alt={`${city.name} travel guide`}
-                    city={city.slug}
-                    accentColor={city.accentColor}
-                    fill
-                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+            {/* Destination marquee — auto-scrolls right to left, pauses on hover/focus */}
+            <div className="marquee-container -mx-6 lg:-mx-8 overflow-hidden">
+              <div className="marquee-track flex gap-5 px-6 lg:px-8">
+                {[...featuredCities, ...featuredCities].map((city, i) => (
+                  <Link
+                    key={`${city.slug}-${i}`}
+                    href={`/cities/${city.slug}`}
+                    aria-hidden={i >= featuredCities.length}
+                    tabIndex={i >= featuredCities.length ? -1 : 0}
+                    className="group relative block flex-shrink-0 overflow-hidden rounded-[20px] bg-surface w-[200px] sm:w-[240px]"
+                    style={{ aspectRatio: '4/5' }}
+                  >
+                    {/* Destination image */}
+                    <SafeImage
+                      src={getCityImageUrl(city.slug, 'card') ?? city.image}
+                      alt={`${city.name} travel guide`}
+                      city={city.slug}
+                      accentColor={city.accentColor}
+                      fill
+                      sizes="240px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
 
-                  {/* Gradient overlay — readable bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    {/* Gradient overlay — readable bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Bottom content — name + supporting info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-                      {city.flag} {city.country}
-                    </p>
-                    <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
-                      {city.name}
-                    </h3>
-                    {/* Supporting info — best time */}
-                    {city.stats?.bestTime && (
-                      <p className="text-white/65 text-xs">
-                        Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+                    {/* Bottom content — name + supporting info */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
+                        {city.flag} {city.country}
                       </p>
-                    )}
-                  </div>
+                      <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
+                        {city.name}
+                      </h3>
+                      {/* Supporting info — best time */}
+                      {city.stats?.bestTime && (
+                        <p className="text-white/65 text-xs">
+                          Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+                        </p>
+                      )}
+                    </div>
 
-                  {/* Hover pill */}
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
-                      Explore <ArrowRight size={9} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    {/* Hover pill */}
+                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
+                        Explore <ArrowRight size={9} />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-
 
           </div>
         </section>
@@ -360,7 +381,7 @@ export default function HomePage() {
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <div className="flex items-end justify-between mb-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">37 Countries</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">{countries.length}+ Countries</p>
                 <h2 className="font-heading text-3xl font-bold text-primary-text">Explore by Country</h2>
                 <p className="text-muted text-sm mt-1">Visa info, best time, top cities — all in one place</p>
               </div>
@@ -374,7 +395,7 @@ export default function HomePage() {
               {/* Prev arrow */}
               <button
                 onClick={() => countryScrollRef.current?.scrollBy({ left: -640, behavior: 'smooth' })}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-primary-text hover:text-accent hover:border-accent/40 transition-colors"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-gray-700 hover:text-accent hover:border-accent/40 transition-colors"
                 aria-label="Scroll countries left"
               >
                 <ChevronLeft size={18} />
@@ -397,18 +418,15 @@ export default function HomePage() {
                         className="group relative flex-shrink-0 block overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1"
                         style={{ width: '160px', aspectRatio: '3/4', scrollSnapAlign: 'start' }}
                       >
-                        {/* Fallback base */}
-                        <div className="absolute inset-0 bg-surface" />
-                        {/* Real photo */}
-                        {imgUrl && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={imgUrl}
-                            alt={`${country!.name} travel guide`}
-                            loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
-                        )}
+                        {/* Photo (or gradient fallback if unavailable) */}
+                        <SafeImage
+                          src={imgUrl ?? ''}
+                          alt={`${country!.name} travel guide`}
+                          city={country!.slug}
+                          fill
+                          sizes="160px"
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
                         {/* Dark gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                         {/* Continent badge */}
@@ -430,7 +448,7 @@ export default function HomePage() {
               {/* Next arrow */}
               <button
                 onClick={() => countryScrollRef.current?.scrollBy({ left: 640, behavior: 'smooth' })}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-primary-text hover:text-accent hover:border-accent/40 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 hidden sm:flex w-9 h-9 items-center justify-center rounded-full bg-white/90 border border-border shadow-md text-gray-700 hover:text-accent hover:border-accent/40 transition-colors"
                 aria-label="Scroll countries right"
               >
                 <ChevronRight size={18} />
@@ -456,13 +474,15 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {guidePosts.map(post => (
                 <Link key={post.slug} href={`/blog/${post.slug}`}
-                  className="group bg-white border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-accent/20 transition-all duration-300 flex flex-col">
+                  className="group bg-surface border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-accent/20 transition-all duration-300 flex flex-col">
                   <div className="relative h-48 overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&h=400&q=80`}
+                    <SafeImage
+                      src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=800&h=600&q=80`}
                       alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      city={post.slug}
+                      fill
+                      sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute top-3 left-3">
                       <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-accent/90 text-white">
@@ -502,7 +522,7 @@ export default function HomePage() {
                 <input
                   type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com" required
-                  className="flex-1 px-4 py-3 rounded-xl text-sm border border-border bg-white text-primary-text focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40"
+                  className="flex-1 px-4 py-3 rounded-xl text-sm border border-border bg-surface text-primary-text focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40"
                 />
                 <button type="submit" disabled={subState === 'loading'}
                   className="px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors flex items-center gap-2 justify-center flex-shrink-0">
@@ -527,7 +547,7 @@ export default function HomePage() {
                 { q:'Best first international trip from India?', a:'Thailand and Bali are the most popular — visa on arrival, affordable, warm weather, excellent food. Dubai is also a top choice for easy visa access.' },
                 { q:'Best time to travel internationally from India?', a:'October to March — avoids Indian summer heat, aligns with dry seasons in Southeast Asia, and catches Europe\'s shoulder season.' },
               ].map((faq, i) => (
-                <div key={i} className={`border rounded-xl overflow-hidden transition-colors ${openFaq === i ? 'border-accent/30 bg-white' : 'border-border bg-white'}`}>
+                <div key={i} className={`border rounded-xl overflow-hidden transition-colors ${openFaq === i ? 'border-accent/30 bg-surface' : 'border-border bg-surface'}`}>
                   <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
                     className="w-full flex items-start justify-between gap-4 px-5 py-4 text-left" aria-expanded={openFaq === i}>
                     <span className="font-semibold text-primary-text text-sm leading-snug">{faq.q}</span>
