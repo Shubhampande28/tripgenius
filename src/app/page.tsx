@@ -296,7 +296,44 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+
+              {/* Secondary CTA — AI trip planner */}
+              <p className="mt-5 text-sm text-muted">
+                Not sure where to go?{' '}
+                <Link href="/plan" className="text-accent font-semibold hover:underline">
+                  Try the AI Trip Planner →
+                </Link>
+              </p>
             </motion.div>
+          </div>
+        </section>
+
+        {/* ── EXPLORE BY COUNTRY CTA ── */}
+        <section className="pb-14">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+            <Link
+              href="/countries"
+              className="group relative flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden rounded-3xl border border-border bg-elevated/60 px-8 py-10 sm:px-12 sm:py-12 hover:border-accent/40 transition-colors"
+            >
+              <div
+                className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-accent/10 blur-3xl pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
+                aria-hidden
+              />
+              <div className="relative text-center sm:text-left">
+                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">
+                  {countries.length} Countries, One Plan
+                </p>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary-text mb-2 max-w-md">
+                  Where in the world do you want to go?
+                </h2>
+                <p className="text-muted text-sm max-w-md">
+                  Visa rules, best time to visit, top cities and ready-made 3/5/7-day itineraries — pick a country and we&apos;ve already mapped the trip.
+                </p>
+              </div>
+              <span className="relative inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-white rounded-xl text-sm font-semibold group-hover:bg-accent/90 transition-colors flex-shrink-0 shadow-lg shadow-accent/20">
+                Browse All {countries.length} Countries <ArrowRight size={16} />
+              </span>
+            </Link>
           </div>
         </section>
 
@@ -313,7 +350,7 @@ export default function HomePage() {
               </div>
               <Link href="/destinations"
                 className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
-                View more <ArrowRight size={13} />
+                See more places to fall for <ArrowRight size={13} />
               </Link>
             </div>
 
@@ -379,7 +416,7 @@ export default function HomePage() {
                 <p className="text-muted text-sm mt-1">Visa info, best time, top cities — all in one place</p>
               </div>
               <Link href="/countries" className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
-                All countries <ArrowRight size={13} />
+                See every country <ArrowRight size={13} />
               </Link>
             </div>
 
@@ -454,13 +491,15 @@ export default function HomePage() {
         {/* ── FEATURED TRAVEL GUIDES ── */}
         <section className="py-14">
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
-            <div className="flex items-end justify-between mb-8">
+            <div className="flex items-end justify-between mb-8 gap-4">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Learn & Plan</p>
                 <h2 className="font-heading text-3xl font-bold text-primary-text">Featured Travel Guides</h2>
+                <p className="text-muted text-sm mt-1">{allPosts.length} free guides — itineraries, budgets and honest tips</p>
               </div>
-              <Link href="/blog" className="text-sm font-medium text-accent hover:underline flex items-center gap-1">
-                All guides <ArrowRight size={13} />
+              <Link href="/blog"
+                className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors flex-shrink-0 shadow-lg shadow-accent/20">
+                Read All Guides <ArrowRight size={14} />
               </Link>
             </div>
 
@@ -495,6 +534,13 @@ export default function HomePage() {
                 </Link>
               ))}
             </div>
+
+            <div className="mt-8 text-center sm:hidden">
+              <Link href="/blog"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
+                Read All Guides <ArrowRight size={14} />
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -519,7 +565,7 @@ export default function HomePage() {
                 />
                 <button type="submit" disabled={subState === 'loading'}
                   className="px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors flex items-center gap-2 justify-center flex-shrink-0">
-                  {subState === 'loading' ? 'Subscribing…' : 'Subscribe'}
+                  {subState === 'loading' ? 'Subscribing…' : 'Send Me Free Guides'}
                 </button>
               </form>
             )}
