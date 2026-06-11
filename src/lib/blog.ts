@@ -1512,7 +1512,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Dubai', 'UAE', 'Itinerary', 'Abu Dhabi', 'Desert', 'Middle East'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1635857161777-2383f2e4a82d',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Five days is Dubai\'s sweet spot: long enough for the skyline, old souks, desert, beach time and an Abu Dhabi day trip, but short enough that the city still feels exciting rather than repetitive.' },
@@ -1557,7 +1557,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Budget',
     tags: ['Dubai', 'UAE', 'Budget Travel', 'Free Things', 'Middle East'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1770982399708-03d784bb0f0b',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai is not cheap, but it is controllable. The city becomes expensive when you stay in the wrong area, rely on taxis for everything and treat every attraction as mandatory. Use metro, old Dubai, free waterfront shows and selective paid experiences.' },
@@ -1601,7 +1601,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Dubai', 'UAE', 'Best Time', 'Weather', 'Planning'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1553796661-17b7fa359f49',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai is a city built around climate control, but timing still matters. Winter makes the city feel effortless; summer turns outdoor sightseeing into a mistake unless your trip is mostly malls, pools and indoor attractions.' },
@@ -1640,7 +1640,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'UAE', 'Family Travel', 'Hotels', 'Itinerary'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1609710638139-1dc65dad03cc',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai is one of the easiest international family trips from India: short flights, safe streets, familiar food, polished hotels and enough indoor attractions to rescue a hot afternoon. The trick is choosing the right base and not overloading every day.' },
@@ -1757,7 +1757,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'Hotels', 'Where To Stay', 'UAE', 'Family Travel'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1611577810610-642f8ac05c32',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Where you stay in Dubai decides whether the city feels sleek and easy or expensive and exhausting. The best area depends less on prestige and more on your route, heat tolerance, transport style and budget.' },
@@ -1803,7 +1803,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Itinerary', 'UAE', 'Short Trip', 'Desert'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1572364769167-198dcb7b520c',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Three days in Dubai works if you choose the essentials: one skyline day, one old Dubai plus desert day and one beach or modern Dubai day. Do not try to add Abu Dhabi unless you are willing to sacrifice the desert or beach.' },
@@ -1839,7 +1839,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Budget',
     tags: ['Dubai', 'Free Things', 'Budget Travel', 'UAE'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1605461659470-4536815b7c98',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai sells luxury hard, but some of its best moments are free or nearly free: the fountain show, old creek crossings, souk wandering, public beaches and waterfront walks under a skyline that does not need a ticket.' },
@@ -1918,7 +1918,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Shopping', 'Gold Souk', 'UAE', 'Culture'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1697380582263-ba9f5ef8cefa',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai shopping is not just malls. The most interesting buys are often in the old souks: gold, spices, oud, dates and perfumes. The malls are useful for brands and air-conditioning; the souks are where the city still feels like a trading port.' },
@@ -1956,7 +1956,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'Honeymoon', 'UAE', 'Luxury', 'Romantic'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1748373502104-cb28af375638',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai works for honeymoons when you lean into what it does well: polished hotels, rooftop dinners, desert sunsets, beach clubs, spas and easy logistics. It is less ideal if you want old-world charm or a nature-heavy trip.' },
@@ -2039,7 +2039,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Dubai', 'Layover', 'Transit', 'UAE', 'Airport'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1704794708120-97d4f6894ce0',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai is one of the world\'s best layover cities if your visa eligibility and timing work. The airport is close enough to old Dubai and Downtown that even a half-day can become a real city experience.' },
@@ -2074,7 +2074,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Abu Dhabi', 'UAE', 'Comparison', 'Culture'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1512970648279-ff3398568f77',
     content: [
       { type: 'p', text: 'Dubai and Abu Dhabi are often flattened into one UAE idea, but they feel different. Dubai is spectacle, commerce and speed. Abu Dhabi is calmer, more formal and often more culturally rewarding for a day or two.' },
       { type: 'h2', text: 'Quick Comparison' },
@@ -2105,7 +2105,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Hidden Gems', 'UAE', 'Culture', 'Food'],
-    coverPhoto: 'photo-1512453979798-5ea266f8880c',
+    coverPhoto: 'photo-1683479781517-e31fcb3c4b4f',
     citySlug: 'dubai',
     content: [
       { type: 'p', text: 'Dubai hides in plain sight. The city\'s quieter rewards are not secret rooftops; they are old creek streets, small museums, budget food neighbourhoods, independent galleries and public beaches that get overshadowed by the skyline.' },
