@@ -13,6 +13,7 @@ import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
+import { ITINERARY_DURATIONS, getItinerarySlug, buildItineraryDays, buildRouteOverview, type ItineraryDuration } from '@/lib/itineraries';
 
 const BASE  = 'https://www.tripgenius.in';
 const YEAR  = new Date().getFullYear();
@@ -89,6 +90,15 @@ export default async function CountryPage({ params }: Props) {
   const displayCities = citiesData.slice(0, 9);
   const hasMoreCities  = citiesData.length > 9;
 
+  // Trip planner — ready-made 3/5/7 day itineraries for this country
+  type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };
+  const itineraryOptions = ITINERARY_DURATIONS
+    .map((duration): ItineraryOption | null => {
+      const days = buildItineraryDays(slug, duration);
+      return days.length > 0 ? { duration, route: buildRouteOverview(days) } : null;
+    })
+    .filter((o): o is ItineraryOption => o !== null);
+
   const relatedCountries = countries
     .filter((c) => c.continent === country.continent && c.slug !== slug)
     .slice(0, 4);
@@ -130,6 +140,22 @@ export default async function CountryPage({ params }: Props) {
       { '@type': 'ListItem', position: 3, name: `${country.name} Travel Guide`, item: `${BASE}/countries/${slug}` },
     ],
   };
+  const itineraryListSchema = itineraryOptions.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${country.name} Itineraries`,
+    itemListElement: itineraryOptions.map(({ duration, route }, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'TouristTrip',
+        name: `${duration} Days in ${country.name}`,
+        description: `${duration}-day itinerary covering ${route.map((r) => r.city.name).join(', ')}`,
+        url: `${BASE}/itinerary/${getItinerarySlug(country.slug, duration)}`,
+      },
+    })),
+  } : null;
+
   const faqSchema = {
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: [
@@ -161,6 +187,9 @@ export default async function CountryPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {itineraryListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itineraryListSchema) }} />
+      )}
       <Navbar />
       <main className="min-h-screen bg-dark">
 
@@ -212,10 +241,10 @@ export default async function CountryPage({ params }: Props) {
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
                 Explore Cities <ArrowRight size={14} />
               </a>
-              {blogLinks.length > 0 && (
-                <a href="#guides"
+              {itineraryOptions.length > 0 && (
+                <a href="#trip-planner"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm text-white rounded-xl text-sm font-semibold hover:bg-white/18 transition-colors border border-white/20">
-                  View Itineraries
+                  Plan My Trip
                 </a>
               )}
             </div>
@@ -403,14 +432,50 @@ export default async function CountryPage({ params }: Props) {
             )}
           </section>
 
-          {/* ── ITINERARY GUIDES ─────────────────────────────────────────── */}
+          {/* ── TRIP PLANNER ─────────────────────────────────────────────── */}
+          {itineraryOptions.length > 0 && (
+            <section id="trip-planner">
+              <SectionHeader
+                label="trip planner"
+                heading={`How Many Days Do You Need in ${country.name}?`}
+                sub="Pick a trip length and get a ready-made day-by-day route — where to go, what to see, and how it all connects"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                {itineraryOptions.map(({ duration, route }) => (
+                  <Link
+                    key={duration}
+                    href={`/itinerary/${getItinerarySlug(country.slug, duration)}`}
+                    className="group relative flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl p-6 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10"
+                  >
+                    <span className="absolute -right-3 -top-5 font-heading text-8xl font-bold text-accent/8 group-hover:text-accent/15 transition-colors leading-none select-none">
+                      {duration}
+                    </span>
+                    <span className="relative inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20 w-fit mb-4">
+                      <Calendar className="w-3 h-3" /> {duration}-Day Trip
+                    </span>
+                    <h3 className="relative font-heading text-2xl font-bold text-primary-text group-hover:text-accent transition-colors mb-2 leading-snug">
+                      {duration} Days in {country.name}
+                    </h3>
+                    <p className="relative text-sm text-muted leading-relaxed mb-6">
+                      {route.map((r) => r.city.name).join(' → ')}
+                    </p>
+                    <div className="relative mt-auto flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
+                      See the full itinerary <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ── TRAVEL GUIDES ────────────────────────────────────────────── */}
           {blogLinks.length > 0 && (
             <section id="guides">
               <div className="flex items-end justify-between mb-8">
                 <SectionHeader
-                  label="itineraries &amp; guides"
-                  heading={`Plan Your ${country.name} Trip`}
-                  sub="Day-by-day itinerary plans, cost breakdowns in INR, and honest local tips"
+                  label="travel guides"
+                  heading={`${country.name} Travel Guides`}
+                  sub="In-depth city guides, budget breakdowns, and first-hand tips for your trip"
                   noMargin
                 />
                 <Link href="/blog"

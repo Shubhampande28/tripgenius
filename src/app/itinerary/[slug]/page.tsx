@@ -99,10 +99,34 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
     publisher: { '@type': 'Organization', name: 'TripGenius', url: BASE },
   };
 
+  const touristTripSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: `${parsed.duration} Days in ${country.name}`,
+    description: `Day-by-day ${parsed.duration}-day itinerary for ${country.name} covering ${route.map((r) => r.city.name).join(', ')}, designed for Indian travellers.`,
+    url: `${BASE}/itinerary/${slug}`,
+    touristType: 'Indian travellers',
+    itinerary: {
+      '@type': 'ItemList',
+      itemListElement: days.map((d) => ({
+        '@type': 'ListItem',
+        position: d.day,
+        item: {
+          '@type': 'TouristAttraction',
+          name: d.theme ?? d.city.name,
+          description: d.city.tagline,
+          url: `${BASE}/cities/${d.city.slug}`,
+        },
+      })),
+    },
+    provider: { '@type': 'Organization', name: 'TripGenius', url: BASE },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(touristTripSchema) }} />
       <Navbar />
       <main className="min-h-screen bg-dark">
 
