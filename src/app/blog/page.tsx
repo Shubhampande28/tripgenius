@@ -90,7 +90,7 @@ export default function BlogPage() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search guides…"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-white text-sm text-primary-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-surface text-sm text-primary-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
               />
             </div>
           </div>

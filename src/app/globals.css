@@ -137,7 +137,7 @@ html.light .hero-stat-label { color: rgba(55, 65, 81, 0.55); }
 .heading { font-family: var(--font-heading); }
 
 .gradient-text-accent {
-  background: linear-gradient(135deg, #FF6B35, #FFD166);
+  background: linear-gradient(135deg, #DC2626, #FFD166);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
