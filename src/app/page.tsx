@@ -83,15 +83,6 @@ const FEATURED_COUNTRY_SLUGS = [
   'uae', 'nepal', 'vietnam', 'georgia', 'morocco',
 ];
 
-// ── Trending search chips ──────────────────────────────────────────
-const TRENDING_CHIPS: { label: string; slug?: string; href?: string }[] = [
-  { label: 'Bali', slug: 'bali' },
-  { label: 'Goa in Monsoon', slug: 'goa' },
-  { label: 'Manali Road Trip', slug: 'manali' },
-  { label: 'Udaipur Honeymoon', slug: 'udaipur' },
-  { label: 'Ladakh', slug: 'ladakh' },
-  { label: 'Europe on a Budget', href: '/cities?region=Europe' },
-];
 
 function getCountryRepImg(country: CountryData): string | null {
   for (const citySlug of country.cities) {
@@ -278,30 +269,13 @@ export default function HomePage() {
                   </motion.div>
                 )}
 
-                {/* Trending chips — visible before user types */}
-                {!query && (
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <span className="text-xs text-muted self-center">Trending:</span>
-                    {TRENDING_CHIPS.map(chip => {
-                      const city = chip.slug ? allCities.find(c => c.slug === chip.slug) : undefined;
-                      const href = city ? `/cities/${city.slug}` : (chip.href ?? '/destinations');
-                      return (
-                        <Link key={chip.label}
-                          href={href}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent/40 hover:text-accent bg-surface transition-all text-muted">
-                          {city?.flag} {chip.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
 
-              {/* Secondary CTA — AI trip planner */}
+              {/* Secondary CTA — trip planner */}
               <p className="mt-5 text-sm text-muted">
                 Not sure where to go?{' '}
                 <Link href="/plan" className="text-accent font-semibold hover:underline">
-                  Try the AI Trip Planner →
+                  Try the Trip Planner →
                 </Link>
               </p>
             </motion.div>

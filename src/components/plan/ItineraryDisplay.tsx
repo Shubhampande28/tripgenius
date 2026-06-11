@@ -28,7 +28,7 @@ export default function ItineraryDisplay({ itinerary }: { itinerary: TripItinera
           <div>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
-              <span className="text-xs font-semibold text-teal uppercase tracking-wider">AI Generated</span>
+              <span className="text-xs font-semibold text-teal uppercase tracking-wider">Ready to Go</span>
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
               {itinerary.destination}

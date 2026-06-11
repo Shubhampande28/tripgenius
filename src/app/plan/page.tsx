@@ -91,7 +91,7 @@ function PlannerPageInner() {
                   Building your itinerary…
                 </p>
                 <p className="text-muted mt-2 text-sm">
-                  Our AI is crafting the perfect trip just for you.
+                  Putting together the perfect trip just for you.
                 </p>
               </div>
               <div className="space-y-2 w-full max-w-xs">
@@ -155,13 +155,13 @@ export default function PlanPage() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark border border-border text-xs font-medium text-muted mb-6">
                 <Sparkles size={12} className="text-accent" />
-                Powered by Claude AI
+                Free &amp; instant — no sign-up needed
               </div>
               <h1 className="font-heading text-5xl sm:text-6xl font-semibold text-primary-text">
-                AI Trip Planner
+                Trip Planner
               </h1>
               <p className="mt-4 text-muted max-w-xl mx-auto">
-                Tell us your destination and travel style. We&apos;ll generate a complete, personalized
+                Tell us your destination and travel style. We&apos;ll build a complete, personalized
                 day-by-day itinerary in seconds.
               </p>
             </motion.div>

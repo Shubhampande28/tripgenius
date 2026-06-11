@@ -50,6 +50,13 @@ export function buildItineraryDays(countrySlug: string, duration: number): Itine
     .map((s) => getCityBySlug(s))
     .filter((c): c is City => c !== undefined && !c.stub);
 
+  return buildItineraryDaysForCities(citiesData, duration);
+}
+
+// Same day-by-day distribution logic as buildItineraryDays, but for an
+// arbitrary list of cities — used by the trip planner to build single-city
+// or custom multi-city itineraries.
+export function buildItineraryDaysForCities(citiesData: City[], duration: number): ItineraryDay[] {
   if (citiesData.length === 0) return [];
 
   const isSingleCity = citiesData.length === 1;
