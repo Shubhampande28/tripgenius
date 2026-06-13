@@ -34,6 +34,12 @@ export function getCategoryColour(category: string): string {
   return CATEGORY_COLOURS[category] ?? FALLBACK_COLOUR;
 }
 
+// True when a city has enough coordinate data to power the interactive
+// "pick places on the map" trip builder (/plan/[city]).
+export function cityHasMapBuilder(city: City): boolean {
+  return !!city.coordinates && (city.thingsToDo ?? []).some((t) => t.coordinates != null);
+}
+
 export function buildAttractionPins(city: City): MapPin[] {
   if (!city.thingsToDo) return [];
   return city.thingsToDo

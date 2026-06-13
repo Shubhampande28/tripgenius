@@ -1,14 +1,19 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { Sparkles, Map, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PlannerForm from '@/components/plan/PlannerForm';
 import ItineraryDisplay from '@/components/plan/ItineraryDisplay';
 import { TripPlanRequest, TripItinerary } from '@/lib/types';
+import { allCities } from '@/lib/cities';
+import { cityHasMapBuilder } from '@/lib/mapUtils';
+
+const mapBuilderCities = allCities.filter(cityHasMapBuilder);
 
 function PlannerPageInner() {
   const searchParams = useSearchParams();
@@ -164,6 +169,17 @@ export default function PlanPage() {
                 Tell us your destination and travel style. We&apos;ll build a complete, personalized
                 day-by-day itinerary in seconds.
               </p>
+
+              {mapBuilderCities.length > 0 && (
+                <Link
+                  href={`/plan/${mapBuilderCities[0].slug}`}
+                  className="group mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 border border-teal/20 text-xs font-medium text-teal hover:border-teal/40 transition-colors"
+                >
+                  <Map size={12} />
+                  New: Pick places for {mapBuilderCities[0].name} on an interactive map
+                  <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              )}
             </motion.div>
           </div>
         </div>
