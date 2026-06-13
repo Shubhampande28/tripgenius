@@ -1,7 +1,7 @@
 import { countries, getCountryBySlug, type CountryData } from '@/data/countries';
 import { allCities, getCityBySlug } from '@/lib/cities';
 import { buildItineraryDaysForCities, buildRouteOverview, type ItineraryDay } from '@/lib/itineraries';
-import type { City, ThingToDo, TripPlanRequest, TripItinerary, DayPlan, BudgetItem } from '@/lib/types';
+import type { City, ThingToDo, TripPlanRequest, TripItinerary, DayPlan, BudgetItem, TimeOfDay } from '@/lib/types';
 
 const STYLE_LABELS: Record<string, string> = {
   adventure: 'Adventure',
@@ -23,9 +23,19 @@ const INTEREST_CATEGORY_MAP: Record<string, string[]> = {
 };
 
 const TIME_LABELS = { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' } as const;
+type TimeSlot = keyof typeof TIME_LABELS;
+const SLOT_ORDER: TimeSlot[] = ['morning', 'afternoon', 'evening'];
+
+// A candidate activity for a day's itinerary — either a real `ThingToDo`
+// (which may carry an `idealTime`) or a generated/generic placeholder.
+type ActivityCandidate = { name: string; description: string; idealTime?: TimeOfDay[] };
 
 function normalize(s: string): string {
   return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g, '');
+}
+
+function activityKey(name: string): string {
+  return normalize(name).replace(/\s+/g, ' ');
 }
 
 function namesMatch(name: string, input: string): boolean {
@@ -112,13 +122,23 @@ function selectCitiesForItinerary(match: DestinationMatch): City[] {
 
 function rankActivities(things: ThingToDo[], interests: string[]): ThingToDo[] {
   const wanted = new Set(interests.flatMap((i) => INTEREST_CATEGORY_MAP[i] ?? []));
-  if (wanted.size === 0) return things;
+  if (wanted.size === 0) return dedupeActivities(things);
   const matched = things.filter((t) => wanted.has(t.category));
   const rest = things.filter((t) => !wanted.has(t.category));
-  return [...matched, ...rest];
+  return dedupeActivities([...matched, ...rest]);
 }
 
-function genericActivities(city: City): { name: string; description: string }[] {
+function dedupeActivities<T extends { name: string }>(activities: T[]): T[] {
+  const seen = new Set<string>();
+  return activities.filter((activity) => {
+    const key = activityKey(activity.name);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function genericActivities(city: City): ActivityCandidate[] {
   return [
     {
       name: `Explore ${city.name}`,
@@ -135,28 +155,146 @@ function genericActivities(city: City): { name: string; description: string }[] 
   ];
 }
 
-function getActivitiesForCity(city: City, interests: string[]): { name: string; description: string }[] {
+function getActivitiesForCity(city: City, interests: string[]): ActivityCandidate[] {
   const things = city.thingsToDo ?? [];
   if (things.length > 0) return rankActivities(things, interests);
   return genericActivities(city);
 }
 
-function buildDayPlan(itinDay: ItineraryDay, req: TripPlanRequest): DayPlan {
+function fallbackActivity(city: City, day: number, slot: TimeSlot): ActivityCandidate {
+  const label = TIME_LABELS[slot];
+
+  if (slot === 'morning') {
+    return {
+      name: `${city.name} ${label} Orientation - Day ${day}`,
+      description: `Start day ${day} with a fresh, self-guided route through a different part of ${city.name}, using cafes, markets, and viewpoints as flexible anchors.`,
+    };
+  }
+
+  if (slot === 'afternoon') {
+    return {
+      name: `${city.name} ${label} Local Detour - Day ${day}`,
+      description: `Use the afternoon for a new neighbourhood, gallery, waterfront, garden, or easy side trip in ${city.name} that was not already used earlier in the itinerary.`,
+    };
+  }
+
+  return {
+    name: `${city.name} ${label} Slow Finish - Day ${day}`,
+    description: `Close day ${day} with a different dinner area, sunset point, cultural venue, or low-pressure walk so the itinerary stays varied.`,
+  };
+}
+
+// Looks ahead at the next `count` not-yet-used activities in rotation order,
+// without consuming them — used to anticipate time-locked activities before
+// committing this day's slot layout.
+function peekUnusedActivities(
+  activities: ActivityCandidate[],
+  startIdx: number,
+  usedActivityNames: Set<string>,
+  count: number,
+): ActivityCandidate[] {
+  const picks: ActivityCandidate[] = [];
+  for (let offset = 0; offset < activities.length && picks.length < count; offset++) {
+    const activity = activities[(startIdx + offset) % activities.length];
+    if (!usedActivityNames.has(activityKey(activity.name))) picks.push(activity);
+  }
+  return picks;
+}
+
+// Adjusts this day's default slot labels so a time-locked activity coming up
+// next in rotation (e.g. an evening-only performance) has a slot it can
+// legally be placed in, instead of being skipped entirely. Swaps out the
+// lowest-priority default slot for the one the activity actually needs.
+function resolveDaySlots(
+  activities: ActivityCandidate[],
+  startIdx: number,
+  usedActivityNames: Set<string>,
+  defaultSlots: TimeSlot[],
+): TimeSlot[] {
+  const upcoming = peekUnusedActivities(activities, startIdx, usedActivityNames, defaultSlots.length);
+
+  for (const candidate of upcoming) {
+    const ideal = candidate.idealTime;
+    if (!ideal || ideal.length === 0) continue;
+    if (ideal.some((slot) => defaultSlots.includes(slot))) continue;
+
+    const needed = ideal.find((slot) => !defaultSlots.includes(slot));
+    if (!needed) continue;
+
+    const lowestPriority = [...defaultSlots].sort((a, b) => SLOT_ORDER.indexOf(b) - SLOT_ORDER.indexOf(a))[0];
+    const next = defaultSlots.map((slot) => (slot === lowestPriority ? needed : slot));
+    return next.sort((a, b) => SLOT_ORDER.indexOf(a) - SLOT_ORDER.indexOf(b));
+  }
+
+  return defaultSlots;
+}
+
+// Picks the best unused activity for a specific slot. An activity with an
+// `idealTime` is only eligible for slots within that range, so an
+// evening-only experience can never be placed in a morning slot.
+function selectActivityForSlot(
+  activities: ActivityCandidate[],
+  startIdx: number,
+  usedActivityNames: Set<string>,
+  slot: TimeSlot,
+  city: City,
+  day: number,
+): ActivityCandidate {
+  for (let offset = 0; offset < activities.length; offset++) {
+    const activity = activities[(startIdx + offset) % activities.length];
+    const key = activityKey(activity.name);
+    if (usedActivityNames.has(key)) continue;
+    if (activity.idealTime && !activity.idealTime.includes(slot)) continue;
+    usedActivityNames.add(key);
+    return activity;
+  }
+
+  let fallback = fallbackActivity(city, day, slot);
+  let attempt = 2;
+  while (usedActivityNames.has(activityKey(fallback.name))) {
+    fallback = {
+      name: `${fallback.name} ${attempt}`,
+      description: fallback.description,
+    };
+    attempt++;
+  }
+  usedActivityNames.add(activityKey(fallback.name));
+  return fallback;
+}
+
+function activityCountForDay(itinDay: ItineraryDay, totalDays: number, availableCount: number): number {
+  if (availableCount <= 0) return 1;
+  if (totalDays <= 2) return Math.min(3, availableCount);
+  if (itinDay.day === 1 || itinDay.day === totalDays) return 1;
+  return Math.min(2, availableCount);
+}
+
+function slotsForCount(count: number): TimeSlot[] {
+  if (count <= 1) return ['morning'];
+  if (count === 2) return ['morning', 'afternoon'];
+  return ['morning', 'afternoon', 'evening'];
+}
+
+function countAvailableActivities(activities: { name: string }[], usedActivityNames: Set<string>): number {
+  return activities.filter((activity) => !usedActivityNames.has(activityKey(activity.name))).length;
+}
+
+function buildDayPlan(itinDay: ItineraryDay, req: TripPlanRequest, usedActivityNames: Set<string>, totalDays: number): DayPlan {
   const activities = getActivitiesForCity(itinDay.city, req.interests);
   const baseIdx = itinDay.activityIndex * 3;
   const proTips = itinDay.city.proTips ?? [];
+  const count = activityCountForDay(itinDay, totalDays, countAvailableActivities(activities, usedActivityNames));
+  const defaultSlots = slotsForCount(count);
+  const daySlots = resolveDaySlots(activities, baseIdx, usedActivityNames, defaultSlots);
 
-  const slots = (['morning', 'afternoon', 'evening'] as const).map((slot, i) => {
-    const activity = activities[(baseIdx + i) % activities.length];
+  const dayActivities = daySlots.map((slot, i) => {
+    const activity = selectActivityForSlot(activities, baseIdx, usedActivityNames, slot, itinDay.city, itinDay.day);
     const tip = i === 1 && proTips.length > 0 ? proTips[itinDay.day % proTips.length] : undefined;
     return {
-      slot,
-      block: {
-        time: TIME_LABELS[slot],
-        activity: activity.name,
-        description: activity.description,
-        ...(tip ? { tip } : {}),
-      },
+      time: TIME_LABELS[slot],
+      activity: activity.name,
+      description: activity.description,
+      ...(tip ? { tip } : {}),
     };
   });
 
@@ -164,9 +302,7 @@ function buildDayPlan(itinDay: ItineraryDay, req: TripPlanRequest): DayPlan {
     day: itinDay.day,
     date: formatDayDate(req.startDate, itinDay.day - 1),
     theme: itinDay.theme ?? `Discovering ${itinDay.city.name}`,
-    morning: slots[0].block,
-    afternoon: slots[1].block,
-    evening: slots[2].block,
+    activities: dayActivities,
   };
 }
 
@@ -278,13 +414,14 @@ export function generateTripItinerary(req: TripPlanRequest): TripItinerary | nul
   if (days.length === 0) return null;
 
   const route = buildRouteOverview(days);
+  const usedActivityNames = new Set<string>();
 
   return {
     destination: buildDestinationLabel(match, citiesData, route),
     duration: `${duration} ${duration === 1 ? 'Day' : 'Days'}`,
     style: STYLE_LABELS[req.style] ?? req.style,
     overview: buildOverview(citiesData, route, req, duration),
-    days: days.map((d) => buildDayPlan(d, req)),
+    days: days.map((d) => buildDayPlan(d, req, usedActivityNames, duration)),
     budget: buildBudget(citiesData, req),
     packingTips: buildPackingTips(req),
     bestAdvice: buildBestAdvice(citiesData),

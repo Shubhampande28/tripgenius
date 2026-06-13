@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Sparkles } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 
 const THEME_EVENT = 'tripgenius-theme-change';
@@ -122,7 +122,7 @@ export default function Navbar() {
               </Link>
             </nav>
 
-            {/* Right — theme toggle + CTA */}
+            {/* Right — theme toggle + CTAs */}
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={toggleTheme}
@@ -131,6 +131,13 @@ export default function Navbar() {
               >
                 {isLight ? <><Moon size={13} strokeWidth={2} /> Dark</> : <><Sun size={13} strokeWidth={2} /> Light</>}
               </button>
+              <Link
+                href="/plan"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-accent/30 text-accent text-sm font-semibold hover:bg-accent/10 transition-colors duration-150"
+              >
+                <Sparkles size={14} />
+                Plan a Trip
+              </Link>
               <Link
                 href="/destinations"
                 className="px-5 py-2.5 rounded-lg bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
@@ -183,7 +190,12 @@ export default function Navbar() {
                   {l.label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-border">
+              <div className="pt-3 border-t border-border space-y-2">
+                <Link href="/plan" onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 py-3 rounded-lg border border-accent/30 text-accent font-semibold">
+                  <Sparkles size={15} />
+                  Plan a Trip
+                </Link>
                 <Link href="/destinations" onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center py-3 rounded-lg bg-accent text-white font-semibold">
                   Explore Guides

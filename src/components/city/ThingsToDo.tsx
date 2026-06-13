@@ -10,6 +10,7 @@ const CATEGORY_STYLE: Record<string, { icon: string; text: string; bg: string; b
   Nature:          { icon: 'text-teal',       text: 'text-teal',       bg: 'bg-teal/12',        border: 'border-teal/25' },
   Adventure:       { icon: 'text-accent',     text: 'text-accent',     bg: 'bg-accent/12',      border: 'border-accent/25' },
   Culinary:        { icon: 'text-gold',       text: 'text-gold',       bg: 'bg-gold/15',        border: 'border-gold/30' },
+  Beach:           { icon: 'text-sky-400',    text: 'text-sky-400',    bg: 'bg-sky-500/12',     border: 'border-sky-500/25' },
   Scenic:          { icon: 'text-cyan-500',   text: 'text-cyan-500',   bg: 'bg-cyan-500/12',    border: 'border-cyan-500/25' },
   Iconic:          { icon: 'text-yellow-500', text: 'text-yellow-500', bg: 'bg-yellow-500/12',  border: 'border-yellow-500/25' },
   Shopping:        { icon: 'text-indigo-400', text: 'text-indigo-400', bg: 'bg-indigo-500/12',  border: 'border-indigo-500/25' },

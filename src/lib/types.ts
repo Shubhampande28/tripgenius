@@ -25,6 +25,8 @@ export interface CityStats {
   currency: string;
 }
 
+export type TimeOfDay = 'morning' | 'afternoon' | 'evening';
+
 export interface ThingToDo {
   name: string;
   description: string;
@@ -33,6 +35,10 @@ export interface ThingToDo {
   category: string;
   image?: string;
   coordinates?: Coordinates;
+  // Absent = flexible (can be scheduled in any slot). Present = the activity
+  // only makes sense during these times of day (e.g. a sunset cruise, a
+  // dawn temple ritual, an evening-only cultural performance).
+  idealTime?: TimeOfDay[];
 }
 
 export interface Hotel {
@@ -184,9 +190,7 @@ export interface DayPlan {
   day: number;
   date: string;
   theme: string;
-  morning: DayActivity;
-  afternoon: DayActivity;
-  evening: DayActivity;
+  activities: DayActivity[];
 }
 
 export interface BudgetItem {

@@ -4,74 +4,18 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight, Sparkles, CalendarDays } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AIPlannerTeaser from '@/components/home/AIPlannerTeaser';
 import SafeImage from '@/components/SafeImage';
+import Highlight from '@/components/Highlight';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
+import { getDestinationSuggestions } from '@/lib/searchSuggestions';
 import { countries, type CountryData } from '@/data/countries';
 import type { City } from '@/lib/types';
-
-// ── Search autocomplete ────────────────────────────────────────────
-type Suggestion =
-  | { type: 'city';    label: string; sub: string; href: string; city: City }
-  | { type: 'country'; label: string; sub: string; href: string; flag: string };
-
-function getSearchSuggestions(q: string): Suggestion[] {
-  if (!q || q.length < 2) return [];
-  const lower = q.toLowerCase();
-
-  // Country matches — show first (country page is the destination hub)
-  const matchedCountries = countries
-    .filter((c) =>
-      c.name.toLowerCase().startsWith(lower) ||
-      c.name.toLowerCase().includes(lower) ||
-      c.capital.toLowerCase().startsWith(lower),
-    )
-    .slice(0, 3);
-
-  const countrySuggestions: Suggestion[] = matchedCountries.map((c) => ({
-    type: 'country',
-    label: c.name,
-    sub: `${c.continent} · ${c.cities.length} cities`,
-    href: `/countries/${c.slug}`,
-    flag: c.flag,
-  }));
-
-  // City matches
-  const matchedCities = allCities
-    .filter((c) => !c.stub && (
-      c.name.toLowerCase().startsWith(lower) ||
-      c.name.toLowerCase().includes(lower)
-    ))
-    .slice(0, 3);
-
-  const citySuggestions: Suggestion[] = matchedCities.map((city) => ({
-    type: 'city',
-    label: city.name,
-    sub: city.country,
-    href: `/cities/${city.slug}`,
-    city,
-  }));
-
-  return [...countrySuggestions, ...citySuggestions].slice(0, 7);
-}
-
-// Highlight matching text in suggestion label
-function Highlight({ text, query }: { text: string; query: string }) {
-  if (!query) return <>{text}</>;
-  const idx = text.toLowerCase().indexOf(query.toLowerCase());
-  if (idx === -1) return <>{text}</>;
-  return (
-    <>
-      {text.slice(0, idx)}
-      <span className="text-accent font-semibold">{text.slice(idx, idx + query.length)}</span>
-      {text.slice(idx + query.length)}
-    </>
-  );
-}
 
 // ── Featured Destinations ──────────────────────────────────────────
 const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
@@ -120,7 +64,7 @@ export default function HomePage() {
   // FAQ
   const [openFaq, setOpenFaq]         = useState<number|null>(null);
 
-  const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
+  const suggestions = useMemo(() => getDestinationSuggestions(query), [query]);
   const featuredCities = useMemo(() => FEATURED_SLUGS.map(s => allCities.find(c => c.slug === s)).filter(Boolean) as City[], []);
   const guidePosts = useMemo(() => allPosts.slice(0, 3), []);
 
@@ -141,7 +85,7 @@ export default function HomePage() {
     if (!showDrop || suggestions.length === 0) {
       if (e.key === 'Enter' && query.trim()) {
         // Only navigate if user presses Enter with no dropdown open
-        const first = getSearchSuggestions(query)[0];
+        const first = getDestinationSuggestions(query)[0];
         if (first) router.push(first.href);
       }
       return;
@@ -272,12 +216,22 @@ export default function HomePage() {
               </div>
 
               {/* Secondary CTA — trip planner */}
-              <p className="mt-5 text-sm text-muted">
-                Not sure where to go?{' '}
-                <Link href="/plan" className="text-accent font-semibold hover:underline">
-                  Try the Trip Planner →
+              <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/plan"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20"
+                >
+                  <Sparkles size={15} />
+                  Plan your own trip
                 </Link>
-              </p>
+                <Link
+                  href="/destinations"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-surface border border-border text-sm font-semibold text-primary-text hover:border-accent/30 transition-colors"
+                >
+                  <CalendarDays size={15} />
+                  Browse ready guides
+                </Link>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -379,6 +333,9 @@ export default function HomePage() {
 
           </div>
         </section>
+
+        {/* ── TRIP PLANNER TEASER ── */}
+        <AIPlannerTeaser />
 
         {/* ── EXPLORE BY COUNTRY ── */}
         <section className="py-14 bg-elevated/40 overflow-hidden">

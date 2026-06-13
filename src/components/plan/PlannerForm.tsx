@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   MapPin, Calendar, Users, Sparkles, Loader2,
@@ -8,6 +8,8 @@ import {
   Camera, TreePine, Music
 } from 'lucide-react';
 import { TripPlanRequest } from '@/lib/types';
+import { getDestinationSuggestions } from '@/lib/searchSuggestions';
+import Highlight from '@/components/Highlight';
 
 const styles = [
   { value: 'adventure', label: 'Adventure', icon: Mountain, color: 'text-accent', bg: 'bg-accent/10 border-accent/30' },
@@ -26,6 +28,8 @@ const interests = [
   { value: 'wellness', label: 'Wellness & Spa', icon: Heart },
 ];
 
+const quickDestinations = ['Bali', 'Thailand', 'Dubai', 'Japan', 'Goa'];
+
 interface Props {
   onSubmit: (data: TripPlanRequest) => void;
   isLoading: boolean;
@@ -39,6 +43,48 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
   const [people, setPeople] = useState(2);
   const [style, setStyle] = useState('');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+
+  const [showDestDrop, setShowDestDrop] = useState(false);
+  const [destActiveIdx, setDestActiveIdx] = useState(-1);
+  const destRef = useRef<HTMLDivElement>(null);
+  const destSuggestions = useMemo(() => getDestinationSuggestions(destination), [destination]);
+
+  // Close destination dropdown on outside click
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      if (destRef.current && !destRef.current.contains(e.target as Node)) {
+        setShowDestDrop(false);
+        setDestActiveIdx(-1);
+      }
+    };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, []);
+
+  function selectDestination(label: string) {
+    setDestination(label);
+    setShowDestDrop(false);
+    setDestActiveIdx(-1);
+  }
+
+  function handleDestKeyDown(e: React.KeyboardEvent) {
+    if (!showDestDrop || destSuggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setDestActiveIdx((i) => Math.min(i + 1, destSuggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setDestActiveIdx((i) => Math.max(i - 1, -1));
+    } else if (e.key === 'Enter') {
+      if (destActiveIdx >= 0 && destSuggestions[destActiveIdx]) {
+        e.preventDefault();
+        selectDestination(destSuggestions[destActiveIdx].label);
+      }
+    } else if (e.key === 'Escape') {
+      setShowDestDrop(false);
+      setDestActiveIdx(-1);
+    }
+  }
 
   const toggleInterest = (val: string) => {
     setSelectedInterests((prev) =>
@@ -68,13 +114,13 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-surface border border-border rounded-2xl p-6 sm:p-8 space-y-8"
+      className="bg-surface border border-border rounded-2xl p-5 sm:p-6 space-y-6"
     >
       <div>
         <h2 className="font-heading text-2xl font-semibold text-primary-text mb-1">
-          Build Your Itinerary
+          Trip details
         </h2>
-        <p className="text-sm text-muted">Tell us about your trip and we&apos;ll plan the rest.</p>
+        <p className="text-sm text-muted">Use this like a planning brief. The result stays flexible and avoids repeated activities.</p>
       </div>
 
       {/* Destination */}
@@ -82,16 +128,82 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
         <label className="block text-xs font-semibold uppercase tracking-widest text-muted mb-3">
           Destination
         </label>
-        <div className="relative">
-          <MapPin size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
+        <div ref={destRef} className="relative">
+          <MapPin size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input
             type="text"
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            placeholder="City, country, or region…"
+            onChange={(e) => {
+              setDestination(e.target.value);
+              setShowDestDrop(e.target.value.length >= 2);
+              setDestActiveIdx(-1);
+            }}
+            onFocus={() => { if (destination.length >= 2) setShowDestDrop(true); }}
+            onKeyDown={handleDestKeyDown}
+            placeholder="City, country, or region..."
             required
+            autoComplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={showDestDrop && destSuggestions.length > 0}
+            aria-controls="destination-suggestions-listbox"
+            aria-activedescendant={destActiveIdx >= 0 ? `destination-option-${destActiveIdx}` : undefined}
             className={`${inputClass} pl-11`}
           />
+
+          {/* Suggestions dropdown */}
+          {showDestDrop && destSuggestions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.15 }}
+              id="destination-suggestions-listbox"
+              role="listbox"
+              className="absolute top-full left-0 right-0 mt-2 bg-elevated border border-border rounded-xl shadow-xl overflow-hidden z-50 text-left"
+            >
+              {destSuggestions.map((s, i) => (
+                <div
+                  key={`${s.type}-${s.label}-${i}`}
+                  id={`destination-option-${i}`}
+                  role="option"
+                  aria-selected={i === destActiveIdx}
+                  onMouseDown={() => selectDestination(s.label)}
+                  onMouseEnter={() => setDestActiveIdx(i)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-left cursor-pointer transition-colors ${
+                    i === destActiveIdx ? 'bg-accent/8' : 'hover:bg-surface'
+                  } ${i > 0 ? 'border-t border-border/40' : ''}`}
+                >
+                  <span className="text-lg flex-shrink-0">
+                    {s.type === 'country' ? s.flag : s.city.flag}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      {s.type === 'country' && (
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-accent/10 text-accent">Country</span>
+                      )}
+                      <p className="text-sm font-medium text-primary-text">
+                        <Highlight text={s.label} query={destination} />
+                      </p>
+                    </div>
+                    <p className="text-xs text-muted">{s.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {quickDestinations.map((label) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => selectDestination(label)}
+              className="px-3 py-1.5 rounded-full bg-elevated border border-border text-xs font-medium text-muted hover:text-primary-text hover:border-accent/30 transition-colors"
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -221,7 +333,7 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
         ) : (
           <>
             <Sparkles size={18} />
-            Generate My Itinerary
+            Plan My Trip
           </>
         )}
       </button>

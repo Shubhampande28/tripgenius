@@ -1,4 +1,4 @@
-import { City, MonthInfo, MonthRating } from './types';
+import { City, MonthInfo, MonthRating, TimeOfDay } from './types';
 import { verifiedCityImages } from './cityImages';
 
 const monthNames = [
@@ -41,6 +41,157 @@ function buildMonths(city: City): [MonthInfo, MonthInfo, MonthInfo, MonthInfo, M
 
 function topSpots(city: City): string[] {
   return city.areas?.flatMap((area) => area.spots.map((spot) => spot.name)).slice(0, 6) ?? [];
+}
+
+const categoryAliases: Record<string, string> = {
+  Architecture: 'Cultural',
+  Art: 'Art & Culture',
+  'Day trip': 'Day Trip',
+  Experience: 'Iconic',
+  Family: 'Entertainment',
+  Food: 'Culinary',
+  Heritage: 'Historical',
+  'Hidden Gem': 'Hidden gem',
+  History: 'Historical',
+  'Local Life': 'Cultural',
+  Local: 'Cultural',
+  'Must-do': 'Iconic',
+  'Must-see': 'Iconic',
+  Neighbourhood: 'Walking',
+  Novelty: 'Unique',
+  Seasonal: 'Festival',
+  Signature: 'Iconic',
+  UNESCO: 'Historical',
+};
+
+const categoryRules: Array<{ category: string; patterns: RegExp[] }> = [
+  { category: 'Wellness', patterns: [/\b(spa|massage|ayurved|wellness|onsen|thermal|sauna|bathhouse|sulphur bath|sulfur bath|hot spring|hot pools|mud bath|yoga|meditation|mindfulness|healing)\b/i, /\b(hammam|hamam)\b.*\b(experience|bath|baths|spa|ritual)\b/i] },
+  { category: 'Culinary', patterns: [/\b(culinary|cooking|dinner|breakfast|lunch|restaurant|cafe|cafes|street food|food crawl|food tour|hawker|thali|bbq|barbecue|kebab|noodle|ramen|sushi|dim sum|tapas|paella|eating house|wine|beer|brewery|tea tasting|coffee|chocolate|cheese|spice farm|pepper farm)\b/i] },
+  { category: 'Shopping', patterns: [/\b(shopping|souq|souk|bazaar|market|mall|boutique|craft shop|textile|silk|jewellery|jewelry|antiques|carpet|ceramics|workshop|trading domes)\b/i] },
+  { category: 'Nightlife', patterns: [/\b(nightlife|club|pub crawl|bar hop|busking|rooftop bar|live music|party)\b/i] },
+  { category: 'Entertainment', patterns: [/\b(theme park|universal studios|disney|ferrari world|show|circus show|theatre|theater|stadium|match|concert|fountain show|performance|opera)\b/i] },
+  { category: 'Spiritual', patterns: [/\b(wat|temple|mosque|church|cathedral|basilica|synagogue|shrine|stupa|monastery|pagoda|ashram|abbey|aarti|puja|pilgrim|pilgrimage|prayer|sacred|buddha|gurdwara|gurudwara|dargah)\b/i] },
+  { category: 'Historical', patterns: [/\b(fort|fortress|castle|palace|citadel|ruin|tomb|mausoleum|memorial|battlefield|archaeolog|ancient|old city|old town|heritage|unesco|colonial|historic|history|museum|war|caves|roman baths)\b/i] },
+  { category: 'Art & Culture', patterns: [/\b(art|arts|gallery|mural|street art|cultural|culture|dance|flamenco|music|festival|folklore|craft|library|architecture|design)\b/i] },
+  { category: 'Wildlife', patterns: [/\b(safari|wildlife|zoo|sanctuary|elephant|rhino|lion|tiger|giraffe|monkey|bird|whale|dolphin|tarsier|tortoise|crane|game drive|national park)\b/i] },
+  { category: 'Beach', patterns: [/\b(beach|island|lagoon|coast|shore|seaside|bay|sandbar|reef|atoll|marine park)\b/i] },
+  { category: 'Adventure', patterns: [/\b(rafting|kayak|kayaking|diving|snorkel|surf|paraglid|bungee|zipline|quad|jeep safari|canyoning|balloon|helicopter|cable car|ski|snow trip)\b/i] },
+  { category: 'Trekking', patterns: [/\b(trek|hike|trail|walk|climb|mountain|peak|summit|pass|valley|gorge)\b/i] },
+  { category: 'Nature', patterns: [/\b(garden|gardens|park|forest|waterfall|lake|river|botanic|botanical|viewpoint|sunrise|sunset|volcano|canyon|glacier|rainforest|mangrove|cave|falls)\b/i] },
+  { category: 'Scenic', patterns: [/\b(view|viewpoint|skyline|observation|tower|cruise|ferry|promenade|bridge|sunset|sunrise|lookout|panorama|gondola)\b/i] },
+  { category: 'Walking', patterns: [/\b(walk|walking|lane|quarter|district|neighbourhood|neighborhood|village|old quarter|backstreets)\b/i] },
+  { category: 'Festival', patterns: [/\b(festival|fair|carnival|mela|new year|dussehra|ramadan|eid|christmas)\b/i] },
+];
+
+function normalizeThingCategory(category: string | undefined): string {
+  if (!category) return 'Iconic';
+  return categoryAliases[category] ?? category;
+}
+
+function categoryFromText(text: string): string | undefined {
+  return categoryRules.find((rule) => rule.patterns.some((pattern) => pattern.test(text)))?.category;
+}
+
+function classifierDescription(description: string): string {
+  return description
+    .replace(/nearby food, viewpoints, and slower local exploring/gi, '')
+    .replace(/nearby meal, viewpoint, market, or neighbourhood walk/gi, '')
+    .replace(/nearby meal or neighbourhood walk/gi, '')
+    .replace(/neighbourhood walk for the best rhythm/gi, '')
+    .replace(/peak season/gi, '');
+}
+
+function inferThingCategory(name: string, description: string, category?: string): string {
+  return categoryFromText(name) ?? categoryFromText(`${name} ${classifierDescription(description)}`) ?? normalizeThingCategory(category);
+}
+
+// Curated overrides for named experiences that are genuinely time-locked but
+// whose name/description doesn't necessarily say so (e.g. a performance that
+// only runs at a fixed hour). Matched as a lowercase substring of the name.
+const timeOverrides: Record<string, TimeOfDay[]> = {
+  kecak: ['evening'],
+  'barong dance': ['morning', 'afternoon'],
+  'legong dance': ['evening'],
+  tsukiji: ['morning'],
+  gion: ['evening'],
+  geisha: ['evening'],
+  maiko: ['evening'],
+  'tea ceremony': ['afternoon'],
+  sumo: ['morning'],
+  durbar: ['morning'],
+  qawwali: ['evening'],
+  'sema ceremony': ['evening'],
+  'floating market': ['morning'],
+  'damnoen saduak': ['morning'],
+  'alms giving': ['morning'],
+  'monk chant': ['morning'],
+  'changing of the guard': ['morning'],
+};
+
+// Regex fallback for time-of-day signals embedded in the name/description —
+// mirrors `categoryRules`. Order matters: more specific groups first.
+const timeRules: Array<{ time: TimeOfDay[]; patterns: RegExp[] }> = [
+  {
+    time: ['morning'],
+    patterns: [
+      /\bsunrise\b/i,
+      /\bdawn\b/i,
+      /\bdaybreak\b/i,
+      /\bhot air balloon/i,
+      /\bfish market\b/i,
+      /\bbird ?watching\b/i,
+      /\bbreakfast\b/i,
+      /\bmorning (market|ritual|prayer|safari|cruise|hike|trek|walk|yoga)\b/i,
+    ],
+  },
+  {
+    time: ['evening'],
+    patterns: [
+      /\bnight (market|safari|cruise|tour|walk|bazaar|food|life)\b/i,
+      /\bnightlife\b/i,
+      /\baarti\b/i,
+      /\bevening (ritual|prayer|show|cruise|walk|market|safari|service|aarti)\b/i,
+      /\bdinner cruise\b/i,
+      /\bcultural (show|performance)\b/i,
+      /\bdance (show|performance|ceremony)\b/i,
+      /\b(sound\s*(and|&)\s*light|light\s*(and|&)\s*sound)\b/i,
+      /\billumination/i,
+      /\bfountain show\b/i,
+      /\bfireworks\b/i,
+      /\bwhirling dervish/i,
+      /\bcabaret\b/i,
+      /\bpub crawl\b/i,
+      /\brooftop bar\b/i,
+      /\bstargazing\b/i,
+      /\bfull moon party\b/i,
+      /\blantern (festival|release)\b/i,
+    ],
+  },
+  {
+    time: ['afternoon', 'evening'],
+    patterns: [
+      /\bsunset\b/i,
+      /\bdusk\b/i,
+      /\bgolden hour\b/i,
+      /\bsun (dips|sets|melts|dissolves|dissolve|disappears|goes down|sinks)\b/i,
+      /\bdesert safari\b/i,
+      /\bdune bashing\b/i,
+    ],
+  },
+];
+
+function timeFromOverride(name: string): TimeOfDay[] | undefined {
+  const lower = name.toLowerCase();
+  return Object.entries(timeOverrides).find(([key]) => lower.includes(key))?.[1];
+}
+
+function timeFromText(text: string): TimeOfDay[] | undefined {
+  return timeRules.find((rule) => rule.patterns.some((pattern) => pattern.test(text)))?.time;
+}
+
+function inferActivityTime(name: string, description: string, existing?: TimeOfDay[]): TimeOfDay[] | undefined {
+  if (existing && existing.length > 0) return existing;
+  return timeFromOverride(name) ?? timeFromText(`${name} ${description}`);
 }
 
 export function enrichCity(city: City): City {
@@ -98,12 +249,17 @@ export function enrichCity(city: City): City {
         },
       ],
     },
-    thingsToDo: city.thingsToDo ?? spots.slice(0, 5).map((spot, index) => ({
+    thingsToDo: (city.thingsToDo ?? spots.slice(0, 5).map((spot, index) => ({
       name: spot,
       description: `${spot} is one of the essential experiences in ${city.name}. Build your day around it, then leave time for nearby food, viewpoints, and slower local exploring.`,
       icon: ['📍', '🏛️', '🌄', '🍽️', '🚶'][index] ?? '📍',
       duration: index === 0 ? '2-3 hours' : '1-2 hours',
-      category: city.vibes[index % city.vibes.length] ?? 'Essential',
+      category: 'Iconic',
+      idealTime: undefined as TimeOfDay[] | undefined,
+    }))).map((thing) => ({
+      ...thing,
+      category: inferThingCategory(thing.name, thing.description, thing.category),
+      idealTime: inferActivityTime(thing.name, thing.description, thing.idealTime),
     })),
     hotels: city.hotels ?? [
       {
