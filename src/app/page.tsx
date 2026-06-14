@@ -3,22 +3,42 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight, Sparkles, CalendarDays } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight, Sparkles, CalendarDays, Shuffle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AIPlannerTeaser from '@/components/home/AIPlannerTeaser';
+import Reviews from '@/components/home/Reviews';
 import SafeImage from '@/components/SafeImage';
 import Highlight from '@/components/Highlight';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts } from '@/lib/blog';
 import { getDestinationSuggestions } from '@/lib/searchSuggestions';
+import { useMounted } from '@/lib/useMounted';
 import { countries, type CountryData } from '@/data/countries';
 import type { City } from '@/lib/types';
 
 // ── Featured Destinations ──────────────────────────────────────────
+// Curated order used for the server render & first paint (stable, SEO-friendly).
+// After mount we shuffle a much larger pool so a different mix shows each visit.
 const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
+const TOP_PICKS_COUNT = 8;
+
+// Pool of well-photographed, full (non-stub) destinations to randomise from.
+const FEATURED_POOL: City[] = allCities.filter(
+  (c) => !c.stub && getCityImageUrl(c.slug, 'card') !== null,
+);
+
+// Fisher–Yates shuffle (returns a new array, does not mutate the source).
+function shuffle<T>(arr: readonly T[]): T[] {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
 
 // ── Featured Countries ─────────────────────────────────────────────
 const FEATURED_COUNTRY_SLUGS = [
@@ -48,6 +68,11 @@ const HOME_FAQ_SCHEMA = {
 
 export default function HomePage() {
   const router = useRouter();
+  const mounted = useMounted();
+  const reduceMotion = useReducedMotion();
+
+  // Re-shuffle token — bump to re-randomise Top Picks on demand (Shuffle button).
+  const [shuffleTick, setShuffleTick] = useState(0);
 
   // Search state
   const [query, setQuery]             = useState('');
@@ -65,8 +90,33 @@ export default function HomePage() {
   const [openFaq, setOpenFaq]         = useState<number|null>(null);
 
   const suggestions = useMemo(() => getDestinationSuggestions(query), [query]);
-  const featuredCities = useMemo(() => FEATURED_SLUGS.map(s => allCities.find(c => c.slug === s)).filter(Boolean) as City[], []);
+
+  // Server + first paint: stable curated set (no hydration mismatch).
+  // After mount: a random mix from the full pool, re-rolled when shuffleTick changes.
+  const featuredCities = useMemo<City[]>(() => {
+    if (!mounted) {
+      return FEATURED_SLUGS
+        .map((s) => allCities.find((c) => c.slug === s))
+        .filter(Boolean) as City[];
+    }
+    return shuffle(FEATURED_POOL).slice(0, TOP_PICKS_COUNT);
+    // shuffleTick is an intentional trigger: bumping it re-rolls the random selection.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mounted, shuffleTick]);
+
   const guidePosts = useMemo(() => allPosts.slice(0, 3), []);
+
+  // Stagger reveal for the destination grid (disabled under reduced-motion).
+  const gridVariants = {
+    hidden: {},
+    show: { transition: { staggerChildren: reduceMotion ? 0 : 0.06 } },
+  };
+  const cardVariants = reduceMotion
+    ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 18 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] as const } },
+      };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -274,62 +324,83 @@ export default function HomePage() {
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Top Picks</p>
                 <h2 className="font-heading text-3xl font-bold text-primary-text">Popular Destinations</h2>
-                <p className="text-muted text-sm mt-1">Hand-picked places travellers love most right now</p>
+                <p className="text-muted text-sm mt-1">A fresh mix of places travellers love — different every visit</p>
               </div>
-              <Link href="/destinations"
-                className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1 flex-shrink-0 pb-1">
-                See more places to fall for <ArrowRight size={13} />
-              </Link>
+              <div className="flex items-center gap-4 flex-shrink-0 pb-1">
+                {mounted && (
+                  <button
+                    type="button"
+                    onClick={() => setShuffleTick((t) => t + 1)}
+                    className="group/shuffle inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-accent transition-colors"
+                    aria-label="Shuffle destinations"
+                  >
+                    <Shuffle size={14} className="transition-transform duration-300 group-hover/shuffle:rotate-180" />
+                    Shuffle
+                  </button>
+                )}
+                <Link href="/destinations"
+                  className="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1">
+                  See more <ArrowRight size={13} />
+                </Link>
+              </div>
             </div>
 
             {/* Destination card grid — image + name + supporting info */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {/* key on shuffleTick so a re-roll replays the stagger entrance */}
+            <motion.div
+              key={shuffleTick}
+              variants={gridVariants}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"
+            >
               {featuredCities.map(city => (
-                <Link
-                  key={city.slug}
-                  href={`/cities/${city.slug}`}
-                  className="group relative block overflow-hidden rounded-[20px] bg-surface"
-                  style={{ aspectRatio: '4/5' }}
-                >
-                  {/* Destination image */}
-                  <SafeImage
-                    src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                    alt={`${city.name} travel guide`}
-                    city={city.slug}
-                    accentColor={city.accentColor}
-                    fill
-                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+                <motion.div key={city.slug} variants={cardVariants}>
+                  <Link
+                    href={`/cities/${city.slug}`}
+                    className="group relative block overflow-hidden rounded-[20px] bg-surface"
+                    style={{ aspectRatio: '4/5' }}
+                  >
+                    {/* Destination image */}
+                    <SafeImage
+                      src={getCityImageUrl(city.slug, 'card') ?? city.image}
+                      alt={`${city.name} travel guide`}
+                      city={city.slug}
+                      accentColor={city.accentColor}
+                      fill
+                      sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
 
-                  {/* Gradient overlay — readable bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    {/* Gradient overlay — readable bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Bottom content — name + supporting info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-                      {city.flag} {city.country}
-                    </p>
-                    <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
-                      {city.name}
-                    </h3>
-                    {/* Supporting info — best time */}
-                    {city.stats?.bestTime && (
-                      <p className="text-white/65 text-xs">
-                        Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+                    {/* Bottom content — name + supporting info */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
+                        {city.flag} {city.country}
                       </p>
-                    )}
-                  </div>
+                      <h3 className="font-heading text-xl font-bold text-white leading-tight mb-1">
+                        {city.name}
+                      </h3>
+                      {/* Supporting info — best time */}
+                      {city.stats?.bestTime && (
+                        <p className="text-white/65 text-xs">
+                          Best: <span className="text-accent font-semibold">{city.stats.bestTime}</span>
+                        </p>
+                      )}
+                    </div>
 
-                  {/* Hover pill */}
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
-                      Explore <ArrowRight size={9} />
-                    </span>
-                  </div>
-                </Link>
+                    {/* Hover pill */}
+                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-accent rounded-full px-2.5 py-1">
+                        Explore <ArrowRight size={9} />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
           </div>
         </section>
@@ -476,6 +547,9 @@ export default function HomePage() {
         </section>
 
         {/* Compare moved to /compare page — not on homepage */}
+
+        {/* ── REVIEWS — auto-sliding social proof ── */}
+        <Reviews />
 
         {/* ── NEWSLETTER ── subtle, not a neon billboard ── */}
         <section className="py-14 border-t border-border">
