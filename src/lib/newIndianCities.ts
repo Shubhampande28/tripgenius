@@ -30,14 +30,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-emerald-600 via-green-500 to-lime-400",
   "accentColor": "#059669",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg",
+  "image": "/city-images/dehradun.jpg",
+  "heroImage": "/city-images/dehradun.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "⛰️",
       "accentColor": "#059669",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg",
+      "image": "/city-images/dehradun.jpg",
       "tagline": "Caves, temples and valley views",
       "spots": [
         {
@@ -117,14 +117,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-sky-600 via-cyan-500 to-teal-400",
   "accentColor": "#0EA5E9",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg",
+  "image": "/city-images/trivandrum.jpg",
+  "heroImage": "/city-images/trivandrum.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🏖️",
       "accentColor": "#0EA5E9",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg",
+      "image": "/city-images/trivandrum.jpg",
       "tagline": "Temples, museums and beaches",
       "spots": [
         {
@@ -204,14 +204,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-amber-600 via-orange-500 to-yellow-400",
   "accentColor": "#F59E0B",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg",
+  "image": "/city-images/kozhikode.jpg",
+  "heroImage": "/city-images/kozhikode.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🌊",
       "accentColor": "#F59E0B",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg",
+      "image": "/city-images/kozhikode.jpg",
       "tagline": "Beaches, boats and Malabar flavours",
       "spots": [
         {
@@ -291,14 +291,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-red-600 via-rose-500 to-orange-400",
   "accentColor": "#DC2626",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg",
+  "image": "/city-images/thrissur.jpg",
+  "heroImage": "/city-images/thrissur.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🛕",
       "accentColor": "#DC2626",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg",
+      "image": "/city-images/thrissur.jpg",
       "tagline": "Temples, festivals and falls",
       "spots": [
         {
@@ -377,14 +377,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-violet-600 via-purple-500 to-fuchsia-400",
   "accentColor": "#8B5CF6",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg",
+  "image": "/city-images/vrindavan.jpg",
+  "heroImage": "/city-images/vrindavan.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🛕",
       "accentColor": "#8B5CF6",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg",
+      "image": "/city-images/vrindavan.jpg",
       "tagline": "Temples of the Braj",
       "spots": [
         {
@@ -463,14 +463,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-orange-600 via-amber-500 to-yellow-400",
   "accentColor": "#F97316",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg",
+  "image": "/city-images/shirdi.jpg",
+  "heroImage": "/city-images/shirdi.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🛕",
       "accentColor": "#F97316",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg",
+      "image": "/city-images/shirdi.jpg",
       "tagline": "Shrines of Sai Baba",
       "spots": [
         {
@@ -550,14 +550,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-amber-600 via-yellow-500 to-orange-400",
   "accentColor": "#D97706",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg",
+  "image": "/city-images/patna.jpg",
+  "heroImage": "/city-images/patna.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🏛️",
       "accentColor": "#D97706",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg",
+      "image": "/city-images/patna.jpg",
       "tagline": "History along the Ganges",
       "spots": [
         {
@@ -637,14 +637,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-orange-600 via-amber-500 to-yellow-400",
   "accentColor": "#EA580C",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg",
+  "image": "/city-images/nagpur.jpg",
+  "heroImage": "/city-images/nagpur.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🐯",
       "accentColor": "#EA580C",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg",
+      "image": "/city-images/nagpur.jpg",
       "tagline": "Monuments, lakes and tiger gateways",
       "spots": [
         {
@@ -724,14 +724,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-pink-600 via-rose-500 to-orange-400",
   "accentColor": "#DB2777",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg",
+  "image": "/city-images/indore.jpg",
+  "heroImage": "/city-images/indore.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🍲",
       "accentColor": "#DB2777",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg",
+      "image": "/city-images/indore.jpg",
       "tagline": "Palaces and street-food legends",
       "spots": [
         {
@@ -810,14 +810,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-green-600 via-emerald-500 to-teal-400",
   "accentColor": "#16A34A",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg",
+  "image": "/city-images/raipur.jpg",
+  "heroImage": "/city-images/raipur.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🏞️",
       "accentColor": "#16A34A",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg",
+      "image": "/city-images/raipur.jpg",
       "tagline": "Lakes, museums and temples",
       "spots": [
         {
@@ -896,14 +896,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-cyan-600 via-sky-500 to-blue-400",
   "accentColor": "#0891B2",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg",
+  "image": "/city-images/vijayawada.jpg",
+  "heroImage": "/city-images/vijayawada.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🛕",
       "accentColor": "#0891B2",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg",
+      "image": "/city-images/vijayawada.jpg",
       "tagline": "Temples, caves and the Krishna",
       "spots": [
         {
@@ -983,14 +983,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-sky-600 via-cyan-500 to-teal-400",
   "accentColor": "#0EA5E9",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg",
+  "image": "/city-images/port-blair.jpg",
+  "heroImage": "/city-images/port-blair.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "🏝️",
       "accentColor": "#0EA5E9",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg",
+      "image": "/city-images/port-blair.jpg",
       "tagline": "History, harbours and island ferries",
       "spots": [
         {
@@ -1069,14 +1069,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-teal-600 via-emerald-500 to-green-400",
   "accentColor": "#0D9488",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg",
+  "image": "/city-images/ranchi.jpg",
+  "heroImage": "/city-images/ranchi.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "💦",
       "accentColor": "#0D9488",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg",
+      "image": "/city-images/ranchi.jpg",
       "tagline": "Waterfalls, hills and gardens",
       "spots": [
         {
@@ -1155,14 +1155,14 @@ export const newIndianCities: City[] = [
   ],
   "gradient": "from-violet-600 via-indigo-500 to-blue-400",
   "accentColor": "#7C3AED",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg",
-  "heroImage": "https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg",
+  "image": "/city-images/salem.jpg",
+  "heroImage": "/city-images/salem.jpg",
   "areas": [
     {
       "name": "Top Sights",
       "emoji": "⛰️",
       "accentColor": "#7C3AED",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg",
+      "image": "/city-images/salem.jpg",
       "tagline": "Hills, dams and temples",
       "spots": [
         {
