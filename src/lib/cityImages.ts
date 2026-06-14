@@ -1,126 +1,126 @@
 export const verifiedCityImages: Record<string, { card: string; hero: string }> = {
 
   // ── 6 Full Guide Cities ───────────────────────────────────────
-  bali:      { card: 'photo-1537996194471-e657df975ab4', hero: 'photo-1537996194471-e657df975ab4' },   // Tegallalang rice terraces
-  bangkok:   { card: 'photo-1563492065599-3520f775eeed', hero: 'photo-1563492065599-3520f775eeed' },
+  bali: { card: '/city-images/bali.jpg', hero: '/city-images/bali.jpg' },
+  bangkok: { card: '/city-images/bangkok.jpg', hero: '/city-images/bangkok.jpg' },
   paris: { card: '/city-images/paris.jpg', hero: '/city-images/paris.jpg' },
-  tokyo:     { card: 'photo-1540959733332-eab4deabeeaf', hero: 'photo-1540959733332-eab4deabeeaf' },
-  dubai:     { card: 'photo-1512453979798-5ea266f8880c', hero: 'photo-1512453979798-5ea266f8880c' },
-  goa:       { card: 'photo-1614082242765-7c98ca0f3df3', hero: 'photo-1614082242765-7c98ca0f3df3' },
+  tokyo: { card: '/city-images/tokyo.jpg', hero: '/city-images/tokyo.jpg' },
+  dubai: { card: '/city-images/dubai.jpg', hero: '/city-images/dubai.jpg' },
+  goa: { card: '/city-images/goa.jpg', hero: '/city-images/goa.jpg' },
 
   // ── World Cities ──────────────────────────────────────────────
-  singapore:       { card: 'photo-1525625293386-3f8f99389edd', hero: 'photo-1525625293386-3f8f99389edd' },
-  seoul:           { card: 'photo-1538485399081-7191377e8241', hero: 'photo-1538485399081-7191377e8241' },
-  kyoto:           { card: 'photo-1493976040374-85c8e12f0c0e', hero: 'photo-1493976040374-85c8e12f0c0e' },
+  singapore: { card: '/city-images/singapore.jpg', hero: '/city-images/singapore.jpg' },
+  seoul: { card: '/city-images/seoul.jpg', hero: '/city-images/seoul.jpg' },
+  kyoto: { card: '/city-images/kyoto.jpg', hero: '/city-images/kyoto.jpg' },
   'hong-kong': { card: '/city-images/hong-kong.jpg', hero: '/city-images/hong-kong.jpg' },
-  phuket:          { card: 'photo-1589394815804-964ed0be2eb5', hero: 'photo-1589394815804-964ed0be2eb5' },
-  'chiang-mai':    { card: 'photo-1568992688065-536aad8a12f6', hero: 'photo-1568992688065-536aad8a12f6' },
-  london:          { card: 'photo-1513635269975-59663e0ac1ad', hero: 'photo-1513635269975-59663e0ac1ad' },
+  phuket: { card: '/city-images/phuket.jpg', hero: '/city-images/phuket.jpg' },
+  'chiang-mai': { card: '/city-images/chiang-mai.jpg', hero: '/city-images/chiang-mai.jpg' },
+  london: { card: '/city-images/london.jpg', hero: '/city-images/london.jpg' },
   barcelona: { card: '/city-images/barcelona.jpg', hero: '/city-images/barcelona.jpg' },
-  rome:            { card: 'photo-1552832230-c0197dd311b5', hero: 'photo-1552832230-c0197dd311b5' },
-  amsterdam:       { card: 'photo-1534351590666-13e3e96b5017', hero: 'photo-1534351590666-13e3e96b5017' },
-  prague:          { card: 'photo-1541849546-216549ae216d', hero: 'photo-1541849546-216549ae216d' },
-  lisbon:          { card: 'photo-1762882450531-c99aca0ba328', hero: 'photo-1762882450531-c99aca0ba328' },
-  istanbul:        { card: 'photo-1524231757912-21f4fe3a7200', hero: 'photo-1524231757912-21f4fe3a7200' },
-  athens:          { card: 'photo-1555993539-1732b0258235', hero: 'photo-1555993539-1732b0258235' },
-  budapest:        { card: 'photo-1551867633-194f125bddfa', hero: 'photo-1551867633-194f125bddfa' },
+  rome: { card: '/city-images/rome.jpg', hero: '/city-images/rome.jpg' },
+  amsterdam: { card: '/city-images/amsterdam.jpg', hero: '/city-images/amsterdam.jpg' },
+  prague: { card: '/city-images/prague.jpg', hero: '/city-images/prague.jpg' },
+  lisbon: { card: '/city-images/lisbon.jpg', hero: '/city-images/lisbon.jpg' },
+  istanbul: { card: '/city-images/istanbul.jpg', hero: '/city-images/istanbul.jpg' },
+  athens: { card: '/city-images/athens.jpg', hero: '/city-images/athens.jpg' },
+  budapest: { card: '/city-images/budapest.jpg', hero: '/city-images/budapest.jpg' },
   'new-york': { card: '/city-images/new-york.jpg', hero: '/city-images/new-york.jpg' },
-  'mexico-city':   { card: 'photo-1518105779142-d975f22f1b0a', hero: 'photo-1518105779142-d975f22f1b0a' },
-  'rio-de-janeiro':{ card: 'photo-1483729558449-99ef09a8c325', hero: 'photo-1483729558449-99ef09a8c325' },
-  'buenos-aires':  { card: 'photo-1581299894007-aaa50297cf16', hero: 'photo-1581299894007-aaa50297cf16' },
+  'mexico-city': { card: '/city-images/mexico-city.jpg', hero: '/city-images/mexico-city.jpg' },
+  'rio-de-janeiro': { card: '/city-images/rio-de-janeiro.jpg', hero: '/city-images/rio-de-janeiro.jpg' },
+  'buenos-aires': { card: '/city-images/buenos-aires.jpg', hero: '/city-images/buenos-aires.jpg' },
   marrakech: { card: '/city-images/marrakech.jpg', hero: '/city-images/marrakech.jpg' },
   'cape-town': { card: '/city-images/cape-town.jpg', hero: '/city-images/cape-town.jpg' },
-  maldives:        { card: 'photo-1514282401047-d79a71a590e8', hero: 'photo-1514282401047-d79a71a590e8' },
-  santorini:       { card: 'photo-1570077188670-e3a8d69ac5ff', hero: 'photo-1570077188670-e3a8d69ac5ff' },
-  cusco:           { card: 'photo-1587595431973-160d0d94add1', hero: 'photo-1587595431973-160d0d94add1' },
+  maldives: { card: '/city-images/maldives.jpg', hero: '/city-images/maldives.jpg' },
+  santorini: { card: '/city-images/santorini.jpg', hero: '/city-images/santorini.jpg' },
+  cusco: { card: '/city-images/cusco.jpg', hero: '/city-images/cusco.jpg' },
 
   // ── Golden Triangle + Major Indian Cities ─────────────────────
   delhi: { card: '/city-images/delhi.jpg', hero: '/city-images/delhi.jpg' },
-  agra:      { card: 'photo-1564507592333-c60657eea523', hero: 'photo-1564507592333-c60657eea523' },
-  jaipur:    { card: 'photo-1599661046827-dacff0c0f09a', hero: 'photo-1599661046827-dacff0c0f09a' },
-  mumbai:    { card: 'photo-1529253355930-ddbe423a2ac7', hero: 'photo-1529253355930-ddbe423a2ac7' },
-  varanasi:  { card: 'photo-1561361058-c24cecae35ca',   hero: 'photo-1561361058-c24cecae35ca' },
-  amritsar:  { card: 'photo-1692782428565-2041cd404ebd', hero: 'photo-1692782428565-2041cd404ebd' },
-  kolkata:   { card: 'photo-1558431382-27e303142255',   hero: 'photo-1558431382-27e303142255' },
-  rishikesh: { card: 'photo-1724432191302-6133b34c7105', hero: 'photo-1724432191302-6133b34c7105' },
+  agra: { card: '/city-images/agra.jpg', hero: '/city-images/agra.jpg' },
+  jaipur: { card: '/city-images/jaipur.jpg', hero: '/city-images/jaipur.jpg' },
+  mumbai: { card: '/city-images/mumbai.jpg', hero: '/city-images/mumbai.jpg' },
+  varanasi: { card: '/city-images/varanasi.jpg', hero: '/city-images/varanasi.jpg' },
+  amritsar: { card: '/city-images/amritsar.jpg', hero: '/city-images/amritsar.jpg' },
+  kolkata: { card: '/city-images/kolkata.jpg', hero: '/city-images/kolkata.jpg' },
+  rishikesh: { card: '/city-images/rishikesh.jpg', hero: '/city-images/rishikesh.jpg' },
 
   // ── Rajasthan ─────────────────────────────────────────────────
-  udaipur:         { card: 'photo-1477587458883-47145ed94245', hero: 'photo-1477587458883-47145ed94245' },
-  jodhpur:         { card: 'photo-1590090750575-17b2cd4ceb85', hero: 'photo-1590090750575-17b2cd4ceb85' },
-  jaisalmer:       { card: 'px-35130760', hero: 'px-35130760' },   // Jaisalmer Fort golden sandstone
-  bikaner:         { card: 'px-1011093',  hero: 'px-1011093'  },   // Junagarh Fort
-  pushkar:         { card: 'px-19160125', hero: 'px-19160125' },   // Pushkar Lake aerial
-  ajmer:           { card: 'px-16738847', hero: 'px-16738847' },   // Chandra Ghat waterfront
-  ranthambore:     { card: 'photo-1679451289926-d421c3b5ff43', hero: 'photo-1679451289926-d421c3b5ff43' },
-  'mount-abu':     { card: 'px-36350293', hero: 'px-36350293' },   // Nakki Lake mountain reflection
-  'rann-of-kutch': { card: 'px-10874408', hero: 'px-10874408' },   // Horse cart on vast salt desert
+  udaipur: { card: '/city-images/udaipur.jpg', hero: '/city-images/udaipur.jpg' },
+  jodhpur: { card: '/city-images/jodhpur.jpg', hero: '/city-images/jodhpur.jpg' },
+  jaisalmer: { card: '/city-images/jaisalmer.jpg', hero: '/city-images/jaisalmer.jpg' },
+  bikaner: { card: '/city-images/bikaner.jpg', hero: '/city-images/bikaner.jpg' },
+  pushkar: { card: '/city-images/pushkar.jpg', hero: '/city-images/pushkar.jpg' },
+  ajmer: { card: '/city-images/ajmer.jpg', hero: '/city-images/ajmer.jpg' },
+  ranthambore: { card: '/city-images/ranthambore.jpg', hero: '/city-images/ranthambore.jpg' },
+  'mount-abu': { card: '/city-images/mount-abu.jpg', hero: '/city-images/mount-abu.jpg' },
+  'rann-of-kutch': { card: '/city-images/rann-of-kutch.jpg', hero: '/city-images/rann-of-kutch.jpg' },
 
   // ── J&K / Himachal Pradesh ────────────────────────────────────
-  srinagar:    { card: 'photo-1566837945700-30057527ade0', hero: 'photo-1566837945700-30057527ade0' },
-  gulmarg:     { card: 'px-35672518', hero: 'px-35672518' },   // Snow meadow alpine mountains
-  dharamshala: { card: 'px-755401',   hero: 'px-755401'   },   // Dhauladhar mountains monastery
-  kasol:       { card: 'px-2961109',  hero: 'px-2961109'  },   // Parvati river pine forest
-  spiti:       { card: 'px-12285067', hero: 'px-12285067' },   // Key Monastery mountain valley
-  manali:      { card: 'px-11538476', hero: 'px-11538476' },   // Snow peaks Rohtang blue sky
-  shimla:      { card: 'px-31216870', hero: 'px-31216870' },   // Colorful hillside cityscape
-  chandigarh:  { card: 'px-33059591', hero: 'px-33059591' },   // Capitol Complex modernist
+  srinagar: { card: '/city-images/srinagar.jpg', hero: '/city-images/srinagar.jpg' },
+  gulmarg: { card: '/city-images/gulmarg.jpg', hero: '/city-images/gulmarg.jpg' },
+  dharamshala: { card: '/city-images/dharamshala.jpg', hero: '/city-images/dharamshala.jpg' },
+  kasol: { card: '/city-images/kasol.jpg', hero: '/city-images/kasol.jpg' },
+  spiti: { card: '/city-images/spiti.jpg', hero: '/city-images/spiti.jpg' },
+  manali: { card: '/city-images/manali.jpg', hero: '/city-images/manali.jpg' },
+  shimla: { card: '/city-images/shimla.jpg', hero: '/city-images/shimla.jpg' },
+  chandigarh: { card: '/city-images/chandigarh.jpg', hero: '/city-images/chandigarh.jpg' },
 
   // ── Uttarakhand ───────────────────────────────────────────────
-  nainital:     { card: 'px-17004229', hero: 'px-17004229' },   // Naini Lake colourful boats
-  mussoorie:    { card: 'px-30695323', hero: 'px-30695323' },   // Green mountain valley panorama
-  haridwar:     { card: 'px-29495753', hero: 'px-29495753' },   // Har Ki Pauri Ganga Aarti
+  nainital: { card: '/city-images/nainital.jpg', hero: '/city-images/nainital.jpg' },
+  mussoorie: { card: '/city-images/mussoorie.jpg', hero: '/city-images/mussoorie.jpg' },
+  haridwar: { card: '/city-images/haridwar.jpg', hero: '/city-images/haridwar.jpg' },
   dehradun: { card: '/city-images/dehradun.jpg', hero: '/city-images/dehradun.jpg' },
-  'jim-corbett':{ card: 'px-29666809', hero: 'px-29666809' },   // Safari forest rocky stream
+  'jim-corbett': { card: '/city-images/jim-corbett.jpg', hero: '/city-images/jim-corbett.jpg' },
 
   // ── South India — verified Pexels photos ─────────────────────
-  bengaluru:     { card: 'px-14845309', hero: 'px-14845309' },  // Bengaluru cityscape sunset
-  hyderabad:     { card: 'px-5615112',  hero: 'px-5615112'  },  // Charminar monument
-  chennai:       { card: 'photo-1585468274952-66591eb14165', hero: 'photo-1585468274952-66591eb14165' },
-  kochi:         { card: 'px-34174745', hero: 'px-34174745' },  // Chinese fishing nets Fort Kochi
-  mysuru:        { card: 'px-35080171', hero: 'px-35080171' },  // Mysore Palace illuminated
-  hampi:         { card: 'px-14496561', hero: 'px-14496561' },  // Hampi ruins Virupaksha Temple
-  munnar:        { card: 'px-32262506', hero: 'px-32262506' },  // Munnar tea gardens Kerala
-  alleppey:      { card: 'px-17928231', hero: 'px-17928231' },  // Alleppey backwaters houseboat
-  pondicherry:   { card: 'px-32009229', hero: 'px-32009229' },  // Pondicherry French Quarter
-  madurai:       { card: 'px-5690494',  hero: 'px-5690494'  },  // Meenakshi Temple gopuram
-  ooty:          { card: 'px-9411142',  hero: 'px-9411142'  },  // Ooty Nilgiris lake hills
-  coorg:         { card: 'px-33046721', hero: 'px-33046721' },  // Coorg Madikeri foggy hills
+  bengaluru: { card: '/city-images/bengaluru.jpg', hero: '/city-images/bengaluru.jpg' },
+  hyderabad: { card: '/city-images/hyderabad.jpg', hero: '/city-images/hyderabad.jpg' },
+  chennai: { card: '/city-images/chennai.jpg', hero: '/city-images/chennai.jpg' },
+  kochi: { card: '/city-images/kochi.jpg', hero: '/city-images/kochi.jpg' },
+  mysuru: { card: '/city-images/mysuru.jpg', hero: '/city-images/mysuru.jpg' },
+  hampi: { card: '/city-images/hampi.jpg', hero: '/city-images/hampi.jpg' },
+  munnar: { card: '/city-images/munnar.jpg', hero: '/city-images/munnar.jpg' },
+  alleppey: { card: '/city-images/alleppey.jpg', hero: '/city-images/alleppey.jpg' },
+  pondicherry: { card: '/city-images/pondicherry.jpg', hero: '/city-images/pondicherry.jpg' },
+  madurai: { card: '/city-images/madurai.jpg', hero: '/city-images/madurai.jpg' },
+  ooty: { card: '/city-images/ooty.jpg', hero: '/city-images/ooty.jpg' },
+  coorg: { card: '/city-images/coorg.jpg', hero: '/city-images/coorg.jpg' },
   gokarna: { card: '/city-images/gokarna.jpg', hero: '/city-images/gokarna.jpg' },
-  thekkady:      { card: 'px-26969129', hero: 'px-26969129' },  // Periyar Lake forest reflections
-  varkala:       { card: 'px-6652178',  hero: 'px-6652178'  },  // Varkala cliffs golden sand coast
-  mahabalipuram: { card: 'px-24246717', hero: 'px-24246717' },  // Shore Temple by sea
-  tirupati:      { card: 'px-11282396', hero: 'px-11282396' },  // Tirumala temple illuminated
-  coimbatore:    { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
-  visakhapatnam: { card: 'px-5667923',  hero: 'px-5667923'  },  // Vizag beach aerial
-  kanyakumari:   { card: 'px-28464762', hero: 'px-28464762' },  // Kanyakumari sunrise
+  thekkady: { card: '/city-images/thekkady.jpg', hero: '/city-images/thekkady.jpg' },
+  varkala: { card: '/city-images/varkala.jpg', hero: '/city-images/varkala.jpg' },
+  mahabalipuram: { card: '/city-images/mahabalipuram.jpg', hero: '/city-images/mahabalipuram.jpg' },
+  tirupati: { card: '/city-images/tirupati.jpg', hero: '/city-images/tirupati.jpg' },
+  coimbatore: { card: '/city-images/coimbatore.jpg', hero: '/city-images/coimbatore.jpg' },
+  visakhapatnam: { card: '/city-images/visakhapatnam.jpg', hero: '/city-images/visakhapatnam.jpg' },
+  kanyakumari: { card: '/city-images/kanyakumari.jpg', hero: '/city-images/kanyakumari.jpg' },
   trivandrum: { card: '/city-images/trivandrum.jpg', hero: '/city-images/trivandrum.jpg' },
   kozhikode: { card: '/city-images/kozhikode.jpg', hero: '/city-images/kozhikode.jpg' },
   thrissur: { card: '/city-images/thrissur.jpg', hero: '/city-images/thrissur.jpg' },
-  thanjavur:     { card: 'px-37824548', hero: 'px-37824548' },  // Brihadeeswarar Temple UNESCO
-  trichy:        { card: 'px-27650165', hero: 'px-27650165' },  // Rock Fort Temple
-  wayanad:       { card: 'px-34130875', hero: 'px-34130875' },  // Winding road tea plantation hills
+  thanjavur: { card: '/city-images/thanjavur.jpg', hero: '/city-images/thanjavur.jpg' },
+  trichy: { card: '/city-images/trichy.jpg', hero: '/city-images/trichy.jpg' },
+  wayanad: { card: '/city-images/wayanad.jpg', hero: '/city-images/wayanad.jpg' },
 
   // ── Uttar Pradesh / North Central ────────────────────────────
-  lucknow:   { card: 'px-6198184',  hero: 'px-6198184'  },   // Historic mosque minarets
-  khajuraho: { card: 'px-15340996', hero: 'px-15340996' },   // Dulhadev Temple UNESCO
-  puri:      { card: 'px-5732287',  hero: 'px-5732287'  },  // Traditional boats on Puri beach
+  lucknow: { card: '/city-images/lucknow.jpg', hero: '/city-images/lucknow.jpg' },
+  khajuraho: { card: '/city-images/khajuraho.jpg', hero: '/city-images/khajuraho.jpg' },
+  puri: { card: '/city-images/puri.jpg', hero: '/city-images/puri.jpg' },
   vrindavan: { card: '/city-images/vrindavan.jpg', hero: '/city-images/vrindavan.jpg' },
-  mathura:   { card: 'px-31626024', hero: 'px-31626024' },   // Krishna Janmasthan Temple
+  mathura: { card: '/city-images/mathura.jpg', hero: '/city-images/mathura.jpg' },
   shirdi: { card: '/city-images/shirdi.jpg', hero: '/city-images/shirdi.jpg' },
 
   // ── Bihar / Odisha / East ─────────────────────────────────────
-  'bodh-gaya':  { card: 'px-6480363',  hero: 'px-6480363'  },  // Mahabodhi Temple UNESCO
-  bhubaneswar:  { card: 'px-16560348', hero: 'px-16560348' },  // Lingaraja Temple
+  'bodh-gaya': { card: '/city-images/bodh-gaya.jpg', hero: '/city-images/bodh-gaya.jpg' },
+  bhubaneswar: { card: '/city-images/bhubaneswar.jpg', hero: '/city-images/bhubaneswar.jpg' },
   patna: { card: '/city-images/patna.jpg', hero: '/city-images/patna.jpg' },
 
   // ── Maharashtra ───────────────────────────────────────────────
-  pune:        { card: 'photo-1596176530529-78163a4f7af2', hero: 'photo-1596176530529-78163a4f7af2' },
-  nashik:      { card: 'px-37416162', hero: 'px-37416162' },  // Marble temple Nashik
-  aurangabad:  { card: 'px-32196018', hero: 'px-32196018' },  // Bibi Ka Maqbara gardens
+  pune: { card: '/city-images/pune.jpg', hero: '/city-images/pune.jpg' },
+  nashik: { card: '/city-images/nashik.jpg', hero: '/city-images/nashik.jpg' },
+  aurangabad: { card: '/city-images/aurangabad.jpg', hero: '/city-images/aurangabad.jpg' },
   nagpur: { card: '/city-images/nagpur.jpg', hero: '/city-images/nagpur.jpg' },
 
   // ── Madhya Pradesh / Chhattisgarh ─────────────────────────────
-  bhopal:      { card: 'px-37245905', hero: 'px-37245905' },  // Upper Lake boats sunny
+  bhopal: { card: '/city-images/bhopal.jpg', hero: '/city-images/bhopal.jpg' },
   indore: { card: '/city-images/indore.jpg', hero: '/city-images/indore.jpg' },
   raipur: { card: '/city-images/raipur.jpg', hero: '/city-images/raipur.jpg' },
 
@@ -128,17 +128,17 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   vijayawada: { card: '/city-images/vijayawada.jpg', hero: '/city-images/vijayawada.jpg' },
 
   // ── Gujarat ───────────────────────────────────────────────────
-  ahmedabad:   { card: 'px-14473752', hero: 'px-14473752' },  // Adalaj Stepwell
-  'sasan-gir': { card: 'px-5357893',  hero: 'px-5357893'  },  // Asiatic lioness Gir forest
+  ahmedabad: { card: '/city-images/ahmedabad.jpg', hero: '/city-images/ahmedabad.jpg' },
+  'sasan-gir': { card: '/city-images/sasan-gir.jpg', hero: '/city-images/sasan-gir.jpg' },
 
   // ── Himalayas / Far North ─────────────────────────────────────
   ladakh: { card: '/city-images/ladakh.jpg', hero: '/city-images/ladakh.jpg' },
-  darjeeling:  { card: 'photo-1681204032871-d385acdc114d', hero: 'photo-1681204032871-d385acdc114d' },
+  darjeeling: { card: '/city-images/darjeeling.jpg', hero: '/city-images/darjeeling.jpg' },
 
   // ── Andaman ───────────────────────────────────────────────────
-  andaman:       { card: 'px-36505898', hero: 'px-36505898' },  // Aerial turquoise water palm trees
+  andaman: { card: '/city-images/andaman.jpg', hero: '/city-images/andaman.jpg' },
   'port-blair': { card: '/city-images/port-blair.jpg', hero: '/city-images/port-blair.jpg' },
-  lakshadweep:   { card: 'px-6189571',  hero: 'px-6189571'  },  // Crystal-clear turquoise lagoon
+  lakshadweep: { card: '/city-images/lakshadweep.jpg', hero: '/city-images/lakshadweep.jpg' },
 
   // ── Misc ──────────────────────────────────────────────────────
   ranchi: { card: '/city-images/ranchi.jpg', hero: '/city-images/ranchi.jpg' },
@@ -146,50 +146,50 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
 
   // ── New Tier 1-3 World Cities ─────────────────────────────────
   colombo: { card: '/city-images/colombo.jpg', hero: '/city-images/colombo.jpg' },
-  'kuala-lumpur':    { card: 'photo-1596422846543-75c6fc197f07', hero: 'photo-1596422846543-75c6fc197f07' }, // Petronas Towers
-  muscat:            { card: 'photo-1566159033854-c68f1a2a07c4', hero: 'photo-1566159033854-c68f1a2a07c4' }, // Oman mosque
-  'ho-chi-minh-city':{ card: 'photo-1583417319070-4a69db38a482', hero: 'photo-1583417319070-4a69db38a482' }, // HCMC street life
-  tbilisi:           { card: 'photo-1589656966895-2f33e7653819', hero: 'photo-1589656966895-2f33e7653819' }, // Tbilisi old town
+  'kuala-lumpur': { card: '/city-images/kuala-lumpur.jpg', hero: '/city-images/kuala-lumpur.jpg' },
+  muscat: { card: '/city-images/muscat.jpg', hero: '/city-images/muscat.jpg' },
+  'ho-chi-minh-city': { card: '/city-images/ho-chi-minh-city.jpg', hero: '/city-images/ho-chi-minh-city.jpg' },
+  tbilisi: { card: '/city-images/tbilisi.jpg', hero: '/city-images/tbilisi.jpg' },
   kathmandu: { card: '/city-images/kathmandu.jpg', hero: '/city-images/kathmandu.jpg' },
-  osaka:             { card: 'photo-1590559899731-a382839e5549', hero: 'photo-1590559899731-a382839e5549' }, // Dotonbori neon
-  cairo:             { card: 'photo-1572252009286-268acec5ca0a', hero: 'photo-1572252009286-268acec5ca0a' }, // Pyramids of Giza
-  baku:              { card: 'photo-1611348586804-61bf6c080437', hero: 'photo-1611348586804-61bf6c080437' }, // Baku Flame Towers
-  doha:              { card: 'photo-1609137144813-7d9921338f24', hero: 'photo-1609137144813-7d9921338f24' }, // Doha skyline corniche
-  zanzibar:          { card: 'photo-1586771107445-d3ca888129ce', hero: 'photo-1586771107445-d3ca888129ce' }, // Zanzibar turquoise water
+  osaka: { card: '/city-images/osaka.jpg', hero: '/city-images/osaka.jpg' },
+  cairo: { card: '/city-images/cairo.jpg', hero: '/city-images/cairo.jpg' },
+  baku: { card: '/city-images/baku.jpg', hero: '/city-images/baku.jpg' },
+  doha: { card: '/city-images/doha.jpg', hero: '/city-images/doha.jpg' },
+  zanzibar: { card: '/city-images/zanzibar.jpg', hero: '/city-images/zanzibar.jpg' },
   'abu-dhabi': { card: '/city-images/abu-dhabi.jpg', hero: '/city-images/abu-dhabi.jpg' },
-  mauritius:         { card: 'photo-1515526959467-a44be8a5c2aa', hero: 'photo-1515526959467-a44be8a5c2aa' }, // Mauritius lagoon beach
+  mauritius: { card: '/city-images/mauritius.jpg', hero: '/city-images/mauritius.jpg' },
 
   // ── Philippines ──────────────────────────────────────────────────
-  manila:         { card: 'photo-1523731407965-2430cd12f5e4', hero: 'photo-1523731407965-2430cd12f5e4' },
-  palawan:        { card: 'photo-1573408301185-9519eb7ef241', hero: 'photo-1573408301185-9519eb7ef241' },
+  manila: { card: '/city-images/manila.jpg', hero: '/city-images/manila.jpg' },
+  palawan: { card: '/city-images/palawan.jpg', hero: '/city-images/palawan.jpg' },
   boracay: { card: '/city-images/boracay.jpg', hero: '/city-images/boracay.jpg' },
-  siargao:        { card: 'photo-1596402184320-417e7178b2cd', hero: 'photo-1596402184320-417e7178b2cd' },
-  'el-nido':      { card: 'photo-1559494007-9f5847c49d94', hero: 'photo-1559494007-9f5847c49d94' },
+  siargao: { card: '/city-images/siargao.jpg', hero: '/city-images/siargao.jpg' },
+  'el-nido': { card: '/city-images/el-nido.jpg', hero: '/city-images/el-nido.jpg' },
 
   // ── Cambodia ─────────────────────────────────────────────────────
-  'siem-reap':    { card: 'photo-1564596823821-79b47b1ab14b', hero: 'photo-1564596823821-79b47b1ab14b' },
-  'phnom-penh':   { card: 'photo-1565790347264-6f14f4b52b3e', hero: 'photo-1565790347264-6f14f4b52b3e' },
+  'siem-reap': { card: '/city-images/siem-reap.jpg', hero: '/city-images/siem-reap.jpg' },
+  'phnom-penh': { card: '/city-images/phnom-penh.jpg', hero: '/city-images/phnom-penh.jpg' },
 
   // ── Jordan ───────────────────────────────────────────────────────
-  amman:          { card: 'photo-1579606032821-4f93e95b5c80', hero: 'photo-1579606032821-4f93e95b5c80' },
-  petra:          { card: 'photo-1558383331-f520f2888351', hero: 'photo-1558383331-f520f2888351' },
-  'wadi-rum':     { card: 'photo-1509316785289-025f5b846b35', hero: 'photo-1509316785289-025f5b846b35' },
+  amman: { card: '/city-images/amman.jpg', hero: '/city-images/amman.jpg' },
+  petra: { card: '/city-images/petra.jpg', hero: '/city-images/petra.jpg' },
+  'wadi-rum': { card: '/city-images/wadi-rum.jpg', hero: '/city-images/wadi-rum.jpg' },
 
   // ── Switzerland ──────────────────────────────────────────────────
-  zurich:         { card: 'photo-1515488042361-ee00e0ddd4e4', hero: 'photo-1515488042361-ee00e0ddd4e4' },
-  interlaken:     { card: 'photo-1516905041604-7f3f4b1ef50c', hero: 'photo-1516905041604-7f3f4b1ef50c' },
+  zurich: { card: '/city-images/zurich.jpg', hero: '/city-images/zurich.jpg' },
+  interlaken: { card: '/city-images/interlaken.jpg', hero: '/city-images/interlaken.jpg' },
   geneva: { card: '/city-images/geneva.jpg', hero: '/city-images/geneva.jpg' },
-  lucerne:        { card: 'photo-1527255907996-5975e6da2cdb', hero: 'photo-1527255907996-5975e6da2cdb' },
+  lucerne: { card: '/city-images/lucerne.jpg', hero: '/city-images/lucerne.jpg' },
 
   // ── Germany ──────────────────────────────────────────────────────
-  berlin:         { card: 'photo-1560969184-10fe8719e047', hero: 'photo-1560969184-10fe8719e047' },
+  berlin: { card: '/city-images/berlin.jpg', hero: '/city-images/berlin.jpg' },
   munich: { card: '/city-images/munich.jpg', hero: '/city-images/munich.jpg' },
   hamburg: { card: '/city-images/hamburg.jpg', hero: '/city-images/hamburg.jpg' },
 
   // ── Australia ────────────────────────────────────────────────────
   sydney: { card: '/city-images/sydney.jpg', hero: '/city-images/sydney.jpg' },
   melbourne: { card: '/city-images/melbourne.jpg', hero: '/city-images/melbourne.jpg' },
-  cairns:         { card: 'photo-1587300003388-59208cc962cb', hero: 'photo-1587300003388-59208cc962cb' },
+  cairns: { card: '/city-images/cairns.jpg', hero: '/city-images/cairns.jpg' },
   'gold-coast': { card: '/city-images/gold-coast.jpg', hero: '/city-images/gold-coast.jpg' },
 
   // ── Canada ───────────────────────────────────────────────────────
@@ -206,59 +206,59 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   // ── Croatia ──────────────────────────────────────────────────────
   dubrovnik: { card: '/city-images/dubrovnik.jpg', hero: '/city-images/dubrovnik.jpg' },
   split: { card: '/city-images/split.jpg', hero: '/city-images/split.jpg' },
-  hvar:           { card: 'photo-1584132967334-10e028bd69f7', hero: 'photo-1584132967334-10e028bd69f7' },
+  hvar: { card: '/city-images/hvar.jpg', hero: '/city-images/hvar.jpg' },
 
   // ── Bhutan ───────────────────────────────────────────────────────
-  paro:           { card: 'photo-1587474260584-136574528ed5', hero: 'photo-1587474260584-136574528ed5' },
-  thimphu:        { card: 'photo-1568797629192-789acf8e4df3', hero: 'photo-1568797629192-789acf8e4df3' },
+  paro: { card: '/city-images/paro.jpg', hero: '/city-images/paro.jpg' },
+  thimphu: { card: '/city-images/thimphu.jpg', hero: '/city-images/thimphu.jpg' },
 
   // ── Uzbekistan ───────────────────────────────────────────────────
   samarkand: { card: '/city-images/samarkand.jpg', hero: '/city-images/samarkand.jpg' },
   bukhara: { card: '/city-images/bukhara.jpg', hero: '/city-images/bukhara.jpg' },
-  tashkent:       { card: 'photo-1590674899484-d5640e854abe', hero: 'photo-1590674899484-d5640e854abe' },
+  tashkent: { card: '/city-images/tashkent.jpg', hero: '/city-images/tashkent.jpg' },
 
   // ── Kenya ────────────────────────────────────────────────────────
-  nairobi:        { card: 'photo-1611348524140-53c9a25263d6', hero: 'photo-1611348524140-53c9a25263d6' },
+  nairobi: { card: '/city-images/nairobi.jpg', hero: '/city-images/nairobi.jpg' },
   'masai-mara': { card: '/city-images/masai-mara.jpg', hero: '/city-images/masai-mara.jpg' },
   mombasa: { card: '/city-images/mombasa.jpg', hero: '/city-images/mombasa.jpg' },
 
   // ── New cities for existing countries ────────────────────────────
-  venice:         { card: 'photo-1514890547357-a9ee288728e0', hero: 'photo-1514890547357-a9ee288728e0' },
-  florence:       { card: 'photo-1541943181603-d8fe267a5dcf', hero: 'photo-1541943181603-d8fe267a5dcf' },
-  milan:          { card: 'photo-1555992336-03a23c7b20ee', hero: 'photo-1555992336-03a23c7b20ee' },
-  amalfi:         { card: 'photo-1633321088355-d0f81134ca3b', hero: 'photo-1633321088355-d0f81134ca3b' },
-  nice:           { card: 'photo-1533104816931-20fa691ff6ca', hero: 'photo-1533104816931-20fa691ff6ca' },
-  marseille:      { card: 'photo-1491557345352-5929e343eb89', hero: 'photo-1491557345352-5929e343eb89' },
+  venice: { card: '/city-images/venice.jpg', hero: '/city-images/venice.jpg' },
+  florence: { card: '/city-images/florence.jpg', hero: '/city-images/florence.jpg' },
+  milan: { card: '/city-images/milan.jpg', hero: '/city-images/milan.jpg' },
+  amalfi: { card: '/city-images/amalfi.jpg', hero: '/city-images/amalfi.jpg' },
+  nice: { card: '/city-images/nice.jpg', hero: '/city-images/nice.jpg' },
+  marseille: { card: '/city-images/marseille.jpg', hero: '/city-images/marseille.jpg' },
   madrid: { card: '/city-images/madrid.jpg', hero: '/city-images/madrid.jpg' },
-  seville:        { card: 'photo-1588668214407-6ea9a6d8c272', hero: 'photo-1588668214407-6ea9a6d8c272' },
-  granada:        { card: 'photo-1582211432020-6d0c0cdb0f64', hero: 'photo-1582211432020-6d0c0cdb0f64' },
+  seville: { card: '/city-images/seville.jpg', hero: '/city-images/seville.jpg' },
+  granada: { card: '/city-images/granada.jpg', hero: '/city-images/granada.jpg' },
   edinburgh: { card: '/city-images/edinburgh.jpg', hero: '/city-images/edinburgh.jpg' },
-  hiroshima:      { card: 'photo-1542051841857-5f90071e7989', hero: 'photo-1542051841857-5f90071e7989' },
-  nara:           { card: 'photo-1578270671993-0a50a5e4cb1d', hero: 'photo-1578270671993-0a50a5e4cb1d' },
-  fukuoka:        { card: 'photo-1542640244-7e672d6cef4e', hero: 'photo-1542640244-7e672d6cef4e' },
+  hiroshima: { card: '/city-images/hiroshima.jpg', hero: '/city-images/hiroshima.jpg' },
+  nara: { card: '/city-images/nara.jpg', hero: '/city-images/nara.jpg' },
+  fukuoka: { card: '/city-images/fukuoka.jpg', hero: '/city-images/fukuoka.jpg' },
   'koh-samui': { card: '/city-images/koh-samui.jpg', hero: '/city-images/koh-samui.jpg' },
-  yogyakarta:     { card: 'photo-1585503418537-88331351ad99', hero: 'photo-1585503418537-88331351ad99' },
+  yogyakarta: { card: '/city-images/yogyakarta.jpg', hero: '/city-images/yogyakarta.jpg' },
   lombok: { card: '/city-images/lombok.jpg', hero: '/city-images/lombok.jpg' },
-  ella:           { card: 'photo-1600098414523-e3944e7c97b5', hero: 'photo-1600098414523-e3944e7c97b5' },
+  ella: { card: '/city-images/ella.jpg', hero: '/city-images/ella.jpg' },
   kandy: { card: '/city-images/kandy.jpg', hero: '/city-images/kandy.jpg' },
-  galle:          { card: 'photo-1586168437785-c73d8e14f832', hero: 'photo-1586168437785-c73d8e14f832' },
+  galle: { card: '/city-images/galle.jpg', hero: '/city-images/galle.jpg' },
   pokhara: { card: '/city-images/pokhara.jpg', hero: '/city-images/pokhara.jpg' },
-  penang:         { card: 'photo-1562602833-0f4ab2fc46e5', hero: 'photo-1562602833-0f4ab2fc46e5' },
-  langkawi:       { card: 'photo-1574482620826-5f3c61c4a9d9', hero: 'photo-1574482620826-5f3c61c4a9d9' },
+  penang: { card: '/city-images/penang.jpg', hero: '/city-images/penang.jpg' },
+  langkawi: { card: '/city-images/langkawi.jpg', hero: '/city-images/langkawi.jpg' },
   fes: { card: '/city-images/fes.jpg', hero: '/city-images/fes.jpg' },
-  chefchaouen:    { card: 'photo-1539020140153-e479b8c22e70', hero: 'photo-1539020140153-e479b8c22e70' },
+  chefchaouen: { card: '/city-images/chefchaouen.jpg', hero: '/city-images/chefchaouen.jpg' },
   mykonos: { card: '/city-images/mykonos.jpg', hero: '/city-images/mykonos.jpg' },
-  crete:          { card: 'photo-1533089860892-a7c6f0a88666', hero: 'photo-1533089860892-a7c6f0a88666' },
-  'da-nang':      { card: 'photo-1559826555-74c80bc3e7e2', hero: 'photo-1559826555-74c80bc3e7e2' },
-  'phu-quoc':     { card: 'photo-1537956965359-7573183d1f57', hero: 'photo-1537956965359-7573183d1f57' },
-  busan:          { card: 'photo-1578272531112-e6741da1a95a', hero: 'photo-1578272531112-e6741da1a95a' },
-  jeju:           { card: 'photo-1608647819349-a75e11b40d08', hero: 'photo-1608647819349-a75e11b40d08' },
-  luxor:          { card: 'photo-1596527853976-c6e8e82cbdfd', hero: 'photo-1596527853976-c6e8e82cbdfd' },
-  'los-angeles':  { card: 'photo-1534190760961-74e8c1c5c3da', hero: 'photo-1534190760961-74e8c1c5c3da' },
-  'san-francisco':{ card: 'photo-1501594907352-04cda38ebc29', hero: 'photo-1501594907352-04cda38ebc29' },
-  miami:          { card: 'photo-1514214246283-d8a8c22f0ef4', hero: 'photo-1514214246283-d8a8c22f0ef4' },
-  'las-vegas':    { card: 'photo-1605833556294-ea5c7a74f57d', hero: 'photo-1605833556294-ea5c7a74f57d' },
-  chicago:        { card: 'photo-1494522855154-9297ac14b55f', hero: 'photo-1494522855154-9297ac14b55f' },
+  crete: { card: '/city-images/crete.jpg', hero: '/city-images/crete.jpg' },
+  'da-nang': { card: '/city-images/da-nang.jpg', hero: '/city-images/da-nang.jpg' },
+  'phu-quoc': { card: '/city-images/phu-quoc.jpg', hero: '/city-images/phu-quoc.jpg' },
+  busan: { card: '/city-images/busan.jpg', hero: '/city-images/busan.jpg' },
+  jeju: { card: '/city-images/jeju.jpg', hero: '/city-images/jeju.jpg' },
+  luxor: { card: '/city-images/luxor.jpg', hero: '/city-images/luxor.jpg' },
+  'los-angeles': { card: '/city-images/los-angeles.jpg', hero: '/city-images/los-angeles.jpg' },
+  'san-francisco': { card: '/city-images/san-francisco.jpg', hero: '/city-images/san-francisco.jpg' },
+  miami: { card: '/city-images/miami.jpg', hero: '/city-images/miami.jpg' },
+  'las-vegas': { card: '/city-images/las-vegas.jpg', hero: '/city-images/las-vegas.jpg' },
+  chicago: { card: '/city-images/chicago.jpg', hero: '/city-images/chicago.jpg' },
 
   // ── Second expansion batch ───────────────────────────────────────
   cebu: { card: '/city-images/cebu.jpg', hero: '/city-images/cebu.jpg' },
@@ -296,12 +296,12 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   lamu: { card: '/city-images/lamu.jpg', hero: '/city-images/lamu.jpg' },
 
   // ── Image fallback coverage audit ────────────────────────────────
-  aswan:          { card: 'photo-1568322445389-f64ac2515020', hero: 'photo-1568322445389-f64ac2515020' },
+  aswan: { card: '/city-images/aswan.jpg', hero: '/city-images/aswan.jpg' },
   auroville: { card: '/city-images/auroville.jpg', hero: '/city-images/auroville.jpg' },
   ayutthaya: { card: '/city-images/ayutthaya.jpg', hero: '/city-images/ayutthaya.jpg' },
   badrinath: { card: '/city-images/badrinath.jpg', hero: '/city-images/badrinath.jpg' },
   bath: { card: '/city-images/bath.jpg', hero: '/city-images/bath.jpg' },
-  bekal:          { card: 'photo-1512343879784-a960bf40e7f2', hero: 'photo-1512343879784-a960bf40e7f2' },
+  bekal: { card: '/city-images/bekal.jpg', hero: '/city-images/bekal.jpg' },
   'bir-billing': { card: '/city-images/bir-billing.jpg', hero: '/city-images/bir-billing.jpg' },
   bordeaux: { card: '/city-images/bordeaux.jpg', hero: '/city-images/bordeaux.jpg' },
   casablanca: { card: '/city-images/casablanca.jpg', hero: '/city-images/casablanca.jpg' },
@@ -317,7 +317,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   ganpatipule: { card: '/city-images/ganpatipule.jpg', hero: '/city-images/ganpatipule.jpg' },
   guwahati: { card: '/city-images/guwahati.jpg', hero: '/city-images/guwahati.jpg' },
   gwalior: { card: '/city-images/gwalior.jpg', hero: '/city-images/gwalior.jpg' },
-  hanoi:          { card: 'photo-1557750255-c76072a7aad1', hero: 'photo-1557750255-c76072a7aad1' },
+  hanoi: { card: '/city-images/hanoi.jpg', hero: '/city-images/hanoi.jpg' },
   'hoi-an': { card: '/city-images/hoi-an.jpg', hero: '/city-images/hoi-an.jpg' },
   hurghada: { card: '/city-images/hurghada.jpg', hero: '/city-images/hurghada.jpg' },
   johannesburg: { card: '/city-images/johannesburg.jpg', hero: '/city-images/johannesburg.jpg' },
