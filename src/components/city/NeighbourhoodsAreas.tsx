@@ -127,18 +127,15 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                   {/* Content */}
                   <div className="relative z-10 p-6 sm:p-7">
                     {/* Area heading */}
-                    <div className="flex items-center gap-2.5 mb-5">
+                    <div className="flex items-start gap-2.5 mb-5">
                       <span className="text-2xl leading-none flex-shrink-0">{area.emoji}</span>
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <h3 className="font-heading text-sm sm:text-base font-bold text-primary-text uppercase tracking-widest whitespace-nowrap">
-                          {area.name}
-                        </h3>
-                        <div className="flex-1 h-px bg-border/70" />
-                        <span
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: city.accentColor }}
-                        />
-                      </div>
+                      <h3 className="flex-1 min-w-0 font-heading text-sm sm:text-base font-bold text-primary-text uppercase tracking-wide leading-tight break-words">
+                        {area.name}
+                      </h3>
+                      <span
+                        className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: city.accentColor }}
+                      />
                     </div>
 
                     {/* Spot list — no tags, just names */}
