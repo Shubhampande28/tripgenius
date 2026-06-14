@@ -1,20 +1,5 @@
 {
   "missing": [],
   "dupGroups": [],
-  "orphans": [
-    "dehradun",
-    "trivandrum",
-    "kozhikode",
-    "thrissur",
-    "vrindavan",
-    "shirdi",
-    "patna",
-    "nagpur",
-    "indore",
-    "raipur",
-    "vijayawada",
-    "port-blair",
-    "ranchi",
-    "salem"
-  ]
+  "orphans": []
 }

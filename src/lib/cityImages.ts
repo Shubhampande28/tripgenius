@@ -69,7 +69,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   nainital:     { card: 'px-17004229', hero: 'px-17004229' },   // Naini Lake colourful boats
   mussoorie:    { card: 'px-30695323', hero: 'px-30695323' },   // Green mountain valley panorama
   haridwar:     { card: 'px-29495753', hero: 'px-29495753' },   // Har Ki Pauri Ganga Aarti
-  dehradun:     { card: 'px-37789735', hero: 'px-37789735' },   // IMA lush greenery
+  dehradun: { card: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg' },
   'jim-corbett':{ card: 'px-29666809', hero: 'px-29666809' },   // Safari forest rocky stream
 
   // ── South India — verified Pexels photos ─────────────────────
@@ -93,9 +93,9 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   coimbatore:    { card: 'photo-1582510003544-4d00b7f74220', hero: 'photo-1582510003544-4d00b7f74220' },
   visakhapatnam: { card: 'px-5667923',  hero: 'px-5667923'  },  // Vizag beach aerial
   kanyakumari:   { card: 'px-28464762', hero: 'px-28464762' },  // Kanyakumari sunrise
-  trivandrum:    { card: 'px-5192213',  hero: 'px-5192213'  },  // Lighthouse rocky coast palm trees
-  kozhikode:     { card: 'px-32617764', hero: 'px-32617764' },  // Rocky Arabian Sea shore
-  thrissur:      { card: 'px-32364201', hero: 'px-32364201' },  // Thrissur Pooram decorated elephant
+  trivandrum: { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg' },
+  kozhikode: { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg' },
+  thrissur: { card: 'https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg' },
   thanjavur:     { card: 'px-37824548', hero: 'px-37824548' },  // Brihadeeswarar Temple UNESCO
   trichy:        { card: 'px-27650165', hero: 'px-27650165' },  // Rock Fort Temple
   wayanad:       { card: 'px-34130875', hero: 'px-34130875' },  // Winding road tea plantation hills
@@ -104,28 +104,28 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   lucknow:   { card: 'px-6198184',  hero: 'px-6198184'  },   // Historic mosque minarets
   khajuraho: { card: 'px-15340996', hero: 'px-15340996' },   // Dulhadev Temple UNESCO
   puri:      { card: 'px-5732287',  hero: 'px-5732287'  },  // Traditional boats on Puri beach
-  vrindavan: { card: 'px-37650566', hero: 'px-37650566' },   // ISKCON Krishna statue
+  vrindavan: { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg' },
   mathura:   { card: 'px-31626024', hero: 'px-31626024' },   // Krishna Janmasthan Temple
-  shirdi:    { card: 'px-30598845', hero: 'px-30598845' },   // Sai Baba idol flower garlands temple
+  shirdi: { card: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg' },
 
   // ── Bihar / Odisha / East ─────────────────────────────────────
   'bodh-gaya':  { card: 'px-6480363',  hero: 'px-6480363'  },  // Mahabodhi Temple UNESCO
   bhubaneswar:  { card: 'px-16560348', hero: 'px-16560348' },  // Lingaraja Temple
-  patna:        { card: 'px-12058309', hero: 'px-12058309' },  // Gandhi Setu Bridge Ganges aerial
+  patna: { card: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg' },
 
   // ── Maharashtra ───────────────────────────────────────────────
   pune:        { card: 'photo-1596176530529-78163a4f7af2', hero: 'photo-1596176530529-78163a4f7af2' },
   nashik:      { card: 'px-37416162', hero: 'px-37416162' },  // Marble temple Nashik
   aurangabad:  { card: 'px-32196018', hero: 'px-32196018' },  // Bibi Ka Maqbara gardens
-  nagpur:      { card: 'px-12567423', hero: 'px-12567423' },  // Deekshabhoomi golden Buddha
+  nagpur: { card: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg' },
 
   // ── Madhya Pradesh / Chhattisgarh ─────────────────────────────
   bhopal:      { card: 'px-37245905', hero: 'px-37245905' },  // Upper Lake boats sunny
-  indore:      { card: 'px-34941076', hero: 'px-34941076' },  // Ancient temple stone carvings
-  raipur:      { card: 'px-31739735', hero: 'px-31739735' },  // Ancient stone temples Ratanpur Chhattisgarh
+  indore: { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg' },
+  raipur: { card: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg' },
 
   // ── Andhra Pradesh / Telangana ────────────────────────────────
-  vijayawada:  { card: 'px-36229535', hero: 'px-36229535' },  // Fishermen Krishna River sunset
+  vijayawada: { card: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg' },
 
   // ── Gujarat ───────────────────────────────────────────────────
   ahmedabad:   { card: 'px-14473752', hero: 'px-14473752' },  // Adalaj Stepwell
@@ -137,12 +137,12 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
 
   // ── Andaman ───────────────────────────────────────────────────
   andaman:       { card: 'px-36505898', hero: 'px-36505898' },  // Aerial turquoise water palm trees
-  'port-blair':  { card: 'px-16827207', hero: 'px-16827207' },  // Rocky shore calm ocean island view
+  'port-blair': { card: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg' },
   lakshadweep:   { card: 'px-6189571',  hero: 'px-6189571'  },  // Crystal-clear turquoise lagoon
 
   // ── Misc ──────────────────────────────────────────────────────
-  ranchi:      { card: 'px-17777847', hero: 'px-17777847' },  // Hundru Falls waterfall
-  salem:       { card: 'px-774282',   hero: 'px-774282'   },  // Dravidian temple gopuram Salem
+  ranchi: { card: 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg' },
+  salem: { card: 'https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg' },
 
   // ── New Tier 1-3 World Cities ─────────────────────────────────
   colombo: { card: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Colombo_city_skyline_at_night.png', hero: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Colombo_city_skyline_at_night.png' },
