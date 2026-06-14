@@ -132,8 +132,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   'sasan-gir': { card: 'px-5357893',  hero: 'px-5357893'  },  // Asiatic lioness Gir forest
 
   // ── Himalayas / Far North ─────────────────────────────────────
-  ladakh:      { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
-  leh:         { card: 'photo-1626621341517-bbf3d9990a23', hero: 'photo-1626621341517-bbf3d9990a23' },
+  ladakh:      { card: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Road_Padum_Zanskar_Range_Jun24_A7CR_00818.jpg', hero: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Road_Padum_Zanskar_Range_Jun24_A7CR_00818.jpg' },
   darjeeling:  { card: 'photo-1681204032871-d385acdc114d', hero: 'photo-1681204032871-d385acdc114d' },
 
   // ── Andaman ───────────────────────────────────────────────────
