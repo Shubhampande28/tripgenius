@@ -5,20 +5,56 @@ import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 import { City } from '@/lib/types';
 
-function findArea(city: City, neighbourhoodName: string) {
-  const nName = neighbourhoodName.toLowerCase().replace(/[()]/g, '').trim();
-  return city.areas?.find((a) => {
-    const aName = a.name.toLowerCase().replace(/[()]/g, '').trim();
-    if (aName === nName || aName.includes(nName) || nName.includes(aName)) return true;
-    return aName.split(/[\s&,]+/).filter(p => p.length > 3).some(p => nName.includes(p));
+// Generic geography words that must NOT, on their own, link a neighbourhood to
+// an area — otherwise "Assi Ghat" wrongly matches the "Dashashwamedh Ghat" area
+// because both contain "Ghat".
+const GENERIC_GEO = new Set([
+  'ghat', 'ghats', 'city', 'old', 'new', 'north', 'south', 'east', 'west', 'central',
+  'beach', 'beaches', 'town', 'area', 'district', 'road', 'market', 'markets', 'fort',
+  'hill', 'hills', 'valley', 'river', 'lake', 'lakes', 'park', 'temple', 'temples',
+  'quarter', 'bay', 'island', 'islands', 'downtown', 'centre', 'center', 'gali',
+  'street', 'village', 'coast', 'national', 'main', 'upper', 'lower', 'inner', 'outer',
+  'side', 'zone', 'region', 'greater',
+]);
+
+function norm(s: string) {
+  return s.toLowerCase().replace(/[()&,/-]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function distinctiveTokens(s: string) {
+  return new Set(norm(s).split(' ').filter((w) => w.length > 3 && !GENERIC_GEO.has(w)));
+}
+
+// Match a neighbourhood to an area to reuse its richer spot list. Strong
+// (exact / whole-phrase substring) matches first, then a *distinctive* shared
+// token. Each area is claimed at most once so two neighbourhoods can never show
+// the same spots.
+function findArea(city: City, neighbourhoodName: string, used: Set<string>) {
+  const areas = city.areas ?? [];
+  const nNorm = norm(neighbourhoodName);
+  const nTok = distinctiveTokens(neighbourhoodName);
+
+  let match = areas.find((a) => {
+    if (used.has(a.name)) return false;
+    const aNorm = norm(a.name);
+    return aNorm === nNorm || nNorm.includes(aNorm) || aNorm.includes(nNorm);
   });
+  if (!match) {
+    match = areas.find((a) => {
+      if (used.has(a.name)) return false;
+      for (const tok of distinctiveTokens(a.name)) if (nTok.has(tok)) return true;
+      return false;
+    });
+  }
+  if (match) used.add(match.name);
+  return match;
 }
 
 export default function NeighbourhoodsAreas({ city }: { city: City }) {
   if (!city.neighbourhoods?.length) return null;
 
+  const used = new Set<string>();
   const areas = city.neighbourhoods.map((n) => {
-    const matched = findArea(city, n.name);
+    const matched = findArea(city, n.name, used);
     return {
       ...n,
       emoji: matched?.emoji ?? '📍',
