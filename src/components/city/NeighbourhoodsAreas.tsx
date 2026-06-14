@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 import { City } from '@/lib/types';
+import { getCityImageUrl } from '@/lib/cityImages';
 
 // Generic geography words that must NOT, on their own, link a neighbourhood to
 // an area — otherwise "Assi Ghat" wrongly matches the "Dashashwamedh Ghat" area
@@ -59,9 +60,12 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
       ...n,
       emoji: matched?.emoji ?? '📍',
       spots: matched?.spots ?? [],
-      image: matched?.image,
     };
   });
+
+  // The per-area `image` fields point at unreliable external URLs. Use the
+  // city's own locally-hosted image as the faded card backdrop instead.
+  const bgImage = getCityImageUrl(city.slug, 'hero') ?? city.heroImage ?? city.image;
 
   return (
     <section id="explore-areas" className="py-14">
@@ -110,17 +114,18 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
                   key={area.name}
                   className={`relative overflow-hidden border-b border-border last:border-b-0 sm:last:border-b-0 ${borderRight} ${borderBottom} ${smBorderRight} ${smBorderBottom} lg:border-b-0 border-border`}
                 >
-                  {/* Faded background image */}
-                  {area.image && (
+                  {/* Faded background image (locally hosted, decorative) */}
+                  {bgImage && (
                     <>
                       <Image
-                        src={area.image}
-                        alt={area.name}
+                        src={bgImage}
+                        alt=""
+                        aria-hidden
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-surface/[0.80]" />
+                      <div className="absolute inset-0 bg-surface/[0.88]" />
                     </>
                   )}
 
