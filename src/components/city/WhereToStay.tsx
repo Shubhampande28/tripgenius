@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Hotel, BedDouble } from 'lucide-react';
 import { hotelNeighbourhoodUrl, hotelUrl } from '@/lib/affiliateLinks';
+import { getCityImageUrl } from '@/lib/cityImages';
 import { City } from '@/lib/types';
 
 const priceColors: Record<string, string> = {
@@ -16,20 +17,13 @@ const priceLabel: Record<string, string> = {
   '$': 'Budget', '$$': 'Mid-range', '$$$': 'Upscale', '$$$$': 'Luxury',
 };
 
-/** Fuzzy area match (reuse same logic as cheatsheet) */
-function findAreaImage(city: City, name: string): string | undefined {
-  const nName = name.toLowerCase().replace(/[()]/g, '').trim();
-  const matched = city.areas?.find((a) => {
-    const aName = a.name.toLowerCase().replace(/[()]/g, '').trim();
-    if (aName === nName || aName.includes(nName) || nName.includes(aName)) return true;
-    return aName.split(/[\s&,]+/).filter(p => p.length > 3).some(p => nName.includes(p));
-  });
-  return matched?.image;
-}
-
 export default function WhereToStay({ city }: { city: City }) {
   const areas = city.neighbourhoods ?? [];
   if (!areas.length && !city.hotels?.length) return null;
+
+  // Locally-hosted city image — reliable backdrop for the area cards & banner
+  // (the per-area image fields were external URLs that often 404'd).
+  const cityImg = getCityImageUrl(city.slug, 'card') ?? city.image;
 
   return (
     <section id="where-to-stay" className="py-10">
@@ -55,7 +49,6 @@ export default function WhereToStay({ city }: { city: City }) {
             {/* Area booking grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {areas.map((area, i) => {
-                const areaImg = findAreaImage(city, area.name);
                 const price = priceColors[area.priceRange] ?? priceColors['$$'];
                 const pLabel = priceLabel[area.priceRange] ?? 'Mid-range';
 
@@ -73,10 +66,11 @@ export default function WhereToStay({ city }: { city: City }) {
                   >
                     {/* Area image */}
                     <div className="relative h-44 overflow-hidden">
-                      {areaImg ? (
+                      {cityImg ? (
                         <Image
-                          src={areaImg}
-                          alt={`${area.name}, ${city.name}`}
+                          src={cityImg}
+                          alt=""
+                          aria-hidden
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -168,8 +162,8 @@ export default function WhereToStay({ city }: { city: City }) {
             transition={{ duration: 0.5 }}
             className="relative rounded-2xl overflow-hidden h-56 border border-border"
           >
-            {city.heroImage && (
-              <Image src={city.heroImage} alt={city.name} fill className="object-cover opacity-40" sizes="100vw" />
+            {cityImg && (
+              <Image src={cityImg} alt="" aria-hidden fill className="object-cover opacity-40" sizes="100vw" />
             )}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center">
               <p className="font-heading text-2xl font-semibold text-primary-text">
