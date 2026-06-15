@@ -4,12 +4,13 @@ import { motion } from 'framer-motion';
 import { Calendar, Wallet, Languages, Coins, Stamp } from 'lucide-react';
 import { City } from '@/lib/types';
 
-// Softer, more premium card backgrounds — colour-coded but not loud
+// Theme-aware translucent tints so the cards (and their text) stay legible in
+// both dark and light mode — fixed pastel fills hid the light value text in dark.
 const statsConfig = (city: City) => [
-  { icon: Calendar, label: 'Best Time',    value: city.stats.bestTime,  color: 'text-amber-600',  bg: 'bg-amber-50',       border: 'border-amber-200/80' },
-  { icon: Wallet,   label: 'Daily Budget', value: city.stats.budget,    color: 'text-emerald-600', bg: 'bg-emerald-50',     border: 'border-emerald-200/80' },
-  { icon: Languages,label: 'Language',     value: city.stats.language,  color: 'text-accent',      bg: 'bg-red-50',         border: 'border-red-200/80' },
-  { icon: Coins,    label: 'Currency',     value: city.stats.currency,  color: 'text-violet-600',  bg: 'bg-violet-50',      border: 'border-violet-200/80' },
+  { icon: Calendar, label: 'Best Time',    value: city.stats.bestTime,  color: 'text-amber-500',   bg: 'bg-amber-500/10',   border: 'border-amber-500/25' },
+  { icon: Wallet,   label: 'Daily Budget', value: city.stats.budget,    color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/25' },
+  { icon: Languages,label: 'Language',     value: city.stats.language,  color: 'text-accent',      bg: 'bg-accent/10',      border: 'border-accent/25' },
+  { icon: Coins,    label: 'Currency',     value: city.stats.currency,  color: 'text-violet-500',  bg: 'bg-violet-500/10',  border: 'border-violet-500/25' },
 ];
 
 // Visa badge colour based on keywords
