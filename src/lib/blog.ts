@@ -29,6 +29,9 @@ export interface BlogPost {
   citySlug?: string;
   content: BlockType[];
   faqs?: FAQ[];
+  /** ISO date of the last meaningful edit. When set, used for schema dateModified
+   *  (a real freshness signal). Falls back to `date` when omitted. */
+  updated?: string;
 }
 
 export const allPosts: BlogPost[] = [

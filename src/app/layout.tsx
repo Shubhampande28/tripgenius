@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     site: "@tripgenius_in",
     title: "TripGenius — Free Travel Guides for India & the World",
     description: "Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems.",
-    images: [`${SITE}/og-default.png`],
+    images: [`${SITE}/opengraph-image`],
   },
   robots: {
     index: true,
@@ -115,7 +115,7 @@ export default function RootLayout({
               '@type': 'Organization',
               name: 'TripGenius',
               url: SITE,
-              logo: `${SITE}/icon.png`,
+              logo: `${SITE}/logo.png`,
               sameAs: [],
               description: 'Free travel guides for 160+ cities worldwide.',
             }),

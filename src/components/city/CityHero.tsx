@@ -89,10 +89,20 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="mt-3 text-xs text-white/40 flex items-center gap-1.5"
+            className="mt-3 text-xs text-white/40 flex flex-wrap items-center gap-x-1.5 gap-y-1"
           >
             <span>📅</span>
             <span>Updated {UPDATED}</span>
+            <span className="text-white/25">·</span>
+            <span>
+              Reviewed by the{' '}
+              <Link
+                href="/about"
+                className="text-white/60 underline-offset-2 hover:text-white hover:underline transition-colors"
+              >
+                TripGenius Editorial Team
+              </Link>
+            </span>
           </motion.p>
 
           {/* Quick stats chips */}

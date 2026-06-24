@@ -63,7 +63,7 @@ export default function AtAGlance({ city }: { city: City }) {
                 </span>
               </div>
               <a
-                href="https://molina.imigrasi.go.id"
+                href={`https://www.google.com/search?q=${encodeURIComponent(`${city.country} tourist visa official requirements`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-auto text-xs text-muted/60 hover:text-muted underline whitespace-nowrap flex-shrink-0"
@@ -72,6 +72,14 @@ export default function AtAGlance({ city }: { city: City }) {
               </a>
             </div>
           )}
+
+          {/* Freshness + honesty note — dates the data (GEO freshness signal) and
+              sets the right expectation that estimates should be confirmed. */}
+          <p className="mt-4 text-[11px] leading-relaxed text-muted/70">
+            Budget, visa and seasonal details are reviewed and current as of 2026.
+            Costs are typical per-person estimates — always confirm prices and visa
+            rules with official sources before you book.
+          </p>
         </motion.div>
       </div>
     </section>

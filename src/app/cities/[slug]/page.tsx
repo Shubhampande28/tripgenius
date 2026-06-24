@@ -56,16 +56,10 @@ export async function generateMetadata(
     keywords: [
       `things to do in ${city.name}`,
       `${city.name} travel guide`,
-      `visit ${city.name}`,
-      `best places in ${city.name}`,
-      `${city.name} trip planner`,
-      `${city.name} tourist attractions`,
-      `${city.name} travel tips ${year}`,
+      `best time to visit ${city.name}`,
       `${city.name} itinerary`,
-      `${city.name} travel guide ${year}`,
+      `${city.name} travel tips`,
       `${city.country} travel`,
-      `${city.name} holidays`,
-      `${city.name} tourism`,
     ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
     ...(city.stub && { robots: { index: false, follow: false } }),
@@ -205,14 +199,32 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     url,
   }));
 
-  // 7. WebPage — helps Google understand page type and author
-  const webPageSchema = {
+  // 7. TravelAction — powers "plan a trip to X" intent
+  const travelActionSchema = {
     '@context': 'https://schema.org',
     '@type': 'TravelAction',
     name: `Plan a trip to ${city.name}`,
     description: `Free travel guide for ${city.name} — best time, budget, things to do, where to stay.`,
     target: { '@type': 'EntryPoint', urlTemplate: url },
     object: { '@type': 'Place', name: city.name },
+  };
+
+  // 8. WebPage — E-E-A-T authority: who reviewed this, when, and editorial standards.
+  // Connects the guide to the published methodology so Google & AI engines can
+  // attribute the content to a credible, transparent source.
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: `${city.name} Travel Guide`,
+    url,
+    description: city.description,
+    inLanguage: 'en',
+    isPartOf: { '@type': 'WebSite', name: 'TripGenius', url: base },
+    about: { '@type': 'Place', name: `${city.name}, ${city.country}` },
+    lastReviewed: '2026-05-01',
+    reviewedBy: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${base}/about` },
+    publisher: { '@type': 'Organization', name: 'TripGenius', url: base, logo: { '@type': 'ImageObject', url: `${base}/logo.png` } },
+    publishingPrinciples: `${base}/about`,
   };
 
   return (
@@ -223,6 +235,7 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
       {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
       {hotelSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchemas) }} />}
       {restaurantSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantSchemas) }} />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(travelActionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
     </>
   );

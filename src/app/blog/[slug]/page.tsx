@@ -174,12 +174,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     url: postUrl,
     image: `https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
     datePublished: post.date,
-    dateModified: post.date,
-    author: { '@type': 'Organization', name: 'TripGenius', url: BASE },
+    dateModified: post.updated ?? post.date,
+    author: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${BASE}/about` },
     publisher: {
       '@type': 'Organization', name: 'TripGenius', url: BASE,
       logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
     },
+    publishingPrinciples: `${BASE}/about`,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     keywords: post.tags.join(', '),
     articleSection: post.category,
@@ -241,7 +242,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
             <span className="flex items-center gap-1 text-xs text-muted"><Clock size={11} /> {post.readTime} min read</span>
             <span className="text-xs text-accent font-semibold">Free Guide</span>
-            <span className="text-xs text-muted">By <span className="text-primary-text font-medium">TripGenius Editorial Team</span></span>
+            <span className="text-xs text-muted">By <Link href="/about" className="text-primary-text font-medium hover:text-accent transition-colors">TripGenius Editorial Team</Link></span>
           </div>
 
           {/* Title */}

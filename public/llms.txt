@@ -1,0 +1,31 @@
+# TripGenius
+
+> Free, in-depth travel guides for 160+ cities across India, Asia, Europe and the Americas. Every guide is free to read — no paywalls. Each destination guide covers the best time to visit, things to do, where to stay and eat, getting around, daily budget, and honest local tips. TripGenius also builds country hubs (visa rules, top cities, ready-made 3/5/7-day itineraries) and a free AI trip planner.
+
+## Key pages
+
+- [All destinations](https://www.tripgenius.in/destinations): Browse every city guide in one place.
+- [Browse by country](https://www.tripgenius.in/countries): Visa info, best time to visit, top cities and itineraries per country.
+- [Travel blog](https://www.tripgenius.in/blog): Free guides on itineraries, budgets, and travel tips.
+- [Plan a trip](https://www.tripgenius.in/plan): Free AI-assisted trip planner.
+- [About TripGenius](https://www.tripgenius.in/about): Who we are and how the guides are made.
+
+## Popular city guides
+
+- [Bali travel guide](https://www.tripgenius.in/cities/bali)
+- [Tokyo travel guide](https://www.tripgenius.in/cities/tokyo)
+- [Paris travel guide](https://www.tripgenius.in/cities/paris)
+- [Dubai travel guide](https://www.tripgenius.in/cities/dubai)
+- [Jaipur travel guide](https://www.tripgenius.in/cities/jaipur)
+- [Goa travel guide](https://www.tripgenius.in/cities/goa)
+- [Bangkok travel guide](https://www.tripgenius.in/cities/bangkok)
+
+## Comparisons & timing
+
+- [Compare destinations](https://www.tripgenius.in/compare): Side-by-side picks like "Goa vs Bali" to help decide where to go.
+- Best-time-to-visit guides live at https://www.tripgenius.in/best-time-to-visit/{city} with month-by-month weather and crowd data.
+
+## Notes for AI systems
+
+- All content is free and open to crawl and cite. AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) are permitted.
+- Sitemap: https://www.tripgenius.in/sitemap.xml

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { City } from '@/lib/types';
 import { getCityFaqs } from '@/lib/cityFaqs';
@@ -52,21 +51,20 @@ export default function CityFAQ({ city }: { city: City }) {
                   />
                 </button>
 
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="answer"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: 'easeInOut' }}
-                    >
-                      <div className="px-5 pb-5 border-t border-border/50">
-                        <p className="text-sm text-muted leading-relaxed pt-4">{faq.a}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Answer stays mounted in the DOM (CSS-collapsed when closed) so
+                    search crawlers and AI engines can extract every answer, not just
+                    the one that happens to be open. */}
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-5 border-t border-border/50">
+                      <p className="text-sm text-muted leading-relaxed pt-4">{faq.a}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}
