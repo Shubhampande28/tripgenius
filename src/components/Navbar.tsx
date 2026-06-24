@@ -69,7 +69,7 @@ export default function Navbar() {
               animate={{ opacity:1, y:0 }}
               exit={{ opacity:0, y:6 }}
               transition={{ duration:0.15 }}
-              className="absolute top-full left-0 mt-1 w-48 bg-dark border border-border rounded-xl shadow-xl overflow-hidden z-50"
+              className="absolute top-full left-0 mt-1 w-48 glass-card rounded-xl overflow-hidden z-50"
             >
               {items.map(item => (
                 <Link key={item.label} href={item.href}

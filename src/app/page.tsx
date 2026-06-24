@@ -225,8 +225,7 @@ export default function HomePage() {
                     transition={{ duration:0.15 }}
                     id="search-suggestions-listbox"
                     role="listbox"
-                    className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-2xl shadow-xl overflow-hidden z-50 text-left"
-                    style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}
+                    className="absolute top-full left-0 right-0 mt-2 glass-card rounded-2xl overflow-hidden z-50 text-left"
                   >
                     {suggestions.map((s, i) => (
                       <div
@@ -291,7 +290,7 @@ export default function HomePage() {
           <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
             <Link
               href="/countries"
-              className="group relative flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden rounded-3xl border border-border bg-elevated/60 px-8 py-10 sm:px-12 sm:py-12 hover:border-accent/40 transition-colors"
+              className="group relative flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden rounded-3xl glass-card glass-hover glass-sheen px-8 py-10 sm:px-12 sm:py-12"
             >
               <div
                 className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-accent/10 blur-3xl pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
@@ -372,11 +371,11 @@ export default function HomePage() {
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
 
-                    {/* Gradient overlay — readable bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    {/* Gradient overlay — softened so the frosted caption reads */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
 
-                    {/* Bottom content — name + supporting info */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                    {/* Bottom content — frosted glass caption */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 glass-panel">
                       <p className="text-white/60 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
                         {city.flag} {city.country}
                       </p>
