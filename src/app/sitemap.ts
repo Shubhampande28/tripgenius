@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { allCities, cities } from '@/lib/cities';
+import { allCities, cities, authoredMonthCitySlugs } from '@/lib/cities';
 import { allPosts } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
@@ -95,5 +95,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.85,
     })),
+
+    // "[City] in [Month]" pages — high-intent seasonal queries ("Bali in December").
+    // Only cities with hand-authored month data; 12 months each.
+    ...authoredMonthCitySlugs.flatMap((slug) =>
+      ['january','february','march','april','may','june','july','august','september','october','november','december']
+        .map((month) => ({
+          url: `${BASE}/visit/${slug}/${month}`,
+          lastModified: CONTENT_UPDATED,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        })),
+    ),
   ];
 }

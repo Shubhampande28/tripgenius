@@ -2506,6 +2506,18 @@ import { enrichCity } from './enrichCity';
 
 export const allCities = [...cities, ...worldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities].map(enrichCity);
 
+// Slugs of cities that ship hand-authored month-by-month data (real weather,
+// temps, crowds) — NOT the generic enrichCity fallback. We gate the per-month
+// "[city] in [month]" pages to this set so every page is substantial and we
+// never publish templated, thin content at scale.
+export const authoredMonthCitySlugs: string[] = [
+  ...cities, ...worldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities,
+].filter((c) => c.monthByMonth).map((c) => c.slug);
+
+export function hasAuthoredMonths(slug: string): boolean {
+  return authoredMonthCitySlugs.includes(slug);
+}
+
 export function getCityBySlug(slug: string): City | undefined {
   return allCities.find((city) => city.slug === slug);
 }

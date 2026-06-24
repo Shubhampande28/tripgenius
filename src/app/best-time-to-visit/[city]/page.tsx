@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
+import { getCityBySlug, getAllCitySlugs, hasAuthoredMonths } from '@/lib/cities';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -164,8 +164,10 @@ export default async function BestTimePage({ params }: { params: Promise<{ city:
               <div className="space-y-2">
                 {mbm.months.map(m => {
                   const c = RATING_COLOR[m.rating] ?? RATING_COLOR.average;
-                  return (
-                    <div key={m.month} className={`flex items-center gap-4 p-4 rounded-xl border ${c.bg} ${c.border}`}>
+                  const linkable = hasAuthoredMonths(slug);
+                  const fullMonth = (MONTH_INFO[m.short] ?? m.month).toLowerCase();
+                  const rowInner = (
+                    <>
                       <div className="w-10 flex-shrink-0">
                         <p className="text-sm font-bold text-primary-text">{m.short}</p>
                       </div>
@@ -177,6 +179,20 @@ export default async function BestTimePage({ params }: { params: Promise<{ city:
                         {m.highlight && <p className="text-xs text-muted mt-0.5">{m.highlight}</p>}
                       </div>
                       <div className="text-sm font-semibold text-primary-text flex-shrink-0">{m.temp}</div>
+                    </>
+                  );
+                  return linkable ? (
+                    <Link
+                      key={m.month}
+                      href={`/visit/${slug}/${fullMonth}`}
+                      className={`flex items-center gap-4 p-4 rounded-xl border ${c.bg} ${c.border} hover:brightness-110 transition`}
+                      aria-label={`${city.name} in ${MONTH_INFO[m.short] ?? m.month}`}
+                    >
+                      {rowInner}
+                    </Link>
+                  ) : (
+                    <div key={m.month} className={`flex items-center gap-4 p-4 rounded-xl border ${c.bg} ${c.border}`}>
+                      {rowInner}
                     </div>
                   );
                 })}
