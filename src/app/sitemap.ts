@@ -4,8 +4,18 @@ import { allPosts } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 import { getAllItinerarySlugs } from '@/lib/itineraries';
+import { getCityImageUrl } from '@/lib/cityImages';
 
 const BASE = 'https://www.tripgenius.in';
+
+// Google Images is a major discovery surface for a visual travel site.
+// Declaring each page's primary image in the sitemap helps those photos get
+// indexed and attributed to the right guide. URLs must be absolute.
+function cityImageUrls(slug: string): string[] {
+  const hero = getCityImageUrl(slug, 'hero');
+  if (!hero) return [];
+  return [hero.startsWith('http') ? hero : `${BASE}${hero}`];
+}
 
 // Bump this date manually when city/country/itinerary/listing content is
 // meaningfully updated. Using new Date() here would mark every page as
@@ -24,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'weekly' as const,
     // Full guide cities get 0.9, stub cities get 0.6
     priority: fullGuideSlugs.has(city.slug) ? 0.9 : 0.6,
+    images: cityImageUrls(city.slug),
   }));
 
   const blogPages = allPosts.map((post) => ({
@@ -31,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
+    images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
   }));
 
   return [
