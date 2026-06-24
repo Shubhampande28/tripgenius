@@ -35,10 +35,16 @@ export default function SafeImage({
   className,
   fill,
   style,
+  priority,
   ...props
 }: SafeImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError]   = useState(false);
+
+  // Priority images (LCP heroes) must paint immediately — never hide them behind
+  // a JS-driven opacity fade, which delays Largest Contentful Paint. The soft
+  // fade-in is only worth it for below-the-fold/lazy images.
+  const fadeIn = !priority;
 
   const gradient = slugToGradient(city ?? String(alt));
 
@@ -70,7 +76,8 @@ export default function SafeImage({
           src={src}
           alt={alt}
           fill={fill}
-          className={`${className ?? ''} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          priority={priority}
+          className={`${className ?? ''}${fadeIn ? ` transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}` : ''}`}
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
           style={{ objectFit: 'cover', position: 'absolute', inset: 0 }}
