@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getCityBySlug, getAllCitySlugs, hasAuthoredMonths } from '@/lib/cities';
+import { getCityBySlug, getAllCitySlugs, hasAuthoredMonths, isIndexableCity } from '@/lib/cities';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -36,7 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
       `${city.name} off season`,
     ],
     alternates: { canonical: `${BASE}/best-time-to-visit/${slug}` },
-    ...((city.stub || !city.monthByMonth) && { robots: { index: false, follow: false } }),
+    // enrichCity gives every city a monthByMonth, so the old `!city.monthByMonth`
+    // guard never fired and ~300 pages of fabricated weather stayed indexed.
+    // Gate on authored month data instead (single source of truth).
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
     openGraph: {
       title, description: desc,
       url: `${BASE}/best-time-to-visit/${slug}`,

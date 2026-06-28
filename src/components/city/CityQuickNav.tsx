@@ -24,11 +24,11 @@ export default function CityQuickNav({ city }: { city: City }) {
     if (id === 'best-time-to-visit') return !!city.monthByMonth;
     if (id === 'things-to-do')       return !!city.thingsToDo?.length;
     if (id === 'explore-areas')      return !!(city.neighbourhoods?.length || city.areas?.length);
-    if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
+    if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length && !city.offbeatSynthetic;
     if (id === 'where-to-stay')      return !!(city.hotels?.length || city.neighbourhoods?.length);
-    if (id === 'where-to-eat')       return !!city.restaurants?.length;
-    if (id === 'getting-around')     return !!city.gettingAround?.length;
-    if (id === 'pro-tips')           return !!city.proTips?.length;
+    if (id === 'where-to-eat')       return !!city.restaurants?.length && !city.restaurantsSynthetic;
+    if (id === 'getting-around')     return !!city.gettingAround?.length && !city.gettingAroundSynthetic;
+    if (id === 'pro-tips')           return !!city.proTips?.length && !city.proTipsSynthetic;
     return true;
   });
 

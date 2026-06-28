@@ -168,6 +168,16 @@ export interface City {
   monthByMonth?: MonthByMonth;
   gettingThere?: GettingThere;
   coordinates?: Coordinates;
+  // Set by enrichCity when the corresponding section is generated from a
+  // template rather than hand-authored. Used to (a) gate indexing and (b) avoid
+  // emitting fabricated structured data (fake LodgingBusiness / Restaurant
+  // markup) that trips AdSense / Search "low value content" reviews.
+  hotelsSynthetic?: boolean;
+  restaurantsSynthetic?: boolean;
+  monthByMonthSynthetic?: boolean;
+  proTipsSynthetic?: boolean;
+  offbeatSynthetic?: boolean;
+  gettingAroundSynthetic?: boolean;
 }
 
 export interface TripPlanRequest {

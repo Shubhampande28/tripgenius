@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TripBuilder from '@/components/plan/TripBuilder';
-import { allCities, getCityBySlug } from '@/lib/cities';
+import { allCities, getCityBySlug, isIndexableCity } from '@/lib/cities';
 import { cityHasMapBuilder } from '@/lib/mapUtils';
 import type { City } from '@/lib/types';
 
@@ -30,6 +30,10 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     title,
     description,
     alternates: { canonical: `${BASE}/plan/${slug}` },
+    // The trip-builder tool stays available to users for every city, but only
+    // index it for substantial cities — otherwise it's ~300 near-identical thin
+    // tool pages, the same low-value pattern as the guide/best-time pages.
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
     openGraph: {
       title,
       description,

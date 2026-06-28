@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { allPosts, getPostBySlug, getRelatedPosts, BlockType, BlogCategory } from '@/lib/blog';
+import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, BlockType, BlogCategory } from '@/lib/blog';
+import { RETIRED_POST_SLUGS } from '@/lib/postRedirects';
 import { ChevronDown } from 'lucide-react';
 import AdUnit from '@/components/AdUnit';
 import { AD_SLOTS } from '@/lib/adsense';
@@ -14,7 +15,8 @@ import { getCityBySlug } from '@/lib/cities';
 import { hasComparison } from '@/lib/comparisons';
 
 export async function generateStaticParams() {
-  return allPosts.map(p => ({ slug: p.slug }));
+  // Retired slugs are 301-redirected in next.config; don't prerender dead pages.
+  return allPosts.filter(p => !RETIRED_POST_SLUGS.has(p.slug)).map(p => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -27,6 +29,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: post.excerpt,
     keywords: post.tags,
     alternates: { canonical: `${BASE}/blog/${slug}` },
+    // Keep thin, mass-produced posts out of the index until they're expanded or
+    // consolidated. They remain readable; they just don't count against the
+    // site's content-quality profile during Search / AdSense review.
+    ...(!isIndexablePost(post) && { robots: { index: false, follow: false } }),
     openGraph: {
       title: post.title,
       description: post.excerpt,

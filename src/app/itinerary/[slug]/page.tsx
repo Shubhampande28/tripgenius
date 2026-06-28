@@ -15,7 +15,7 @@ import {
   ITINERARY_DURATIONS,
 } from '@/lib/itineraries';
 import { getCityImageUrl } from '@/lib/cityImages';
-import { allPosts } from '@/lib/blog';
+import { allPosts, isIndexablePost } from '@/lib/blog';
 
 const BASE = 'https://www.tripgenius.in';
 const YEAR = new Date().getFullYear();
@@ -72,8 +72,10 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
   const countryCitySlugs = new Set(country.cities);
   const relatedPosts = allPosts
     .filter((p) =>
-      (p.citySlug && countryCitySlugs.has(p.citySlug)) ||
-      p.tags.some((t) => t.toLowerCase() === country.name.toLowerCase()),
+      isIndexablePost(p) && (
+        (p.citySlug && countryCitySlugs.has(p.citySlug)) ||
+        p.tags.some((t) => t.toLowerCase() === country.name.toLowerCase())
+      ),
     )
     .slice(0, 3);
 

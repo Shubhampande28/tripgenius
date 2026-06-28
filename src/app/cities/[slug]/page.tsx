@@ -21,7 +21,7 @@ import CityTOC from '@/components/city/CityTOC';
 import CityQuickNav from '@/components/city/CityQuickNav';
 import SimilarDestinations from '@/components/city/SimilarDestinations';
 import MobileCTA from '@/components/city/MobileCTA';
-import { getCityBySlug, getAllCitySlugs } from '@/lib/cities';
+import { getCityBySlug, getAllCitySlugs, isIndexableCity } from '@/lib/cities';
 import { getCountrySlugForCity } from '@/lib/getCountrySlug';
 import { getCityFaqs } from '@/lib/cityFaqs';
 import AdUnit from '@/components/AdUnit';
@@ -62,7 +62,10 @@ export async function generateMetadata(
       `${city.country} travel`,
     ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
-    ...(city.stub && { robots: { index: false, follow: false } }),
+    // Index only substantial, authored guides. Cities without hand-authored
+    // month data are template-generated (fabricated weather/hotels/restaurants)
+    // and must stay out of the index to satisfy AdSense low-value-content rules.
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
     openGraph: {
       title, description: desc,
       url:   `https://www.tripgenius.in/cities/${slug}`,
@@ -112,38 +115,20 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     ],
   };
 
-  // 3. FAQPage — use real per-city FAQs when available, fall back to generated
+  // 3. FAQPage — only emit for hand-authored FAQs. The old templated fallback
+  // produced near-identical Q&A schema across every city, a low-value signal;
+  // pages without real FAQs simply omit FAQ markup (the visible CityFAQ section
+  // already self-hides in that case).
   const realFaqs = getCityFaqs(slug);
-  const faqs = realFaqs.length ? realFaqs : [
-    {
-      q: `How much does a trip to ${city.name} cost per day?`,
-      a: `A trip to ${city.name} typically costs ${city.stats.budget} per person per day. Budget travellers can explore on the lower end, while luxury travellers will spend more.`,
-    },
-    {
-      q: `What are the top things to do in ${city.name}?`,
-      a: city.thingsToDo?.length
-        ? `Top things to do in ${city.name} include: ${city.thingsToDo.slice(0, 5).map((t) => t.name).join(', ')}.`
-        : `${city.name} offers world-class cultural, culinary, and natural experiences.`,
-    },
-    {
-      q: `What language do they speak in ${city.name}?`,
-      a: `The main language spoken in ${city.name} is ${city.stats.language}. English is widely understood in tourist areas.`,
-    },
-    {
-      q: `What is the currency in ${city.name}?`,
-      a: `The currency used in ${city.name} is ${city.stats.currency}. It's advisable to carry some local cash for markets, temples, and street food vendors.`,
-    },
-  ];
-
-  const faqSchema = {
+  const faqSchema = realFaqs.length ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(({ q, a }) => ({
+    mainEntity: realFaqs.map(({ q, a }) => ({
       '@type': 'Question',
       name: q,
       acceptedAnswer: { '@type': 'Answer', text: a },
     })),
-  };
+  } : null;
 
   // 4. ItemList — "Top things to do in X" → powers Google featured snippets
   const itemListSchema = city.thingsToDo?.length ? {
@@ -168,8 +153,11 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     })),
   } : null;
 
-  // 5. LodgingBusiness — ranks for "[city] hotels", "[city] where to stay"
-  const hotelSchemas = (city.hotels ?? []).map(h => ({
+  // 5. LodgingBusiness — ranks for "[city] hotels", "[city] where to stay".
+  // Only emit for hand-authored hotels. enrichCity fabricates placeholder stays
+  // ("Central X Boutique Stay") for cities without real data; marking those as
+  // real businesses in structured data is a low-value / misleading signal.
+  const hotelSchemas = (city.hotelsSynthetic ? [] : city.hotels ?? []).map(h => ({
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
     name: h.name,
@@ -183,8 +171,9 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     url,
   }));
 
-  // 6. Restaurant — ranks for "[city] restaurants", "[city] food guide"
-  const restaurantSchemas = (city.restaurants ?? []).map(r => ({
+  // 6. Restaurant — ranks for "[city] restaurants", "[city] food guide".
+  // Same rule as hotels: never emit structured data for fabricated eateries.
+  const restaurantSchemas = (city.restaurantsSynthetic ? [] : city.restaurants ?? []).map(r => ({
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
     name: r.name,
@@ -231,7 +220,7 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(destination) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
       {hotelSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchemas) }} />}
       {restaurantSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantSchemas) }} />}
@@ -280,11 +269,17 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
                 : <ExploreByArea city={city} />
               }
 
-              <OffbeatPlaces city={city} />
+              {/* Suppress template-generated sections so indexed pages show
+                  only authored content. WhereToStay/BookingPanel stay — they
+                  render real neighbourhoods + affiliate search, not fabricated
+                  data. Restaurants, offbeat, getting-around and pro-tips are
+                  generated for non-authored cities and would read as thin or
+                  factually off (e.g. India-centric tips on a foreign city). */}
+              {!city.offbeatSynthetic && <OffbeatPlaces city={city} />}
               <WhereToStay city={city} />
-              <WhereToEat city={city} />
-              <GettingAround city={city} />
-              <ProTips city={city} />
+              {!city.restaurantsSynthetic && <WhereToEat city={city} />}
+              {!city.gettingAroundSynthetic && <GettingAround city={city} />}
+              {!city.proTipsSynthetic && <ProTips city={city} />}
               <BookingPanel city={city} />
               <CityFAQ city={city} />
             </div>

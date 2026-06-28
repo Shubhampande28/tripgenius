@@ -12,7 +12,7 @@ import {
 import { countries, getCountryBySlug } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
-import { allPosts } from '@/lib/blog';
+import { allPosts, isIndexablePost } from '@/lib/blog';
 import { ITINERARY_DURATIONS, getItinerarySlug, buildItineraryDays, buildRouteOverview, type ItineraryDuration } from '@/lib/itineraries';
 
 const BASE  = 'https://www.tripgenius.in';
@@ -107,8 +107,10 @@ export default async function CountryPage({ params }: Props) {
   const countryCityNames = new Set(citiesData.map((c) => c.name.toLowerCase()));
   const blogLinks = allPosts
     .filter((p) =>
-      (p.citySlug && countryCitySlugs.has(p.citySlug)) ||
-      p.tags.some((t) => t.toLowerCase() === country.name.toLowerCase() || countryCityNames.has(t.toLowerCase())),
+      isIndexablePost(p) && (
+        (p.citySlug && countryCitySlugs.has(p.citySlug)) ||
+        p.tags.some((t) => t.toLowerCase() === country.name.toLowerCase() || countryCityNames.has(t.toLowerCase()))
+      ),
     )
     .slice(0, 6);
 

@@ -6,7 +6,12 @@ import Image from 'next/image';
 import { Clock, ArrowRight, Tag, Search } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { allPosts, BlogCategory } from '@/lib/blog';
+import { allPosts, isIndexablePost, BlogCategory } from '@/lib/blog';
+
+// Only promote substantial guides. Thin posts stay reachable by direct URL but
+// are kept out of the listing and internal linking (and are noindex) until they
+// are expanded or consolidated, so the blog reads as a quality-first library.
+const publishedPosts = allPosts.filter(isIndexablePost);
 
 const CATEGORY_COLORS: Record<BlogCategory, string> = {
   Planning:  'bg-blue-500/15 text-blue-500 border-blue-500/25',
@@ -51,7 +56,7 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filtered = useMemo(() => {
-    let posts = allPosts;
+    let posts = publishedPosts;
     if (activeTab !== 'all') posts = posts.filter(p => p.category === activeTab);
     if (searchQuery.trim().length >= 2) {
       const q = searchQuery.toLowerCase();
@@ -79,7 +84,7 @@ export default function BlogPage() {
               Travel Guides & Tips
             </h1>
             <p className="text-muted text-base mb-6">
-              {allPosts.length} free travel guides — itineraries, budgets, tips and honest advice.
+              {publishedPosts.length} free travel guides — itineraries, budgets, tips and honest advice.
             </p>
 
             {/* Search */}
