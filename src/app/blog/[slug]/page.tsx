@@ -266,7 +266,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <ContentBlock key={i} block={block} />
             ))}
           </article>
-          <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />
+          {/* Only monetise substantial, indexed posts — AdSense policy
+              disallows ad code on thin pages. */}
+          {isIndexablePost(post) && <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />}
 
           {comparisonGuideSlug && (
             <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">
