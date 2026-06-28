@@ -5667,6 +5667,31 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 
 export function getRelatedPosts(post: BlogPost, count = 3): BlogPost[] {
   return allPosts
-    .filter(p => p.slug !== post.slug && (p.category === post.category || p.tags.some(t => post.tags.includes(t))))
+    .filter(p => p.slug !== post.slug && isIndexablePost(p) && (p.category === post.category || p.tags.some(t => post.tags.includes(t))))
     .slice(0, count);
+}
+
+// Total words of body copy in a post (paragraphs, headings, lists, callouts,
+// table cells). FAQs are intentionally excluded — they pad length without
+// adding article depth. Used to keep thin, mass-produced posts out of the index.
+export function postWordCount(post: BlogPost): number {
+  const count = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
+  let words = 0;
+  for (const b of post.content) {
+    switch (b.type) {
+      case 'p': case 'h2': case 'h3': case 'callout': words += count(b.text); break;
+      case 'ul': case 'ol': words += b.items.reduce((n, i) => n + count(i), 0); break;
+      case 'table': words += b.rows.flat().reduce((n, c) => n + count(c), 0); break;
+    }
+  }
+  return words;
+}
+
+// Minimum body length we consider substantial enough to index. Posts below this
+// read as thin / scaled content to Search and AdSense reviewers, so they get
+// noindex and are dropped from the sitemap (they stay readable on the site).
+export const MIN_INDEXABLE_WORDS = 600;
+
+export function isIndexablePost(post: BlogPost): boolean {
+  return postWordCount(post) >= MIN_INDEXABLE_WORDS;
 }

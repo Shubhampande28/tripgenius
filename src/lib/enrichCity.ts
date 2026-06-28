@@ -204,6 +204,14 @@ export function enrichCity(city: City): City {
 
   return {
     ...city,
+    // Record which sections fall back to generated templates below, so callers
+    // can avoid indexing thin pages or emitting fabricated structured data.
+    hotelsSynthetic: !city.hotels,
+    restaurantsSynthetic: !city.restaurants,
+    monthByMonthSynthetic: !city.monthByMonth,
+    proTipsSynthetic: !city.proTips,
+    offbeatSynthetic: !city.offbeatPlaces,
+    gettingAroundSynthetic: !city.gettingAround,
     image: usePhoto ? city.image : '',
     heroImage: usePhoto ? city.heroImage : '',
     areas: usePhoto ? city.areas : city.areas?.map((area) => ({ ...area, image: '' })),

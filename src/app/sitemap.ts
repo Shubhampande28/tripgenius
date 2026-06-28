@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
-import { allCities, cities, authoredMonthCitySlugs } from '@/lib/cities';
-import { allPosts } from '@/lib/blog';
+import { allCities, cities, authoredMonthCitySlugs, isIndexableCity } from '@/lib/cities';
+import { allPosts, isIndexablePost } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 import { getAllItinerarySlugs } from '@/lib/itineraries';
@@ -8,13 +8,26 @@ import { getCityImageUrl } from '@/lib/cityImages';
 
 const BASE = 'https://www.tripgenius.in';
 
+// Next.js interpolates image/loc URLs straight into the sitemap XML without
+// escaping, so any raw "&" (e.g. Unsplash query params) produces an invalid
+// document ("Sitemap can be read, but has errors"). Escape XML-significant
+// characters ourselves. "&" must be replaced first to avoid double-encoding.
+function xmlEscape(url: string): string {
+  return url
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 // Google Images is a major discovery surface for a visual travel site.
 // Declaring each page's primary image in the sitemap helps those photos get
 // indexed and attributed to the right guide. URLs must be absolute.
 function cityImageUrls(slug: string): string[] {
   const hero = getCityImageUrl(slug, 'hero');
   if (!hero) return [];
-  return [hero.startsWith('http') ? hero : `${BASE}${hero}`];
+  return [xmlEscape(hero.startsWith('http') ? hero : `${BASE}${hero}`)];
 }
 
 // Bump this date manually when city/country/itinerary/listing content is
@@ -24,7 +37,11 @@ function cityImageUrls(slug: string): string[] {
 const CONTENT_UPDATED = new Date('2026-06-10');
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const indexableCities = allCities.filter((c) => !c.stub);
+  // Only list pages we actually allow to be indexed. Cities without authored
+  // month data are noindex (template-generated, low-value), so they must not
+  // appear in the sitemap — submitting noindex URLs wastes crawl budget and
+  // sends conflicting signals during an AdSense / Search quality review.
+  const indexableCities = allCities.filter(isIndexableCity);
   const fullGuideSlugs = new Set(cities.map((c) => c.slug));
 
   const cityPages = indexableCities.map((city) => ({
@@ -37,12 +54,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: cityImageUrls(city.slug),
   }));
 
-  const blogPages = allPosts.map((post) => ({
+  const blogPages = allPosts.filter(isIndexablePost).map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
-    images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+    images: [xmlEscape(`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`)],
   }));
 
   return [
@@ -64,8 +81,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // City guides
     ...cityPages,
 
-    // "Best time to visit X" pages — only submit pages with real month-by-month data
-    ...indexableCities.filter(city => city.monthByMonth).map(city => ({
+    // "Best time to visit X" pages — indexableCities already requires authored
+    // month-by-month data, so every entry here has real seasonal content.
+    ...indexableCities.map(city => ({
       url: `${BASE}/best-time-to-visit/${city.slug}`,
       lastModified: CONTENT_UPDATED,
       changeFrequency: 'monthly' as const,

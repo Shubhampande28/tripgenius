@@ -13,7 +13,7 @@ import SafeImage from '@/components/SafeImage';
 import Highlight from '@/components/Highlight';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
-import { allPosts } from '@/lib/blog';
+import { allPosts, isIndexablePost } from '@/lib/blog';
 import { getDestinationSuggestions } from '@/lib/searchSuggestions';
 import { useMounted } from '@/lib/useMounted';
 import { countries, type CountryData } from '@/data/countries';
@@ -104,7 +104,7 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, shuffleTick]);
 
-  const guidePosts = useMemo(() => allPosts.slice(0, 3), []);
+  const guidePosts = useMemo(() => allPosts.filter(isIndexablePost).slice(0, 3), []);
 
   // Stagger reveal for the destination grid (disabled under reduced-motion).
   const gridVariants = {
@@ -496,7 +496,7 @@ export default function HomePage() {
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Learn & Plan</p>
                 <h2 className="font-heading text-3xl font-bold text-primary-text">Featured Travel Guides</h2>
-                <p className="text-muted text-sm mt-1">{allPosts.length} free guides — itineraries, budgets and honest tips</p>
+                <p className="text-muted text-sm mt-1">{allPosts.filter(isIndexablePost).length} free guides — itineraries, budgets and honest tips</p>
               </div>
               <Link href="/blog"
                 className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors flex-shrink-0 shadow-lg shadow-accent/20">

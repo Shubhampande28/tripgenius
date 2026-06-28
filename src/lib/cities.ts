@@ -2518,6 +2518,18 @@ export function hasAuthoredMonths(slug: string): boolean {
   return authoredMonthCitySlugs.includes(slug);
 }
 
+// Single source of truth for "is this city page substantial enough to index?".
+// A page is indexable only if it is not a stub AND ships hand-authored
+// month-by-month data (real weather/crowds/prices). Cities without authored
+// months rely entirely on enrichCity's generated templates — fabricated
+// weather, hotels, and restaurants — which is exactly the "low value / scaled
+// content" pattern AdSense and Search penalise. Those pages get noindex and are
+// dropped from the sitemap. Wire this into every robots/sitemap decision for
+// /cities/[slug] and /best-time-to-visit/[city] so the rule stays consistent.
+export function isIndexableCity(city: Pick<City, 'slug' | 'stub'>): boolean {
+  return !city.stub && hasAuthoredMonths(city.slug);
+}
+
 export function getCityBySlug(slug: string): City | undefined {
   return allCities.find((city) => city.slug === slug);
 }

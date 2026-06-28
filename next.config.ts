@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { RETIRED_POST_REDIRECTS } from "./src/lib/postRedirects";
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -9,6 +10,13 @@ const nextConfig: NextConfig = {
       // Broken pairs that used country/region slugs → send to best city page
       { source: '/compare/bali-vs-thailand',     destination: '/cities/bali',                 permanent: true },
       { source: '/compare/goa-vs-kerala',        destination: '/cities/goa',                  permanent: true },
+      // Retired thin blog posts → folded into their canonical destination hub.
+      // Single source of truth: src/lib/postRedirects.ts (also drives blog SSG).
+      ...Object.entries(RETIRED_POST_REDIRECTS).map(([slug, destination]) => ({
+        source: `/blog/${slug}`,
+        destination,
+        permanent: true,
+      })),
     ];
   },
   images: {
