@@ -286,7 +286,9 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
             <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-4">
               <CityTOC city={city} />
               <CitySidebar city={city} />
-              <AdUnit slot={AD_SLOTS.citySidebar} format="rectangle" />
+              {/* Only monetise substantial, indexed guides — AdSense policy
+                  disallows ad code on pages with little/no content. */}
+              {isIndexableCity(city) && <AdUnit slot={AD_SLOTS.citySidebar} format="rectangle" />}
             </div>
           </div>
         </div>
