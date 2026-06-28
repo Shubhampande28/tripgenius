@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { allCities, cities, authoredMonthCitySlugs, isIndexableCity } from '@/lib/cities';
+import { allCities, cities, authoredMonthCitySlugs, isIndexableCity, isIndexableMonthPage, getCityBySlug } from '@/lib/cities';
 import { allPosts, isIndexablePost } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
@@ -115,15 +115,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // "[City] in [Month]" pages — high-intent seasonal queries ("Bali in December").
-    // Only cities with hand-authored month data; 12 months each.
-    ...authoredMonthCitySlugs.flatMap((slug) =>
-      ['january','february','march','april','may','june','july','august','september','october','november','december']
-        .map((month) => ({
+    // Only authored-month cities, and only months we actually index (flagship
+    // cities keep all 12; others drop lukewarm "average" months — see
+    // isIndexableMonthPage), so the sitemap never lists noindex URLs.
+    ...authoredMonthCitySlugs.flatMap((slug) => {
+      const city = getCityBySlug(slug);
+      if (!city) return [];
+      return ['january','february','march','april','may','june','july','august','september','october','november','december']
+        .map((month, idx) => ({ month, idx }))
+        .filter(({ idx }) => isIndexableMonthPage(city, idx))
+        .map(({ month }) => ({
           url: `${BASE}/visit/${slug}/${month}`,
           lastModified: CONTENT_UPDATED,
           changeFrequency: 'monthly' as const,
           priority: 0.7,
-        })),
-    ),
+        }));
+    }),
   ];
 }

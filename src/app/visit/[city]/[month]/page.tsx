@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
-import { getCityBySlug, authoredMonthCitySlugs, hasAuthoredMonths } from '@/lib/cities';
+import { getCityBySlug, authoredMonthCitySlugs, hasAuthoredMonths, isIndexableMonthPage } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import type { MonthInfo, MonthRating } from '@/lib/types';
 
@@ -73,6 +73,10 @@ export async function generateMetadata(
       `things to do in ${city.name} in ${M}`,
     ],
     alternates: { canonical: `${BASE}/visit/${slug}/${month.toLowerCase()}` },
+    // Low-intent "average"-rated months on non-flagship cities are noindexed to
+    // avoid indexing near-duplicate seasonal pages at scale; the page stays
+    // reachable and the /best-time-to-visit guide covers every month.
+    ...(!isIndexableMonthPage(city, idx) && { robots: { index: false, follow: false } }),
     openGraph: {
       title, description: desc, type: 'article',
       url: `${BASE}/visit/${slug}/${month.toLowerCase()}`,
