@@ -3,10 +3,13 @@ import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 
 // Pinterest pin generator — 1000x1500 (2:3), the size Pinterest promotes most.
-// Reuses each city's real hero photo + data so every guide gets a unique,
-// on-brand pin automatically. Text is rendered here (Satori), never by an AI
-// image model, so it stays crisp and correct. Typography matches the site:
-// Cormorant Garamond for the destination name, Plus Jakarta Sans for UI text.
+//
+// Layout: full-bleed photo on top, solid WHITE brand panel below. Titles are
+// dark-ink-on-white so they are always readable regardless of the photo (white
+// text over bright skies/water was invisible). All accents use the site brand
+// red (#DC2626) with the gold gradient stripe, and the panel carries the real
+// /logo.png lockup. Typography matches the site: Cormorant Garamond for the
+// destination name, Plus Jakarta Sans for UI text.
 //
 //   /api/og/pin/bali                → "Bali — Travel Guide"
 //   /api/og/pin/bali?month=december → "Bali in December" (+ weather hook)
@@ -18,6 +21,14 @@ export const runtime = 'edge';
 const BASE = 'https://www.tripgenius.in';
 const MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Site theme tokens (globals.css)
+const RED = '#DC2626';
+const GOLD = '#FFD166';
+const INK = '#0D1117';
+const SLATE = '#334155';
+const SURFACE = '#F1F5F9';
+const BORDER = '#E2E8F0';
 
 // Satori needs raw TTF data. Google's css API returns TTF URLs for legacy
 // user agents; fetch the CSS, pull the font URL, fetch the font. Results are
@@ -56,11 +67,18 @@ export async function GET(
   let hero = getCityImageUrl(slug, 'hero') ?? city.heroImage ?? city.image ?? '';
   if (hero.startsWith('/')) hero = BASE + hero;
 
-  const accent = city.accentColor || '#FF7A00';
   const m = hasMonth ? city.monthByMonth?.months?.[monthIdx] : undefined;
-
   const kicker = hasMonth ? `${cap(monthParam)} ${year} Guide` : `Travel Guide ${year}`;
-  const subLine = hasMonth ? `in ${cap(monthParam)}` : city.tagline;
+  // For month pins prefer the authored one-line highlight; the title already
+  // names the month, so repeating it adds nothing.
+  const rawSub = hasMonth
+    ? (m?.highlight || 'Weather, crowds & what to do')
+    : city.tagline;
+  const subLine = rawSub.length > 64 ? rawSub.slice(0, 61).trimEnd() + '…' : rawSub;
+
+  // Scale the serif title down for long names so it never wraps awkwardly.
+  const titleText = hasMonth ? `${city.name} in ${cap(monthParam)}` : city.name;
+  const titleSize = titleText.length <= 10 ? 148 : titleText.length <= 16 ? 116 : titleText.length <= 22 ? 92 : 72;
 
   // Up to three quick-fact chips. Strip a trailing "/day" from the budget so
   // the label doesn't repeat it.
@@ -83,63 +101,66 @@ export async function GET(
 
   return new ImageResponse(
     (
-      <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', position: 'relative', fontFamily: 'Jakarta', overflow: 'hidden', background: '#0D1117' }}>
-        {/* Background photo */}
-        {hero ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        ) : (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', background: `linear-gradient(160deg, ${accent}, #0D1117)` }} />
-        )}
+      <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
 
-        {/* Legibility scrims — light at top for brand, heavy at bottom for text */}
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', background: 'linear-gradient(180deg, rgba(6,10,18,0.62) 0%, rgba(6,10,18,0.05) 26%, rgba(6,10,18,0.00) 46%, rgba(6,10,18,0.62) 66%, rgba(6,10,18,0.96) 88%)' }} />
+        {/* ── Photo (top ~57%) ─────────────────────────────────────────── */}
+        <div style={{ display: 'flex', position: 'relative', width: 1000, height: 850, overflow: 'hidden' }}>
+          {hero ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={hero} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', background: `linear-gradient(160deg, ${RED}, ${INK})` }} />
+          )}
 
-        {/* Top accent stripe */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 10, display: 'flex', background: `linear-gradient(90deg, ${accent}, #00C9A7, #FFD166)` }} />
+          {/* Brand stripe (site .gradient-text-accent: red → gold) */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 12, display: 'flex', background: `linear-gradient(90deg, ${RED}, ${GOLD})` }} />
 
-        {/* Content */}
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', padding: '66px 64px 56px' }}>
-          {/* Brand */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 52, height: 52, borderRadius: 14, background: '#FF6B35', fontSize: 26 }}>✈</div>
-            <span style={{ fontSize: 30, fontWeight: 800, color: '#fff', letterSpacing: 0.5 }}>TripGenius</span>
-            <div style={{ display: 'flex', flex: 1 }} />
-            <span style={{ display: 'flex', fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: 2, background: 'rgba(8,12,20,0.6)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 999, padding: '10px 20px' }}>{city.flag} {city.country.toUpperCase()}</span>
+          {/* Country pill */}
+          <div style={{ position: 'absolute', top: 40, right: 40, display: 'flex', alignItems: 'center', gap: 8, background: '#FFFFFF', borderRadius: 999, padding: '12px 22px', fontSize: 22, fontWeight: 800, color: INK, boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
+            {city.flag} {city.country.toUpperCase()}
+          </div>
+
+          {/* Kicker pill overlapping the panel edge */}
+          <div style={{ position: 'absolute', bottom: 0, left: 56, display: 'flex', background: RED, color: '#fff', fontWeight: 800, fontSize: 26, letterSpacing: 4, textTransform: 'uppercase', padding: '16px 28px', borderRadius: '14px 14px 0 0' }}>
+            {kicker}
+          </div>
+        </div>
+
+        {/* ── White brand panel (bottom) ──────────────────────────────── */}
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '44px 56px 40px', background: '#FFFFFF' }}>
+
+          {/* Destination name — dark ink on white: always readable */}
+          <div style={{ display: 'flex', color: INK, fontSize: titleSize, fontWeight: 700, lineHeight: 0.95, letterSpacing: '-1px', fontFamily: 'Cormorant' }}>
+            {titleText}
+          </div>
+
+          {/* Subtitle */}
+          <div style={{ display: 'flex', color: SLATE, fontSize: 34, fontWeight: 600, marginTop: 14 }}>
+            {subLine}
+          </div>
+
+          {/* Fact chips — light surface, red labels (site card style) */}
+          <div style={{ display: 'flex', gap: 14, marginTop: 30, flexWrap: 'wrap' }}>
+            {chips.map((c) => (
+              <div key={c.label} style={{ display: 'flex', flexDirection: 'column', gap: 5, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '14px 22px' }}>
+                <span style={{ display: 'flex', color: RED, fontSize: 18, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 2 }}>{c.label}</span>
+                <span style={{ display: 'flex', color: INK, fontSize: 27, fontWeight: 800 }}>{c.value}</span>
+              </div>
+            ))}
           </div>
 
           {/* Spacer */}
           <div style={{ display: 'flex', flex: 1 }} />
 
-          {/* Kicker */}
-          <div style={{ display: 'flex', alignSelf: 'flex-start', background: accent, color: '#fff', fontWeight: 800, fontSize: 27, letterSpacing: 4, textTransform: 'uppercase', padding: '14px 26px', borderRadius: 12, marginBottom: 30, boxShadow: '0 6px 30px rgba(0,0,0,0.45)' }}>
-            {kicker}
-          </div>
-
-          {/* Destination name — brand serif */}
-          <div style={{ display: 'flex', color: '#fff', fontSize: 168, fontWeight: 700, lineHeight: 0.9, letterSpacing: '-2px', fontFamily: 'Cormorant', textShadow: '0 6px 32px rgba(0,0,0,0.65)' }}>
-            {city.name}
-          </div>
-
-          {/* Subtitle */}
-          <div style={{ display: 'flex', color: 'rgba(255,255,255,0.96)', fontSize: 52, fontWeight: 600, marginTop: 14, textShadow: '0 3px 18px rgba(0,0,0,0.7)' }}>
-            {subLine}
-          </div>
-
-          {/* Fact chips — solid dark so they read on any photo */}
-          <div style={{ display: 'flex', gap: 16, marginTop: 38, flexWrap: 'wrap' }}>
-            {chips.map((c) => (
-              <div key={c.label} style={{ display: 'flex', flexDirection: 'column', gap: 6, background: 'rgba(8,12,20,0.72)', border: `2px solid ${accent}55`, borderRadius: 16, padding: '16px 24px' }}>
-                <span style={{ display: 'flex', color: accent, fontSize: 20, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 2 }}>{c.label}</span>
-                <span style={{ display: 'flex', color: '#fff', fontSize: 31, fontWeight: 800 }}>{c.value}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Footer CTA bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 44, background: 'rgba(8,12,20,0.7)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 18, padding: '20px 28px' }}>
-            <span style={{ display: 'flex', color: '#fff', fontSize: 30, fontWeight: 800 }}>tripgenius.in</span>
-            <div style={{ display: 'flex', alignItems: 'center', background: accent, color: '#fff', fontSize: 27, fontWeight: 800, padding: '14px 26px', borderRadius: 12 }}>
+          {/* Footer: real logo lockup + CTA */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: `1px solid ${BORDER}`, paddingTop: 26 }}>
+            {/* logo.png is a 2000x2000 canvas with the lockup in the middle
+                band — crop to that band with a fixed window + negative offset */}
+            <div style={{ display: 'flex', width: 340, height: 120, overflow: 'hidden', alignItems: 'center' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${BASE}/logo.png`} alt="TripGenius" style={{ width: 340, height: 340, marginTop: 0, objectFit: 'cover', objectPosition: 'center' }} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', background: RED, color: '#fff', fontSize: 26, fontWeight: 800, padding: '16px 28px', borderRadius: 12 }}>
               Read the free guide →
             </div>
           </div>
