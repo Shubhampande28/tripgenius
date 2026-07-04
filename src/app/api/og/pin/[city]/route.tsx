@@ -2,6 +2,7 @@
 import { ImageResponse } from 'next/og';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
+import { getPlaceImageUrl } from '@/lib/placeImages';
 
 // Pinterest pin generator — 1000x1500 (2:3), three approved designs that
 // auto-match the pin type (override with ?style=season|things|cover):
@@ -21,6 +22,11 @@ const MONTHS = ['january','february','march','april','may','june','july','august
 const MONTH_LETTERS = ['J','F','M','A','M','J','J','A','S','O','N','D'];
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const trunc = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
+
+// Satori can't decode AVIF, which Unsplash serves under auto=format — force
+// JPEG so every image has a determinable size.
+const jpegUrl = (u: string) =>
+  u.includes('images.unsplash.com') ? u.replace('auto=format', 'fm=jpg') : u;
 
 // Site theme tokens (globals.css)
 const RED = '#DC2626';
@@ -125,16 +131,17 @@ export async function GET(
   const monthIdx = MONTHS.indexOf(monthParam);
   const hasMonth = monthIdx >= 0;
   const styleParam = (url.searchParams.get('style') || '').toLowerCase();
-  const style: 'season' | 'things' | 'cover' =
+  const style: 'season' | 'things' | 'cover' | 'collage' =
     styleParam === 'things' ? 'things'
+    : styleParam === 'collage' ? 'collage'
     : styleParam === 'cover' || hasMonth ? 'cover'
-    : styleParam === 'season' ? 'season'
     : 'season';
 
   const year = new Date().getFullYear();
 
   let hero = getCityImageUrl(slug, 'hero') ?? city.heroImage ?? city.image ?? '';
   if (hero.startsWith('/')) hero = BASE + hero;
+  hero = jpegUrl(hero);
 
   const [heading, sans, sansSemi] = await Promise.all([
     loadGoogleFont('Cormorant Garamond', 700),
@@ -172,11 +179,11 @@ export async function GET(
               {listTitle}
             </div>
           </div>
-          <Photo hero={hero} height={420}>
+          <Photo hero={hero} height={520}>
             <CountryPill flag={city.flag} country={city.country} />
           </Photo>
           {/* Checklist */}
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '36px 56px 40px', gap: 22 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '34px 56px 36px', gap: 18 }}>
             {things.map((t, i) => (
               <div key={i} style={{ display: 'flex', gap: 22, alignItems: 'flex-start' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 52, height: 52, borderRadius: 999, background: RED, color: '#fff', fontSize: 27, fontWeight: 800, flexShrink: 0 }}>
@@ -223,34 +230,89 @@ export async function GET(
       (
         <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
           <Stripe />
-          <Photo hero={hero}>
+          {/* Photo stays fully visible — nothing overlays it */}
+          <Photo hero={hero} height={760}>
             <CountryPill flag={city.flag} country={city.country} />
-            {/* White masthead band over the photo */}
-            <div style={{ position: 'absolute', left: 0, right: 0, top: '44%', display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.96)', padding: '36px 56px' }}>
-              <div style={{ display: 'flex', color: RED, fontSize: 25, fontWeight: 800, letterSpacing: 6 }}>
-                {hasMonth ? `${M.toUpperCase()} ${year} · MONTH GUIDE` : `TRAVEL GUIDE ${year}`}
-              </div>
-              <div style={{ display: 'flex', fontFamily: 'Cormorant', color: INK, fontSize: titleSize, fontWeight: 700, lineHeight: 0.98, letterSpacing: '-1px', marginTop: 8 }}>
-                {coverTitle}
-              </div>
-            </div>
           </Photo>
-          {/* Red stats panel */}
-          <div style={{ display: 'flex', flexDirection: 'column', background: RED, padding: '40px 56px 36px', flexShrink: 0, gap: 20 }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18 }}>
+          {/* White panel: title + red stat boxes (site colors) */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '40px 56px 40px' }}>
+            <div style={{ display: 'flex', color: RED, fontSize: 25, fontWeight: 800, letterSpacing: 6 }}>
+              {hasMonth ? `${M.toUpperCase()} ${year} · MONTH GUIDE` : `TRAVEL GUIDE ${year}`}
+            </div>
+            <div style={{ display: 'flex', fontFamily: 'Cormorant', color: INK, fontSize: titleSize, fontWeight: 700, lineHeight: 0.98, letterSpacing: '-1px', marginTop: 10 }}>
+              {coverTitle}
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, marginTop: 30 }}>
               {stats.map((s) => (
-                <div key={s.label} style={{ display: 'flex', flexDirection: 'column', gap: 6, background: 'rgba(255,255,255,0.13)', borderRadius: 14, padding: '18px 26px', width: 425 }}>
+                <div key={s.label} style={{ display: 'flex', flexDirection: 'column', gap: 6, background: RED, borderRadius: 14, padding: '18px 26px', width: 425 }}>
                   <span style={{ display: 'flex', color: GOLD, fontSize: 20, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 2.5 }}>{s.label}</span>
                   <span style={{ display: 'flex', color: '#fff', fontSize: 30, fontWeight: 800 }}>{s.value}</span>
                 </div>
               ))}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
-              <span style={{ display: 'flex', color: '#fff', fontSize: 34, fontWeight: 800 }}>✈ TripGenius</span>
-              <div style={{ display: 'flex', alignItems: 'center', background: GOLD, color: '#7A1B1B', fontSize: 26, fontWeight: 800, padding: '16px 28px', borderRadius: 12 }}>
-                Read the guide →
+            <div style={{ display: 'flex', flex: 1 }} />
+            <Footer cta="Read the guide →" />
+          </div>
+        </div>
+      ),
+      opts,
+    );
+  }
+
+  // ── Design 4: Photo Collage ──────────────────────────────────────────────
+  if (style === 'collage') {
+    // Hero on top + a row of distinct place photos from the city's things-to-do.
+    // No category arg: only accept photos of the actual place — the generic
+    // category fallbacks can be factually wrong (e.g. safari elephant for Bali).
+    const seen = new Set<string>([hero]);
+    const candidates: string[] = [];
+    for (const t of city.thingsToDo ?? []) {
+      const u0 = getPlaceImageUrl(slug, t.name);
+      const u = u0 ? jpegUrl(u0) : undefined;
+      if (u && !seen.has(u)) { seen.add(u); candidates.push(u); }
+      if (candidates.length >= 6) break;
+    }
+    // Some catalogued images are dead (404 HTML) and crash Satori — verify in
+    // parallel and keep only real images.
+    const checks = await Promise.all(candidates.map(async (u) => {
+      try {
+        const r = await fetch(u, { method: 'HEAD' });
+        return r.ok && (r.headers.get('content-type') ?? '').startsWith('image/') ? u : null;
+      } catch { return null; }
+    }));
+    const placeImgs = checks.filter((u): u is string => !!u).slice(0, 3);
+    while (placeImgs.length < 3) placeImgs.push(hero); // graceful fallback
+
+    const titleSize = city.name.length <= 10 ? 120 : city.name.length <= 16 ? 96 : 74;
+
+    return new ImageResponse(
+      (
+        <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
+          <Stripe />
+          <Photo hero={hero} height={620}>
+            <CountryPill flag={city.flag} country={city.country} />
+          </Photo>
+          {/* Collage row — 3 place photos with thin white gutters */}
+          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexShrink: 0 }}>
+            {placeImgs.map((u, i) => (
+              <div key={i} style={{ display: 'flex', position: 'relative', width: 328, height: 300, overflow: 'hidden' }}>
+                <img src={u} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
+            ))}
+          </div>
+          {/* White info panel */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '38px 56px 40px' }}>
+            <div style={{ display: 'flex', color: RED, fontSize: 25, fontWeight: 800, letterSpacing: 6 }}>
+              TRAVEL GUIDE {year}
             </div>
+            <div style={{ display: 'flex', fontFamily: 'Cormorant', color: INK, fontSize: titleSize, fontWeight: 700, lineHeight: 0.96, letterSpacing: '-1px', marginTop: 8 }}>
+              {city.name}
+            </div>
+            <div style={{ display: 'flex', color: SLATE, fontSize: 31, fontWeight: 600, marginTop: 10 }}>
+              {trunc(city.tagline, 54)}
+            </div>
+            <div style={{ display: 'flex', flex: 1 }} />
+            <Footer cta="Read the free guide →" />
           </div>
         </div>
       ),
