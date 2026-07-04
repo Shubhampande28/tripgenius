@@ -21,30 +21,48 @@ export interface CreatePinInput {
 function getConfig() {
   const token = process.env.PINTEREST_ACCESS_TOKEN;
   const boardId = process.env.PINTEREST_BOARD_ID;
+  // Sandbox tokens (issued while an app awaits trial/standard access) only
+  // work against api-sandbox.pinterest.com — set PINTEREST_API_BASE to it for
+  // testing. Sandbox pins are never publicly visible.
+  const apiBase = process.env.PINTEREST_API_BASE ?? 'https://api.pinterest.com';
   if (!token) throw new Error('PINTEREST_ACCESS_TOKEN is not configured');
   if (!boardId) throw new Error('PINTEREST_BOARD_ID is not configured');
-  return { token, boardId };
+  return { token, boardId, apiBase };
 }
 
-export async function createPin(input: CreatePinInput): Promise<{ id: string }> {
-  const { token, boardId } = getConfig();
-
-  const res = await fetch('https://api.pinterest.com/v5/pins', {
+async function postPin(apiBase: string, token: string, body: Record<string, unknown>) {
+  const res = await fetch(`${apiBase}/v5/pins`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      board_id: input.boardId ?? boardId,
-      title: input.title.slice(0, 100),
-      description: input.description.slice(0, 800),
-      link: input.link,
-      media_source: { source_type: 'image_url', url: input.imageUrl },
-    }),
+    body: JSON.stringify(body),
   });
-
   const data = (await res.json()) as { id?: string } & PinterestError;
+  return { res, data };
+}
+
+export async function createPin(input: CreatePinInput): Promise<{ id: string }> {
+  const { token, boardId, apiBase } = getConfig();
+
+  const body: Record<string, unknown> = {
+    board_id: input.boardId ?? boardId,
+    title: input.title.slice(0, 100),
+    description: input.description.slice(0, 800),
+    link: input.link,
+    media_source: { source_type: 'image_url', url: input.imageUrl },
+  };
+
+  let { res, data } = await postPin(apiBase, token, body);
+
+  // Some environments (notably sandbox) reject the link field with a generic
+  // 400 — retry once without it rather than losing the whole pin.
+  if (res.status === 400 && body.link) {
+    delete body.link;
+    ({ res, data } = await postPin(apiBase, token, body));
+  }
+
   if (!res.ok || !data.id) {
     throw new Error(`Pinterest pin failed (${res.status}): ${data.message ?? 'unknown error'}`);
   }
