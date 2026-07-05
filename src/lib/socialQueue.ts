@@ -23,7 +23,7 @@ export interface QueueItem {
   link: string;
   /** Public image URL (the pin generator). */
   imageUrl: string;
-  /** Square image for Instagram (IG rejects 2:3; places design is 1:1). */
+  /** Same design rendered at 4:5 for Instagram (its API rejects 2:3). */
   igImageUrl: string;
   igCaption: string;
 }
@@ -48,7 +48,7 @@ function buildItem(city: City, style: QueueItem['style'], now: Date): QueueItem 
         description: `${city.tagline}. See which months are best, good or worth avoiding in ${name} — plus daily budget and visa info. Free month-by-month guide on TripGenius.`,
         link: `${BASE}/best-time-to-visit/${slug}`,
         imageUrl: `${BASE}/api/og/pin/${slug}`,
-        igImageUrl: `${BASE}/api/og/places/${slug}`,
+        igImageUrl: `${BASE}/api/og/pin/${slug}?size=ig`,
         igCaption: igCaptionBase,
       };
     case 'things':
@@ -58,7 +58,7 @@ function buildItem(city: City, style: QueueItem['style'], now: Date): QueueItem 
         description: `The experiences actually worth your time in ${name} — from the icons to the local favourites. See the full list with tips, timings and a map on TripGenius, free.`,
         link: `${BASE}/cities/${slug}`,
         imageUrl: `${BASE}/api/og/pin/${slug}?style=things`,
-        igImageUrl: `${BASE}/api/og/places/${slug}`,
+        igImageUrl: `${BASE}/api/og/pin/${slug}?style=things&size=ig`,
         igCaption: igCaptionBase,
       };
     case 'collage':
@@ -68,7 +68,7 @@ function buildItem(city: City, style: QueueItem['style'], now: Date): QueueItem 
         description: `${city.tagline}. Everything for your ${name} trip in one free guide — things to do, where to stay, daily budgets and local tips.`,
         link: `${BASE}/cities/${slug}`,
         imageUrl: `${BASE}/api/og/pin/${slug}?style=collage`,
-        igImageUrl: `${BASE}/api/og/places/${slug}`,
+        igImageUrl: `${BASE}/api/og/pin/${slug}?style=collage&size=ig`,
         igCaption: igCaptionBase,
       };
     case 'cover':
@@ -78,7 +78,7 @@ function buildItem(city: City, style: QueueItem['style'], now: Date): QueueItem 
         description: `Planning ${name} in ${M}? Here's the weather, temperatures, crowd levels and prices to expect — and whether it's the right month for your trip. Free guide on TripGenius.`,
         link: `${BASE}/visit/${slug}/${nextMonth}`,
         imageUrl: `${BASE}/api/og/pin/${slug}?month=${nextMonth}`,
-        igImageUrl: `${BASE}/api/og/places/${slug}`,
+        igImageUrl: `${BASE}/api/og/pin/${slug}?month=${nextMonth}&size=ig`,
         igCaption: igCaptionBase,
       };
   }

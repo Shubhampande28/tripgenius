@@ -139,6 +139,11 @@ export async function GET(
     : styleParam === 'cover' || hasMonth ? 'cover'
     : 'season';
 
+  // ?size=ig renders the SAME design at 1000x1250 (4:5) — Instagram's API
+  // rejects 2:3 portraits, so IG posts reuse these layouts at its max ratio.
+  const isIG = (url.searchParams.get('size') || '').toLowerCase() === 'ig';
+  const H = isIG ? 1250 : 1500;
+
   const year = new Date().getFullYear();
 
   let hero = getCityImageUrl(slug, 'hero') ?? city.heroImage ?? city.image ?? '';
@@ -153,7 +158,7 @@ export async function GET(
 
   const opts = {
     width: 1000,
-    height: 1500,
+    height: H,
     fonts: [
       { name: 'Cormorant', data: heading, weight: 700 as const, style: 'normal' as const },
       { name: 'Jakarta', data: sans, weight: 800 as const, style: 'normal' as const },
@@ -170,7 +175,7 @@ export async function GET(
 
     return new ImageResponse(
       (
-        <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
+        <div style={{ width: 1000, height: H, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
           <Stripe />
           {/* Red header band */}
           <div style={{ display: 'flex', flexDirection: 'column', background: RED, color: '#fff', padding: '40px 56px 36px', flexShrink: 0 }}>
@@ -181,7 +186,7 @@ export async function GET(
               {listTitle}
             </div>
           </div>
-          <Photo hero={hero} height={520}>
+          <Photo hero={hero} height={isIG ? 300 : 520}>
             <CountryPill flag={city.flag} country={city.country} />
           </Photo>
           {/* Checklist */}
@@ -230,10 +235,10 @@ export async function GET(
 
     return new ImageResponse(
       (
-        <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
+        <div style={{ width: 1000, height: H, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
           <Stripe />
           {/* Photo stays fully visible — nothing overlays it */}
-          <Photo hero={hero} height={760}>
+          <Photo hero={hero} height={isIG ? 480 : 760}>
             <CountryPill flag={city.flag} country={city.country} />
           </Photo>
           {/* White panel: title + red stat boxes (site colors) */}
@@ -289,15 +294,15 @@ export async function GET(
 
     return new ImageResponse(
       (
-        <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
+        <div style={{ width: 1000, height: H, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
           <Stripe />
-          <Photo hero={hero} height={620}>
+          <Photo hero={hero} height={isIG ? 400 : 620}>
             <CountryPill flag={city.flag} country={city.country} />
           </Photo>
           {/* Collage row — 3 place photos with thin white gutters */}
           <div style={{ display: 'flex', gap: 8, marginTop: 8, flexShrink: 0 }}>
             {placeImgs.map((u, i) => (
-              <div key={i} style={{ display: 'flex', position: 'relative', width: 328, height: 300, overflow: 'hidden' }}>
+              <div key={i} style={{ display: 'flex', position: 'relative', width: 328, height: isIG ? 240 : 300, overflow: 'hidden' }}>
                 <img src={u} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             ))}
@@ -338,9 +343,9 @@ export async function GET(
 
   return new ImageResponse(
     (
-      <div style={{ width: 1000, height: 1500, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
+      <div style={{ width: 1000, height: H, display: 'flex', flexDirection: 'column', fontFamily: 'Jakarta', background: '#FFFFFF' }}>
         <Stripe />
-        <Photo hero={hero} height={690}>
+        <Photo hero={hero} height={isIG ? 480 : 690}>
           <CountryPill flag={city.flag} country={city.country} />
           <div style={{ position: 'absolute', bottom: 0, left: 56, display: 'flex', background: RED, color: '#fff', fontWeight: 800, fontSize: 26, letterSpacing: 4, textTransform: 'uppercase', padding: '16px 28px', borderRadius: '14px 14px 0 0' }}>
             Travel Guide {year}
