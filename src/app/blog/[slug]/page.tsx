@@ -256,6 +256,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.title}
           </h1>
 
+          {/* Freshness signal — driven by dateModified (updated), matching the
+              Article schema so on-page and structured data agree. */}
+          {post.updated && (
+            <p className="text-xs text-muted mb-4 -mt-1">
+              Last updated:{' '}
+              <time dateTime={post.updated} className="font-medium text-primary-text">
+                {new Date(post.updated).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+              </time>
+            </p>
+          )}
+
           <p className="text-muted text-base leading-relaxed mb-8 border-b border-border pb-8">
             {post.excerpt}
           </p>
