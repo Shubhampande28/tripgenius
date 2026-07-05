@@ -30,14 +30,7 @@ export const metadata: Metadata = {
     template: "%s | TripGenius",
   },
   description:
-    `Free travel guides for 160+ cities across India, Asia, Europe & the Americas. Find the best time to visit, things to do, budget breakdowns, and local insider tips for Bali, Delhi, Jaipur, Tokyo, Paris and more.`,
-  keywords: [
-    "travel guide", "city travel guide", "best time to visit India",
-    "things to do in India", "India travel tips", "Rajasthan travel",
-    "Kerala travel guide", "Himachal Pradesh travel", "budget travel India",
-    "Asia travel guide", "Europe city guide", "TripGenius",
-    "free travel guide", "trip planning", `travel guide ${YEAR}`,
-  ],
+    `Free travel guides for 70+ cities across India, Asia, Europe & the Americas. Find the best time to visit, things to do, budget breakdowns, and local insider tips for Bali, Delhi, Jaipur, Tokyo, Paris and more.`,
   metadataBase: new URL(SITE),
   alternates: { canonical: SITE },
   openGraph: {
@@ -46,14 +39,14 @@ export const metadata: Metadata = {
     siteName: "TripGenius",
     url: SITE,
     title: `TripGenius — Free Travel Guides for India & the World`,
-    description: `Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
+    description: `Free travel guides for 70+ cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
     images: [{ url: `${SITE}/opengraph-image`, width: 1200, height: 630, alt: "TripGenius — Free Travel Guides" }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@tripgenius_in",
     title: "TripGenius — Free Travel Guides for India & the World",
-    description: "Free travel guides for 160+ cities. Best time to visit, budget, things to do, and hidden gems.",
+    description: "Free travel guides for 70+ cities. Best time to visit, budget, things to do, and hidden gems.",
     images: [`${SITE}/opengraph-image`],
   },
   robots: {
@@ -117,7 +110,7 @@ export default function RootLayout({
               url: SITE,
               logo: `${SITE}/logo.png`,
               sameAs: [],
-              description: 'Free travel guides for 160+ cities worldwide.',
+              description: 'Free travel guides for 70+ cities worldwide.',
             }),
           }}
         />

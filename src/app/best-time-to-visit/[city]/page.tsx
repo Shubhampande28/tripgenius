@@ -25,16 +25,6 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   return {
     title,
     description: desc,
-    keywords: [
-      `best time to visit ${city.name}`,
-      `when to visit ${city.name}`,
-      `${city.name} weather`,
-      `${city.name} best season`,
-      `${city.name} travel season`,
-      `${city.name} weather by month`,
-      `${city.name} peak season`,
-      `${city.name} off season`,
-    ],
     alternates: { canonical: `${BASE}/best-time-to-visit/${slug}` },
     // enrichCity gives every city a monthByMonth, so the old `!city.monthByMonth`
     // guard never fired and ~300 pages of fabricated weather stayed indexed.

@@ -139,7 +139,7 @@ export default function DestinationsPage() {
               All Destinations
             </h1>
             <p className="text-muted text-base">
-              Free travel guides for 160+ destinations — things to do, best time to visit and local tips.
+              Free travel guides for 70+ destinations — things to do, best time to visit and local tips.
             </p>
           </div>
 

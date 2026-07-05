@@ -68,7 +68,7 @@ export default function FeaturedCities() {
                   {/* Real photo */}
                   <SafeImage
                     src={getCityImageUrl(city.slug, 'card') ?? city.image}
-                    alt={city.name}
+                    alt={`${city.name} travel guide — ${city.tagline}`}
                     city={city.slug}
                     accentColor={city.accentColor}
                     fill

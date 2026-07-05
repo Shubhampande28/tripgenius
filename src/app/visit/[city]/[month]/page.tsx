@@ -65,13 +65,6 @@ export async function generateMetadata(
   return {
     title,
     description: desc,
-    keywords: [
-      `${city.name} in ${M}`,
-      `visiting ${city.name} in ${M}`,
-      `${city.name} ${M} weather`,
-      `${city.name} ${M} travel`,
-      `things to do in ${city.name} in ${M}`,
-    ],
     alternates: { canonical: `${BASE}/visit/${slug}/${month.toLowerCase()}` },
     // Low-intent "average"-rated months on non-flagship cities are noindexed to
     // avoid indexing near-duplicate seasonal pages at scale; the page stays

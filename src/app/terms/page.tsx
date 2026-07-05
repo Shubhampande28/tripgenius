@@ -5,6 +5,9 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'Terms of Service — TripGenius',
   description: 'Read the TripGenius terms of service. By using tripgenius.in, you agree to these terms.',
+  // Without this, the root layout's canonical (the homepage) is inherited and
+  // this page claims to be a duplicate of "/".
+  alternates: { canonical: 'https://www.tripgenius.in/terms' },
 };
 
 const LAST_UPDATED = 'May 30, 2025';

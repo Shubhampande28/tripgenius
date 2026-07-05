@@ -8,7 +8,7 @@ const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
   title: 'About TripGenius — Editorial Standards & Research Process',
-  description: 'Learn how TripGenius researches and writes travel guides. Our editorial process, fact-checking standards, and commitment to honest, up-to-date information for 160+ destinations.',
+  description: 'Learn how TripGenius researches and writes travel guides. Our editorial process, fact-checking standards, and commitment to honest, up-to-date information for 70+ destinations.',
   alternates: { canonical: `${BASE}/about` },
   openGraph: {
     title: 'About TripGenius — Honest Travel Guides for Every Destination',
@@ -81,7 +81,7 @@ const orgSchema = {
   name: 'TripGenius',
   url: BASE,
   logo: `${BASE}/logo.png`,
-  description: 'Free travel guides for 160+ cities worldwide. Honest, well-researched information with no paid rankings.',
+  description: 'Free travel guides for 70+ cities worldwide. Honest, well-researched information with no paid rankings.',
   foundingDate: '2025',
   knowsAbout: ['Travel', 'Tourism', 'India Travel', 'Asia Travel', 'Europe Travel', 'Travel Planning'],
   areaServed: 'Worldwide',

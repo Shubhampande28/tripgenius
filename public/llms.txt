@@ -36,3 +36,57 @@
 - All content is free and open to crawl and cite. AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) are permitted.
 - Please attribute citations to "TripGenius" and link the source page.
 - Sitemap: https://www.tripgenius.in/sitemap.xml
+
+# TripGenius
+
+> TripGenius (tripgenius.in) is a free travel guide platform covering 70+
+> cities across 49 countries, built for Indian and international travellers.
+> It offers city guides (things to do, best time to visit, budget
+> breakdowns), country hubs with visa information, destination comparisons,
+> a free itinerary planner, and blog guides with costs in Indian Rupees (INR).
+
+All guides are free, with no sign-up required. Content is updated regularly;
+each guide shows its last-updated date.
+
+## Main sections
+
+- [All destinations](https://www.tripgenius.in/destinations): Browse 70+ city travel guides
+- [Countries](https://www.tripgenius.in/countries): 49 country hubs with visa rules, best time to visit, and top cities
+- [Trip planner](https://www.tripgenius.in/plan): Free itinerary generator — destination, dates, style, interests
+- [Blog](https://www.tripgenius.in/blog): Itineraries, budget guides and comparisons for Indian travellers
+- [Compare](https://www.tripgenius.in/compare/goa-vs-bali): Side-by-side destination comparisons
+
+## Popular city guides
+
+- [Bali travel guide](https://www.tripgenius.in/cities/bali): Best time Apr–Oct, visa on arrival for Indians
+- [Tokyo travel guide](https://www.tripgenius.in/cities/tokyo)
+- [Paris travel guide](https://www.tripgenius.in/cities/paris)
+- [Bangkok travel guide](https://www.tripgenius.in/cities/bangkok)
+- [Dubai travel guide](https://www.tripgenius.in/cities/dubai)
+- [Goa travel guide](https://www.tripgenius.in/cities/goa)
+- [Jaipur travel guide](https://www.tripgenius.in/cities/jaipur)
+- [Maldives travel guide](https://www.tripgenius.in/cities/maldives)
+
+## Key country hubs
+
+- [India](https://www.tripgenius.in/countries/india): 115 destinations
+- [Japan](https://www.tripgenius.in/countries/japan)
+- [Thailand](https://www.tripgenius.in/countries/thailand)
+- [Indonesia](https://www.tripgenius.in/countries/indonesia)
+- [Vietnam](https://www.tripgenius.in/countries/vietnam)
+- [Georgia](https://www.tripgenius.in/countries/georgia)
+
+## Best blog guides
+
+- [7-Day Bali Itinerary for Indian Tourists with INR costs](https://www.tripgenius.in/blog/bali-itinerary-indian-tourists)
+- [Visa-Free Countries for Indian Passport Holders](https://www.tripgenius.in/blog/visa-free-countries-indian-passport-2025)
+- [Bali vs Thailand for Indian Travellers](https://www.tripgenius.in/blog/bali-vs-thailand-indian-travellers)
+- [Japan 7-Day Itinerary for Indian Travellers](https://www.tripgenius.in/blog/japan-7-day-itinerary)
+- [Vietnam 7-Day Itinerary for Indian Travellers](https://www.tripgenius.in/blog/vietnam-7-day-itinerary)
+- [Georgia 7-Day Itinerary for Indian Travellers](https://www.tripgenius.in/blog/georgia-7-day-itinerary)
+
+## Contact
+
+- [About](https://www.tripgenius.in/about)
+- [Contact](https://www.tripgenius.in/contact)
+- Twitter/X: @tripgenius_in
