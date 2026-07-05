@@ -55,6 +55,10 @@ export const RETIRED_POST_REDIRECTS: Record<string, string> = {
   'chiang-mai-travel-guide': '/cities/chiang-mai',
   'bangkok-3-day-itinerary': '/cities/bangkok',
   'bangkok-travel-guide-tips': '/cities/bangkok',
+
+  // ── Slug renames (not thin-content retirements) ──
+  // Year-bearing slug refreshed for 2026; old URL 301s to the new post.
+  'visa-free-countries-indian-passport-2025': '/blog/visa-free-countries-indian-passport-2026',
 };
 
 export const RETIRED_POST_SLUGS = new Set(Object.keys(RETIRED_POST_REDIRECTS));

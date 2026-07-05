@@ -56,7 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogPages = allPosts.filter(isIndexablePost).map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
+    lastModified: new Date(post.updated ?? post.date),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
     images: [xmlEscape(`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`)],

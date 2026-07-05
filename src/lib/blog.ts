@@ -1,3 +1,5 @@
+import { RETIRED_POST_SLUGS } from './postRedirects';
+
 export type BlockType =
   | { type: 'p'; text: string }
   | { type: 'h2'; text: string }
@@ -66,7 +68,7 @@ export const allPosts: BlogPost[] = [
         type: 'p',
         text: 'Thailand currently gives Indian ordinary passport holders visa-exempt entry for short tourist visits, while Bali (Indonesia) requires a Visa on Arrival at the airport: USD 35 (approximately ₹2,900), paid in cash. Both are easy, but Thailand usually wins on convenience because there is no airport visa fee for standard short holidays. Since Thai entry durations can change with official updates, verify the current rule before booking.',
       },
-      { type: 'link-cta', text: 'See the full list of visa-free and visa-on-arrival countries for Indian passport holders.', href: '/blog/visa-free-countries-indian-passport-2025' },
+      { type: 'link-cta', text: 'See the full list of visa-free and visa-on-arrival countries for Indian passport holders.', href: '/blog/visa-free-countries-indian-passport-2026' },
       {
         type: 'h2',
         text: 'Cost Comparison in INR',
@@ -195,6 +197,7 @@ export const allPosts: BlogPost[] = [
     title: 'Visa-Free Countries for Indian Passport Holders in 2025',
     excerpt: 'Complete updated list of countries Indians can visit without a visa — visa on arrival, e-visa, and fully visa-free destinations with duration, conditions, and travel tips.',
     date: '2025-06-02',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Planning',
     tags: [
@@ -202,7 +205,7 @@ export const allPosts: BlogPost[] = [
       'Indian Passport',
       'Travel Planning',
       'International Travel',
-      '2025',
+      '2026',
       'Budget',
       'Indian Travellers',
     ],
@@ -215,7 +218,7 @@ export const allPosts: BlogPost[] = [
       {
         type: 'callout',
         emoji: '📋',
-        text: 'Conditions change frequently. Always verify entry requirements on the official embassy website or MoFA (Ministry of Foreign Affairs) of the destination country before booking. The information below is accurate as of mid-2025.',
+        text: 'Conditions change frequently. Always verify entry requirements on the official embassy website or MoFA (Ministry of Foreign Affairs) of the destination country before booking. The information below is accurate as of mid-2026.',
       },
       { type: 'link-cta', text: 'Planning a Bali trip? We have a complete 7-day Bali itinerary for Indian tourists with costs in INR.', href: '/blog/bali-itinerary-indian-tourists' },
       {
@@ -423,7 +426,272 @@ export const allPosts: BlogPost[] = [
       },
       {
         type: 'h2',
-        text: 'Countries Opening Up for Indians in 2025',
+        text: 'Countries Opening Up for Indians in 2026',
+      },
+      {
+        type: 'p',
+        text: 'Thailand remains one of the easiest short-haul international trips for Indian travellers, although its visa-exemption duration should be checked against official updates before travel. Malaysia has simplified access for Indian visitors, and Vietnam\'s e-visa allows longer, more flexible stays than before. The general trend for Indian passport access is improving, but entry rules still change often.',
+      },
+      { type: 'link-cta', text: 'Torn between Bali and Thailand? Read our comparison guide for Indian travellers.', href: '/blog/bali-vs-thailand-indian-travellers' },
+    ],
+    faqs: [
+      {
+        question: 'How many countries can Indians visit without a visa?',
+        answer: 'Indian passport holders can visit approximately 57–62 countries without a prior visa — either completely visa-free or with a simple visa on arrival at the airport. Top destinations include Thailand (visa-free), Maldives (free VOA), Sri Lanka (free e-Visa), Nepal (visa-free, no passport needed), Mauritius (visa-free 90 days), and Indonesia/Bali (VOA, USD 35).',
+      },
+      {
+        question: 'Which is the easiest country for Indians to visit internationally?',
+        answer: 'Nepal is the easiest — Indians need no visa, no passport (any government ID works), and can stay indefinitely. Thailand is one of the easiest truly international destinations for Indians because short tourist visits are covered by visa-exemption rules. Sri Lanka is also very easy with a free e-Visa processed online; always verify current entry rules before booking.',
+      },
+      {
+        question: 'Can Indians travel to Europe without a Schengen visa?',
+        answer: 'Not to the 26 Schengen member states. Indian nationals must apply for a Schengen visa at the consulate of their primary destination. However, some non-Schengen European countries are accessible: Serbia, Albania, Bosnia, Kosovo, and North Macedonia are visa-free for Indians. Georgia (Caucasus) allows Indians to stay for up to 365 days without a visa.',
+      },
+      {
+        question: 'Which visa-free countries are best for Indian tourists?',
+        answer: 'Top picks: Thailand (beaches, food, culture), Maldives (luxury islands), Sri Lanka (close, affordable, beautiful), Nepal (Himalayas, cheap), Kenya (safari), Mauritius (Indian Ocean paradise), and Indonesia/Bali (Hindu culture, rice terraces). Each of these offers a dramatically different experience and is easy to access from India.',
+      },
+      {
+        question: 'Does holding a US visa help Indian travellers?',
+        answer: 'Yes. A valid US B1/B2 visa unlocks additional access for Indians in several countries, including Singapore (96-hour transit visa-free), Argentina, Costa Rica, Panama, and a few others that recognise valid US visa holders for visa-free or simplified entry. Always verify current rules at the time of booking.',
+      },
+    ],
+  },
+  {
+    slug: 'visa-free-countries-indian-passport-2026',
+    title: 'Visa-Free Countries for Indian Passport Holders in 2026',
+    excerpt: 'Complete updated list of countries Indians can visit without a visa — visa on arrival, e-visa, and fully visa-free destinations with duration, conditions, and travel tips.',
+    date: '2025-06-02',
+    updated: '2026-07-06',
+    readTime: 8,
+    category: 'Planning',
+    tags: [
+      'Visa Free',
+      'Indian Passport',
+      'Travel Planning',
+      'International Travel',
+      '2026',
+      'Budget',
+      'Indian Travellers',
+    ],
+    coverPhoto: 'photo-1488085061387-422e29b40080',
+    content: [
+      {
+        type: 'p',
+        text: 'Indian passport holders can travel to 57+ countries either completely visa-free or with a simple visa on arrival. While the Indian passport does not rank in the global top 50 for visa-free access, the options that are available include some of the world\'s most exciting travel destinations — Thailand, Bali, Sri Lanka, Nepal, Maldives, Mauritius, Kenya, and more. This is the complete, updated 2025 list.',
+      },
+      {
+        type: 'callout',
+        emoji: '📋',
+        text: 'Conditions change frequently. Always verify entry requirements on the official embassy website or MoFA (Ministry of Foreign Affairs) of the destination country before booking. The information below is accurate as of mid-2026.',
+      },
+      { type: 'link-cta', text: 'Planning a Bali trip? We have a complete 7-day Bali itinerary for Indian tourists with costs in INR.', href: '/blog/bali-itinerary-indian-tourists' },
+      {
+        type: 'h2',
+        text: 'Asia — Visa-Free & Visa on Arrival',
+      },
+      {
+        type: 'table',
+        headers: [
+          'Country',
+          'Entry Type',
+          'Duration',
+          'Key Condition',
+        ],
+        rows: [
+          [
+            'Thailand',
+            'Visa-Free',
+            '30 days',
+            'No fee, return ticket required',
+          ],
+          [
+            'Indonesia (Bali)',
+            'Visa on Arrival',
+            '30 days',
+            'USD 35 cash at airport',
+          ],
+          [
+            'Nepal',
+            'Visa-Free',
+            'Unlimited',
+            'Any Indian ID (no passport needed)',
+          ],
+          [
+            'Bhutan',
+            'e-Permit',
+            'Flexible',
+            'Sustainable Development Fee: USD 100/day',
+          ],
+          [
+            'Sri Lanka',
+            'Free e-Visa (ETA)',
+            '30 days',
+            'Apply at eta.gov.lk before travel',
+          ],
+          [
+            'Maldives',
+            'Visa on Arrival',
+            '30 days',
+            'Free, proof of accommodation needed',
+          ],
+          [
+            'Macau',
+            'Visa-Free',
+            '30 days',
+            'Separate from mainland China',
+          ],
+          [
+            'Cambodia',
+            'Visa on Arrival / e-Visa',
+            '30 days',
+            'USD 30 at airport or online',
+          ],
+          [
+            'Laos',
+            'Visa on Arrival',
+            '30 days',
+            'USD 30–42 depending on nationality',
+          ],
+          [
+            'Myanmar',
+            'e-Visa',
+            '28 days',
+            'Check current advisories before visiting',
+          ],
+          [
+            'Philippines',
+            'Visa-Free',
+            '30 days',
+            'Return ticket required',
+          ],
+          [
+            'Iran',
+            'Visa on Arrival',
+            '30 days',
+            'Check current travel advisories',
+          ],
+          [
+            'Jordan',
+            'Visa on Arrival',
+            '30 days',
+            'JOD 40 at Amman airport',
+          ],
+        ],
+      },
+      {
+        type: 'h2',
+        text: 'Africa — Strong Access for Indian Passport',
+      },
+      {
+        type: 'table',
+        headers: [
+          'Country',
+          'Entry Type',
+          'Duration',
+          'Notes',
+        ],
+        rows: [
+          [
+            'Kenya',
+            'e-Visa (ETA)',
+            '90 days',
+            'USD 30, apply at etakenya.go.ke',
+          ],
+          [
+            'Tanzania',
+            'Visa on Arrival',
+            '90 days',
+            'USD 50 at airport',
+          ],
+          [
+            'Rwanda',
+            'Visa on Arrival',
+            '30 days',
+            'Free, extendable',
+          ],
+          [
+            'Uganda',
+            'e-Visa',
+            '90 days',
+            'USD 50, apply online',
+          ],
+          [
+            'Ethiopia',
+            'e-Visa',
+            '90 days',
+            'USD 82 online application',
+          ],
+          [
+            'Mauritius',
+            'Visa-Free',
+            '90 days',
+            'One of India\'s best visa-free access points',
+          ],
+          [
+            'Seychelles',
+            'Visitor\'s Permit on Arrival',
+            '30 days',
+            'Free, extendable',
+          ],
+          [
+            'Zimbabwe',
+            'Visa on Arrival',
+            '90 days',
+            'USD 75 at airport',
+          ],
+          [
+            'Zambia',
+            'Visa on Arrival',
+            '90 days',
+            'USD 50 single, USD 80 multi-entry',
+          ],
+          [
+            'Madagascar',
+            'Visa on Arrival',
+            '30 days',
+            'EUR 35 equivalent',
+          ],
+        ],
+      },
+      {
+        type: 'h2',
+        text: 'Americas & Caribbean — Accessible Islands',
+      },
+      {
+        type: 'p',
+        text: 'The USA, Canada, and most of South America require a formal visa application for Indian passport holders. However, several Caribbean and Latin American countries offer easy entry. Jamaica, El Salvador, Trinidad and Tobago, and Ecuador are visa-free for Indians. Bolivia, Haiti, and Dominica offer visa on arrival. For those who already hold a valid US visa, Argentina, Costa Rica, Panama, and several others open up as visa-free destinations — always check the specific US visa validity requirements.',
+      },
+      {
+        type: 'h2',
+        text: 'Europe — Schengen Is the Challenge',
+      },
+      {
+        type: 'p',
+        text: 'The Schengen zone (26 European countries including France, Germany, Spain, Italy) requires a formal visa application for Indian nationals — one of the biggest obstacles for Indian travellers. However, some European countries are accessible: Kosovo, Albania, Bosnia, North Macedonia, and Serbia are visa-free for Indians. Georgia (officially in the Caucasus region) is visa-free for up to 365 days. Turkey (a Schengen neighbour) requires an e-Visa (USD 50) available online. Once you hold a valid Schengen visa, the UK also becomes more accessible via a separate UK visitor visa.',
+      },
+      {
+        type: 'callout',
+        emoji: '🌍',
+        text: 'Pro tip: A valid US, UK, EU Schengen, or Australian visa unlocks additional visa-free or visa-on-arrival access in many countries. For example, Indians with a valid US visa can enter Singapore visa-free for 96 hours in transit.',
+      },
+      {
+        type: 'h2',
+        text: 'Tips for Maximising Visa-Free Travel as an Indian',
+      },
+      {
+        type: 'ul',
+        items: [
+          'Apply for a US B1/B2 visa: it unlocks additional access in Singapore, Argentina, Costa Rica, Panama, and several other countries that respect valid US visa holders.',
+          'Nepal and Bhutan: completely hassle-free as an Indian — no visa, no passport needed for Nepal. These should be your first "international" trips for the experience.',
+          'Sri Lanka ETA: apply online at eta.gov.lk at least 3 days before your trip. It is free and takes 24–48 hours. Do not use third-party sites that charge a fee for this free service.',
+          'Maldives, Mauritius, and Seychelles: three Indian Ocean island paradises that are either visa-free or visa-on-arrival. All three are ideal for honeymoons and beach holidays.',
+          'Keep a clean travel record: previous visa rejections, overstays, or immigration issues significantly affect your ability to get future visas. Always enter and exit legally within the granted period.',
+        ],
+      },
+      {
+        type: 'h2',
+        text: 'Countries Opening Up for Indians in 2026',
       },
       {
         type: 'p',
@@ -493,7 +761,7 @@ export const allPosts: BlogPost[] = [
         emoji: '✈️',
         text: 'Carry exactly USD 35 in crisp notes specifically for the VOA counter. Credit cards are not accepted. Arrive with your return ticket printout and at least one hotel confirmation — immigration occasionally asks to see these.',
       },
-      { type: 'link-cta', text: 'Planning other destinations too? See the full list of countries Indians can visit without a visa.', href: '/blog/visa-free-countries-indian-passport-2025' },
+      { type: 'link-cta', text: 'Planning other destinations too? See the full list of countries Indians can visit without a visa.', href: '/blog/visa-free-countries-indian-passport-2026' },
       {
         type: 'h2',
         text: 'Day-by-Day 7-Night Bali Itinerary',
@@ -670,9 +938,10 @@ export const allPosts: BlogPost[] = [
   },
   {
     slug: 'best-time-to-visit-bali',
-    title: 'Best Time to Visit Bali (2025): Month-by-Month Guide',
+    title: 'Best Time to Visit Bali (2026): Month-by-Month Guide',
     excerpt: 'Planning a trip to Bali? Here is exactly when to go — dry season deals, surf windows, festival dates, and the months locals wish you\'d avoid.',
     date: '2025-05-20',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Planning',
     tags: ['Bali', 'Indonesia', 'Beach', 'Planning'],
@@ -752,9 +1021,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'goa-vs-kerala',
-    title: 'Goa vs Kerala 2025: Which Indian State Should You Visit?',
+    title: 'Goa vs Kerala 2026: Which Indian State Should You Visit?',
     excerpt: 'Two very different versions of paradise. Goa is parties and Portuguese churches; Kerala is backwaters and Ayurveda. Here\'s how to choose.',
     date: '2025-05-15',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'India',
     tags: ['Goa', 'Kerala', 'India', 'Beaches', 'Comparison'],
@@ -842,9 +1112,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'bangkok-budget-travel-guide',
-    title: 'Bangkok Budget Travel Guide 2025: See the City for Under ₹4,000/Day',
+    title: 'Bangkok Budget Travel Guide 2026: See the City for Under ₹4,000/Day',
     excerpt: 'Bangkok is one of the world\'s most exciting cities — and one of the most affordable. Here\'s exactly how to do it without breaking the bank.',
     date: '2025-05-10',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Budget',
     tags: ['Bangkok', 'Thailand', 'Budget Travel', 'Asia'],
@@ -934,9 +1205,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'first-time-japan-travel-tips',
-    title: '12 Things Nobody Tells You About Visiting Japan (2025)',
+    title: '12 Things Nobody Tells You About Visiting Japan (2026)',
     excerpt: 'Japan is extraordinary but genuinely different. Here are 12 things first-time visitors wish they\'d known — from cash culture to quiet trains to the best free experiences.',
     date: '2025-05-05',
+    updated: '2026-07-06',
     readTime: 7,
     category: 'Tips',
     tags: ['Japan', 'Tokyo', 'Travel Tips', 'First Time'],
@@ -1007,9 +1279,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'best-beaches-india-2025',
-    title: 'Best Beaches in India 2025: The Definitive Guide',
+    title: 'Best Beaches in India 2026: The Definitive Guide',
     excerpt: 'From the party beaches of North Goa to the secret sands of Andaman and the cliffside drama of Kerala\'s Varkala — India\'s best beaches ranked and reviewed.',
     date: '2025-04-28',
+    updated: '2026-07-06',
     readTime: 11,
     category: 'India',
     tags: ['India', 'Beaches', 'Goa', 'Kerala', 'Andaman'],
@@ -1084,9 +1357,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 6 ───────────────────────────────────────────────────────
   {
     slug: 'manali-complete-travel-guide',
-    title: 'Manali Travel Guide 2025: Everything You Need to Know',
+    title: 'Manali Travel Guide 2026: Everything You Need to Know',
     excerpt: 'From Rohtang Pass to Old Manali cafes — the complete guide to planning your Manali trip including best time, budget, things to do and how to get there.',
     date: '2025-06-01',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'India',
     tags: ['Manali', 'Himachal Pradesh', 'Mountains', 'India', 'Adventure'],
@@ -1228,9 +1502,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 8 ───────────────────────────────────────────────────────
   {
     slug: 'ladakh-travel-guide',
-    title: 'Ladakh Travel Guide 2025: How to Plan the Perfect Trip',
+    title: 'Ladakh Travel Guide 2026: How to Plan the Perfect Trip',
     excerpt: 'Pangong Lake, Nubra Valley, ancient monasteries and the world\'s highest motorable roads. Everything you need to plan a Ladakh trip — permits, acclimatisation, budget and best routes.',
     date: '2025-06-05',
+    updated: '2026-07-06',
     readTime: 11,
     category: 'India',
     tags: ['Ladakh', 'Leh', 'Himalayas', 'India', 'Adventure', 'Mountains'],
@@ -1303,9 +1578,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 9 ───────────────────────────────────────────────────────
   {
     slug: 'kerala-honeymoon-guide',
-    title: 'Kerala Honeymoon Guide: Best Places, Packages & Tips (2025)',
+    title: 'Kerala Honeymoon Guide: Best Places, Packages & Tips (2026)',
     excerpt: 'Backwaters, tea gardens, beaches, Ayurvedic resorts — Kerala is India\'s most romantic destination. Here is exactly how to plan a Kerala honeymoon from start to finish.',
     date: '2025-06-07',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'India',
     tags: ['Kerala', 'Honeymoon', 'Munnar', 'Alleppey', 'India', 'Romantic'],
@@ -2137,9 +2413,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 12 ───────────────────────────────────────────────────────
   {
     slug: 'japan-first-time-travel-tips-2025',
-    title: 'Japan First-Timer Tips 2025: What Nobody Tells You Before You Go',
+    title: 'Japan First-Timer Tips 2026: What Nobody Tells You Before You Go',
     excerpt: 'Cash-only restaurants, 7-Eleven as a gourmet experience, IC cards, bowing etiquette and the best 10-day itinerary. Everything first-timers need to know about Japan.',
     date: '2025-06-13',
+    updated: '2026-07-06',
     readTime: 11,
     category: 'Asia',
     tags: ['Japan', 'Tokyo', 'Kyoto', 'Travel Tips', 'Asia', 'First Time'],
@@ -2199,9 +2476,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 13 ───────────────────────────────────────────────────────
   {
     slug: 'maldives-budget-travel-guide',
-    title: 'Maldives on a Budget: How to Visit for Under $100/Day (2025)',
+    title: 'Maldives on a Budget: How to Visit for Under $100/Day (2026)',
     excerpt: 'The Maldives does not have to mean $1,000-a-night overwater villas. Local island guesthouses, cheap ferries and $30 snorkelling trips make the Maldives accessible to every budget.',
     date: '2025-06-15',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'Asia',
     tags: ['Maldives', 'Budget Travel', 'Beach', 'Asia', 'Snorkelling'],
@@ -2261,9 +2539,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 14 ───────────────────────────────────────────────────────
   {
     slug: 'singapore-3-day-itinerary',
-    title: 'Singapore 3-Day Itinerary: What to Do, See and Eat (2025)',
+    title: 'Singapore 3-Day Itinerary: What to Do, See and Eat (2026)',
     excerpt: 'Gardens by the Bay, hawker centres, Sentosa, Little India and the best laksa you will ever eat. How to spend 3 perfect days in Singapore.',
     date: '2025-06-17',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Asia',
     tags: ['Singapore', 'Asia', 'Itinerary', 'Food', 'City'],
@@ -2396,9 +2675,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 16 ───────────────────────────────────────────────────────
   {
     slug: 'goa-travel-guide-complete',
-    title: 'Goa Travel Guide 2025: North vs South, Best Beaches & What to Skip',
+    title: 'Goa Travel Guide 2026: North vs South, Best Beaches & What to Skip',
     excerpt: 'Goa for backpackers, Goa for families, Goa for honeymooners — they are three completely different destinations. This guide helps you find the right Goa for you.',
     date: '2025-06-21',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'India',
     tags: ['Goa', 'India', 'Beach', 'Budget', 'Nightlife'],
@@ -2464,9 +2744,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 17 ───────────────────────────────────────────────────────
   {
     slug: 'shimla-trip-guide',
-    title: 'Shimla Trip Guide 2025: Best Time, Things to Do & Getting There',
+    title: 'Shimla Trip Guide 2026: Best Time, Things to Do & Getting There',
     excerpt: 'The former summer capital of British India at 2,200 metres — toy train, apple orchards, Mall Road walks and Himalayan views. Everything you need to plan your Shimla trip.',
     date: '2025-06-23',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'India',
     tags: ['Shimla', 'Himachal Pradesh', 'Hill Station', 'India', 'Mountains'],
@@ -2529,9 +2810,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 18 ───────────────────────────────────────────────────────
   {
     slug: 'europe-backpacking-guide-india',
-    title: 'Europe Backpacking Guide for Indians 2025: Visa, Budget & Best Cities',
+    title: 'Europe Backpacking Guide for Indians 2026: Visa, Budget & Best Cities',
     excerpt: 'Schengen visa, Eurail passes, cheapest cities, best hostels and how to do 3 weeks in Europe for under ₹1.5 lakh. The complete guide for Indian backpackers heading to Europe.',
     date: '2025-06-25',
+    updated: '2026-07-06',
     readTime: 12,
     category: 'Europe',
     tags: ['Europe', 'Backpacking', 'Budget Travel', 'Schengen Visa', 'Planning'],
@@ -2601,9 +2883,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 19 ───────────────────────────────────────────────────────
   {
     slug: 'rishikesh-travel-guide',
-    title: 'Rishikesh Travel Guide 2025: Yoga, Rafting & What Not to Miss',
+    title: 'Rishikesh Travel Guide 2026: Yoga, Rafting & What Not to Miss',
     excerpt: 'The yoga capital of the world on the banks of the emerald Ganges. From white-water rafting to Beatles Ashram to bungee jumping — the complete Rishikesh guide.',
     date: '2025-06-27',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'India',
     tags: ['Rishikesh', 'Uttarakhand', 'Yoga', 'Adventure', 'India', 'Spiritual'],
@@ -2661,9 +2944,10 @@ export const allPosts: BlogPost[] = [
   // ── POST 20 ───────────────────────────────────────────────────────
   {
     slug: 'udaipur-travel-guide',
-    title: 'Udaipur Travel Guide 2025: India\'s Most Romantic City',
+    title: 'Udaipur Travel Guide 2026: India\'s Most Romantic City',
     excerpt: 'The Venice of the East, the City of Lakes, the most romantic destination in India. How to visit Udaipur — the best time, where to stay, and what most visitors miss.',
     date: '2025-06-29',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'India',
     tags: ['Udaipur', 'Rajasthan', 'India', 'Romantic', 'Honeymoon', 'Lakes'],
@@ -2948,7 +3232,7 @@ export const allPosts: BlogPost[] = [
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
       { type: 'p', text: 'Thailand is one of the easiest international trips for Indian passport holders. The practical work is not a visa application; it is arriving with a clean, believable itinerary and the documents immigration officers may ask to see.' },
-      { type: 'link-cta', text: 'See other easy-entry destinations in the visa-free countries guide for Indian passport holders.', href: '/blog/visa-free-countries-indian-passport-2025' },
+      { type: 'link-cta', text: 'See other easy-entry destinations in the visa-free countries guide for Indian passport holders.', href: '/blog/visa-free-countries-indian-passport-2026' },
       { type: 'h2', text: 'Do Indians Need a Visa for Thailand?' },
       { type: 'p', text: 'Indian ordinary passport holders are covered by Thailand visa-exemption rules for short tourist visits under the current policy framework. The permitted stay duration is politically active and can change after official notifications, so treat any number you see online as something to verify before booking.' },
       { type: 'callout', emoji: '📌', text: 'Entry rules can change quickly. Verify the latest duration and conditions on official Thai embassy, consular or immigration channels before booking non-refundable flights.' },
@@ -2986,9 +3270,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'paris-travel-guide-2025',
-    title: 'Paris Travel Guide 2025: What to See, Eat & How Much It Costs',
+    title: 'Paris Travel Guide 2026: What to See, Eat & How Much It Costs',
     excerpt: 'The Eiffel Tower, the Louvre, the world\'s best croissants, and streets that make you fall in love with life. The complete Paris guide — including how not to get ripped off.',
     date: '2025-07-03',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Europe',
     tags: ['Paris', 'France', 'Europe', 'Culture', 'Food', 'Art'],
@@ -3057,9 +3342,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'italy-travel-guide-2025',
-    title: 'Italy Travel Guide 2025: Rome, Florence, Venice & the Amalfi Coast',
+    title: 'Italy Travel Guide 2026: Rome, Florence, Venice & the Amalfi Coast',
     excerpt: 'The Colosseum, the Uffizi, gondolas, and the best food in Europe. How to plan Italy — which cities to visit, how long to spend, and the eternal debate: is Venice worth it?',
     date: '2025-07-05',
+    updated: '2026-07-06',
     readTime: 11,
     category: 'Europe',
     tags: ['Italy', 'Rome', 'Florence', 'Venice', 'Europe', 'Culture', 'Food'],
@@ -3122,9 +3408,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'vietnam-travel-guide-2025',
-    title: 'Vietnam Travel Guide 2025: Hanoi, Hoi An, Ho Chi Minh City & Ha Long Bay',
+    title: 'Vietnam Travel Guide 2026: Hanoi, Hoi An, Ho Chi Minh City & Ha Long Bay',
     excerpt: 'Pho at dawn, limestone karsts rising from emerald bays, ancient lantern-lit towns and the most complex history in Southeast Asia. How to do Vietnam properly.',
     date: '2025-07-07',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Asia',
     tags: ['Vietnam', 'Hanoi', 'Ho Chi Minh', 'Hoi An', 'Ha Long Bay', 'Asia'],
@@ -3187,9 +3474,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'santorini-travel-guide',
-    title: 'Santorini Travel Guide 2025: Is It Worth the Hype (and the Price)?',
+    title: 'Santorini Travel Guide 2026: Is It Worth the Hype (and the Price)?',
     excerpt: 'Blue domes, volcanic caldera, sunsets that make your Instagram explode. The honest Santorini guide — what it costs, when to go, and whether it actually lives up to the photographs.',
     date: '2025-07-09',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'Europe',
     tags: ['Santorini', 'Greece', 'Europe', 'Beach', 'Honeymoon', 'Islands'],
@@ -3254,9 +3542,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'london-travel-guide-2025',
-    title: 'London Travel Guide 2025: What to See, Where to Eat & How Much It Costs',
+    title: 'London Travel Guide 2026: What to See, Where to Eat & How Much It Costs',
     excerpt: 'The British Museum, Borough Market, Camden, pints in a 600-year-old pub. London is expensive — but half of its best experiences are completely free.',
     date: '2025-07-11',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Europe',
     tags: ['London', 'UK', 'Europe', 'Culture', 'Food', 'Museums'],
@@ -3320,9 +3609,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'turkey-istanbul-travel-guide',
-    title: 'Turkey & Istanbul Travel Guide 2025: Where East Meets West',
+    title: 'Turkey & Istanbul Travel Guide 2026: Where East Meets West',
     excerpt: 'The only city in the world on two continents. Hagia Sophia, the Grand Bazaar, Turkish breakfast, and the moment you realise Istanbul is unlike anywhere else on earth.',
     date: '2025-07-13',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'Asia',
     tags: ['Turkey', 'Istanbul', 'Europe', 'Asia', 'Culture', 'Food', 'History'],
@@ -3384,9 +3674,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'sri-lanka-travel-guide-2025',
-    title: 'Sri Lanka Travel Guide 2025: The Island That Has Everything',
+    title: 'Sri Lanka Travel Guide 2026: The Island That Has Everything',
     excerpt: 'Ancient cities, hill country tea, surf beaches, leopards, and the most welcoming people in Asia. Sri Lanka delivers more per square kilometre than almost anywhere.',
     date: '2025-07-15',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Asia',
     tags: ['Sri Lanka', 'Colombo', 'Sigiriya', 'Beach', 'Asia', 'Adventure'],
@@ -3448,9 +3739,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'nepal-travel-guide-2025',
-    title: 'Nepal Travel Guide 2025: Trekking, Kathmandu & the Himalayas',
+    title: 'Nepal Travel Guide 2026: Trekking, Kathmandu & the Himalayas',
     excerpt: 'Everest Base Camp, Annapurna Circuit, Pokhara lakeside, and Kathmandu\'s ancient temples. Nepal is the world\'s greatest trekking destination — here is how to plan it.',
     date: '2025-07-17',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Asia',
     tags: ['Nepal', 'Kathmandu', 'Trekking', 'Himalayas', 'Everest', 'Asia', 'Adventure'],
@@ -3512,9 +3804,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'morocco-marrakech-travel-guide',
-    title: 'Morocco & Marrakech Travel Guide 2025: Souks, Sahara & Everything Between',
+    title: 'Morocco & Marrakech Travel Guide 2026: Souks, Sahara & Everything Between',
     excerpt: 'The medina labyrinth, Sahara Desert at sunrise, Majorelle Garden, and the most disorientating (in the best way) street food market in the world. Your Morocco guide.',
     date: '2025-07-19',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'Asia',
     tags: ['Morocco', 'Marrakech', 'Sahara', 'Africa', 'Culture', 'Budget'],
@@ -3578,9 +3871,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'prague-travel-guide-2025',
-    title: 'Prague Travel Guide 2025: Europe\'s Most Beautiful City on a Budget',
+    title: 'Prague Travel Guide 2026: Europe\'s Most Beautiful City on a Budget',
     excerpt: 'The most intact medieval city in Europe, €2 craft beer, a castle bigger than any other in the world, and cobblestone streets that glow gold at night. Prague is Europe\'s greatest underrated city.',
     date: '2025-07-21',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Europe',
     tags: ['Prague', 'Czech Republic', 'Europe', 'Budget Travel', 'History', 'Beer'],
@@ -3633,9 +3927,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'amsterdam-travel-guide-2025',
-    title: 'Amsterdam Travel Guide 2025: Canals, Museums & What to Actually Do',
+    title: 'Amsterdam Travel Guide 2026: Canals, Museums & What to Actually Do',
     excerpt: 'The Van Gogh Museum, Anne Frank House, cycling past canal houses at sunset. Amsterdam is endlessly photogenic, culturally rich, and easier to visit than you think.',
     date: '2025-07-23',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Europe',
     tags: ['Amsterdam', 'Netherlands', 'Europe', 'Culture', 'Art', 'Museums'],
@@ -3684,9 +3979,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'seoul-korea-travel-guide',
-    title: 'Seoul Travel Guide 2025: K-pop, Street Food & What to Do',
+    title: 'Seoul Travel Guide 2026: K-pop, Street Food & What to Do',
     excerpt: 'Gyeongbokgung Palace in hanbok, bibimbap at 11pm in Gwangjang Market, K-pop in Gangnam and hiking in Bukhansan. Seoul is Asia\'s most dynamic city right now.',
     date: '2025-07-25',
+    updated: '2026-07-06',
     readTime: 9,
     category: 'Asia',
     tags: ['Seoul', 'South Korea', 'Asia', 'K-pop', 'Food', 'Culture'],
@@ -3748,9 +4044,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'new-york-travel-guide',
-    title: 'New York City Travel Guide 2025: What to Do, See & How Not to Go Broke',
+    title: 'New York City Travel Guide 2026: What to Do, See & How Not to Go Broke',
     excerpt: 'Central Park, the High Line, the Met, pizza slices and pastrami on rye. New York is obscenely expensive — and worth every cent if you know how to navigate it.',
     date: '2025-07-27',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Europe',
     tags: ['New York', 'USA', 'Americas', 'City', 'Culture', 'Food'],
@@ -3815,9 +4112,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'lisbon-travel-guide-2025',
-    title: 'Lisbon Travel Guide 2025: Europe\'s Most Underrated Capital',
+    title: 'Lisbon Travel Guide 2026: Europe\'s Most Underrated Capital',
     excerpt: 'Fado music, Pastéis de Belém, Alfama trams and Atlantic sunsets. Lisbon is Europe\'s best-value capital city — and the one most people leave raving about.',
     date: '2025-07-29',
+    updated: '2026-07-06',
     readTime: 8,
     category: 'Europe',
     tags: ['Lisbon', 'Portugal', 'Europe', 'Budget Travel', 'Culture', 'Food'],
@@ -3872,9 +4170,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'best-time-to-visit-india',
-    title: 'Best Time to Visit India 2025: Month-by-Month Guide for Every Region',
+    title: 'Best Time to Visit India 2026: Month-by-Month Guide for Every Region',
     excerpt: 'India has 7 distinct climate zones. The best time to visit Rajasthan, Kerala, Himalayas, Northeast and beaches are all different. Here is the definitive month-by-month guide.',
-    date: '2025-08-01', readTime: 12, category: 'India',
+    date: '2025-08-01', updated: '2026-07-06', readTime: 12, category: 'India',
     tags: ['India', 'Planning', 'Best Time', 'Travel Tips', 'Seasons'],
     coverPhoto: 'photo-1524492412937-b28074a5d7da',
     content: [
@@ -4041,9 +4339,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'andaman-islands-travel-guide',
-    title: 'Andaman Islands Travel Guide 2025: Complete Planning Guide',
+    title: 'Andaman Islands Travel Guide 2026: Complete Planning Guide',
     excerpt: 'India\'s most pristine tropical archipelago. White sand beaches, bioluminescent plankton, world-class diving and the most turquoise water in the country. How to visit the Andamans.',
-    date: '2025-08-07', readTime: 9, category: 'India',
+    date: '2025-08-07', updated: '2026-07-06', readTime: 9, category: 'India',
     tags: ['Andaman', 'India', 'Beach', 'Island', 'Diving', 'Snorkelling'],
     coverPhoto: 'photo-1507525428034-b723cf961d3e', citySlug: 'andaman',
     content: [
@@ -4098,9 +4396,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'jaipur-travel-guide-2025',
-    title: 'Jaipur Travel Guide 2025: The Pink City Complete Guide',
+    title: 'Jaipur Travel Guide 2026: The Pink City Complete Guide',
     excerpt: 'Amber Fort at sunrise, Hawa Mahal photography, Nahargarh sunset, Johari Bazaar gems and the best Rajasthani thali in India. Everything you need for Jaipur.',
-    date: '2025-08-09', readTime: 9, category: 'India',
+    date: '2025-08-09', updated: '2026-07-06', readTime: 9, category: 'India',
     tags: ['Jaipur', 'Rajasthan', 'India', 'Heritage', 'Culture', 'Shopping'],
     coverPhoto: 'photo-1599661046827-dacff0c0f09a', citySlug: 'jaipur',
     content: [
@@ -4151,9 +4449,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'coorg-travel-guide',
-    title: 'Coorg Travel Guide 2025: India\'s Scotland in Karnataka',
+    title: 'Coorg Travel Guide 2026: India\'s Scotland in Karnataka',
     excerpt: 'Coffee plantations, misty hills, waterfalls, home stays and the world\'s best filter coffee. Coorg is India\'s most underrated weekend destination.',
-    date: '2025-08-11', readTime: 8, category: 'India',
+    date: '2025-08-11', updated: '2026-07-06', readTime: 8, category: 'India',
     tags: ['Coorg', 'Karnataka', 'India', 'Nature', 'Coffee', 'Hill Station'],
     coverPhoto: 'photo-1582510003544-4d00b7f74220', citySlug: 'coorg',
     content: [
@@ -4198,9 +4496,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'munnar-travel-guide',
-    title: 'Munnar Travel Guide 2025: Kerala\'s Most Beautiful Hill Station',
+    title: 'Munnar Travel Guide 2026: Kerala\'s Most Beautiful Hill Station',
     excerpt: 'Rolling tea gardens at 1,600 metres, cardamom valleys, Eravikulam National Park and the best chai you will ever drink. The complete guide to Munnar, Kerala.',
-    date: '2025-08-13', readTime: 8, category: 'India',
+    date: '2025-08-13', updated: '2026-07-06', readTime: 8, category: 'India',
     tags: ['Munnar', 'Kerala', 'India', 'Hill Station', 'Tea', 'Nature'],
     coverPhoto: 'photo-1582510003544-4d00b7f74220', citySlug: 'munnar',
     content: [
@@ -4245,9 +4543,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'switzerland-travel-guide',
-    title: 'Switzerland Travel Guide 2025: Stunning But Expensive — How to Do It',
+    title: 'Switzerland Travel Guide 2026: Stunning But Expensive — How to Do It',
     excerpt: 'The Alps, Lake Geneva, Zurich, Interlaken and Zermatt. Switzerland is Europe\'s most expensive country — but these strategies make it manageable.',
-    date: '2025-08-15', readTime: 9, category: 'Europe',
+    date: '2025-08-15', updated: '2026-07-06', readTime: 9, category: 'Europe',
     tags: ['Switzerland', 'Europe', 'Alps', 'Interlaken', 'Budget Travel'],
     coverPhoto: 'photo-1506905925346-21bda4d32df4',
     content: [
@@ -4301,9 +4599,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'barcelona-travel-guide-2025',
-    title: 'Barcelona Travel Guide 2025: Gaudí, Beaches & How Not to Get Pickpocketed',
+    title: 'Barcelona Travel Guide 2026: Gaudí, Beaches & How Not to Get Pickpocketed',
     excerpt: 'La Sagrada Família, Park Güell, Las Ramblas, Barceloneta beach and the best tapas in Europe. The honest Barcelona guide including the safety warnings nobody else mentions.',
-    date: '2025-08-17', readTime: 9, category: 'Europe',
+    date: '2025-08-17', updated: '2026-07-06', readTime: 9, category: 'Europe',
     tags: ['Barcelona', 'Spain', 'Europe', 'Gaudi', 'Beach', 'Food', 'Culture'],
     coverPhoto: 'photo-1539037116277-4db20889f2d4',
     content: [
@@ -4358,9 +4656,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'kyoto-travel-guide',
-    title: 'Kyoto Travel Guide 2025: Temples, Bamboo Groves & Geisha Districts',
+    title: 'Kyoto Travel Guide 2026: Temples, Bamboo Groves & Geisha Districts',
     excerpt: 'Fushimi Inari at dawn, the Arashiyama bamboo grove, Gion\'s lantern-lit streets. Kyoto is Japan\'s cultural heart — here is how to experience it without the crowds.',
-    date: '2025-08-19', readTime: 9, category: 'Asia',
+    date: '2025-08-19', updated: '2026-07-06', readTime: 9, category: 'Asia',
     tags: ['Kyoto', 'Japan', 'Asia', 'Culture', 'Temples', 'UNESCO'],
     coverPhoto: 'photo-1493976040374-85c8e12f0c0e', citySlug: 'kyoto',
     content: [
@@ -4972,9 +5270,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'himachal-pradesh-travel-guide',
-    title: 'Himachal Pradesh Travel Guide 2025: Best Places, Seasons & Road Trips',
+    title: 'Himachal Pradesh Travel Guide 2026: Best Places, Seasons & Road Trips',
     excerpt: 'Manali, Shimla, Spiti, Dharamshala, Kasol, Bir Billing — the complete guide to India\'s most diverse hill state. Every destination, every season, every road trip route.',
-    date: '2025-08-23', readTime: 11, category: 'India',
+    date: '2025-08-23', updated: '2026-07-06', readTime: 11, category: 'India',
     tags: ['Himachal Pradesh', 'Manali', 'Shimla', 'Spiti', 'India', 'Mountains'],
     coverPhoto: 'photo-1617859047452-8510bcf207fd',
     content: [
@@ -5020,9 +5318,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'solo-travel-india-tips',
-    title: 'Solo Travel in India 2025: Complete Guide for First-Timers',
+    title: 'Solo Travel in India 2026: Complete Guide for First-Timers',
     excerpt: 'India solo can be overwhelming, transformative, and the best thing you ever do. Here is how to prepare, stay safe, budget correctly, and make the most of travelling India alone.',
-    date: '2025-08-25', readTime: 10, category: 'Tips',
+    date: '2025-08-25', updated: '2026-07-06', readTime: 10, category: 'Tips',
     tags: ['India', 'Solo Travel', 'Travel Tips', 'Safety', 'Budget', 'Planning'],
     coverPhoto: 'photo-1524492412937-b28074a5d7da',
     content: [
@@ -5078,9 +5376,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'hong-kong-travel-guide',
-    title: 'Hong Kong Travel Guide 2025: What Changed, What Stayed, What to Do',
+    title: 'Hong Kong Travel Guide 2026: What Changed, What Stayed, What to Do',
     excerpt: 'Victoria Peak, dim sum for breakfast, night market street food, and the most dramatic harbour skyline in the world. Hong Kong post-2020 — what is different and what is not.',
-    date: '2025-08-27', readTime: 9, category: 'Asia',
+    date: '2025-08-27', updated: '2026-07-06', readTime: 9, category: 'Asia',
     tags: ['Hong Kong', 'Asia', 'China', 'Food', 'City', 'Culture'],
     coverPhoto: 'photo-1558618666-fcd25c85cd64',
     content: [
@@ -5125,9 +5423,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'cheap-countries-from-india',
-    title: '10 Cheapest Countries to Visit from India in 2025',
+    title: '10 Cheapest Countries to Visit from India in 2026',
     excerpt: 'Vietnam for $30/day, Nepal for $25/day, Sri Lanka on a budget, Morocco in a week. The cheapest international destinations for Indian travellers with visa costs, flights and budgets.',
-    date: '2025-08-29', readTime: 10, category: 'Tips',
+    date: '2025-08-29', updated: '2026-07-06', readTime: 10, category: 'Tips',
     tags: ['Budget Travel', 'India', 'Planning', 'Cheap Travel', 'International'],
     coverPhoto: 'photo-1537996194471-e657df975ab4',
     content: [
@@ -5176,9 +5474,9 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'best-hill-stations-india',
-    title: 'Best Hill Stations in India 2025: Complete Ranked Guide',
+    title: 'Best Hill Stations in India 2026: Complete Ranked Guide',
     excerpt: 'Munnar vs Ooty vs Coorg vs Shimla vs Manali — which hill station is right for you? The complete ranked guide with best time, how to get there and what to do.',
-    date: '2025-08-31', readTime: 10, category: 'India',
+    date: '2025-08-31', updated: '2026-07-06', readTime: 10, category: 'India',
     tags: ['Hill Stations', 'India', 'Shimla', 'Munnar', 'Coorg', 'Planning'],
     coverPhoto: 'photo-1648566924598-aeb39df9ad79',
     content: [
@@ -5223,9 +5521,10 @@ export const allPosts: BlogPost[] = [
   // ── VIETNAM ITINERARIES ────────────────────────────────────────────────────
   {
     slug: 'vietnam-6-day-itinerary',
-    title: 'Vietnam 6-Day Itinerary for Indian Travellers (2025)',
+    title: 'Vietnam 6-Day Itinerary for Indian Travellers (2026)',
     excerpt: 'The perfect 6-day Vietnam route: 2 days in Hanoi, 2 days in Hoi An, 2 days in Ho Chi Minh City — with day-by-day plans, costs in INR, visa tips, and city photo guides.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 11,
     category: 'Asia',
     tags: ['Vietnam', 'Itinerary', 'Hanoi', 'Hoi An', 'Ho Chi Minh City', 'Indian Travellers', 'Asia', '6 Days'],
@@ -5299,9 +5598,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'vietnam-7-day-itinerary',
-    title: 'Vietnam 7-Day Itinerary for Indian Travellers (2025)',
+    title: 'Vietnam 7-Day Itinerary for Indian Travellers (2026)',
     excerpt: 'The ultimate 7-day Vietnam itinerary: Hanoi (3 days including Ha Long Bay), Hoi An (2 days), and Ho Chi Minh City (2 days) — with day-by-day plans, INR costs, and local tips.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 12,
     category: 'Asia',
     tags: ['Vietnam', 'Itinerary', 'Hanoi', 'Hoi An', 'Ho Chi Minh City', 'Indian Travellers', 'Asia', '7 Days'],
@@ -5370,9 +5670,10 @@ export const allPosts: BlogPost[] = [
   // ── JAPAN ITINERARIES ───────────────────────────────────────────────────────
   {
     slug: 'japan-6-day-itinerary',
-    title: 'Japan 6-Day Itinerary for Indian Travellers (2025)',
+    title: 'Japan 6-Day Itinerary for Indian Travellers (2026)',
     excerpt: 'The best 6-day Japan route: 3 days in Tokyo, 2 days in Kyoto, 1 day in Osaka — with day-by-day plans, JR Pass guide, costs in INR, and visa tips for Indians.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 12,
     category: 'Asia',
     tags: ['Japan', 'Itinerary', 'Tokyo', 'Kyoto', 'Osaka', 'Indian Travellers', 'Asia', '6 Days'],
@@ -5451,9 +5752,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'japan-7-day-itinerary',
-    title: 'Japan 7-Day Itinerary for Indian Travellers (2025)',
+    title: 'Japan 7-Day Itinerary for Indian Travellers (2026)',
     excerpt: 'Complete 7-day Japan itinerary: Tokyo (3 days) → Hiroshima & Miyajima (1 day) → Kyoto (2 days) → Osaka (1 day). Day-by-day plan with bullet train routes, costs in INR, and visa tips.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 13,
     category: 'Asia',
     tags: ['Japan', 'Itinerary', 'Tokyo', 'Kyoto', 'Osaka', 'Hiroshima', 'Indian Travellers', 'Asia', '7 Days'],
@@ -5519,9 +5821,10 @@ export const allPosts: BlogPost[] = [
   // ── GEORGIA ITINERARIES ─────────────────────────────────────────────────────
   {
     slug: 'georgia-6-day-itinerary',
-    title: 'Georgia 6-Day Itinerary for Indian Travellers (2025)',
+    title: 'Georgia 6-Day Itinerary for Indian Travellers (2026)',
     excerpt: '6 days in Georgia: Tbilisi old town, Kazbegi mountain church, Mtskheta UNESCO capital, and Kakheti wine country — with day-by-day plans, costs in INR, and no-visa entry for Indians.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 10,
     category: 'Europe',
     tags: ['Georgia', 'Itinerary', 'Tbilisi', 'Kazbegi', 'Indian Travellers', 'Europe', '6 Days', 'Visa Free'],
@@ -5597,9 +5900,10 @@ export const allPosts: BlogPost[] = [
 
   {
     slug: 'georgia-7-day-itinerary',
-    title: 'Georgia 7-Day Itinerary for Indian Travellers (2025)',
+    title: 'Georgia 7-Day Itinerary for Indian Travellers (2026)',
     excerpt: 'The complete 7-day Georgia trip: Tbilisi (3 nights), Kazbegi mountains (2 nights), Kakheti wine country, and Kutaisi — visa-free for Indians, day-by-day plan with costs in INR.',
     date: '2025-06-09',
+    updated: '2026-07-06',
     readTime: 12,
     category: 'Europe',
     tags: ['Georgia', 'Itinerary', 'Tbilisi', 'Kazbegi', 'Batumi', 'Indian Travellers', 'Europe', '7 Days', 'Visa Free'],
@@ -5693,5 +5997,8 @@ export function postWordCount(post: BlogPost): number {
 export const MIN_INDEXABLE_WORDS = 600;
 
 export function isIndexablePost(post: BlogPost): boolean {
+  // Retired slugs 301-redirect elsewhere — they must never appear in the
+  // sitemap, listing, homepage or related-post links even if substantial.
+  if (RETIRED_POST_SLUGS.has(post.slug)) return false;
   return postWordCount(post) >= MIN_INDEXABLE_WORDS;
 }
