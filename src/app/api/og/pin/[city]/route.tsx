@@ -15,7 +15,9 @@ import { getPlaceImageUrl } from '@/lib/placeImages';
 // /logo.png lockup, and dark-ink-on-white titles so text never washes out on a
 // bright photo. Fonts match the site: Cormorant Garamond + Plus Jakarta Sans.
 
-export const runtime = 'edge';
+// Node runtime: these routes bundle the full city dataset (~1.2 MB), which
+// exceeds the 1 MB Edge Function limit on the current Vercel plan.
+export const runtime = 'nodejs';
 
 const BASE = 'https://www.tripgenius.in';
 const MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
