@@ -1,7 +1,9 @@
 import { ImageResponse } from 'next/og';
 import { getCityBySlug } from '@/lib/cities';
 
-export const runtime = 'edge';
+// Node runtime: these routes bundle the full city dataset (~1.2 MB), which
+// exceeds the 1 MB Edge Function limit on the current Vercel plan.
+export const runtime = 'nodejs';
 
 const W = 1080, H = 1350;
 const OR  = '#FF7A00';
