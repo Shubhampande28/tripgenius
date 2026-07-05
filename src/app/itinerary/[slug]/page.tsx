@@ -38,14 +38,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: desc,
-    keywords: [
-      `${country.name.toLowerCase()} itinerary ${parsed.duration} days`,
-      `${parsed.duration} days in ${country.name.toLowerCase()}`,
-      `${country.name.toLowerCase()} ${parsed.duration} day trip`,
-      `${country.name.toLowerCase()} travel itinerary`,
-      `${country.name.toLowerCase()} trip plan`,
-      `${country.name.toLowerCase()} travel guide indians`,
-    ],
     alternates: { canonical: `${BASE}/itinerary/${slug}` },
     openGraph: {
       title,

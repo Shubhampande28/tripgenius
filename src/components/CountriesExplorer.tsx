@@ -173,7 +173,7 @@ export default function CountriesExplorer({ countries }: Props) {
                     {imgUrl ? (
                       <img
                         src={imgUrl}
-                        alt={country.name}
+                        alt={`${country.name} travel guide — top cities and best time to visit`}
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />

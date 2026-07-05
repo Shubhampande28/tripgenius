@@ -152,7 +152,7 @@ export async function GET(
               Plan your{'\n'}Bali trip free
             </span>
             <div style={{ display:'flex', flexDirection:'column', gap:12, width:'100%' }}>
-              {['🌍  160+ city guides — all free', '✅  No paid reviews or sponsors', '📅  Updated for 2025'].map(t => (
+              {['🌍  70+ city guides — all free', '✅  No paid reviews or sponsors', '📅  Updated for 2026'].map(t => (
                 <div key={t} style={{ display:'flex', alignItems:'center',
                   background:'rgba(255,122,0,0.08)', borderRadius:12, padding:'12px 18px' }}>
                   <span style={{ fontSize:17, color:GRN, fontWeight:600 }}>{t}</span>

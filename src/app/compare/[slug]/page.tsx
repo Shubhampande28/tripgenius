@@ -32,13 +32,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: desc,
-    keywords: [
-      `${city1.name} vs ${city2.name}`,
-      `${city1.name} or ${city2.name}`,
-      `${city1.name} vs ${city2.name} which is better`,
-      `difference between ${city1.name} and ${city2.name}`,
-      `${city1.name} vs ${city2.name} travel`,
-    ],
     alternates: { canonical: `${BASE}/compare/${slug}` },
     openGraph: { title, description: desc, url: `${BASE}/compare/${slug}`, type: 'article' },
     robots: { index: true, follow: true },

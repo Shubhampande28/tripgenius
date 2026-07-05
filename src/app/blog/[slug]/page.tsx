@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.title,
     description: post.excerpt,
-    keywords: post.tags,
     alternates: { canonical: `${BASE}/blog/${slug}` },
     // Keep thin, mass-produced posts out of the index until they're expanded or
     // consolidated. They remain readable; they just don't count against the
@@ -138,14 +137,17 @@ function ContentBlock({ block }: { block: BlockType }) {
     case 'image':
       return (
         <figure className="my-7 rounded-2xl overflow-hidden border border-border">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={block.src}
-            alt={block.alt}
-            loading="lazy"
-            className="w-full object-cover"
-            style={{ maxHeight: '420px' }}
-          />
+          {/* Fixed aspect container reserves space before the image loads —
+              the old unsized <img> caused layout shift on every content image. */}
+          <div className="relative aspect-[16/9]">
+            <Image
+              src={block.src}
+              alt={block.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
+            />
+          </div>
           {block.caption && (
             <figcaption className="bg-surface px-4 py-2 text-xs text-muted text-center border-t border-border">
               {block.caption}
@@ -166,9 +168,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const related = getRelatedPosts(post);
   const cityData = post.citySlug ? getCityBySlug(post.citySlug) : null;
   const comparisonGuideSlug = hasComparison(slug) ? slug : null;
-  const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  });
 
   const BASE = 'https://www.tripgenius.in';
   const postUrl = `${BASE}/blog/${slug}`;

@@ -62,15 +62,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = `Plan your ${country.name} trip: city guides, visa info for Indians (${country.visaForIndians}), best time ${country.bestTime}, day-by-day itineraries and honest local tips — all free.`;
   return {
     title, description,
-    keywords: [
-      `${country.name.toLowerCase()} travel guide`,
-      `${country.name.toLowerCase()} itinerary`,
-      `${country.name.toLowerCase()} trip plan`,
-      `best time to visit ${country.name.toLowerCase()}`,
-      `${country.name.toLowerCase()} visa for indians`,
-      `places to visit in ${country.name.toLowerCase()}`,
-      `${country.name.toLowerCase()} travel ${YEAR}`,
-    ],
     alternates: { canonical: `${BASE}/countries/${slug}` },
     openGraph: { title, description, url: `${BASE}/countries/${slug}`, type: 'website' },
     twitter: { card: 'summary_large_image', title, description },

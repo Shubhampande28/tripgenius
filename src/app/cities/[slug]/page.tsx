@@ -53,14 +53,6 @@ export async function generateMetadata(
   return {
     title,
     description: desc,
-    keywords: [
-      `things to do in ${city.name}`,
-      `${city.name} travel guide`,
-      `best time to visit ${city.name}`,
-      `${city.name} itinerary`,
-      `${city.name} travel tips`,
-      `${city.country} travel`,
-    ],
     alternates: { canonical: `https://www.tripgenius.in/cities/${slug}` },
     // Index only substantial, authored guides. Cities without hand-authored
     // month data are template-generated (fabricated weather/hotels/restaurants)
