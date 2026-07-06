@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
+import { Clock, ArrowRight, ChevronRight, Tag, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Schema from '@/components/Schema';
 import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, BlockType, BlogCategory } from '@/lib/blog';
 import { RETIRED_POST_SLUGS } from '@/lib/postRedirects';
 import { ChevronDown } from 'lucide-react';
@@ -13,6 +14,7 @@ import { AD_SLOTS } from '@/lib/adsense';
 import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
 import { getCityBySlug } from '@/lib/cities';
 import { hasComparison } from '@/lib/comparisons';
+import { createAutoLinker, type AutoLinker } from '@/lib/autoLink';
 
 export async function generateStaticParams() {
   // Retired slugs are 301-redirected in next.config; don't prerender dead pages.
@@ -60,21 +62,24 @@ const CATEGORY_COLORS: Record<BlogCategory, string> = {
   Tips:      'bg-accent/10 text-accent border-accent/20',
 };
 
-function ContentBlock({ block }: { block: BlockType }) {
+// `linkify` auto-links first destination mentions — applied ONLY to paragraph
+// and list text, never headings, callouts, tables, or blocks with their own link.
+function ContentBlock({ block, linkify }: { block: BlockType; linkify?: AutoLinker }) {
+  const auto = linkify ?? ((t: string) => t);
   switch (block.type) {
     case 'h2':
       return <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mt-10 mb-4">{block.text}</h2>;
     case 'h3':
       return <h3 className="font-heading text-xl font-semibold text-primary-text mt-7 mb-3">{block.text}</h3>;
     case 'p':
-      return <p className="text-muted leading-relaxed mb-4 text-[15px]">{block.text}</p>;
+      return <p className="text-muted leading-relaxed mb-4 text-[15px]">{auto(block.text)}</p>;
     case 'ul':
       return (
         <ul className="mb-5 space-y-2">
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-2.5 text-[15px] text-muted leading-relaxed">
               <span className="text-accent mt-1 flex-shrink-0">›</span>
-              <span>{item}</span>
+              <span>{auto(item)}</span>
             </li>
           ))}
         </ul>
@@ -85,7 +90,7 @@ function ContentBlock({ block }: { block: BlockType }) {
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-3 text-[15px] text-muted leading-relaxed">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
-              <span>{item}</span>
+              <span>{auto(item)}</span>
             </li>
           ))}
         </ol>
@@ -213,9 +218,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      <Schema data={articleSchema} />
+      <Schema data={breadcrumbSchema} />
+      <Schema data={faqSchema} />
       <Navbar />
       <main className="bg-dark min-h-screen">
 
@@ -235,10 +240,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Article */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 relative z-10 pb-20">
 
-          {/* Back link */}
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors mb-6">
-            <ArrowLeft size={12} /> Back to Blog
-          </Link>
+          {/* Breadcrumb — mirrors the BreadcrumbList JSON-LD */}
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex items-center gap-1.5 text-xs text-muted flex-wrap">
+              <li><Link href="/" className="hover:text-accent transition-colors">Home</Link></li>
+              <li aria-hidden><ChevronRight size={11} /></li>
+              <li><Link href="/blog" className="hover:text-accent transition-colors">Blog</Link></li>
+              <li aria-hidden><ChevronRight size={11} /></li>
+              <li className="text-primary-text font-medium line-clamp-1">{post.title}</li>
+            </ol>
+          </nav>
 
           {/* Meta — no date, travel guides don't expire */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -270,11 +281,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.excerpt}
           </p>
 
-          {/* Content */}
+          {/* Content — one auto-linker per render so "first mention only" and
+              the per-post cap hold across the whole article */}
           <article>
-            {post.content.map((block, i) => (
-              <ContentBlock key={i} block={block} />
-            ))}
+            {(() => {
+              const linkify = createAutoLinker();
+              return post.content.map((block, i) => (
+                <ContentBlock key={i} block={block} linkify={linkify} />
+              ));
+            })()}
           </article>
           {/* Only monetise substantial, indexed posts — AdSense policy
               disallows ad code on thin pages. */}

@@ -22,7 +22,7 @@ export default function ProTips({ city }: { city: City }) {
             Insider Knowledge
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Pro Tips for {city.name}
+            What Should You Know Before Visiting {city.name}?
           </h2>
         </motion.div>
 

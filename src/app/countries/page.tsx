@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CountriesExplorer from '@/components/CountriesExplorer';
+import Schema from '@/components/Schema';
 import { countries } from '@/data/countries';
 
 const BASE = 'https://www.tripgenius.in';
@@ -31,10 +32,7 @@ export default function CountriesIndexPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <Schema data={breadcrumbSchema} />
       <Navbar />
       <main className="min-h-screen pt-20 pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

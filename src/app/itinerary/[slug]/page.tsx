@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Schema from '@/components/Schema';
 import { ChevronRight, ArrowRight, Clock, Wallet, Globe, MapPin, Calendar } from 'lucide-react';
 import { getCountryBySlug } from '@/data/countries';
 import {
@@ -118,9 +119,9 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(touristTripSchema) }} />
+      <Schema data={breadcrumbSchema} />
+      <Schema data={articleSchema} />
+      <Schema data={touristTripSchema} />
       <Navbar />
       <main className="min-h-screen bg-dark">
 

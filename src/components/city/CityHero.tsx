@@ -4,11 +4,20 @@ import SafeImage from '@/components/SafeImage';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
+import { Clock, DollarSign } from 'lucide-react';
 import { City } from '@/lib/types';
 import Breadcrumb from './Breadcrumb';
 
 const UPDATED = 'May 2026';
+
+// "{City} is best visited in {best time}. {What it's known for}. A typical
+// trip costs {budget} per person." — assembled only from structured city data.
+function answerFirstIntro(city: City): string {
+  const firstSentence = city.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? city.description;
+  const knownFor = firstSentence.trim().replace(/[.!?]$/, '');
+  const budget = city.stats.budget.trim();
+  return `${city.name} is best visited in ${city.stats.bestTime}. ${knownFor}. A typical trip costs ${budget} per person.`;
+}
 
 export default function CityHero({ city, countrySlug }: { city: City; countrySlug?: string }) {
   return (
@@ -62,9 +71,10 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             <span className="text-white/80">{city.country}</span>
           </motion.div>
 
-          {/* City name */}
-          <h1 className="font-heading text-6xl sm:text-7xl lg:text-9xl font-bold text-white leading-none drop-shadow-2xl">
-            {city.name}
+          {/* City name — "Travel Guide" kept inside the H1 for query match */}
+          <h1 className="font-heading font-bold text-white drop-shadow-2xl">
+            <span className="block text-6xl sm:text-7xl lg:text-9xl leading-none">{city.name}</span>
+            <span className="block mt-2 text-xl sm:text-2xl font-semibold text-white/70 tracking-wide">Travel Guide</span>
           </h1>
 
           <motion.p
@@ -76,11 +86,22 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             {city.tagline}
           </motion.p>
 
+          {/* Answer-first intro — a self-contained summary AI engines can quote
+              verbatim. Driven entirely from structured city data. */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="mt-6 text-white/90 max-w-2xl leading-relaxed text-lg font-medium"
+          >
+            {answerFirstIntro(city)}
+          </motion.p>
+
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-6 text-white/80 max-w-2xl leading-relaxed text-lg"
+            className="mt-4 text-white/70 max-w-2xl leading-relaxed text-base"
           >
             {city.heroDescription}
           </motion.p>

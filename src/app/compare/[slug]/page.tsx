@@ -6,7 +6,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Schema from '@/components/Schema';
 import { getCityBySlug } from '@/lib/cities';
+import { getCountrySlugForCity } from '@/lib/getCountrySlug';
 import { allPosts } from '@/lib/blog';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 
@@ -50,6 +52,38 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
   const year = new Date().getFullYear();
   const narrativeGuide = allPosts.find(post => post.slug === slug);
 
+  const pageUrl = `${BASE}/compare/${slug}`;
+  const pageTitle = `${city1.name} vs ${city2.name}: Which is Better? (${year})`;
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: pageTitle,
+    description: `${city1.name} vs ${city2.name}: complete comparison of costs, best time to visit, things to do, and which destination is right for you.`,
+    url: pageUrl,
+    image: [city1.heroImage, city2.heroImage].filter(Boolean),
+    // Comparison pages are data-driven; when a narrative guide exists for the
+    // same pair, inherit its publication dates so the two stay consistent.
+    datePublished: narrativeGuide?.date ?? '2025-06-01',
+    dateModified: narrativeGuide?.updated ?? narrativeGuide?.date ?? '2026-05-01',
+    author: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${BASE}/about` },
+    publisher: {
+      '@type': 'Organization', name: 'TripGenius', url: BASE,
+      logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE },
+      { '@type': 'ListItem', position: 2, name: 'Destinations', item: `${BASE}/destinations` },
+      { '@type': 'ListItem', position: 3, name: `${city1.name} vs ${city2.name}`, item: pageUrl },
+    ],
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -59,7 +93,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
         name: `${city1.name} vs ${city2.name}: which is cheaper?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `${city1.name} costs around ${city1.stats.budget} per day while ${city2.name} costs around ${city2.stats.budget} per day.`,
+          text: `${city1.name} costs around ${city1.stats.budget} while ${city2.name} costs around ${city2.stats.budget}.`,
         },
       },
       {
@@ -84,18 +118,20 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Schema data={articleSchema} />
+      <Schema data={breadcrumbSchema} />
+      <Schema data={faqSchema} />
       <Navbar />
       <main className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
 
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-muted mb-6">
+          {/* Breadcrumb — mirrors the BreadcrumbList JSON-LD */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted mb-6">
             <Link href="/" className="hover:text-accent">Home</Link>
-            <span>/</span>
+            <span aria-hidden>/</span>
             <Link href="/destinations" className="hover:text-accent">Destinations</Link>
-            <span>/</span>
-            <span>Compare</span>
+            <span aria-hidden>/</span>
+            <span className="text-primary-text font-medium">{city1.name} vs {city2.name}</span>
           </nav>
 
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-primary-text mb-4">
@@ -152,30 +188,41 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
               Which Should You Choose?
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[city1, city2].map(city => (
-                <div key={city.slug} className="bg-surface border border-border rounded-2xl p-5">
-                  <h3 className="font-semibold text-primary-text mb-2">
-                    Choose {city.flag} {city.name} if you want:
-                  </h3>
-                  <ul className="space-y-2">
-                    {city.vibes?.map(v => (
-                      <li key={v} className="flex items-center gap-2 text-sm text-muted">
-                        <span className="text-teal">✓</span> {v} experiences
+              {[city1, city2].map(city => {
+                const countryHub = getCountrySlugForCity(city.slug);
+                return (
+                  <div key={city.slug} className="bg-surface border border-border rounded-2xl p-5">
+                    <h3 className="font-semibold text-primary-text mb-2">
+                      Choose {city.flag} {city.name} if you want:
+                    </h3>
+                    <ul className="space-y-2">
+                      {city.vibes?.map(v => (
+                        <li key={v} className="flex items-center gap-2 text-sm text-muted">
+                          <span className="text-teal">✓</span> {v} experiences
+                        </li>
+                      ))}
+                      <li className="flex items-center gap-2 text-sm text-muted">
+                        <span className="text-teal">✓</span> Budget: {city.stats.budget}
                       </li>
-                    ))}
-                    <li className="flex items-center gap-2 text-sm text-muted">
-                      <span className="text-teal">✓</span> Budget: {city.stats.budget}/day
-                    </li>
-                    <li className="flex items-center gap-2 text-sm text-muted">
-                      <span className="text-teal">✓</span> Best in {city.stats.bestTime}
-                    </li>
-                  </ul>
-                  <Link href={`/cities/${city.slug}`}
-                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline">
-                    Read full {city.name} guide →
-                  </Link>
-                </div>
-              ))}
+                      <li className="flex items-center gap-2 text-sm text-muted">
+                        <span className="text-teal">✓</span> Best in {city.stats.bestTime}
+                      </li>
+                    </ul>
+                    <div className="mt-4 flex flex-col gap-1.5">
+                      <Link href={`/cities/${city.slug}`}
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline">
+                        Read full {city.name} guide →
+                      </Link>
+                      {countryHub && (
+                        <Link href={`/countries/${countryHub}`}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors">
+                          Explore all of {city.country} →
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
 

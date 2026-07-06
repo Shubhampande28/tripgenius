@@ -6,6 +6,7 @@ import CityMapWrapper from '@/components/city/CityMapWrapper';
 import CityHero from '@/components/city/CityHero';
 import AtAGlance from '@/components/city/AtAGlance';
 import MonthByMonth from '@/components/city/MonthByMonth';
+import BudgetBreakdown from '@/components/city/BudgetBreakdown';
 import NeighbourhoodsAreas from '@/components/city/NeighbourhoodsAreas';
 import ExploreByArea from '@/components/city/ExploreByArea';
 import ThingsToDo from '@/components/city/ThingsToDo';
@@ -20,11 +21,14 @@ import CitySidebar from '@/components/city/CitySidebar';
 import CityTOC from '@/components/city/CityTOC';
 import CityQuickNav from '@/components/city/CityQuickNav';
 import SimilarDestinations from '@/components/city/SimilarDestinations';
+import CityGuides from '@/components/city/CityGuides';
+import MoreInCountry from '@/components/city/MoreInCountry';
 import MobileCTA from '@/components/city/MobileCTA';
 import { getCityBySlug, getAllCitySlugs, isIndexableCity } from '@/lib/cities';
 import { getCountrySlugForCity } from '@/lib/getCountrySlug';
 import { getCityFaqs } from '@/lib/cityFaqs';
 import AdUnit from '@/components/AdUnit';
+import Schema from '@/components/Schema';
 import { AD_SLOTS } from '@/lib/adsense';
 
 export async function generateStaticParams() {
@@ -86,6 +90,13 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
     image: city.heroImage || city.image,
     touristType: city.vibes,
     containedInPlace: { '@type': 'Country', name: city.country },
+    ...(city.coordinates && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: city.coordinates.lat,
+        longitude: city.coordinates.lng,
+      },
+    }),
     isAccessibleForFree: true,
     publisher: { '@type': 'Organization', name: 'TripGenius', url: base },
   };
@@ -210,14 +221,14 @@ function CityJsonLd({ city, slug }: { city: ReturnType<typeof getCityBySlug> & o
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(destination) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
-      {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
-      {hotelSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchemas) }} />}
-      {restaurantSchemas.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantSchemas) }} />}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(travelActionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <Schema data={destination} />
+      <Schema data={breadcrumb} />
+      <Schema data={faqSchema} />
+      <Schema data={itemListSchema} />
+      <Schema data={hotelSchemas} />
+      <Schema data={restaurantSchemas} />
+      <Schema data={travelActionSchema} />
+      <Schema data={webPageSchema} />
     </>
   );
 }
@@ -242,6 +253,9 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
               <MonthByMonth city={city} />
+              {/* "How much does a trip cost?" — renders only for cities with
+                  authored budget tiers (self-guards on budgetBreakdown) */}
+              <BudgetBreakdown city={city} />
               <ThingsToDo city={city} />
 
               {/* Map — server-renders the section shell; Leaflet loads client-side only */}
@@ -274,6 +288,8 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
               {!city.proTipsSynthetic && <ProTips city={city} />}
               <BookingPanel city={city} />
               <CityFAQ city={city} />
+              <CityGuides city={city} />
+              <MoreInCountry city={city} countrySlug={countrySlug} />
             </div>
             <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start space-y-4">
               <CityTOC city={city} />

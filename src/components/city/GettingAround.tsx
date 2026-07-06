@@ -21,7 +21,7 @@ export default function GettingAround({ city }: { city: City }) {
             Transport
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text mb-8">
-            Getting Around {city.name}
+            How Do You Get Around {city.name}?
           </h2>
 
           <AnimateList stagger={0.07} variant="row" className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -1,5 +1,14 @@
 import Link from 'next/link';
-import { Compass, X, Camera, Play, GitBranch } from 'lucide-react';
+import { Compass, X, Camera } from 'lucide-react';
+
+// Pinterest has no lucide icon — minimal brand glyph, inherits currentColor
+function PinterestIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.64 7.86 6.36 9.31-.09-.79-.17-2 .04-2.87.18-.78 1.18-4.99 1.18-4.99s-.3-.6-.3-1.49c0-1.4.81-2.44 1.82-2.44.86 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.15-1.88 3.15-4.59 0-2.4-1.72-4.08-4.19-4.08-2.85 0-4.53 2.14-4.53 4.35 0 .86.33 1.79.75 2.29.08.1.09.19.07.29-.08.31-.25 1-.28 1.14-.04.19-.15.23-.34.14-1.25-.58-2.03-2.41-2.03-3.88 0-3.16 2.3-6.06 6.62-6.06 3.48 0 6.18 2.48 6.18 5.79 0 3.45-2.18 6.23-5.2 6.23-1.02 0-1.97-.53-2.3-1.15l-.63 2.38c-.23.87-.84 1.97-1.25 2.64.94.29 1.94.45 2.98.45 5.52 0 10-4.48 10-10S17.52 2 12 2z" />
+    </svg>
+  );
+}
 
 const footerLinks = {
   Explore: [
@@ -13,9 +22,12 @@ const footerLinks = {
     { label: 'Goa Guide', href: '/cities/goa' },
   ],
   Travel: [
-    { label: 'Hotel Deals', href: '#' },
-    { label: 'Flight Search', href: '#' },
-    { label: 'Travel Insurance', href: '#' },
+    { label: 'Trip Planner', href: '/plan' },
+    { label: 'Countries', href: '/countries' },
+    // Affiliate links pending — re-enable with real URLs, never href="#":
+    // { label: 'Hotel Deals', href: '' },
+    // { label: 'Flight Search', href: '' },
+    // { label: 'Travel Insurance', href: '' },
   ],
   Company: [
     { label: 'About Us', href: '/about' },
@@ -27,10 +39,9 @@ const footerLinks = {
 };
 
 const socials = [
-  { icon: X, href: '#', label: 'X (Twitter)' },
-  { icon: Camera, href: '#', label: 'Instagram' },
-  { icon: Play, href: '#', label: 'YouTube' },
-  { icon: GitBranch, href: '#', label: 'GitHub' },
+  { icon: X, href: 'https://x.com/tripgenius_in', label: 'X (Twitter)' },
+  { icon: Camera, href: 'https://www.instagram.com/tripgenius_in', label: 'Instagram' },
+  { icon: PinterestIcon, href: 'https://www.pinterest.com/tripgenius_in', label: 'Pinterest' },
 ];
 
 export default function Footer() {
@@ -45,15 +56,19 @@ export default function Footer() {
               </div>
               <span className="font-heading text-2xl font-semibold text-primary-text">TripGenius</span>
             </Link>
+            {/* Consistent entity one-liner — keep identical wording on the About
+                page so AI engines see one canonical description of the brand. */}
             <p className="mt-4 text-muted text-sm leading-relaxed max-w-xs">
-              Premium travel guides for every kind of explorer. Discover the world with
-              confidence — from the iconic sights to the places only locals know.
+              TripGenius is a free travel guide platform covering 160+ cities,
+              built for Indian and international travellers.
             </p>
             <div className="flex items-center gap-4 mt-6">
               {socials.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="w-9 h-9 rounded-full bg-elevated border border-border flex items-center justify-center text-muted hover:text-accent hover:border-accent transition-all duration-200"
                 >

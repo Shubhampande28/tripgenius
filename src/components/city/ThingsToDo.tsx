@@ -52,7 +52,7 @@ export default function ThingsToDo({ city }: { city: City }) {
         >
           <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Experiences</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Top {city.thingsToDo.length} Things to Do in {city.name} ({new Date().getFullYear()})
+            What Are the Top {city.thingsToDo.length} Things to Do in {city.name}? ({new Date().getFullYear()})
           </h2>
           <p className="mt-2 text-sm text-muted max-w-2xl">
             The best experiences in {city.name} — from iconic landmarks to local favourites, ranked by what travellers love most.

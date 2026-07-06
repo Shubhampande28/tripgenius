@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
+import Schema from '@/components/Schema';
 import { getCityBySlug, authoredMonthCitySlugs, hasAuthoredMonths, isIndexableMonthPage } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import type { MonthInfo, MonthRating } from '@/lib/types';
@@ -119,8 +120,8 @@ export default async function CityInMonthPage(
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Schema data={faqSchema} />
+      <Schema data={breadcrumbSchema} />
       <Navbar />
       <main className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">

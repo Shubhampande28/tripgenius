@@ -37,7 +37,7 @@ export default function WhereToStay({ city }: { city: City }) {
         >
           <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Accommodation</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Where to Stay in {city.name}
+            Where Should You Stay in {city.name}?
           </h2>
           <p className="mt-2 text-sm text-muted max-w-2xl">
             Pick your area first — each neighbourhood has a completely different price point and vibe.

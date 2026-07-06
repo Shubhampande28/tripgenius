@@ -21,7 +21,7 @@ export default function WhereToEat({ city }: { city: City }) {
             Dining
           </p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            What to Eat in {city.name}: Best Local Food & Restaurants
+            What Should You Eat in {city.name}? Local Food &amp; Restaurants
           </h2>
           <p className="mt-2 text-muted text-sm max-w-2xl">
             From street food to fine dining — the dishes you must try and the restaurants locals actually go to.

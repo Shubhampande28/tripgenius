@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
+import Schema from "@/components/Schema";
 import "./globals.css";
 
 const GA_ID = "G-GZN2V0V66B";
@@ -99,36 +100,38 @@ export default function RootLayout({
           gtag('config', '${GA_ID}');
         `}</Script>
         <MotionProvider>{children}</MotionProvider>
-        {/* Site-wide Organization structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+        {/* Site-wide Organization + WebSite structured data */}
+        <Schema
+          data={[
+            {
               '@context': 'https://schema.org',
               '@type': 'Organization',
+              '@id': `${SITE}/#organization`,
               name: 'TripGenius',
               url: SITE,
-              logo: `${SITE}/logo.png`,
-              sameAs: [],
+              logo: { '@type': 'ImageObject', url: `${SITE}/logo.png` },
+              sameAs: [
+                'https://x.com/tripgenius_in',
+                'https://twitter.com/tripgenius_in',
+                'https://www.instagram.com/tripgenius_in',
+                'https://www.pinterest.com/tripgenius_in',
+              ],
               description: 'Free travel guides for 70+ cities worldwide.',
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            },
+            {
               '@context': 'https://schema.org',
               '@type': 'WebSite',
+              '@id': `${SITE}/#website`,
               url: SITE,
               name: 'TripGenius',
+              publisher: { '@id': `${SITE}/#organization` },
               potentialAction: {
                 '@type': 'SearchAction',
                 target: { '@type': 'EntryPoint', urlTemplate: `${SITE}/cities?q={search_term_string}` },
                 'query-input': 'required name=search_term_string',
               },
-            }),
-          }}
+            },
+          ]}
         />
       </body>
     </html>

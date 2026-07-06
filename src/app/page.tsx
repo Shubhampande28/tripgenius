@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import HomeClient from '@/components/home/HomeClient';
+import Schema from '@/components/Schema';
 
 // Server shell for the homepage: owns metadata and structured data so they are
 // server-rendered, while the interactive page (search, shuffle grid, newsletter,
@@ -26,7 +27,7 @@ const HOME_FAQ_SCHEMA = {
 export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_FAQ_SCHEMA) }} />
+      <Schema data={HOME_FAQ_SCHEMA} />
       <HomeClient />
     </>
   );

@@ -29,7 +29,7 @@ export default function MonthByMonth({ city }: { city: City }) {
             <p className="text-xs font-semibold uppercase tracking-widest text-accent">When to Visit</p>
           </div>
           <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mb-3">
-            Best Time to Visit {city.name}: Month-by-Month Guide
+            When Is the Best Time to Visit {city.name}?
           </h2>
           <p className="text-sm text-muted leading-relaxed mb-6 max-w-2xl">{summary}</p>
 

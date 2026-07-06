@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp, Search, RefreshCw, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Schema from '@/components/Schema';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -75,28 +76,36 @@ const editorialSteps = [
   },
 ];
 
-const orgSchema = {
+// AboutPage whose mainEntity extends the site-wide Organization (same @id as
+// the layout's node, so validators merge them instead of seeing two Organizations).
+const aboutSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'TripGenius',
-  url: BASE,
-  logo: `${BASE}/logo.png`,
-  description: 'Free travel guides for 70+ cities worldwide. Honest, well-researched information with no paid rankings.',
-  foundingDate: '2025',
-  knowsAbout: ['Travel', 'Tourism', 'India Travel', 'Asia Travel', 'Europe Travel', 'Travel Planning'],
-  areaServed: 'Worldwide',
-  contactPoint: {
-    '@type': 'ContactPoint',
-    contactType: 'Editorial',
-    url: `${BASE}/contact`,
+  '@type': 'AboutPage',
+  url: `${BASE}/about`,
+  name: 'About TripGenius',
+  mainEntity: {
+    '@type': 'Organization',
+    '@id': `${BASE}/#organization`,
+    name: 'TripGenius',
+    url: BASE,
+    logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
+    description: 'Free travel guides for 70+ cities worldwide. Honest, well-researched information with no paid rankings.',
+    foundingDate: '2025',
+    knowsAbout: ['Travel', 'Tourism', 'India Travel', 'Asia Travel', 'Europe Travel', 'Travel Planning'],
+    areaServed: 'Worldwide',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Editorial',
+      url: `${BASE}/contact`,
+    },
+    publishingPrinciples: `${BASE}/about`,
   },
-  publishingPrinciples: `${BASE}/about`,
 };
 
 export default function AboutPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+      <Schema data={aboutSchema} />
       <Navbar />
       <main className="bg-dark min-h-screen">
 
@@ -110,7 +119,13 @@ export default function AboutPage() {
             <h1 className="font-heading text-4xl sm:text-5xl font-semibold text-primary-text leading-tight">
               Travel guides you can actually trust
             </h1>
-            <p className="mt-4 text-muted text-base max-w-xl mx-auto leading-relaxed">
+            {/* Entity one-liner — identical wording to the footer, so search and
+                AI engines see one canonical description of the brand. */}
+            <p className="mt-4 text-primary-text text-base max-w-xl mx-auto leading-relaxed font-medium">
+              TripGenius is a free travel guide platform covering 160+ cities,
+              built for Indian and international travellers.
+            </p>
+            <p className="mt-3 text-muted text-base max-w-xl mx-auto leading-relaxed">
               TripGenius was built on a simple idea: everyone deserves access to honest, well-researched travel information — completely free.
             </p>
           </div>

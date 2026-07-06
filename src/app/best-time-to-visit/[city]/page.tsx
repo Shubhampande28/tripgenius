@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Schema from '@/components/Schema';
 import { getCityBySlug, getAllCitySlugs, hasAuthoredMonths, isIndexableCity } from '@/lib/cities';
 
 const BASE = 'https://www.tripgenius.in';
@@ -97,7 +98,7 @@ export default async function BestTimePage({ params }: { params: Promise<{ city:
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Schema data={faqSchema} />
       <Navbar />
       <main className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { motion } from 'framer-motion';
@@ -17,6 +17,16 @@ interface CitiesPageProps {
 
 export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = {}) {
   const [query, setQuery] = useState('');
+
+  // Honour ?q= links (404 search box, WebSite SearchAction schema). Read on
+  // mount rather than useSearchParams to keep this statically prerenderable.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    // One-time sync from the URL (external store) after hydration — reading it
+    // in the initializer would mismatch the statically prerendered HTML.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (q) setQuery(q);
+  }, []);
 
   const filtered = useMemo(() => {
     if (query.length === 0) return allCities;

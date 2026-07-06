@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
+import Schema from '@/components/Schema';
 import {
   ChevronRight, ArrowRight, MapPin, Globe, Calendar,
   BookOpen, Plane, ChevronDown, Clock,
@@ -133,33 +134,21 @@ export default async function CountryPage({ params }: Props) {
       { '@type': 'ListItem', position: 3, name: `${country.name} Travel Guide`, item: `${BASE}/countries/${slug}` },
     ],
   };
-  const itineraryListSchema = itineraryOptions.length > 0 ? {
+  // ItemList of top cities — matches the visible "Best Places to Visit" grid.
+  // (One ItemList per page: this replaced the old itinerary ItemList so the
+  // page never emits duplicate schema types.)
+  const citiesListSchema = displayCities.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `${country.name} Itineraries`,
-    itemListElement: itineraryOptions.map(({ duration, route }, i) => ({
+    name: `Best Places to Visit in ${country.name}`,
+    numberOfItems: displayCities.length,
+    itemListElement: displayCities.map((city, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: {
-        '@type': 'TouristTrip',
-        name: `${duration} Days in ${country.name}`,
-        description: `${duration}-day itinerary covering ${route.map((r) => r.city.name).join(', ')}`,
-        url: `${BASE}/itinerary/${getItinerarySlug(country.slug, duration)}`,
-      },
+      name: city.name,
+      url: `${BASE}/cities/${city.slug}`,
     })),
   } : null;
-
-  const faqSchema = {
-    '@context': 'https://schema.org', '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: `How many days in ${country.name}?`,
-        acceptedAnswer: { '@type': 'Answer', text: `5–7 days to cover the highlights. 10–14 days for a relaxed, deeper trip.` } },
-      { '@type': 'Question', name: `Best time to visit ${country.name}?`,
-        acceptedAnswer: { '@type': 'Answer', text: `${country.bestTime} offers the most pleasant conditions.` } },
-      { '@type': 'Question', name: `Visa for Indians to ${country.name}?`,
-        acceptedAnswer: { '@type': 'Answer', text: country.visaForIndians } },
-    ],
-  };
 
   const faqs = [
     { q: `How many days do I need in ${country.name}?`,
@@ -176,13 +165,23 @@ export default async function CountryPage({ params }: Props) {
       a: `The primary language is ${country.language}. In major tourist areas and hotels, English is widely understood. Learning a few local phrases is always appreciated by locals.` },
   ];
 
+  // FAQPage schema mirrors the visible FAQ accordion exactly — Google requires
+  // FAQ markup to match on-page content.
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  };
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {itineraryListSchema && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itineraryListSchema) }} />
-      )}
+      <Schema data={breadcrumbSchema} />
+      <Schema data={faqSchema} />
+      <Schema data={citiesListSchema} />
       <Navbar />
       <main className="min-h-screen bg-dark">
 

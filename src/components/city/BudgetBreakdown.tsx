@@ -20,8 +20,8 @@ const rows = [
 export default function BudgetBreakdown({ city }: { city: City }) {
   if (!city.budgetBreakdown) return null;
   return (
-    <section id="budget" className="py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="budget" className="py-8 border-t border-border">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

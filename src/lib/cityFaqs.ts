@@ -191,6 +191,63 @@ const cityFaqs: Record<string, FAQ[]> = {
   ],
 };
 
+import { getCityBySlug, isIndexableCity } from './cities';
+import type { City } from './types';
+
+const MIN_FAQS = 4;
+
+// FAQs derived strictly from the city's hand-authored structured data —
+// no invented facts. Only called for indexable cities (their stats and
+// month-by-month data are real); template-generated stub cities are excluded
+// because deriving FAQs from fabricated stats would publish fiction.
+function derivedFaqs(city: City): FAQ[] {
+  const out: FAQ[] = [];
+  const { name } = city;
+  const { bestTime, budget, currency, language } = city.stats;
+
+  const bestMonths = city.monthByMonth?.bestMonths?.join(', ');
+  out.push({
+    q: `When is the best time to visit ${name}?`,
+    a: `The best time to visit ${name} is ${bestTime}.` +
+       (bestMonths ? ` The standout months are ${bestMonths}.` : '') +
+       (city.monthByMonth?.summary ? ` ${city.monthByMonth.summary}` : ''),
+  });
+
+  out.push({
+    q: `How much does a trip to ${name} cost?`,
+    a: `A trip to ${name} typically costs ${budget} per person, covering accommodation, food, local transport and activities. Costs are highest in peak season (${bestTime}) and drop noticeably outside it.`,
+  });
+
+  out.push({
+    q: `What currency is used in ${name}?`,
+    a: `${name} uses the ${currency}. Card acceptance varies outside major hotels and restaurants, so carry some cash for markets, street food and small vendors.`,
+  });
+
+  out.push({
+    q: `What language is spoken in ${name}?`,
+    a: `The main language spoken in ${name} is ${language}. In hotels and tourist areas of ${name}, basic English is usually understood.`,
+  });
+
+  if (city.visa) {
+    out.push({
+      q: `Do I need a visa to visit ${name}?`,
+      a: `${city.visa}. Always confirm current entry requirements on the official embassy or immigration website before booking.`,
+    });
+  }
+  return out;
+}
+
 export function getCityFaqs(slug: string): FAQ[] {
-  return cityFaqs[slug] ?? [];
+  const authored = cityFaqs[slug] ?? [];
+  if (authored.length >= MIN_FAQS) return authored;
+
+  const city = getCityBySlug(slug);
+  if (!city || !isIndexableCity(city)) return authored;
+
+  // Top up with data-derived FAQs, skipping topics an authored FAQ already covers
+  const covered = (q: string) => authored.some((f) => {
+    const a = f.q.toLowerCase(); const b = q.toLowerCase();
+    return ['best time', 'cost', 'currency', 'language', 'visa'].some((k) => a.includes(k) && b.includes(k));
+  });
+  return [...authored, ...derivedFaqs(city).filter((f) => !covered(f.q))];
 }

@@ -29,6 +29,10 @@ export interface BlogPost {
   tags: string[];
   coverPhoto: string;
   citySlug?: string;
+  /** City slugs this post covers — powers the "Guides & Itineraries" module on
+   *  city pages. Populated for existing posts by scripts/populate-post-cities.mjs
+   *  (citySlug + tags + title match); maintain by hand on new posts. */
+  cities?: string[];
   content: BlockType[];
   faqs?: FAQ[];
   /** ISO date of the last meaningful edit. When set, used for schema dateModified
@@ -53,6 +57,7 @@ export const allPosts: BlogPost[] = [
       'Asia',
       'Budget',
     ],
+    cities: ['bali'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     citySlug: 'bali',
     content: [
@@ -209,6 +214,7 @@ export const allPosts: BlogPost[] = [
       'Budget',
       'Indian Travellers',
     ],
+    cities: [],
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
       {
@@ -474,6 +480,7 @@ export const allPosts: BlogPost[] = [
       'Budget',
       'Indian Travellers',
     ],
+    cities: [],
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
       {
@@ -737,6 +744,7 @@ export const allPosts: BlogPost[] = [
       'Budget',
       'Asia',
     ],
+    cities: ['bali'],
     coverPhoto: 'photo-1537996194471-e657df975ab4',
     citySlug: 'bali',
     content: [
@@ -945,6 +953,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Bali', 'Indonesia', 'Beach', 'Planning'],
+    cities: ['bali'],
     coverPhoto: 'photo-1537996194471-e657df975ab4',
     citySlug: 'bali',
     content: [
@@ -1028,6 +1037,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'India',
     tags: ['Goa', 'Kerala', 'India', 'Beaches', 'Comparison'],
+    cities: ['goa'],
     coverPhoto: 'photo-1512343879784-a960bf40e7f2',
     citySlug: 'goa',
     content: [
@@ -1119,6 +1129,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Budget',
     tags: ['Bangkok', 'Thailand', 'Budget Travel', 'Asia'],
+    cities: ['bangkok'],
     coverPhoto: 'photo-1508009603885-50cf7c579365',
     citySlug: 'bangkok',
     content: [
@@ -1212,6 +1223,7 @@ export const allPosts: BlogPost[] = [
     readTime: 7,
     category: 'Tips',
     tags: ['Japan', 'Tokyo', 'Travel Tips', 'First Time'],
+    cities: ['tokyo'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     citySlug: 'tokyo',
     content: [
@@ -1286,6 +1298,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'India',
     tags: ['India', 'Beaches', 'Goa', 'Kerala', 'Andaman'],
+    cities: ['goa', 'andaman'],
     coverPhoto: 'photo-1583244685026-d8519b977e5b',
     content: [
       { type: 'p', text: 'India has over 7,500 kilometres of coastline stretching from the mangrove creeks of Gujarat down to the tropical tip at Kanyakumari, and back up the eastern seaboard through Tamil Nadu, Andhra Pradesh, and Odisha. Within that coastline are some of the finest beaches in the world — many of them virtually unknown outside India.' },
@@ -1364,6 +1377,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'India',
     tags: ['Manali', 'Himachal Pradesh', 'Mountains', 'India', 'Adventure'],
+    cities: ['manali'],
     coverPhoto: 'photo-1617859047452-8510bcf207fd',
     citySlug: 'manali',
     content: [
@@ -1438,6 +1452,7 @@ export const allPosts: BlogPost[] = [
     readTime: 12,
     category: 'India',
     tags: ['Rajasthan', 'Jaipur', 'Jodhpur', 'Jaisalmer', 'Udaipur', 'Itinerary', 'India'],
+    cities: ['jaipur', 'udaipur', 'jodhpur', 'jaisalmer'],
     coverPhoto: 'photo-1477587458883-47145ed94245',
     content: [
       { type: 'p', text: 'Rajasthan is India at its most spectacular. Majestic forts rising from desert plains, palaces built on lakes, camels silhouetted against Thar Desert sunsets, and streets dyed the colours of the Rainbow — pink, blue, gold. This 7-day itinerary covers the four cities that no first-time Rajasthan visitor should miss, with the right amount of time in each.' },
@@ -1509,6 +1524,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'India',
     tags: ['Ladakh', 'Leh', 'Himalayas', 'India', 'Adventure', 'Mountains'],
+    cities: ['ladakh'],
     coverPhoto: 'photo-1626621341517-bbf3d9990a23',
     citySlug: 'ladakh',
     content: [
@@ -1585,6 +1601,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'India',
     tags: ['Kerala', 'Honeymoon', 'Munnar', 'Alleppey', 'India', 'Romantic'],
+    cities: ['munnar', 'alleppey'],
     coverPhoto: 'photo-1602216056096-3b40cc0c9944',
     content: [
       { type: 'p', text: 'Kerala consistently tops India\'s honeymoon destination lists — and for good reason. The state packs astonishing variety into a relatively compact area: emerald tea gardens in Munnar, houseboat cruises through the Alleppey backwaters, yoga and Ayurveda retreats, pristine beaches in Varkala, and wild elephant country in Wayanad. All within a 6–8 hour drive of each other.' },
@@ -1649,6 +1666,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Bangkok', 'Thailand', 'Asia', 'Budget', 'Street Food'],
+    cities: ['bangkok'],
     coverPhoto: 'photo-1563492065599-3520f775eeed',
     citySlug: 'bangkok',
     content: [
@@ -1721,6 +1739,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Dubai', 'UAE', 'Luxury', 'Middle East', 'Budget', 'Desert'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1512453979798-5ea266f8880c',
     citySlug: 'dubai',
     content: [
@@ -1791,6 +1810,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Dubai', 'UAE', 'Itinerary', 'Abu Dhabi', 'Desert', 'Middle East'],
+    cities: ['dubai', 'abu-dhabi'],
     coverPhoto: 'photo-1635857161777-2383f2e4a82d',
     citySlug: 'dubai',
     content: [
@@ -1836,6 +1856,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Budget',
     tags: ['Dubai', 'UAE', 'Budget Travel', 'Free Things', 'Middle East'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1770982399708-03d784bb0f0b',
     citySlug: 'dubai',
     content: [
@@ -1880,6 +1901,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Dubai', 'UAE', 'Best Time', 'Weather', 'Planning'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1553796661-17b7fa359f49',
     citySlug: 'dubai',
     content: [
@@ -1919,6 +1941,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'UAE', 'Family Travel', 'Hotels', 'Itinerary'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1609710638139-1dc65dad03cc',
     citySlug: 'dubai',
     content: [
@@ -1964,6 +1987,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Abu Dhabi', 'Dubai', 'UAE', 'Day Trip', 'Culture'],
+    cities: ['dubai', 'abu-dhabi'],
     coverPhoto: 'photo-1512632578888-169bbbc64f33',
     content: [
       { type: 'p', text: 'Abu Dhabi gives a Dubai trip what Dubai sometimes lacks: stillness, scale and cultural weight. The Sheikh Zayed Grand Mosque alone is worth the day trip, and pairing it with Louvre Abu Dhabi or Qasr Al Watan makes the route feel complete.' },
@@ -2001,6 +2025,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Dubai', 'UAE', 'Visa', 'Indian Passport', 'Planning'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
       { type: 'p', text: 'Dubai visa rules for Indians are often misunderstood. Indian passport holders do not get blanket free entry. Some are eligible for visa on arrival if they hold qualifying valid documentation from places such as the US, UK or EU; others need a UAE tourist visa arranged before travel.' },
@@ -2036,6 +2061,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'Hotels', 'Where To Stay', 'UAE', 'Family Travel'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1611577810610-642f8ac05c32',
     citySlug: 'dubai',
     content: [
@@ -2082,6 +2108,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Itinerary', 'UAE', 'Short Trip', 'Desert'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1572364769167-198dcb7b520c',
     citySlug: 'dubai',
     content: [
@@ -2118,6 +2145,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Budget',
     tags: ['Dubai', 'Free Things', 'Budget Travel', 'UAE'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1605461659470-4536815b7c98',
     citySlug: 'dubai',
     content: [
@@ -2158,6 +2186,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Desert Safari', 'UAE', 'Adventure', 'Family Travel'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1500530855697-b586d89ba3ee',
     citySlug: 'dubai',
     content: [
@@ -2197,6 +2226,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Shopping', 'Gold Souk', 'UAE', 'Culture'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1697380582263-ba9f5ef8cefa',
     citySlug: 'dubai',
     content: [
@@ -2235,6 +2265,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'Honeymoon', 'UAE', 'Luxury', 'Romantic'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1748373502104-cb28af375638',
     citySlug: 'dubai',
     content: [
@@ -2280,6 +2311,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Dubai', 'Food', 'UAE', 'Indian Food', 'Culture'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1555396273-367ea4eb4db5',
     citySlug: 'dubai',
     content: [
@@ -2318,6 +2350,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Dubai', 'Layover', 'Transit', 'UAE', 'Airport'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1704794708120-97d4f6894ce0',
     citySlug: 'dubai',
     content: [
@@ -2353,6 +2386,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Abu Dhabi', 'UAE', 'Comparison', 'Culture'],
+    cities: ['dubai', 'abu-dhabi'],
     coverPhoto: 'photo-1512970648279-ff3398568f77',
     content: [
       { type: 'p', text: 'Dubai and Abu Dhabi are often flattened into one UAE idea, but they feel different. Dubai is spectacle, commerce and speed. Abu Dhabi is calmer, more formal and often more culturally rewarding for a day or two.' },
@@ -2384,6 +2418,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Dubai', 'Hidden Gems', 'UAE', 'Culture', 'Food'],
+    cities: ['dubai'],
     coverPhoto: 'photo-1683479781517-e31fcb3c4b4f',
     citySlug: 'dubai',
     content: [
@@ -2420,6 +2455,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'Asia',
     tags: ['Japan', 'Tokyo', 'Kyoto', 'Travel Tips', 'Asia', 'First Time'],
+    cities: ['tokyo', 'kyoto'],
     coverPhoto: 'photo-1540959733332-eab4deabeeaf',
     citySlug: 'tokyo',
     content: [
@@ -2483,6 +2519,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Maldives', 'Budget Travel', 'Beach', 'Asia', 'Snorkelling'],
+    cities: ['maldives'],
     coverPhoto: 'photo-1514282401047-d79a71a590e8',
     content: [
       { type: 'p', text: 'The Maldives has a reputation problem: most people think it is exclusively for honeymooners with unlimited budgets who float in $2,000-a-night overwater bungalows. That Maldives exists. But alongside it is a network of local islands — Maafushi, Dhigurah, Fulidhoo, Thoddoo — where you can stay in a guesthouse, eat at local restaurants, and access the same impossible turquoise water for $60–100 per day.' },
@@ -2546,6 +2583,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Singapore', 'Asia', 'Itinerary', 'Food', 'City'],
+    cities: ['singapore'],
     coverPhoto: 'photo-1525625293386-3f8f99389edd',
     citySlug: 'singapore',
     content: [
@@ -2612,6 +2650,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'India',
     tags: ['Varanasi', 'India', 'Spiritual', 'Ganges', 'Culture'],
+    cities: ['varanasi'],
     coverPhoto: 'photo-1561361058-c24cecae35ca',
     citySlug: 'varanasi',
     content: [
@@ -2682,6 +2721,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'India',
     tags: ['Goa', 'India', 'Beach', 'Budget', 'Nightlife'],
+    cities: ['goa'],
     coverPhoto: 'photo-1614082242765-7c98ca0f3df3',
     citySlug: 'goa',
     content: [
@@ -2751,6 +2791,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'India',
     tags: ['Shimla', 'Himachal Pradesh', 'Hill Station', 'India', 'Mountains'],
+    cities: ['shimla'],
     coverPhoto: 'photo-1648566924598-aeb39df9ad79',
     citySlug: 'shimla',
     content: [
@@ -2817,6 +2858,7 @@ export const allPosts: BlogPost[] = [
     readTime: 12,
     category: 'Europe',
     tags: ['Europe', 'Backpacking', 'Budget Travel', 'Schengen Visa', 'Planning'],
+    cities: [],
     coverPhoto: 'photo-1502602898657-3e91760cbb34',
     content: [
       { type: 'p', text: 'Europe is the most visited tourist region on earth — and for good reason. In a single month you can walk through Roman ruins, watch the Northern Lights, eat the world\'s best croissants, and see the painting that inspired a thousand memes. For Indian travellers, Europe is expensive but achievable on a budget with the right planning. This guide is everything you need.' },
@@ -2890,6 +2932,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'India',
     tags: ['Rishikesh', 'Uttarakhand', 'Yoga', 'Adventure', 'India', 'Spiritual'],
+    cities: ['rishikesh'],
     coverPhoto: 'photo-1724432191302-6133b34c7105',
     citySlug: 'rishikesh',
     content: [
@@ -2951,6 +2994,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'India',
     tags: ['Udaipur', 'Rajasthan', 'India', 'Romantic', 'Honeymoon', 'Lakes'],
+    cities: ['udaipur'],
     coverPhoto: 'photo-1477587458883-47145ed94245',
     citySlug: 'udaipur',
     content: [
@@ -3011,6 +3055,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'Asia',
     tags: ['Thailand', 'Bangkok', 'Phuket', 'Chiang Mai', 'Asia', 'Beach'],
+    cities: ['bangkok', 'phuket', 'chiang-mai'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     content: [
       { type: 'p', text: 'Thailand is the most visited country in Southeast Asia — and it deserves the title. It has the best street food, some of the most spectacular temples, world-class diving, and a hospitality culture that makes you feel genuinely welcome. It is also remarkably affordable. A first-time traveller can do Thailand properly for $40–60 per day.' },
@@ -3081,6 +3126,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Thailand', 'Itinerary', 'Bangkok', 'Phuket', 'Krabi', 'Chiang Mai', 'Asia'],
+    cities: ['bangkok', 'phuket', 'chiang-mai'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     content: [
       { type: 'p', text: 'Seven days is enough for a first Thailand trip if you resist the urge to chase every island. The best route is Bangkok plus one beach base, with an optional northern Thailand swap if temples, food and mountains matter more than sand. This itinerary is built around realistic transfers, not fantasy maps.' },
@@ -3134,6 +3180,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Planning',
     tags: ['Thailand', 'Best Time', 'Weather', 'Monsoon', 'Phuket', 'Koh Samui', 'Planning'],
+    cities: ['koh-samui', 'phuket'],
     coverPhoto: 'photo-1508009603885-50cf7c579365',
     content: [
       { type: 'p', text: 'Thailand is not one weather story. Bangkok can be hot and clear while Phuket is stormy; Koh Samui can be sunny when the Andaman coast is rough. The right month depends on whether your trip is temple-heavy, island-heavy or built around northern Thailand.' },
@@ -3180,6 +3227,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Budget',
     tags: ['Thailand', 'Budget Travel', 'Indian Travellers', 'Bangkok', 'Phuket', 'Asia'],
+    cities: ['bangkok', 'phuket'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     content: [
       { type: 'p', text: 'Thailand can still be one of Asia\'s best-value international trips from India, but only if you control three costs: flights, island transfers and hotels in peak season. Street food, public transport and local experiences remain excellent value.' },
@@ -3229,6 +3277,7 @@ export const allPosts: BlogPost[] = [
     readTime: 7,
     category: 'Planning',
     tags: ['Thailand', 'Visa', 'Indian Passport', 'Indian Travellers', 'Planning', 'Asia'],
+    cities: [],
     coverPhoto: 'photo-1488085061387-422e29b40080',
     content: [
       { type: 'p', text: 'Thailand is one of the easiest international trips for Indian passport holders. The practical work is not a visa application; it is arriving with a clean, believable itinerary and the documents immigration officers may ask to see.' },
@@ -3277,6 +3326,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Europe',
     tags: ['Paris', 'France', 'Europe', 'Culture', 'Food', 'Art'],
+    cities: ['paris'],
     coverPhoto: 'photo-1502602898657-3e91760cbb34',
     citySlug: 'paris',
     content: [
@@ -3349,6 +3399,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'Europe',
     tags: ['Italy', 'Rome', 'Florence', 'Venice', 'Europe', 'Culture', 'Food'],
+    cities: ['venice', 'florence', 'amalfi', 'rome'],
     coverPhoto: 'photo-1552832230-c0197dd311b5',
     content: [
       { type: 'p', text: 'Italy is the country that ruined all other food. Once you have eaten real carbonara in Rome, real ribollita in Florence, real seafood risotto in Venice, and real pizza in Naples, everything you eat for the next six months will be a disappointment. Plan your Italy trip around where and what you want to eat, and the art and architecture will take care of itself.' },
@@ -3415,6 +3466,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Vietnam', 'Hanoi', 'Ho Chi Minh', 'Hoi An', 'Ha Long Bay', 'Asia'],
+    cities: ['ho-chi-minh-city', 'hanoi', 'hoi-an'],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     content: [
       { type: 'p', text: 'Vietnam is Southeast Asia\'s most underrated destination. It is not as famous as Thailand, not as hedonistic as Bali, and not as convenient as Singapore — but it is arguably more interesting than all three. A country that fought and defeated the French and American empires in succession, that went from one of Asia\'s poorest nations to one of its fastest-growing economies, with a food culture that has quietly taken over the world.' },
@@ -3481,6 +3533,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Europe',
     tags: ['Santorini', 'Greece', 'Europe', 'Beach', 'Honeymoon', 'Islands'],
+    cities: ['santorini'],
     coverPhoto: 'photo-1570077188670-e3a8d69ac5ff',
     content: [
       { type: 'p', text: 'Santorini is the most photographed island in the world and possibly the most divisive. People who love it are moved to tears by the caldera sunset. People who hate it point out that in July, Oia is so crowded you cannot actually see the sunset behind the wall of selfie sticks. Both experiences are real, and which one you have depends entirely on when you go and how you plan.' },
@@ -3549,6 +3602,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Europe',
     tags: ['London', 'UK', 'Europe', 'Culture', 'Food', 'Museums'],
+    cities: ['london'],
     coverPhoto: 'photo-1513635269975-59663e0ac1ad',
     content: [
       { type: 'p', text: 'London is the most expensive city in this guide, and the one with the most free world-class experiences. The British Museum, the National Gallery, the Natural History Museum, the Tate Modern, the Victoria and Albert Museum — all completely free. This is not a coincidence; the British state decided long ago that culture should be accessible. The result is that a London day with £30 can be more rewarding than a £200 day in most other cities.' },
@@ -3616,6 +3670,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Turkey', 'Istanbul', 'Europe', 'Asia', 'Culture', 'Food', 'History'],
+    cities: ['istanbul'],
     coverPhoto: 'photo-1524231757912-21f4fe3a7200',
     content: [
       { type: 'p', text: 'Istanbul sits on two continents — Europe and Asia — and embodies both. In the morning you eat a ten-plate Turkish breakfast overlooking the Bosphorus. In the afternoon you visit a 1,500-year-old Byzantine church converted to a mosque converted to a museum converted back to a mosque. In the evening you watch the sun set over the Golden Horn from a rooftop bar. No other city offers this.' },
@@ -3681,6 +3736,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Sri Lanka', 'Colombo', 'Sigiriya', 'Beach', 'Asia', 'Adventure'],
+    cities: ['colombo'],
     coverPhoto: 'photo-1589394815804-964ed0be2eb5',
     content: [
       { type: 'p', text: 'Sri Lanka is the destination that surprises everyone who goes. Visitors expect a tropical beach holiday and instead find UNESCO World Heritage ancient cities, leopard safaris that rival East Africa, hill country train journeys through tea plantations that are among Asia\'s most beautiful, colonial history, and a food culture that has been quietly influencing British cooking for decades.' },
@@ -3746,6 +3802,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Nepal', 'Kathmandu', 'Trekking', 'Himalayas', 'Everest', 'Asia', 'Adventure'],
+    cities: ['kathmandu'],
     coverPhoto: 'photo-1626621341517-bbf3d9990a23',
     content: [
       { type: 'p', text: 'Nepal contains eight of the world\'s ten highest mountains, including Everest, and is the world\'s greatest trekking destination by any measure. But Nepal is not only trekking. Kathmandu\'s Durbar Squares, Pashupatinath Temple (one of Hinduism\'s holiest sites), the meditative Boudhanath Stupa, the lakeside beauty of Pokhara — Nepal rewards travellers who look beyond the mountain trails.' },
@@ -3811,6 +3868,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Morocco', 'Marrakech', 'Sahara', 'Africa', 'Culture', 'Budget'],
+    cities: ['marrakech'],
     coverPhoto: 'photo-1597212618440-806262de4f6b',
     content: [
       { type: 'p', text: 'Morocco disorients visitors in the most pleasurable way. You arrive in Marrakech, step into the medina, and within ten minutes you are genuinely lost in a thousand-year-old labyrinth of spice merchants, leather tanners, snake charmers, and carpet sellers who will invite you for tea (always accept). This is one of the last places in the world that still genuinely feels like another world.' },
@@ -3878,6 +3936,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Europe',
     tags: ['Prague', 'Czech Republic', 'Europe', 'Budget Travel', 'History', 'Beer'],
+    cities: ['prague'],
     coverPhoto: 'photo-1541849546-216549ae216d',
     content: [
       { type: 'p', text: 'Prague survived World War II largely intact, which means it is the only major Central European city with its full medieval and Baroque architecture still standing. Walking across the Charles Bridge at 6am, with mist on the Vltava River and Prague Castle glowing above, is one of Europe\'s great experiences. And because the Czech Republic uses Czech Koruna rather than Euro, it remains significantly cheaper than Paris, Vienna, or Amsterdam.' },
@@ -3934,6 +3993,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Europe',
     tags: ['Amsterdam', 'Netherlands', 'Europe', 'Culture', 'Art', 'Museums'],
+    cities: ['amsterdam'],
     coverPhoto: 'photo-1534351590666-13e3e96b5017',
     content: [
       { type: 'p', text: 'Amsterdam is built entirely on wooden poles hammered into a swamp 800 years ago — a fact that somehow makes the graceful canal houses, the cycling culture, and the extraordinary density of world-class museums feel even more remarkable. It is also the most accessible European city for first-time visitors: compact, flat, English-speaking, and connected to every corner of Europe by direct rail.' },
@@ -3986,6 +4046,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Seoul', 'South Korea', 'Asia', 'K-pop', 'Food', 'Culture'],
+    cities: ['seoul'],
     coverPhoto: 'photo-1538485399081-7191377e8241',
     content: [
       { type: 'p', text: 'Seoul is having its global moment. Korean culture — food, music, film, skincare, fashion — has taken over the world in a decade, and Seoul is the source. But strip away Hallyu (the Korean Wave) and Seoul is still an extraordinary city on its own merits: extraordinary food at all price points, 600-year-old palaces next to neon-drenched streets, the cleanest metro in Asia, and hiking mountains in the city centre.' },
@@ -4051,6 +4112,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Europe',
     tags: ['New York', 'USA', 'Americas', 'City', 'Culture', 'Food'],
+    cities: ['new-york'],
     coverPhoto: 'photo-1485871981521-5b1fd3805eee',
     content: [
       { type: 'p', text: 'New York is the city that invented the skyline. Standing on the Brooklyn Bridge at dawn watching the Manhattan towers turn pink, walking the High Line above the Meatpacking District, or eating a $3 pizza slice at 2am while the subway rumbles below — New York delivers visceral, cinematic experiences that no amount of photographs can fully prepare you for.' },
@@ -4119,6 +4181,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Europe',
     tags: ['Lisbon', 'Portugal', 'Europe', 'Budget Travel', 'Culture', 'Food'],
+    cities: ['lisbon'],
     coverPhoto: 'photo-1762882450531-c99aca0ba328',
     content: [
       { type: 'p', text: 'Lisbon is the city Europeans go to when they are tired of paying Paris prices for Paris experiences. The hills, the trams, the fado music at midnight, the pastéis de nata still warm from the oven at Pastéis de Belém — Lisbon offers a quality of life that would cost three times more in any other Western European capital. It is the only city in this guide where you feel you are getting away with something.' },
@@ -4174,6 +4237,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'India has 7 distinct climate zones. The best time to visit Rajasthan, Kerala, Himalayas, Northeast and beaches are all different. Here is the definitive month-by-month guide.',
     date: '2025-08-01', updated: '2026-07-06', readTime: 12, category: 'India',
     tags: ['India', 'Planning', 'Best Time', 'Travel Tips', 'Seasons'],
+    cities: [],
     coverPhoto: 'photo-1524492412937-b28074a5d7da',
     content: [
       { type: 'p', text: 'India is not one destination — it is thirty. The best time to visit Rajasthan (October–March) is the worst time to visit Kerala beaches (monsoon June–September is actually great for Kerala backwaters). Planning an India trip requires matching your destinations to their seasons, not picking one month for the whole country.' },
@@ -4233,6 +4297,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Day-by-day: Ubud rice terraces, Mount Batur sunrise, Nusa Penida cliffs, Uluwatu temple and Seminyak sunsets. The most efficient and beautiful way to spend a week in Bali.',
     date: '2025-08-03', readTime: 10, category: 'Asia',
     tags: ['Bali', 'Indonesia', 'Itinerary', 'Asia', 'Beach', 'Culture'],
+    cities: ['bali'],
     coverPhoto: 'photo-1537996194471-e657df975ab4', citySlug: 'bali',
     content: [
       { type: 'p', text: 'Seven days is the ideal length for a first Bali trip. Long enough to cover the major experiences across different areas, short enough that you do not exhaust yourself. This itinerary balances culture (Ubud), adventure (Mount Batur, Nusa Penida), and relaxation (Seminyak, Uluwatu), progressing logically across the island.' },
@@ -4292,6 +4357,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Three different Goa itineraries depending on how long you have. Whether you have a long weekend or a full week, here is exactly what to do each day.',
     date: '2025-08-05', readTime: 9, category: 'India',
     tags: ['Goa', 'India', 'Itinerary', 'Beach', 'Nightlife'],
+    cities: ['goa'],
     coverPhoto: 'photo-1614082242765-7c98ca0f3df3', citySlug: 'goa',
     content: [
       { type: 'h2', text: 'Goa in 3 Days (Long Weekend)' },
@@ -4343,6 +4409,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'India\'s most pristine tropical archipelago. White sand beaches, bioluminescent plankton, world-class diving and the most turquoise water in the country. How to visit the Andamans.',
     date: '2025-08-07', updated: '2026-07-06', readTime: 9, category: 'India',
     tags: ['Andaman', 'India', 'Beach', 'Island', 'Diving', 'Snorkelling'],
+    cities: ['andaman'],
     coverPhoto: 'photo-1507525428034-b723cf961d3e', citySlug: 'andaman',
     content: [
       { type: 'p', text: 'The Andaman Islands are India\'s best-kept secret and most pristine tropical destination. 572 islands in the Bay of Bengal, most uninhabited, with some of the clearest water in Asia. The diving rivals Thailand\'s Koh Tao, the beaches rival Maldives at a fraction of the price, and the jungle interior hides wildlife found nowhere else on earth.' },
@@ -4400,6 +4467,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Amber Fort at sunrise, Hawa Mahal photography, Nahargarh sunset, Johari Bazaar gems and the best Rajasthani thali in India. Everything you need for Jaipur.',
     date: '2025-08-09', updated: '2026-07-06', readTime: 9, category: 'India',
     tags: ['Jaipur', 'Rajasthan', 'India', 'Heritage', 'Culture', 'Shopping'],
+    cities: ['jaipur'],
     coverPhoto: 'photo-1599661046827-dacff0c0f09a', citySlug: 'jaipur',
     content: [
       { type: 'p', text: 'Jaipur is India\'s most photogenic city and one of the most organised for tourists. Founded in 1727 by Maharaja Jai Singh II, the entire old city was painted pink (technically terracotta) in 1876 to welcome the Prince of Wales — and has remained pink ever since. Every wall, building, and lane in the walled city glows in the same warm colour, creating an effect unlike any other city in the world.' },
@@ -4453,6 +4521,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Coffee plantations, misty hills, waterfalls, home stays and the world\'s best filter coffee. Coorg is India\'s most underrated weekend destination.',
     date: '2025-08-11', updated: '2026-07-06', readTime: 8, category: 'India',
     tags: ['Coorg', 'Karnataka', 'India', 'Nature', 'Coffee', 'Hill Station'],
+    cities: ['coorg'],
     coverPhoto: 'photo-1582510003544-4d00b7f74220', citySlug: 'coorg',
     content: [
       { type: 'p', text: 'Coorg (officially Kodagu) is the coffee-growing district of Karnataka, tucked into the Western Ghats at 1,000–1,700 metres. Called "the Scotland of India" for its misty hills, rushing streams, and green landscapes, it receives some of India\'s highest rainfall and produces some of Asia\'s finest Arabica coffee. For weekenders from Bangalore (5 hours) and Chennai (6 hours), it is the default answer to "I need mountains and I need them this weekend."' },
@@ -4500,6 +4569,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Rolling tea gardens at 1,600 metres, cardamom valleys, Eravikulam National Park and the best chai you will ever drink. The complete guide to Munnar, Kerala.',
     date: '2025-08-13', updated: '2026-07-06', readTime: 8, category: 'India',
     tags: ['Munnar', 'Kerala', 'India', 'Hill Station', 'Tea', 'Nature'],
+    cities: ['munnar'],
     coverPhoto: 'photo-1582510003544-4d00b7f74220', citySlug: 'munnar',
     content: [
       { type: 'p', text: 'Munnar sits at 1,600 metres in the Western Ghats of Kerala, surrounded by 80,000 acres of tea plantations that are among the most productive in Asia. The town itself is ordinary but the landscape surrounding it is extraordinary — every hill carpeted in perfectly manicured tea plants, the air carrying cardamom and eucalyptus, and on clear mornings, views to the Tamil Nadu plains 1,500 metres below.' },
@@ -4547,6 +4617,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'The Alps, Lake Geneva, Zurich, Interlaken and Zermatt. Switzerland is Europe\'s most expensive country — but these strategies make it manageable.',
     date: '2025-08-15', updated: '2026-07-06', readTime: 9, category: 'Europe',
     tags: ['Switzerland', 'Europe', 'Alps', 'Interlaken', 'Budget Travel'],
+    cities: ['interlaken'],
     coverPhoto: 'photo-1506905925346-21bda4d32df4',
     content: [
       { type: 'p', text: 'Switzerland is Europe\'s most expensive country by almost every measure — and also one of its most spectacular. The Alps here are the definitive Alps. The train system is the world\'s best. The chocolate and cheese are as good as advertised. And if you use the Swiss Travel Pass, eat from supermarkets, and stay in hostels, Switzerland is manageable on a $100–150/day budget.' },
@@ -4603,6 +4674,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'La Sagrada Família, Park Güell, Las Ramblas, Barceloneta beach and the best tapas in Europe. The honest Barcelona guide including the safety warnings nobody else mentions.',
     date: '2025-08-17', updated: '2026-07-06', readTime: 9, category: 'Europe',
     tags: ['Barcelona', 'Spain', 'Europe', 'Gaudi', 'Beach', 'Food', 'Culture'],
+    cities: ['barcelona'],
     coverPhoto: 'photo-1539037116277-4db20889f2d4',
     content: [
       { type: 'p', text: 'Barcelona is Europe\'s most complete city. Beach city, art city, architecture city, food city, nightlife city — it does all of them simultaneously and brilliantly. Gaudí\'s work here is unlike any architecture in the world. The food market at La Boqueria is chaotic and wonderful. The Gothic Quarter streets are medieval and perfect. And the Mediterranean is genuinely warm from June to October.' },
@@ -4660,6 +4732,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Fushimi Inari at dawn, the Arashiyama bamboo grove, Gion\'s lantern-lit streets. Kyoto is Japan\'s cultural heart — here is how to experience it without the crowds.',
     date: '2025-08-19', updated: '2026-07-06', readTime: 9, category: 'Asia',
     tags: ['Kyoto', 'Japan', 'Asia', 'Culture', 'Temples', 'UNESCO'],
+    cities: ['kyoto'],
     coverPhoto: 'photo-1493976040374-85c8e12f0c0e', citySlug: 'kyoto',
     content: [
       { type: 'p', text: 'Kyoto was Japan\'s imperial capital for over a thousand years, which is why it has 1,600 Buddhist temples, 400 Shinto shrines, and 17 UNESCO World Heritage sites in a city of 1.5 million people. It is also the city that comes closest to preserving the Japan that existed before modernisation — wooden machiya townhouses, geisha districts, traditional craft workshops, and tea ceremony culture.' },
@@ -4706,6 +4779,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Beyond Patong Beach — Phi Phi Islands, Phang Nga Bay, Sino-Portuguese Old Town and the best Thai cooking class in Southeast Asia.',
     date: '2025-08-21', readTime: 8, category: 'Asia',
     tags: ['Phuket', 'Thailand', 'Asia', 'Beach', 'Islands', 'Diving'],
+    cities: ['phuket'],
     coverPhoto: 'photo-1589394815804-964ed0be2eb5',
     content: [
       { type: 'p', text: 'Phuket is Southeast Asia\'s most visited island, which means most visitors see the least interesting part of it — the Patong Beach strip of neon bars and tourist restaurants. The real Phuket is the Sino-Portuguese Old Town, the morning markets, the cooking classes run by people whose families have cooked Thai food for five generations, and the day trips to limestone archipelagos that look like they were designed by someone who had never seen real geography before.' },
@@ -4762,6 +4836,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Bangkok', 'Thailand', 'Itinerary', 'Street Food', 'Temples', 'Asia'],
+    cities: ['bangkok'],
     coverPhoto: 'photo-1508009603885-50cf7c579365',
     citySlug: 'bangkok',
     content: [
@@ -4812,6 +4887,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Krabi', 'Thailand', 'Beach', 'Islands', 'Asia', 'Budget Travel'],
+    cities: [],
     coverPhoto: 'photo-1507525428034-b723cf961d3e',
     content: [
       { type: 'p', text: 'Krabi is Thailand\'s limestone-and-longtail-boat postcard: cliffs rising straight out of green water, beaches reached by boat, cheaper guesthouses than Phuket and a slower pace that suits travellers who want scenery more than nightlife.' },
@@ -4864,6 +4940,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Chiang Mai', 'Thailand', 'Temples', 'Food', 'Culture', 'Asia'],
+    cities: ['chiang-mai'],
     coverPhoto: 'photo-1598970605070-a38a6ccd3a2d',
     content: [
       { type: 'p', text: 'Chiang Mai is Thailand after the volume has been turned down: old city walls, teak temples, mountain air, night markets, coffee shops and some of the country\'s best cooking classes. It is the right Thailand base if you want culture and food more than beaches.' },
@@ -4906,6 +4983,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Koh Samui', 'Thailand', 'Beach', 'Honeymoon', 'Islands', 'Asia'],
+    cities: ['koh-samui'],
     coverPhoto: 'photo-1519046904884-53103b34b206',
     content: [
       { type: 'p', text: 'Koh Samui is Thailand\'s polished Gulf island: beach resorts, coconut groves, easier honeymoon energy and a different weather pattern from Phuket and Krabi. It is not the cheapest island, but it is one of the easiest for couples and families who want comfort.' },
@@ -4947,6 +5025,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Phi Phi Islands', 'Thailand', 'Phuket', 'Krabi', 'Beach', 'Snorkelling'],
+    cities: ['phuket'],
     coverPhoto: 'photo-1507525428034-b723cf961d3e',
     content: [
       { type: 'p', text: 'The Phi Phi Islands are both over-touristed and genuinely spectacular. The mistake is expecting solitude. The win is choosing the right boat, timing and expectations so Maya Bay, lagoons and snorkelling still feel worth the trip.' },
@@ -4994,6 +5073,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Thailand', 'Hidden Gems', 'Islands', 'Chiang Mai', 'Krabi', 'Asia'],
+    cities: ['chiang-mai'],
     coverPhoto: 'photo-1507525428034-b723cf961d3e',
     content: [
       { type: 'p', text: 'Thailand is famous for Bangkok, Phuket and Phi Phi, but its best repeat-visitor trips often happen in quieter places: islands with fewer chains, mountain towns with better coffee than crowds, and national parks where the day ends before nightlife begins.' },
@@ -5035,6 +5115,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Thailand', 'Islands', 'Hidden Gems', 'Beach', 'Koh Samui', 'Krabi'],
+    cities: ['koh-samui', 'phuket'],
     coverPhoto: 'photo-1519046904884-53103b34b206',
     content: [
       { type: 'p', text: 'Thailand still has quiet islands, but they are not secret in the cinematic sense. The good ones are simply harder to reach, less packaged and less interested in becoming Phuket. That is exactly the point.' },
@@ -5076,6 +5157,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Thailand', 'December', 'Weather', 'Peak Season', 'Beach', 'Planning'],
+    cities: [],
     coverPhoto: 'photo-1528360983277-13d401cdc186',
     content: [
       { type: 'p', text: 'December is Thailand at its easiest and most expensive: dry skies on the Andaman coast, comfortable Bangkok evenings, busy beaches and hotel prices that rise sharply around Christmas and New Year.' },
@@ -5111,6 +5193,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Planning',
     tags: ['Thailand', 'Monsoon', 'Weather', 'Koh Samui', 'Phuket', 'Planning'],
+    cities: ['koh-samui', 'phuket'],
     coverPhoto: 'photo-1507525428034-b723cf961d3e',
     content: [
       { type: 'p', text: 'Thailand in monsoon is not a simple no. It can mean one heavy shower and a cheap hotel, or cancelled boats and unsafe swimming. The difference is coast, month and how flexible your itinerary is.' },
@@ -5150,6 +5233,7 @@ export const allPosts: BlogPost[] = [
     readTime: 9,
     category: 'Asia',
     tags: ['Phuket', 'Krabi', 'Thailand', 'Comparison', 'Beach', 'Asia'],
+    cities: ['phuket'],
     coverPhoto: 'photo-1589394815804-964ed0be2eb5',
     content: [
       { type: 'p', text: 'Phuket and Krabi are often treated as interchangeable beach stops. They are not. Phuket is easier, bigger, busier and more developed. Krabi is prettier in the classic limestone-cliff sense, calmer and usually cheaper, but less convenient.' },
@@ -5187,6 +5271,7 @@ export const allPosts: BlogPost[] = [
     readTime: 8,
     category: 'Asia',
     tags: ['Bangkok', 'Phuket', 'Thailand', 'Comparison', 'Beach', 'City'],
+    cities: ['bangkok', 'phuket'],
     coverPhoto: 'photo-1508009603885-50cf7c579365',
     content: [
       { type: 'p', text: 'Bangkok and Phuket answer different travel needs. Bangkok is temples, food, markets, malls and urban energy. Phuket is beaches, resorts, island tours and nightlife. The right answer for most first-timers is not either-or; it is Bangkok first, Phuket second.' },
@@ -5226,6 +5311,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Asia',
     tags: ['Thailand', 'Honeymoon', 'Phuket', 'Krabi', 'Koh Samui', 'Romantic'],
+    cities: ['koh-samui', 'phuket'],
     coverPhoto: 'photo-1519046904884-53103b34b206',
     content: [
       { type: 'p', text: 'Thailand is one of Asia\'s easiest honeymoon wins: beautiful resorts, strong flight access, excellent food, private-pool villas, spas, island tours and enough price range to suit both splurge and sensible budgets. The main decision is choosing the right coast for your month.' },
@@ -5274,6 +5360,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Manali, Shimla, Spiti, Dharamshala, Kasol, Bir Billing — the complete guide to India\'s most diverse hill state. Every destination, every season, every road trip route.',
     date: '2025-08-23', updated: '2026-07-06', readTime: 11, category: 'India',
     tags: ['Himachal Pradesh', 'Manali', 'Shimla', 'Spiti', 'India', 'Mountains'],
+    cities: ['manali', 'shimla', 'spiti'],
     coverPhoto: 'photo-1617859047452-8510bcf207fd',
     content: [
       { type: 'p', text: 'Himachal Pradesh is India\'s adventure playground. In a single state you can ski world-class slopes in January, paraglide over Himalayan valleys in October, trek to some of India\'s most remote monasteries in July, and sip chai watching snow leopards (theoretically) cross the Spiti Valley in February. No other Indian state offers this range.' },
@@ -5322,6 +5409,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'India solo can be overwhelming, transformative, and the best thing you ever do. Here is how to prepare, stay safe, budget correctly, and make the most of travelling India alone.',
     date: '2025-08-25', updated: '2026-07-06', readTime: 10, category: 'Tips',
     tags: ['India', 'Solo Travel', 'Travel Tips', 'Safety', 'Budget', 'Planning'],
+    cities: [],
     coverPhoto: 'photo-1524492412937-b28074a5d7da',
     content: [
       { type: 'p', text: 'India alone is the most intense travel experience available to humans. The sensory overload is real. The hospitality is overwhelming. The logistical challenges are instructive. And the conversations you have — with a sadhu at Varanasi Ghats, a chai seller at a train station, a family who invited you to their daughter\'s wedding — will stay with you for the rest of your life.' },
@@ -5380,6 +5468,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Victoria Peak, dim sum for breakfast, night market street food, and the most dramatic harbour skyline in the world. Hong Kong post-2020 — what is different and what is not.',
     date: '2025-08-27', updated: '2026-07-06', readTime: 9, category: 'Asia',
     tags: ['Hong Kong', 'Asia', 'China', 'Food', 'City', 'Culture'],
+    cities: ['hong-kong'],
     coverPhoto: 'photo-1558618666-fcd25c85cd64',
     content: [
       { type: 'p', text: 'Hong Kong is one of the world\'s great cities — a 1,100-square-kilometre collision of Cantonese culture, British colonial history, and Chinese modernity, squeezed onto a peninsula and islands of extraordinary topography. The skyline from Kowloon waterfront is arguably the world\'s greatest urban view. The dim sum is the best in Asia. And despite the political changes of recent years, the city remains extraordinary for visitors.' },
@@ -5427,6 +5516,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Vietnam for $30/day, Nepal for $25/day, Sri Lanka on a budget, Morocco in a week. The cheapest international destinations for Indian travellers with visa costs, flights and budgets.',
     date: '2025-08-29', updated: '2026-07-06', readTime: 10, category: 'Tips',
     tags: ['Budget Travel', 'India', 'Planning', 'Cheap Travel', 'International'],
+    cities: [],
     coverPhoto: 'photo-1537996194471-e657df975ab4',
     content: [
       { type: 'p', text: 'Indian passport holders face visa requirements for most countries — but several of the world\'s most beautiful destinations offer visa-free or visa-on-arrival access, cheap flights from Indian metros, and daily budgets that rival staying in an Indian hill station. This list ranks the 10 cheapest international trips from India by total cost.' },
@@ -5478,6 +5568,7 @@ export const allPosts: BlogPost[] = [
     excerpt: 'Munnar vs Ooty vs Coorg vs Shimla vs Manali — which hill station is right for you? The complete ranked guide with best time, how to get there and what to do.',
     date: '2025-08-31', updated: '2026-07-06', readTime: 10, category: 'India',
     tags: ['Hill Stations', 'India', 'Shimla', 'Munnar', 'Coorg', 'Planning'],
+    cities: ['shimla', 'munnar', 'coorg'],
     coverPhoto: 'photo-1648566924598-aeb39df9ad79',
     content: [
       { type: 'p', text: 'India has more hill stations than any country on earth — a legacy of British India, when every major city built a cooler escape in the nearest mountains. Some are extraordinary natural landscapes. Some are overcrowded weekend destinations that have lost most of their charm. Here is the ranked guide.' },
@@ -5528,6 +5619,7 @@ export const allPosts: BlogPost[] = [
     readTime: 11,
     category: 'Asia',
     tags: ['Vietnam', 'Itinerary', 'Hanoi', 'Hoi An', 'Ho Chi Minh City', 'Indian Travellers', 'Asia', '6 Days'],
+    cities: ['ho-chi-minh-city', 'hanoi', 'hoi-an'],
     coverPhoto: 'photo-1559592413-7cec4d0cae2b',
     citySlug: 'ho-chi-minh-city',
     content: [
@@ -5593,6 +5685,7 @@ export const allPosts: BlogPost[] = [
       { question: 'Is 6 days enough for Vietnam?', answer: '6 days covers the essential north-to-south highlights perfectly — Hanoi, Hoi An, and Ho Chi Minh City. You won\'t have time for Ha Long Bay overnight cruise or Sapa, but you\'ll see Vietnam\'s full personality. For more depth, 10 days is ideal.' },
       { question: 'How much does a 6-day Vietnam trip cost from India?', answer: 'Budget ₹33,000–57,000 per person (including flights). Mid-range ₹57,000–98,000. Vietnam is comparable to Thailand in cost and cheaper than Bali for most categories.' },
       { question: 'Do Indians need a visa for Vietnam?', answer: 'Yes. Indian passport holders need a Vietnam e-visa ($25 / ₹2,100). Apply at evisa.gov.vn — approved in 3–7 working days. Valid 90 days, multiple entry.' },
+      { question: 'What cities does a 6-day Vietnam itinerary cover?', answer: 'A 6-day Vietnam itinerary covers Hanoi (days 1–2) with its Old Quarter and egg coffee, Hoi An (days 3–4) for the lantern-lit Ancient Town and tailors, and Ho Chi Minh City (days 5–6) for war history, street food and the Mekong.' },
     ],
   },
 
@@ -5605,6 +5698,7 @@ export const allPosts: BlogPost[] = [
     readTime: 12,
     category: 'Asia',
     tags: ['Vietnam', 'Itinerary', 'Hanoi', 'Hoi An', 'Ho Chi Minh City', 'Indian Travellers', 'Asia', '7 Days'],
+    cities: ['hanoi', 'ho-chi-minh-city', 'hoi-an'],
     coverPhoto: 'photo-1583417319070-4a69db38a482',
     citySlug: 'hanoi',
     content: [
@@ -5664,6 +5758,8 @@ export const allPosts: BlogPost[] = [
     faqs: [
       { question: 'Is 7 days enough for Vietnam?', answer: '7 days is the ideal minimum — you can cover Hanoi (with Ha Long Bay), Hoi An, and Ho Chi Minh City at a comfortable pace. To add Sapa trekking or a Mekong Delta overnight, plan for 10–12 days.' },
       { question: 'What is the best route for Vietnam in 7 days?', answer: 'North to south: Hanoi (3 nights) → Hoi An (2 nights) → Ho Chi Minh City (2 nights). Fly between each city on budget airlines VietJet or Bamboo for ₹1,500–4,000 per flight.' },
+      { question: 'Do Indians need a visa for Vietnam?', answer: 'Yes. Indian passport holders need a Vietnam e-visa ($25 / ₹2,100), applied for at evisa.gov.vn and approved in 3–7 working days. It is valid for 90 days with multiple entry.' },
+      { question: 'How much does a 7-day Vietnam trip cost from India?', answer: 'A 7-day Vietnam trip costs roughly ₹42,000–78,000 per person on a budget and ₹74,000–1,37,000 mid-range, including return flights from India. Vietnam is comparable to Thailand in cost and cheaper than Bali for most categories.' },
     ],
   },
 
@@ -5677,6 +5773,7 @@ export const allPosts: BlogPost[] = [
     readTime: 12,
     category: 'Asia',
     tags: ['Japan', 'Itinerary', 'Tokyo', 'Kyoto', 'Osaka', 'Indian Travellers', 'Asia', '6 Days'],
+    cities: ['tokyo', 'kyoto', 'osaka'],
     coverPhoto: 'photo-1540959733332-eab4deabeeaf',
     citySlug: 'tokyo',
     content: [
@@ -5747,6 +5844,7 @@ export const allPosts: BlogPost[] = [
       { question: 'Is 6 days enough for Japan?', answer: '6 days covers the Tokyo–Kyoto–Osaka golden triangle well. You won\'t have time for Hiroshima, Mt Fuji, or Hokkaido. For first-time visitors this route is perfect — add a 2nd trip for the rest.' },
       { question: 'How much does 6 days in Japan cost from India?', answer: 'Budget ₹85,000–1,25,000 per person (including flights). Mid-range ₹1,20,000–1,93,000. Japan is more expensive than Southeast Asia but comparable to Europe, and the quality and experience far exceed the price.' },
       { question: 'Do Indians need a visa for Japan?', answer: 'Yes. Indian passport holders need a Japan Sticker Visa from the Japanese Consulate. Apply with confirmed hotel bookings, return flight, bank statement. Processing 5–7 working days. Fee ₹550.' },
+      { question: 'What cities does a 6-day Japan itinerary cover?', answer: 'The classic 6-day Japan route covers Tokyo (days 1–3) for temples, neon districts and world-class food, Kyoto (days 4–5) for temples, geisha districts and bamboo groves, and Osaka (day 6) for street food and the castle before departure — all connected by bullet train.' },
     ],
   },
 
@@ -5759,6 +5857,7 @@ export const allPosts: BlogPost[] = [
     readTime: 13,
     category: 'Asia',
     tags: ['Japan', 'Itinerary', 'Tokyo', 'Kyoto', 'Osaka', 'Hiroshima', 'Indian Travellers', 'Asia', '7 Days'],
+    cities: ['kyoto', 'tokyo', 'hiroshima', 'osaka'],
     coverPhoto: 'photo-1493976040374-85c8e12f0c0e',
     citySlug: 'kyoto',
     content: [
@@ -5815,6 +5914,8 @@ export const allPosts: BlogPost[] = [
     faqs: [
       { question: 'What is the best 7-day Japan itinerary?', answer: 'Tokyo (3 nights) → Hiroshima + Miyajima (1 day stop) → Kyoto (2 nights) → Osaka (1 day, fly out). This covers Japan\'s urban scale (Tokyo), historical depth (Hiroshima), cultural peak (Kyoto), and food culture (Osaka) in one seamless bullet-train loop.' },
       { question: 'Is Japan expensive for Indian travellers?', answer: 'More expensive than Southeast Asia, comparable to Europe. Budget ₹90,000–1,34,000 per person for 7 days including flights. The 7-day JR Pass (₹26,000) is the single best investment — it covers all Shinkansen travel between cities.' },
+      { question: 'Do Indians need a visa for Japan?', answer: 'Yes. Indian passport holders need a Japan Sticker Visa from the Japanese Consulate, applied for with confirmed hotel bookings, return flights and a bank statement. Processing takes 5–7 working days and the fee is ₹550.' },
+      { question: 'What cities does a 7-day Japan itinerary cover?', answer: 'A 7-day Japan itinerary covers Tokyo (days 1–3), a stop at Hiroshima and Miyajima Island (day 4), Kyoto (days 5–6), and Osaka (day 7) — one seamless bullet-train loop through Japan\'s biggest city, its historical heart, its cultural capital and its food capital.' },
     ],
   },
 
@@ -5828,6 +5929,7 @@ export const allPosts: BlogPost[] = [
     readTime: 10,
     category: 'Europe',
     tags: ['Georgia', 'Itinerary', 'Tbilisi', 'Kazbegi', 'Indian Travellers', 'Europe', '6 Days', 'Visa Free'],
+    cities: ['tbilisi'],
     coverPhoto: 'photo-1589656966895-2f33e7653819',
     citySlug: 'tbilisi',
     content: [
@@ -5895,6 +5997,7 @@ export const allPosts: BlogPost[] = [
       { question: 'Do Indians need a visa for Georgia?', answer: 'No. Indian passport holders can enter Georgia visa-free for up to 365 days. Just your passport and a return ticket. No application, no fees — one of the most generous visa policies in the world for Indian travellers.' },
       { question: 'Is Georgia safe for Indian tourists?', answer: 'Yes. Georgia is one of the safest countries in Europe by crime statistics. Petty crime is very low, locals are welcoming to Indian visitors, and the country has a strong tradition of hospitality (the Georgian word "mgzavri" for guest has a deeply sacred cultural meaning).' },
       { question: 'How much does 6 days in Georgia cost from India?', answer: 'Budget ₹31,000–57,000 per person (including flights). Georgia is significantly cheaper than Western Europe and comparable to Southeast Asia. Wine, food, accommodation, and transport are all excellent value.' },
+      { question: 'What is the best time to visit Georgia?', answer: 'May–June and September–October are the best times to visit Georgia — warm days, mild evenings and accessible mountain roads. Kazbegi is snowbound from November to March, while July–August is hot in Tbilisi (around 35°C) but perfect in the mountains.' },
     ],
   },
 
@@ -5907,6 +6010,7 @@ export const allPosts: BlogPost[] = [
     readTime: 12,
     category: 'Europe',
     tags: ['Georgia', 'Itinerary', 'Tbilisi', 'Kazbegi', 'Batumi', 'Indian Travellers', 'Europe', '7 Days', 'Visa Free'],
+    cities: ['tbilisi'],
     coverPhoto: 'photo-1589656966895-2f33e7653819',
     citySlug: 'tbilisi',
     content: [
@@ -5960,6 +6064,8 @@ export const allPosts: BlogPost[] = [
     faqs: [
       { question: 'Is Georgia worth visiting for Indian tourists?', answer: 'Absolutely. Georgia offers European-level scenery and culture at Southeast Asian prices, with zero visa hassle for Indians (365-day visa-free). The combination of Tbilisi\'s charming Old Town, Kazbegi\'s Caucasus mountain scenery, and ancient wine culture makes it one of the best-value travel destinations in the world right now.' },
       { question: 'What is the best time to visit Georgia?', answer: 'May–June and September–October are ideal — warm days, mild evenings, and the mountains accessible. July–August is hot in Tbilisi (35°C) but beautiful in Kazbegi. Avoid December–March for Kazbegi (snowbound roads), but Tbilisi in winter is cosy and atmospheric.' },
+      { question: 'Do Indians need a visa for Georgia?', answer: 'No. Indian passport holders can enter Georgia visa-free for up to 365 days — just a passport and a return ticket, with no application and no fees.' },
+      { question: 'How much does 7 days in Georgia cost from India?', answer: 'A 7-day Georgia trip costs roughly ₹34,000–60,000 per person on a budget and ₹58,000–1,06,000 mid-range, including return flights from India. Georgia is significantly cheaper than Western Europe and comparable to Southeast Asia in daily costs.' },
     ],
   },
 
@@ -5967,6 +6073,20 @@ export const allPosts: BlogPost[] = [
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return allPosts.find(p => p.slug === slug);
+}
+
+/** Indexable posts covering a city — powers the "Guides & Itineraries" module
+ *  on city pages. Matches the explicit `cities` field first, then falls back to
+ *  citySlug / tag matching so unpopulated future posts still surface. */
+export function getPostsForCity(citySlug: string, cityName: string, count = 6): BlogPost[] {
+  const name = cityName.toLowerCase();
+  return allPosts
+    .filter(p => isIndexablePost(p) && (
+      p.cities?.includes(citySlug) ||
+      p.citySlug === citySlug ||
+      p.tags.some(t => t.toLowerCase() === name || t.toLowerCase() === citySlug)
+    ))
+    .slice(0, count);
 }
 
 export function getRelatedPosts(post: BlogPost, count = 3): BlogPost[] {
