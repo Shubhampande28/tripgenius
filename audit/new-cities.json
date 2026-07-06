@@ -1,0 +1,125 @@
+{
+  "dehradun": {
+    "title": "Dehradun",
+    "extract": "Dehradun, also known as Dehra Doon, is the winter capital and the most populous city of the Indian state of Uttarakhand. It is the administrative headquarters of the eponymous district and is governed by the Dehradun Municipal Corporation, with the Uttarakhand Legislative Assembly holding its winter sessions in the city as its winter capital. Part of the Garhwal division, and housing the headquarters of its Divisional Commissioner, Dehradun is one of the \"Counter Magnets\" of the National Capital Region (NCR) being developed as an alternative centre of growth to help ease the migration and population explosion in the Delhi metropolitan area and to establish a smart city in the Himalayas.",
+    "coordinates": {
+      "lat": 30.345,
+      "lng": 78.029
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dehradun_view_from_maggi_point.jpg"
+  },
+  "trivandrum": {
+    "title": "Thiruvananthapuram",
+    "extract": "Thiruvananthapuram, also known as Trivandrum, is the capital city of the Indian state of Kerala. As of 2011, the Thiruvananthapuram Municipal Corporation had a population of 957,730 over an area of 214.86 km2, making it the most populous city in Kerala. The larger Thiruvananthapuram metropolitan area has over 1.7 million inhabitants within an area of 543 km2. Thiruvananthapuram is one of the few cities in India that functions as a capital city, a heritage city, a maritime city, an information technology city, a space research city, a defence city, an automotive tech city, a bioscience city, a tourism city, and a city known for its research and development institutions. It is also among the few cities in the world where both an international airport and an international seaport are located within the city in close proximity to the city center.",
+    "coordinates": {
+      "lat": 8.52411111,
+      "lng": 76.93661111
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Padmanabhaswamy_Temple_Thiruvananthapuram.jpg/3840px-Padmanabhaswamy_Temple_Thiruvananthapuram.jpg"
+  },
+  "kozhikode": {
+    "title": "Kozhikode",
+    "extract": "Kozhikode, also known as Calicut, is a city along the Malabar Coast in the state of Kerala in India. The city is also known as the City of Spices.",
+    "coordinates": {
+      "lat": 11.24888889,
+      "lng": 75.78388889
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Kozhikode_beach_kites.jpg/3840px-Kozhikode_beach_kites.jpg"
+  },
+  "thrissur": {
+    "title": "Thrissur",
+    "extract": "Thrissur, formerly Trichur, also known by its historical name Thrissivaperur, is a city and the headquarters of the Thrissur district in Kerala, India. It is the third largest urban agglomeration in Kerala after Kochi and Kozhikode, and the 21st largest in India. Thrissur is classified as a Tier-2 city by the Government of India. The city is built around a 65-acre (26 ha) hillock called Thekkinkadu Maidanam which seats the Vadakkumnathan temple. It is located 284 kilometres (176 mi) north-west of the state's capital city, Thiruvananthapuram. Thrissur was once the capital of the Kingdom of Cochin, and was a point of contact for the Assyrians, Greeks, Persians, Arabs, Romans, Portuguese, Dutch and English.",
+    "coordinates": {
+      "lat": 10.52761111,
+      "lng": 76.21438889
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/JJP_112.jpg"
+  },
+  "vrindavan": {
+    "title": "Vrindavan",
+    "extract": "Vrindavan, also spelt Vrindaban and Brindaban, is a historical city in the Mathura district of Uttar Pradesh, India. It is located in the Braj Bhoomi region and holds religious importance for Hindus, who believe that Krishna, one of the main Gods in Hinduism, spent most of his childhood in this city. Vrindavan has about 5,500 temples dedicated to the worship of Krishna and his chief consort, Radha. It is one of the most sacred places for Vaishnava traditions.",
+    "coordinates": {
+      "lat": 27.58,
+      "lng": 77.7
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Iskon_Temple%2C_Vrindawan.jpg/3840px-Iskon_Temple%2C_Vrindawan.jpg"
+  },
+  "shirdi": {
+    "title": "Shirdi",
+    "extract": "Shirdi is a town and pilgrimage site in the Indian state of Maharashtra. Shirdi is located in the Rahata taluka of Ahmednagar district. It is most well known for being the home of the 19th-century Indian saint Sai Baba.",
+    "coordinates": {
+      "lat": 19.77,
+      "lng": 74.48
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg"
+  },
+  "patna": {
+    "title": "Patna",
+    "extract": "Patna, historically known as Pāṭaliputra, is the capital and largest city of the Indian state of Bihar. According to the United Nations, as of 2018, Patna had a population of 2.35 million, making it the 19th largest city in India. Covering 250 square kilometres (97 sq mi) and over 2.5 million people, its urban agglomeration is the 18th largest in India. Patna also serves as the seat of Patna High Court. The Buddhist, Hindu and Jain pilgrimage centres of Vaishali, Rajgir, Nalanda, Bodh Gaya and Pawapuri are nearby and Patna City is a sacred city for Sikhs as the tenth Sikh Guru, Guru Gobind Singh was born here. The modern city of Patna is mainly on the southern bank of the river Ganges. The city also straddles the rivers Son, Gandak and Punpun. The city is approximately 35 kilometres (22 mi) in length and 16 to 18 kilometres wide.",
+    "coordinates": {
+      "lat": 25.59388889,
+      "lng": 85.1375
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Patna_high_court1.jpg"
+  },
+  "nagpur": {
+    "title": "Nagpur",
+    "extract": "Nagpur is the largest and most populous city in central India. It is the second capital and the third-largest city of the Indian state Maharashtra. Also known as the \"Orange City\", Nagpur is the 13th largest city in India by population. According to an Oxford's Economics report, Nagpur is projected to be the fifth fastest growing city in the world from 2019 to 2035 with an average growth of 8.41%. It has been proposed as one of the Smart Cities in Maharashtra and is one of the top ten cities in India in Smart City Project execution.",
+    "coordinates": null,
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/38/Deekshabhoomi_-_panoramio.jpg"
+  },
+  "indore": {
+    "title": "Indore",
+    "extract": "Indore is the largest city of the Indian state of Madhya Pradesh where it serves as the capital and the administrative headquarters of the eponymous district and division. Modern-day Indore was established on the banks of the Kanh and Saraswati rivers and traces its roots to its 16th-century founding as a trading hub between the Deccan Plateau and Delhi. Following the conquest of Malwa by Peshwa Baji Rao I, the city came under the control of the Maratha Empire until its annexation by the British East India Company.Prior to Indian independence, the Kingdom of Indore was a nineteen Gun Salute Princely State of the British Raj with the Holkars as rulers.",
+    "coordinates": {
+      "lat": 22.71861111,
+      "lng": 75.855
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/3840px-Indore_Rajwada01.jpg"
+  },
+  "raipur": {
+    "title": "Raipur",
+    "extract": "Raipur is the capital city of the Indian state of Chhattisgarh. Raipur is also the administrative headquarters of Raipur district and Raipur division, and the most populous city of the state. It was a part of Madhya Pradesh before the state of Chhattisgarh was formed on 1 November 2000. It is a major commercial hub for trade and commerce in the region. It has exponential industrial growth and has become a major business hub in Central India. It has been ranked as India's 6th cleanest city as per the Swachh Survekshan for the year 2021.. Raipur is ranked 7th in India's Ease of Living Index 2022 and 7th in the Municipal Performance Index 2020, both by the Ministry of Housing and Urban Affairs.",
+    "coordinates": {
+      "lat": 21.24444444,
+      "lng": 81.63055556
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/19/Sri_Ram_Mandir_raipur_.jpg"
+  },
+  "vijayawada": {
+    "title": "Vijayawada",
+    "extract": "Vijayawada, also called as Bezawada, is the second largest city and a major commercial hub in the Indian state of Andhra Pradesh. The city forms an integral part of the Andhra Pradesh Capital Region and is situated on the banks of the Krishna River, flanked by the Eastern Ghats and the Indrakeeladri Hills.",
+    "coordinates": {
+      "lat": 16.5144,
+      "lng": 80.6192
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Prakasham_Barriage%2C_Vijayawada.jpg/3840px-Prakasham_Barriage%2C_Vijayawada.jpg"
+  },
+  "port-blair": {
+    "title": "Port Blair",
+    "extract": "Port Blair, officially named Sri Vijaya Puram, is the capital city of the Indian union territory of Andaman and Nicobar Islands. It is located on the South Andaman Island situated between the Bay of Bengal to the west and the Andaman Sea to the east. It is located approximately 1,190 km (740 mi) from Chennai and 1,255 km (780 mi) from Kolkata in mainland India. It is the headquarters of the South Andaman district, and the union territory's only notified town.",
+    "coordinates": {
+      "lat": 11.66833333,
+      "lng": 92.73777778
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9b/View_from_South_Point%2C_%28Port_Blair%2C_India%29.jpg"
+  },
+  "ranchi": {
+    "title": "Ranchi",
+    "extract": "Ranchi is the capital city and also the largest district by population of the Indian state of Jharkhand. Ranchi was the centre of the Jharkhand movement, which called for a separate state for the tribal regions of South Bihar, northern Odisha, western West Bengal and the eastern area of what is present-day Chhattisgarh. The Jharkhand state was formed on 15 November 2000 by carving out the Bihar divisions of Chota Nagpur and Santhal Parganas. Ranchi is being developed as a Smart City because it was selected as one of the hundred Indian cities to be developed as a smart city under PM Narendra Modi's flagship Smart Cities Mission.",
+    "coordinates": {
+      "lat": 23.36,
+      "lng": 85.33
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Ranchi_Cityscape.jpg"
+  },
+  "salem": {
+    "title": "Salem, Tamil Nadu",
+    "extract": "Salem is a city in the Indian state of Tamil Nadu. It is located on the banks of the Thirumanimutharu River and surrounded by the Eastern Ghats. It is the fifth largest city in the state as per the 2011 census. It is the administrative capital of Salem District and is administered by the Salem Municipal Corporation which was established in 1994.",
+    "coordinates": {
+      "lat": 11.65,
+      "lng": 78.15
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Salem_city_from_Hills.jpg"
+  }
+}

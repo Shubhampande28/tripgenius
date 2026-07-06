@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { Plane, Hotel, Globe, Clock, Coins, MapPin, Tag } from 'lucide-react';
+import { Plane, Hotel, Globe, Clock, Coins, MapPin, Tag, Ticket } from 'lucide-react';
 import { City } from '@/lib/types';
 import { cities } from '@/lib/cities';
+import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
 
 export default function CitySidebar({ city }: { city: City }) {
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 4);
@@ -37,7 +38,9 @@ export default function CitySidebar({ city }: { city: City }) {
         </div>
         <div className="space-y-3">
           <a
-            href="#"
+            href={hotelUrl(city.name)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-3 p-3.5 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/20 transition-all duration-200 group"
           >
             <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -52,7 +55,26 @@ export default function CitySidebar({ city }: { city: City }) {
           </a>
 
           <a
-            href="#"
+            href={activitiesUrl(city.slug, city.name)}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="flex items-center gap-3 p-3.5 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/20 transition-all duration-200 group"
+          >
+            <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+              <Ticket size={16} className="text-accent" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-primary-text group-hover:text-accent transition-colors">
+                Tours &amp; Activities
+              </p>
+              <p className="text-xs text-muted">{activitiesLabel(city.slug)} · 8% off</p>
+            </div>
+          </a>
+
+          <a
+            href={flightUrl(city.name)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-3 p-3.5 rounded-xl bg-teal/10 border border-teal/20 hover:bg-teal/20 transition-all duration-200 group"
           >
             <div className="w-9 h-9 rounded-lg bg-teal/20 flex items-center justify-center flex-shrink-0">

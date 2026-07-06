@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ArrowRight, Sun, Sunset, Moon } from 'lucide-react';
+import { Sparkles, ArrowRight, Sun, Sunset } from 'lucide-react';
 
 const sampleOutput = {
   destination: 'Bali, Indonesia',
-  day: 'Day 1 — Arrival & Ubud Immersion',
+  day: 'Day 1 - Arrival & Ubud Immersion',
   activities: [
     {
       icon: Sun,
@@ -22,13 +22,6 @@ const sampleOutput = {
       title: 'Sacred Monkey Forest & Ubud Palace',
       desc: "Wander through the ancient forest sanctuary, then explore Ubud's royal palace and artisan market streets.",
       label: '13:00 – 17:00',
-    },
-    {
-      icon: Moon,
-      time: 'Evening',
-      title: 'Kecak Fire Dance at Uluwatu',
-      desc: 'Drive to the cliff-top temple for the most dramatic sunset ceremony in Bali. Dinner at Sundara beach club afterward.',
-      label: '18:00 – 22:00',
     },
   ],
 };
@@ -50,24 +43,22 @@ export default function AIPlannerTeaser() {
             transition={{ duration: 0.7 }}
           >
             <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
-              AI Trip Planner
+              Self-Serve Trip Planner
             </p>
             <h2 className="font-heading text-4xl sm:text-5xl font-semibold text-primary-text leading-tight">
-              Your Personal{' '}
-              <span className="gradient-text-accent">Travel Architect</span>
+              Plan your own trip in minutes
             </h2>
             <p className="mt-5 text-muted leading-relaxed">
-              Describe your dream trip and watch Claude AI build a complete, personalized
-              itinerary in seconds — tailored to your travel style, budget, and the moments that
-              matter most to you.
+              Choose a destination, dates, travel style and interests. TripGenius builds a
+              flexible plan you can adjust around real days, not a forced checklist.
             </p>
 
             <ul className="mt-8 space-y-3">
               {[
-                'Day-by-day morning/afternoon/evening breakdowns',
-                'Estimated budget for accommodation, food & activities',
-                'Local insider tips woven into every recommendation',
-                'Exportable as PDF to take on your journey',
+                'Flexible day plans with no repeated activities',
+                'Budget guidance for stays, food, transport and experiences',
+                'Local tips woven into the itinerary',
+                'Free and instant, with no sign-up',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-muted">
                   <span className="mt-0.5 w-4 h-4 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 text-xs font-bold">✓</span>
@@ -82,7 +73,7 @@ export default function AIPlannerTeaser() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent text-white font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-200 shadow-lg shadow-accent/25"
               >
                 <Sparkles size={16} />
-                Try the Planner
+                Build my trip
               </Link>
               <Link
                 href="/#cities"

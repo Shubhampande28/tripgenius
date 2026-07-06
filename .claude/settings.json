@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3)",
+      "Bash(awk -F'\\(' '{print $2}')",
+      "Bash(awk -F',' '{print $1}')",
+      "Bash(awk -F\"ts:\\\\\\(\" '{print $2}')",
+      "Bash(awk -F, '{if \\($1+0 >= 700\\) print $1}')",
+      "Bash(awk '{if \\($1+0 >= 700\\) print $1}')",
+      "Bash(python -c \"import sys,re; lines=[re.search\\(r'\\\\\\(\\(\\\\d+\\),', l\\) for l in sys.stdin]; nums=[int\\(m.group\\(1\\)\\) for m in lines if m]; print\\([n for n in sorted\\(set\\(nums\\)\\) if n>=700]\\)\")",
+      "WebFetch(domain:www.pexels.com)",
+      "Bash(ssh root@srv1634035 \"curl -s -X POST http://localhost:3001/api/instagram/carousel-post -H 'Authorization: Bearer Arhamjain@0304' -H 'Content-Type: application/json' -d '{\\\\\"citySlug\\\\\":\\\\\"bali\\\\\"}'\")",
+      "Bash(git revert *)",
+      "WebFetch(domain:www.tripgenius.in)",
+      "WebFetch(domain:search.google.com)",
+      "WebFetch(domain:pagespeed.web.dev)",
+      "Bash(npx eslint *)",
+      "Bash(git commit -m ' *)",
+      "PowerShell(npx tsc --noEmit 2>&1)",
+      "Bash(awk '/slug: \"bali\"/,/^  },$/' src/lib/cities.ts)"
+    ]
+  }
+}

@@ -14,6 +14,12 @@ const timeColors = {
   evening:   'text-purple-400 bg-purple-500/10 border-purple-500/20',
 };
 
+function timeKey(time: string): keyof typeof timeIcons {
+  const key = time.toLowerCase();
+  if (key === 'afternoon' || key === 'evening') return key;
+  return 'morning';
+}
+
 export default function ItineraryDisplay({ itinerary }: { itinerary: TripItinerary }) {
   return (
     <motion.div
@@ -28,7 +34,7 @@ export default function ItineraryDisplay({ itinerary }: { itinerary: TripItinera
           <div>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
-              <span className="text-xs font-semibold text-teal uppercase tracking-wider">AI Generated</span>
+              <span className="text-xs font-semibold text-teal uppercase tracking-wider">Ready to Go</span>
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
               {itinerary.destination}
@@ -84,16 +90,13 @@ export default function ItineraryDisplay({ itinerary }: { itinerary: TripItinera
           </div>
 
           {/* Activities */}
-          <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {([
-              { key: 'morning',   slot: day.morning },
-              { key: 'afternoon', slot: day.afternoon },
-              { key: 'evening',   slot: day.evening },
-            ] as const).map(({ key, slot }) => {
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {day.activities.map((slot) => {
+              const key = timeKey(slot.time);
               const Icon = timeIcons[key];
               const colorClass = timeColors[key];
               return (
-                <div key={key} className="bg-elevated border border-border/50 rounded-xl p-4">
+                <div key={slot.activity} className="bg-elevated border border-border/50 rounded-xl p-4">
                   <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold mb-3 ${colorClass}`}>
                     <Icon size={11} />
                     {slot.time}

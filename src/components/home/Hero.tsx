@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { Search, ArrowRight, MapPin, Globe } from 'lucide-react';
-import { cities } from '@/lib/cities';
+import { allCities } from '@/lib/cities';
 
-const citySuggestions = cities.map((c) => c.name);
+const citySuggestions = allCities.map((c) => c.name);
 
 export default function Hero() {
   const [query, setQuery] = useState('');
@@ -19,7 +20,7 @@ export default function Hero() {
 
   const handleSearch = (cityName?: string) => {
     const target = cityName ?? query;
-    const city = cities.find((c) => c.name.toLowerCase() === target.toLowerCase());
+    const city = allCities.find((c) => c.name.toLowerCase() === target.toLowerCase());
     if (city) router.push(`/cities/${city.slug}`);
   };
 
@@ -29,7 +30,7 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
+      {/* Dark background */}
       <div className="absolute inset-0 bg-dark">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(255,107,53,0.15),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_60%,rgba(0,201,167,0.08),transparent)]" />
@@ -114,7 +115,10 @@ export default function Hero() {
               onBlur={() => setTimeout(() => setFocused(false), 150)}
               onKeyDown={handleKeyDown}
               placeholder="Search a city — Bali, Tokyo, Paris…"
-              className="flex-1 bg-transparent px-4 py-4 text-primary-text placeholder:text-muted/60 focus:outline-none text-base"
+              aria-label="Search destinations"
+              aria-autocomplete="list"
+              aria-expanded={focused && filtered.length > 0}
+              className="flex-1 bg-transparent px-4 py-4 text-primary-text placeholder:text-muted/60 focus:outline-none focus-visible:ring-0 text-base"
             />
             <button
               onClick={() => handleSearch()}
@@ -147,14 +151,15 @@ export default function Hero() {
           transition={{ delay: 0.9 }}
           className="mt-6 flex items-center justify-center gap-6 text-xs text-muted"
         >
-          {['Bali', 'Tokyo', 'Paris', 'Dubai'].map((city) => (
-            <button
-              key={city}
-              onClick={() => handleSearch(city)}
-              className="hover:text-accent transition-colors"
-            >
-              {city}
-            </button>
+          {[
+            { name: 'Bali', slug: 'bali' },
+            { name: 'Tokyo', slug: 'tokyo' },
+            { name: 'Paris', slug: 'paris' },
+            { name: 'Dubai', slug: 'dubai' },
+          ].map(({ name, slug }) => (
+            <Link key={name} href={`/cities/${slug}`} className="hover:text-accent transition-colors">
+              {name}
+            </Link>
           ))}
         </motion.div>
 

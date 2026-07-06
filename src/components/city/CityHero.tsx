@@ -1,19 +1,34 @@
 'use client';
 
-import Image from 'next/image';
+import SafeImage from '@/components/SafeImage';
+import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
+import { Clock, DollarSign } from 'lucide-react';
 import { City } from '@/lib/types';
+import Breadcrumb from './Breadcrumb';
 
-export default function CityHero({ city }: { city: City }) {
+const UPDATED = 'May 2026';
+
+// "{City} is best visited in {best time}. {What it's known for}. A typical
+// trip costs {budget} per person." — assembled only from structured city data.
+function answerFirstIntro(city: City): string {
+  const firstSentence = city.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? city.description;
+  const knownFor = firstSentence.trim().replace(/[.!?]$/, '');
+  const budget = city.stats.budget.trim();
+  return `${city.name} is best visited in ${city.stats.bestTime}. ${knownFor}. A typical trip costs ${budget} per person.`;
+}
+
+export default function CityHero({ city, countrySlug }: { city: City; countrySlug?: string }) {
   return (
     <section className="relative min-h-[80vh] flex items-end overflow-hidden">
 
       {/* Full-bleed hero photo */}
-      <Image
-        src={city.heroImage}
-        alt={`${city.name}, ${city.country}`}
+      <SafeImage
+        src={getCityImageUrl(city.slug, 'hero') ?? city.heroImage}
+        alt={`${city.name} travel guide — ${city.tagline}, ${city.country}`}
+        city={city.slug}
+        accentColor={city.accentColor}
         fill
         priority
         sizes="100vw"
@@ -21,14 +36,11 @@ export default function CityHero({ city }: { city: City }) {
         style={{ transformOrigin: 'center top' }}
       />
 
-      {/* Dark base overlay so text always reads well */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Single clean gradient — photo shows fully in top 50%, dark enough at bottom for text */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/25 to-black/10" />
 
-      {/* Cinematic bottom gradient — strong near text, fades upward */}
-      <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
-
-      {/* Subtle top vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
+      {/* Top nav bar fade — just enough for logo and nav legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-transparent" />
 
       {/* Colour tint matching the city's accent */}
       <div
@@ -38,16 +50,8 @@ export default function CityHero({ city }: { city: City }) {
         }}
       />
 
-      {/* Back nav */}
-      <div className="absolute top-24 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-20">
-        <Link
-          href="/#cities"
-          className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors group backdrop-blur-sm bg-black/20 border border-white/10 px-3 py-1.5 rounded-full"
-        >
-          <ArrowLeft size={13} className="group-hover:-translate-x-1 transition-transform" />
-          All Cities
-        </Link>
-      </div>
+      {/* Breadcrumb nav */}
+      <Breadcrumb cityName={city.name} country={city.country} countrySlug={countrySlug} />
 
       {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-32 w-full">
@@ -67,9 +71,10 @@ export default function CityHero({ city }: { city: City }) {
             <span className="text-white/80">{city.country}</span>
           </motion.div>
 
-          {/* City name */}
-          <h1 className="font-heading text-6xl sm:text-7xl lg:text-9xl font-bold text-white leading-none drop-shadow-2xl">
-            {city.name}
+          {/* City name — "Travel Guide" kept inside the H1 for query match */}
+          <h1 className="font-heading font-bold text-white drop-shadow-2xl">
+            <span className="block text-6xl sm:text-7xl lg:text-9xl leading-none">{city.name}</span>
+            <span className="block mt-2 text-xl sm:text-2xl font-semibold text-white/70 tracking-wide">Travel Guide</span>
           </h1>
 
           <motion.p
@@ -81,13 +86,44 @@ export default function CityHero({ city }: { city: City }) {
             {city.tagline}
           </motion.p>
 
+          {/* Answer-first intro — a self-contained summary AI engines can quote
+              verbatim. Driven entirely from structured city data. */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="mt-6 text-white/90 max-w-2xl leading-relaxed text-lg font-medium"
+          >
+            {answerFirstIntro(city)}
+          </motion.p>
+
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-6 text-white/80 max-w-2xl leading-relaxed text-lg"
+            className="mt-4 text-white/70 max-w-2xl leading-relaxed text-base"
           >
             {city.heroDescription}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mt-3 text-xs text-white/40 flex flex-wrap items-center gap-x-1.5 gap-y-1"
+          >
+            <span>📅</span>
+            <span>Updated {UPDATED}</span>
+            <span className="text-white/25">·</span>
+            <span>
+              Reviewed by the{' '}
+              <Link
+                href="/about"
+                className="text-white/60 underline-offset-2 hover:text-white hover:underline transition-colors"
+              >
+                TripGenius Editorial Team
+              </Link>
+            </span>
           </motion.p>
 
           {/* Quick stats chips */}

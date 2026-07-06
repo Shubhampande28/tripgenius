@@ -1,0 +1,11 @@
+# Check app is running
+pm2 list
+
+# View live logs
+pm2 logs tripgenius
+
+# After any code changes on your PC — push then pull on VM
+git pull && npm run build && pm2 restart tripgenius
+
+# If app crashes
+pm2 restart tripgenius

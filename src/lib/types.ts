@@ -1,3 +1,23 @@
+export interface AreaSpot {
+  name: string;
+  tag?: string;
+}
+
+export interface Coordinates {
+  lat: number;
+  lng: number;
+  isApproximate?: boolean;
+}
+
+export interface CityArea {
+  name: string;
+  emoji: string;
+  accentColor: string;
+  image: string;
+  tagline: string;
+  spots: AreaSpot[];
+}
+
 export interface CityStats {
   bestTime: string;
   budget: string;
@@ -5,12 +25,20 @@ export interface CityStats {
   currency: string;
 }
 
+export type TimeOfDay = 'morning' | 'afternoon' | 'evening';
+
 export interface ThingToDo {
   name: string;
   description: string;
   icon: string;
   duration: string;
   category: string;
+  image?: string;
+  coordinates?: Coordinates;
+  // Absent = flexible (can be scheduled in any slot). Present = the activity
+  // only makes sense during these times of day (e.g. a sunset cruise, a
+  // dawn temple ritual, an evening-only cultural performance).
+  idealTime?: TimeOfDay[];
 }
 
 export interface Hotel {
@@ -29,6 +57,78 @@ export interface Restaurant {
   mustTry: string;
 }
 
+export interface Airport {
+  name: string;
+  code: string;
+  note: string;
+  distanceFromCity: string;
+  transferTime: string;
+  transferOptions: string[];
+}
+
+export interface FlightRoute {
+  from: string;
+  flag: string;
+  duration: string;
+  airlines: string;
+  note?: string;
+}
+
+export interface GettingThere {
+  summary: string;
+  airports: Airport[];
+  topRoutes: FlightRoute[];
+  bestTimeToBuyTip: string;
+  bookingTip: string;
+}
+
+export type MonthRating = 'excellent' | 'good' | 'average' | 'avoid';
+
+export interface MonthInfo {
+  month: string;
+  short: string;
+  rating: MonthRating;
+  weather: string;
+  temp: string;
+  crowds: 'Low' | 'Moderate' | 'High' | 'Peak';
+  price: 'Low' | 'Moderate' | 'High' | 'Peak';
+  highlight: string;
+}
+
+export interface MonthByMonth {
+  summary: string;
+  bestMonths: string[];
+  avoidMonths: string[];
+  months: [MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo,
+           MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo, MonthInfo];
+}
+
+export interface BudgetTier {
+  label: 'Budget' | 'Mid-range' | 'Luxury';
+  icon: string;
+  perDay: string;
+  accommodation: string;
+  food: string;
+  transport: string;
+  activities: string;
+  tip: string;
+}
+
+export interface CityBudget {
+  disclaimer: string;
+  tiers: [BudgetTier, BudgetTier, BudgetTier];
+}
+
+export interface Neighbourhood {
+  name: string;
+  description: string;
+  bestFor: string[];
+  vibe: string;
+  priceRange: '$' | '$$' | '$$$' | '$$$$';
+  highlights: string[];
+  notFor: string;
+}
+
 export interface OffbeatPlace {
   name: string;
   description: string;
@@ -36,12 +136,14 @@ export interface OffbeatPlace {
   icon: string;
   type: string;
   tip: string;
+  image?: string;
 }
 
 export interface City {
   slug: string;
   name: string;
   country: string;
+  stub?: boolean;
   flag: string;
   tagline: string;
   description: string;
@@ -52,12 +154,30 @@ export interface City {
   accentColor: string;
   image: string;
   heroImage: string;
-  thingsToDo: ThingToDo[];
-  hotels: Hotel[];
-  restaurants: Restaurant[];
-  gettingAround: string[];
-  proTips: string[];
-  offbeatPlaces: OffbeatPlace[];
+  visa?: string;
+  state?: string;
+  areas?: CityArea[];
+  thingsToDo?: ThingToDo[];
+  hotels?: Hotel[];
+  restaurants?: Restaurant[];
+  gettingAround?: string[];
+  proTips?: string[];
+  offbeatPlaces?: OffbeatPlace[];
+  neighbourhoods?: Neighbourhood[];
+  budgetBreakdown?: CityBudget;
+  monthByMonth?: MonthByMonth;
+  gettingThere?: GettingThere;
+  coordinates?: Coordinates;
+  // Set by enrichCity when the corresponding section is generated from a
+  // template rather than hand-authored. Used to (a) gate indexing and (b) avoid
+  // emitting fabricated structured data (fake LodgingBusiness / Restaurant
+  // markup) that trips AdSense / Search "low value content" reviews.
+  hotelsSynthetic?: boolean;
+  restaurantsSynthetic?: boolean;
+  monthByMonthSynthetic?: boolean;
+  proTipsSynthetic?: boolean;
+  offbeatSynthetic?: boolean;
+  gettingAroundSynthetic?: boolean;
 }
 
 export interface TripPlanRequest {
@@ -80,9 +200,7 @@ export interface DayPlan {
   day: number;
   date: string;
   theme: string;
-  morning: DayActivity;
-  afternoon: DayActivity;
-  evening: DayActivity;
+  activities: DayActivity[];
 }
 
 export interface BudgetItem {

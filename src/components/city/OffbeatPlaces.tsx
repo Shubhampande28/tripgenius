@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 import { City } from '@/lib/types';
+import SafeImage from '@/components/SafeImage';
+import { getPlaceImageUrl } from '@/lib/placeImages';
 
 const typeColors: Record<string, string> = {
   'Hidden Nature':      'bg-teal/10 text-teal border-teal/25',
@@ -35,9 +37,10 @@ const typeColors: Record<string, string> = {
 
 export default function OffbeatPlaces({ city }: { city: City }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  if (!city.offbeatPlaces?.length) return null;
 
   return (
-    <section className="py-16">
+    <section id="hidden-gems" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -51,12 +54,12 @@ export default function OffbeatPlaces({ city }: { city: City }) {
             <div className="w-8 h-8 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
               <Compass size={15} className="text-teal" />
             </div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-teal">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
               Go Beyond the Guidebook
             </p>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
-            Offbeat {city.name}
+            Hidden Gems in {city.name}: Offbeat Places Locals Love
           </h2>
           <p className="mt-2 text-muted max-w-2xl leading-relaxed">
             The places locals know and tourists miss. No queues, no crowds —
@@ -125,9 +128,22 @@ export default function OffbeatPlaces({ city }: { city: City }) {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 pb-5 pt-1 grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-border/50 mt-1">
+                        <div className="px-5 pb-5 pt-5 grid grid-cols-1 lg:grid-cols-[240px_1fr_260px] gap-4 border-t border-border/50 mt-1">
+                          <div className="relative min-h-44 overflow-hidden rounded-xl border border-border/50 bg-dark">
+                            <SafeImage
+                              src={place.image ?? getPlaceImageUrl(city.slug, place.name, place.type) ?? city.image}
+                              alt={`${place.name} in ${city.name}`}
+                              city={`${city.slug}-${place.name}`}
+                              accentColor={city.accentColor}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 240px"
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+                          </div>
+
                           {/* Description */}
-                          <div className="md:col-span-2">
+                          <div>
                             <p className="text-sm text-primary-text/80 leading-relaxed mb-4">
                               {place.description}
                             </p>
