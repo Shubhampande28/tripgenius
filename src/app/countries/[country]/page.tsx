@@ -229,14 +229,13 @@ export default async function CountryPage({ params }: Props) {
               {country.description}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a href="#destinations"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
+              <a href="#destinations" className="btn btn-primary">
                 Explore Cities <ArrowRight size={14} />
               </a>
               {itineraryOptions.length > 0 && (
                 <a href="#trip-planner"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm text-white rounded-xl text-sm font-semibold hover:bg-white/18 transition-colors border border-white/20">
-                  Plan My Trip
+                  className="btn bg-white/10 backdrop-blur-sm text-white hover:bg-white/18 border border-white/20">
+                  Plan a Trip
                 </a>
               )}
             </div>
@@ -291,7 +290,7 @@ export default async function CountryPage({ params }: Props) {
                   <Link
                     key={`${exp.citySlug}-${exp.name}`}
                     href={`/cities/${exp.citySlug}`}
-                    className="group flex flex-col bg-surface border border-border rounded-2xl p-5 hover:border-accent/35 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg hover:shadow-black/10"
+                    className="group flex flex-col bg-surface border border-border rounded-2xl p-5 hover:border-accent/35 card-lift transition-all duration-200 hover:shadow-lg hover:shadow-black/10"
                   >
                     <div className="flex items-start justify-between gap-2 mb-3">
                       <span className="text-3xl leading-none">{exp.icon}</span>
@@ -343,7 +342,7 @@ export default async function CountryPage({ params }: Props) {
                   <Link
                     key={city.slug}
                     href={`/cities/${city.slug}`}
-                    className={`group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/25 ${isFeatured ? 'sm:col-span-2 lg:col-span-1' : ''}`}
+                    className={`group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 card-lift ${isFeatured ? 'sm:col-span-2 lg:col-span-1' : ''}`}
                     style={{ aspectRatio: isFeatured ? '16/9' : '4/3' }}
                   >
                     {imgSrc ? (
@@ -354,7 +353,7 @@ export default async function CountryPage({ params }: Props) {
                         accentColor={city.accentColor}
                         fill
                         sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-600 group-hover:scale-108"
+                        className="object-cover card-img"
                       />
                     ) : (
                       <div
@@ -437,7 +436,7 @@ export default async function CountryPage({ params }: Props) {
                   <Link
                     key={duration}
                     href={`/itinerary/${getItinerarySlug(country.slug, duration)}`}
-                    className="group relative flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl p-6 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10"
+                    className="group relative flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl p-6 overflow-hidden card-lift"
                   >
                     <span className="absolute -right-3 -top-5 font-heading text-8xl font-bold text-accent/8 group-hover:text-accent/15 transition-colors leading-none select-none">
                       {duration}
@@ -481,7 +480,7 @@ export default async function CountryPage({ params }: Props) {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group flex bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10"
+                    className="group flex bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden card-lift"
                   >
                     {/* Image */}
                     <div className="relative w-36 sm:w-56 lg:w-64 flex-shrink-0 overflow-hidden" style={{ minHeight: '148px' }}>
@@ -490,7 +489,7 @@ export default async function CountryPage({ params }: Props) {
                         alt={post.title}
                         fill
                         sizes="(max-width:640px) 144px, (max-width:1024px) 224px, 256px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover card-img"
                       />
                     </div>
                     {/* Content */}
@@ -767,7 +766,7 @@ export default async function CountryPage({ params }: Props) {
                     <Link
                       key={rc.slug}
                       href={`/countries/${rc.slug}`}
-                      className="group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20"
+                      className="group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 card-lift"
                       style={{ aspectRatio: '3/4' }}
                     >
                       {rcImg ? (
@@ -775,7 +774,7 @@ export default async function CountryPage({ params }: Props) {
                           src={rcImg}
                           alt={`${rc.name} travel guide`}
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover card-img"
                           sizes="(max-width:640px) 50vw, 25vw"
                         />
                       ) : (

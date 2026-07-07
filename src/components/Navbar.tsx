@@ -131,17 +131,11 @@ export default function Navbar() {
               >
                 {isLight ? <><Moon size={13} strokeWidth={2} /> Dark</> : <><Sun size={13} strokeWidth={2} /> Light</>}
               </button>
-              <Link
-                href="/plan"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-accent/30 text-accent text-sm font-semibold hover:bg-accent/10 transition-colors duration-150"
-              >
+              <Link href="/plan" className="btn btn-tertiary">
                 <Sparkles size={14} />
                 Plan a Trip
               </Link>
-              <Link
-                href="/destinations"
-                className="px-5 py-2.5 rounded-lg bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
-              >
+              <Link href="/destinations" className="btn btn-primary">
                 Explore Guides
               </Link>
             </div>
@@ -192,12 +186,12 @@ export default function Navbar() {
               ))}
               <div className="pt-3 border-t border-border space-y-2">
                 <Link href="/plan" onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 py-3 rounded-lg border border-accent/30 text-accent font-semibold">
+                  className="btn btn-tertiary w-full">
                   <Sparkles size={15} />
                   Plan a Trip
                 </Link>
                 <Link href="/destinations" onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center py-3 rounded-lg bg-accent text-white font-semibold">
+                  className="btn btn-primary w-full">
                   Explore Guides
                 </Link>
               </div>

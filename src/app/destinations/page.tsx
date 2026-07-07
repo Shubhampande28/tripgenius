@@ -9,6 +9,7 @@ import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { countries } from '@/data/countries';
 import { ArrowRight, Search } from 'lucide-react';
+import Flag from '@/components/Flag';
 
 // Region tabs for discovery filtering
 const TABS = [
@@ -37,7 +38,7 @@ function DestinationCard({ city }: { city: typeof allCities[0] }) {
   return (
     <Link
       href={`/cities/${city.slug}`}
-      className="group relative block overflow-hidden rounded-[20px] bg-surface"
+      className="group relative block overflow-hidden rounded-[20px] bg-surface card-lift"
       style={{ aspectRatio: '4/5' }}
     >
       {/* Featured image */}
@@ -48,7 +49,7 @@ function DestinationCard({ city }: { city: typeof allCities[0] }) {
         accentColor={city.accentColor}
         fill
         sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
+        className="object-cover card-img"
       />
 
       {/* Gradient — readable bottom */}
@@ -67,7 +68,7 @@ function DestinationCard({ city }: { city: typeof allCities[0] }) {
       <div className="absolute bottom-0 left-0 right-0 p-4">
         {/* Country */}
         <p className="text-white/55 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-          {city.flag} {city.country}
+          <Flag emoji={city.flag} /> {city.country}
         </p>
 
         {/* Destination name */}
@@ -166,7 +167,7 @@ export default function DestinationsPage() {
                     href={`/countries/${country.slug}`}
                     className="group flex items-center gap-3 px-4 py-3 bg-surface border border-border rounded-xl hover:border-accent/40 hover:bg-elevated transition-all duration-150"
                   >
-                    <span className="text-2xl flex-shrink-0 select-none">{country.flag}</span>
+                    <span className="text-2xl flex-shrink-0 select-none"><Flag emoji={country.flag} /></span>
                     <div className="min-w-0">
                       <div className="text-sm font-semibold text-primary-text group-hover:text-accent transition-colors truncate">
                         {country.name}

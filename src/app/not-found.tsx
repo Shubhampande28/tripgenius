@@ -67,7 +67,7 @@ export default function NotFound() {
                   <Link
                     key={city.slug}
                     href={`/cities/${city.slug}`}
-                    className="group relative block overflow-hidden rounded-xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/15"
+                    className="group relative block overflow-hidden rounded-xl border border-border hover:border-accent/40 card-lift"
                     style={{ aspectRatio: '4/3' }}
                   >
                     {img ? (
@@ -78,7 +78,7 @@ export default function NotFound() {
                         accentColor={city.accentColor}
                         fill
                         sizes="(max-width:640px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover card-img"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-elevated" />
@@ -97,16 +97,10 @@ export default function NotFound() {
 
           {/* Trip planner + escape hatches */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/plan"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20"
-            >
+            <Link href="/plan" className="btn btn-primary">
               <Compass size={14} /> Plan a Trip
             </Link>
-            <Link
-              href="/destinations"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-surface border border-border text-primary-text rounded-xl text-sm font-semibold hover:border-accent/40 transition-colors"
-            >
+            <Link href="/destinations" className="btn btn-secondary">
               All Destinations <ArrowRight size={14} />
             </Link>
           </div>

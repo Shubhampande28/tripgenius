@@ -1,9 +1,5 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
 import { City } from '@/lib/types';
-import { fadeUp, VIEWPORT } from '@/lib/animations';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function ProTips({ city }: { city: City }) {
@@ -11,12 +7,7 @@ export default function ProTips({ city }: { city: City }) {
   return (
     <section id="pro-tips" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
+        <div          className="mb-8"
         >
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Insider Knowledge
@@ -24,7 +15,7 @@ export default function ProTips({ city }: { city: City }) {
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
             What Should You Know Before Visiting {city.name}?
           </h2>
-        </motion.div>
+        </div>
 
         <AnimateList stagger={0.08} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {city.proTips.map((tip, i) => (

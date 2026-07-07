@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { UtensilsCrossed } from 'lucide-react';
 import { City } from '@/lib/types';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
@@ -10,12 +7,7 @@ export default function WhereToEat({ city }: { city: City }) {
   return (
     <section id="where-to-eat" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
+        <div          className="mb-10"
         >
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Dining
@@ -26,7 +18,7 @@ export default function WhereToEat({ city }: { city: City }) {
           <p className="mt-2 text-muted text-sm max-w-2xl">
             From street food to fine dining — the dishes you must try and the restaurants locals actually go to.
           </p>
-        </motion.div>
+        </div>
 
         <AnimateList stagger={0.09} className="space-y-5">
           {city.restaurants.map((r) => (

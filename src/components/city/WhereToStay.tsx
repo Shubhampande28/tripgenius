@@ -1,7 +1,4 @@
-'use client';
-
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { Hotel, BedDouble } from 'lucide-react';
 import { hotelNeighbourhoodUrl, hotelUrl } from '@/lib/affiliateLinks';
 import { getCityImageUrl } from '@/lib/cityImages';
@@ -28,12 +25,7 @@ export default function WhereToStay({ city }: { city: City }) {
   return (
     <section id="where-to-stay" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
+        <div          className="mb-8"
         >
           <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Accommodation</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
@@ -42,27 +34,22 @@ export default function WhereToStay({ city }: { city: City }) {
           <p className="mt-2 text-sm text-muted max-w-2xl">
             Pick your area first — each neighbourhood has a completely different price point and vibe.
           </p>
-        </motion.div>
+        </div>
 
         {areas.length > 0 ? (
           <>
             {/* Area booking grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {areas.map((area, i) => {
+              {areas.map((area) => {
                 const price = priceColors[area.priceRange] ?? priceColors['$$'];
                 const pLabel = priceLabel[area.priceRange] ?? 'Mid-range';
 
                 return (
-                  <motion.a
+                  <a
                     key={area.name}
                     href={hotelNeighbourhoodUrl(city.name, area.name)}
                     target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: i * 0.07 }}
-                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300 flex flex-col"
+                    rel="noopener noreferrer sponsored"                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-accent/30 card-lift flex flex-col"
                   >
                     {/* Area image */}
                     <div className="relative h-44 overflow-hidden">
@@ -72,7 +59,7 @@ export default function WhereToStay({ city }: { city: City }) {
                           alt=""
                           aria-hidden
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover card-img"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
@@ -120,18 +107,13 @@ export default function WhereToStay({ city }: { city: City }) {
                         </span>
                       </div>
                     </div>
-                  </motion.a>
+                  </a>
                 );
               })}
             </div>
 
             {/* Generic city-wide hotel search CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 flex items-center justify-between gap-4 p-5 rounded-2xl border border-accent/20 bg-accent/5"
+            <div              className="mt-6 flex items-center justify-between gap-4 p-5 rounded-2xl border border-accent/20 bg-accent/5"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
@@ -151,16 +133,11 @@ export default function WhereToStay({ city }: { city: City }) {
                 <Hotel size={14} />
                 All Hotels
               </a>
-            </motion.div>
+            </div>
           </>
         ) : (
           /* Fallback: generic search banner */
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative rounded-2xl overflow-hidden h-56 border border-border"
+          <div            className="relative rounded-2xl overflow-hidden h-56 border border-border"
           >
             {cityImg && (
               <Image src={cityImg} alt="" aria-hidden fill className="object-cover opacity-40" sizes="100vw" />
@@ -179,7 +156,7 @@ export default function WhereToStay({ city }: { city: City }) {
                 Browse Hotels on Booking.com
               </a>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

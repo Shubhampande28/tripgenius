@@ -2,6 +2,7 @@ import Link from 'next/link';
 import SafeImage from '@/components/SafeImage';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { City } from '@/lib/types';
+import Flag from '@/components/Flag';
 
 interface Props {
   city: City;
@@ -22,7 +23,7 @@ export default function SimilarDestinationCard({ city, reason, matchedVibes, ran
         data-city-slug={city.slug}
         data-rank={rank}
         data-score={score.toFixed(1)}
-        className="group block rounded-2xl overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        className="group block rounded-2xl overflow-hidden card-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         <div className="relative" style={{ aspectRatio: '4/5' }}>
           <SafeImage
@@ -32,13 +33,13 @@ export default function SimilarDestinationCard({ city, reason, matchedVibes, ran
             accentColor={city.accentColor}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover card-img"
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-3">
             <p className="text-[9px] font-semibold text-white/55 uppercase tracking-wider mb-0.5">
-              {city.flag} {city.country}
+              <Flag emoji={city.flag} /> {city.country}
             </p>
             <p className="font-heading text-base font-bold text-white group-hover:text-accent transition-colors leading-tight">
               {city.name}

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Clock, DollarSign } from 'lucide-react';
 import { City } from '@/lib/types';
 import Breadcrumb from './Breadcrumb';
+import Flag from '@/components/Flag';
 
 const UPDATED = 'May 2026';
 
@@ -67,7 +68,7 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             transition={{ duration: 0.5, delay: 0.2 }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium mb-6"
           >
-            <span className="text-lg">{city.flag}</span>
+            <span className="text-lg"><Flag emoji={city.flag} /></span>
             <span className="text-white/80">{city.country}</span>
           </motion.div>
 

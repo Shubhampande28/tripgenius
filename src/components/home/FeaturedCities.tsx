@@ -6,6 +6,7 @@ import { getCityImageUrl } from '@/lib/cityImages';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Clock } from 'lucide-react';
 import { cities } from '@/lib/cities';
+import Flag from '@/components/Flag';
 
 const vibeColors: Record<string, string> = {
   Spiritual:   'bg-gold/20 text-gold border-gold/30',
@@ -63,7 +64,7 @@ export default function FeaturedCities() {
           {cities.map((city) => (
             <motion.div key={city.slug} variants={cardVariants}>
               <Link href={`/cities/${city.slug}`}>
-                <div className="group relative rounded-2xl overflow-hidden h-80 cursor-pointer transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/50">
+                <div className="group relative rounded-2xl overflow-hidden h-80 cursor-pointer transition-transform duration-500 card-lift">
 
                   {/* Real photo */}
                   <SafeImage
@@ -73,7 +74,7 @@ export default function FeaturedCities() {
                     accentColor={city.accentColor}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover card-img"
                     priority={false}
                   />
 
@@ -90,7 +91,7 @@ export default function FeaturedCities() {
                   {/* Flag badge + arrow */}
                   <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
                     <div className="glass rounded-full px-3 py-1.5 flex items-center gap-2">
-                      <span className="text-lg">{city.flag}</span>
+                      <span className="text-lg"><Flag emoji={city.flag} /></span>
                       <span className="text-xs font-semibold text-white/90">{city.country}</span>
                     </div>
                     <div className="w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">

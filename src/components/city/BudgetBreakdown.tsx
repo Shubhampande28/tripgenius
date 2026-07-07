@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Wallet, Home, UtensilsCrossed, Bus, Ticket, Lightbulb } from 'lucide-react';
 import { City } from '@/lib/types';
 
@@ -22,12 +19,7 @@ export default function BudgetBreakdown({ city }: { city: City }) {
   return (
     <section id="budget" className="py-8 border-t border-border">
       <div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
+        <div          className="mb-10"
         >
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
@@ -41,20 +33,15 @@ export default function BudgetBreakdown({ city }: { city: City }) {
             How Much Does a Trip to {city.name} Cost? ({new Date().getFullYear()} Budget Guide)
           </h2>
           <p className="mt-2 text-muted text-sm">{city.budgetBreakdown.disclaimer}</p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {city.budgetBreakdown.tiers.map((tier, i) => {
+          {city.budgetBreakdown.tiers.map((tier) => {
             const style = tierStyles[tier.label];
             const isHighlight = tier.label === 'Mid-range';
             return (
-              <motion.div
-                key={tier.label}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`relative rounded-2xl border ${style.bg} ${style.border} overflow-hidden ${
+              <div
+                key={tier.label}                className={`relative rounded-2xl border ${style.bg} ${style.border} overflow-hidden ${
                   isHighlight ? 'ring-1 ring-accent/30 shadow-lg shadow-accent/5' : ''
                 }`}
               >
@@ -109,7 +96,7 @@ export default function BudgetBreakdown({ city }: { city: City }) {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

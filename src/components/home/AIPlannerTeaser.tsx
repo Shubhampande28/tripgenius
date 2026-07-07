@@ -68,12 +68,9 @@ export default function AIPlannerTeaser() {
             </ul>
 
             <div className="mt-10 flex items-center gap-4">
-              <Link
-                href="/plan"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent text-white font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-200 shadow-lg shadow-accent/25"
-              >
+              <Link href="/plan" className="btn btn-primary px-6 py-3">
                 <Sparkles size={16} />
-                Build my trip
+                Plan a Trip
               </Link>
               <Link
                 href="/#cities"

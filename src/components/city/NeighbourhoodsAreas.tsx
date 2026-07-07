@@ -1,7 +1,4 @@
-'use client';
-
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 import { City } from '@/lib/types';
 import { getCityImageUrl } from '@/lib/cityImages';
@@ -71,23 +68,13 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
     <section id="explore-areas" className="py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45 }}
-          className="flex items-center gap-2 mb-6"
+        <div          className="flex items-center gap-2 mb-6"
         >
           <MapPin size={14} className="text-accent" />
           <p className="text-xs font-bold uppercase tracking-widest text-accent">Explore Areas</p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="rounded-3xl border border-border overflow-hidden shadow-lg"
+        <div          className="rounded-3xl border border-border overflow-hidden shadow-lg"
         >
           {/* Header */}
           <div
@@ -175,7 +162,7 @@ export default function NeighbourhoodsAreas({ city }: { city: City }) {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

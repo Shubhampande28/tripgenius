@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { City } from '@/lib/types';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
@@ -43,12 +40,7 @@ export default function ThingsToDo({ city }: { city: City }) {
     <section id="things-to-do" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
+        <div          className="mb-8"
         >
           <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Experiences</p>
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
@@ -57,7 +49,7 @@ export default function ThingsToDo({ city }: { city: City }) {
           <p className="mt-2 text-sm text-muted max-w-2xl">
             The best experiences in {city.name} — from iconic landmarks to local favourites, ranked by what travellers love most.
           </p>
-        </motion.div>
+        </div>
 
         <AnimateList stagger={0.06} className="space-y-3">
           {city.thingsToDo.map((item, i) => {

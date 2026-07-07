@@ -12,6 +12,7 @@ import Schema from '@/components/Schema';
 import { getCityBySlug, authoredMonthCitySlugs, hasAuthoredMonths, isIndexableMonthPage } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import type { MonthInfo, MonthRating } from '@/lib/types';
+import Flag from '@/components/Flag';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -139,7 +140,7 @@ export default async function CityInMonthPage(
             <SafeImage src={heroImg} alt={`${city.name} in ${M}`} city={slug} accentColor={city.accentColor} fill sizes="(max-width:768px) 100vw, 896px" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <div className="absolute bottom-4 left-5">
-              <span className="text-xs font-bold uppercase tracking-widest text-white/70">{city.flag} {city.country}</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-white/70"><Flag emoji={city.flag} /> {city.country}</span>
             </div>
           </div>
 

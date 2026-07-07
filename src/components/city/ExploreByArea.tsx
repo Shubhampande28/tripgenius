@@ -1,18 +1,5 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Map } from 'lucide-react';
 import { City } from '@/lib/types';
-
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
-};
 
 export default function ExploreByArea({ city }: { city: City }) {
   if (!city.areas || city.areas.length === 0) return null;
@@ -22,12 +9,7 @@ export default function ExploreByArea({ city }: { city: City }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
+        <div          className="mb-10"
         >
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center">
@@ -44,20 +26,15 @@ export default function ExploreByArea({ city }: { city: City }) {
             Each area of {city.name} has a completely different personality.
             Here&apos;s exactly what to do — and where — in each one.
           </p>
-        </motion.div>
+        </div>
 
         {/* Area cards grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+        <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
           {city.areas.map((area) => (
-            <motion.div
+            <div
               key={area.name}
-              variants={cardVariants}
               className="group relative rounded-2xl overflow-hidden border border-border bg-surface hover:border-opacity-60 transition-all duration-300"
               style={{ '--area-accent': area.accentColor } as React.CSSProperties}
             >
@@ -138,9 +115,9 @@ export default function ExploreByArea({ city }: { city: City }) {
                 className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
                 style={{ backgroundColor: area.accentColor }}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

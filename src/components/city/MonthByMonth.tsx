@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { CalendarDays } from 'lucide-react';
 import { City, MonthRating } from '@/lib/types';
 
@@ -18,12 +15,7 @@ export default function MonthByMonth({ city }: { city: City }) {
   return (
     <section id="best-time-to-visit" className="py-12 border-y border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <div        >
           <div className="flex items-center gap-2 mb-1">
             <CalendarDays size={14} className="text-accent" />
             <p className="text-xs font-semibold uppercase tracking-widest text-accent">When to Visit</p>
@@ -57,7 +49,7 @@ export default function MonthByMonth({ city }: { city: City }) {
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
