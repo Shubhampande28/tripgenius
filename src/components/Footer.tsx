@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Compass, X, Camera } from 'lucide-react';
+import Flag from '@/components/Flag';
 
 // Pinterest has no lucide icon — minimal brand glyph, inherits currentColor
 function PinterestIcon({ size = 16 }: { size?: number }) {
@@ -45,8 +46,24 @@ const socials = [
 ];
 
 export default function Footer() {
+  const updated = new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
   return (
     <footer className="bg-surface border-t border-border">
+      {/* Trust bar — quick credibility signals above the footer proper */}
+      <div className="border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted text-center" suppressHydrationWarning>
+            <span className="font-semibold text-primary-text">160+ city guides</span>
+            <span aria-hidden>·</span>
+            <span className="font-semibold text-primary-text">49 countries</span>
+            <span aria-hidden>·</span>
+            <span>Updated {updated}</span>
+            <span aria-hidden>·</span>
+            <span>Made in India <Flag emoji="🇮🇳" /></span>
+          </p>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="lg:col-span-2">

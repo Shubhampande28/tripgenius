@@ -3,6 +3,7 @@ import { Plane, Hotel, Globe, Clock, Coins, MapPin, Tag, Ticket } from 'lucide-r
 import { City } from '@/lib/types';
 import { cities } from '@/lib/cities';
 import { hotelUrl, flightUrl, activitiesUrl, activitiesLabel } from '@/lib/affiliateLinks';
+import Flag from '@/components/Flag';
 
 export default function CitySidebar({ city }: { city: City }) {
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 4);
@@ -14,7 +15,7 @@ export default function CitySidebar({ city }: { city: City }) {
         <h3 className="font-heading text-xl font-semibold text-primary-text mb-4">Quick Facts</h3>
         <div className="space-y-3">
           {[
-            { icon: Globe, label: 'Country', value: `${city.flag} ${city.country}` },
+            { icon: Globe, label: 'Country', value: city.country },
             { icon: Clock, label: 'Best Time', value: city.stats.bestTime },
             { icon: Coins, label: 'Currency', value: city.stats.currency },
             { icon: MapPin, label: 'Language', value: city.stats.language },
@@ -106,7 +107,7 @@ export default function CitySidebar({ city }: { city: City }) {
               href={`/cities/${c.slug}`}
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-elevated transition-colors group"
             >
-              <span className="text-lg">{c.flag}</span>
+              <span className="text-lg"><Flag emoji={c.flag} /></span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-primary-text group-hover:text-accent transition-colors truncate">
                   {c.name}

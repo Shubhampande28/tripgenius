@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Search, Globe, ArrowRight } from 'lucide-react';
 import type { CountryData } from '@/data/countries';
 import { getCityImageUrl } from '@/lib/cityImages';
+import Flag from '@/components/Flag';
 
 // ─── Continent tab config ───────────────────────────────────────────────────
 const CONTINENT_TABS = [
@@ -166,7 +167,7 @@ export default function CountriesExplorer({ countries }: Props) {
                 <Link
                   key={country.slug}
                   href={`/countries/${country.slug}`}
-                  className="group relative overflow-hidden bg-surface border border-border hover:border-accent/50 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
+                  className="group relative overflow-hidden bg-surface border border-border hover:border-accent/50 rounded-2xl card-lift"
                 >
                   {/* Photo header */}
                   <div className="relative h-36 overflow-hidden">
@@ -175,17 +176,17 @@ export default function CountriesExplorer({ countries }: Props) {
                         src={imgUrl}
                         alt={`${country.name} travel guide — top cities and best time to visit`}
                         loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover card-img"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
-                        <span className="text-5xl">{country.flag}</span>
+                        <span className="text-5xl"><Flag emoji={country.flag} /></span>
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-2.5 left-3 right-3">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xl">{country.flag}</span>
+                        <span className="text-xl"><Flag emoji={country.flag} /></span>
                         <h3 className="font-heading text-sm font-bold text-white group-hover:text-teal-200 transition-colors leading-tight truncate">
                           {country.name}
                         </h3>
@@ -250,7 +251,7 @@ function CountryCard({ country }: { country: CountryData }) {
   return (
     <Link
       href={`/countries/${country.slug}`}
-      className="group flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/10"
+      className="group flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden card-lift"
     >
       {/* Photo header */}
       <div className="relative h-44 overflow-hidden flex-shrink-0">
@@ -259,11 +260,11 @@ function CountryCard({ country }: { country: CountryData }) {
             src={imgUrl}
             alt={`${country.name} travel guide`}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover card-img"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
-            <span className="text-6xl">{country.flag}</span>
+            <span className="text-6xl"><Flag emoji={country.flag} /></span>
           </div>
         )}
         {/* gradient overlay */}
@@ -277,7 +278,7 @@ function CountryCard({ country }: { country: CountryData }) {
         {/* country name over photo */}
         <div className="absolute bottom-3 left-4 right-4">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-2xl leading-none">{country.flag}</span>
+            <span className="text-2xl leading-none"><Flag emoji={country.flag} /></span>
             <h3 className="font-heading text-base font-bold text-white group-hover:text-teal-200 transition-colors leading-tight">
               {country.name}
             </h3>

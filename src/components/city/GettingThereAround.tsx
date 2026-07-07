@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Navigation, Smartphone, Lightbulb } from 'lucide-react';
 import { City } from '@/lib/types';
 
@@ -25,12 +22,7 @@ export default function GettingThereAround({ city }: { city: City }) {
   return (
     <section className="py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <div        >
           {/* Header */}
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
@@ -48,19 +40,14 @@ export default function GettingThereAround({ city }: { city: City }) {
             {hasLocalTips && (
               <div className="space-y-3">
                 {city.gettingAround!.map((tip, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                    className="flex gap-4 p-4 bg-surface border border-border rounded-xl"
+                  <div
+                    key={i}                    className="flex gap-4 p-4 bg-surface border border-border rounded-xl"
                   >
                     <div className="w-7 h-7 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Navigation size={13} className="text-accent" />
                     </div>
                     <p className="text-sm text-primary-text/80 leading-relaxed">{tip}</p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             )}
@@ -100,7 +87,7 @@ export default function GettingThereAround({ city }: { city: City }) {
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

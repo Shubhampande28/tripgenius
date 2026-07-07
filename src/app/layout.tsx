@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
 import Schema from "@/components/Schema";
+import "flag-icons/css/flag-icons.min.css";
 import "./globals.css";
 
 const GA_ID = "G-GZN2V0V66B";

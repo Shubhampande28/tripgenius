@@ -394,13 +394,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {related.map(p => (
                   <Link key={p.slug} href={`/blog/${p.slug}`}
-                    className="group flex flex-col bg-elevated border border-border rounded-2xl overflow-hidden hover:border-accent/30 transition-colors">
+                    className="group flex flex-col bg-elevated border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-40">
                       <Image
                         src={`https://images.unsplash.com/${p.coverPhoto}?auto=format&fit=crop&w=400&q=75`}
                         alt={p.title}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover card-img"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

@@ -45,7 +45,7 @@ export default function MoreInCountry({ city, countrySlug }: { city: City; count
             <Link
               key={sibling.slug}
               href={`/cities/${sibling.slug}`}
-              className="group relative block overflow-hidden rounded-xl border border-border hover:border-accent/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/15"
+              className="group relative block overflow-hidden rounded-xl border border-border hover:border-accent/40 card-lift"
               style={{ aspectRatio: '4/3' }}
             >
               {img ? (
@@ -56,7 +56,7 @@ export default function MoreInCountry({ city, countrySlug }: { city: City; count
                   accentColor={sibling.accentColor}
                   fill
                   sizes="(max-width:640px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover card-img"
                 />
               ) : (
                 <div

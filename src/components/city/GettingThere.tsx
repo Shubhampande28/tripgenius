@@ -1,9 +1,7 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Plane, Building2, Clock, ArrowRight, Lightbulb, Tag } from 'lucide-react';
 import { flightUrl } from '@/lib/affiliateLinks';
 import { City } from '@/lib/types';
+import Flag from '@/components/Flag';
 
 export default function GettingThere({ city }: { city: City }) {
   if (!city.gettingThere) return null;
@@ -13,12 +11,7 @@ export default function GettingThere({ city }: { city: City }) {
     <section id="getting-there" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
+        <div          className="mb-10"
         >
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
@@ -32,7 +25,7 @@ export default function GettingThere({ city }: { city: City }) {
             Flying to {city.name}
           </h2>
           <p className="mt-2 text-muted text-sm max-w-2xl leading-relaxed">{data.summary}</p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
           {/* Left: Flight routes */}
@@ -41,16 +34,11 @@ export default function GettingThere({ city }: { city: City }) {
               Flight Times from Major Cities
             </h3>
             <div className="space-y-2 mb-8">
-              {data.topRoutes.map((route, i) => (
-                <motion.div
-                  key={route.from}
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.04 }}
-                  className="flex items-start gap-4 p-4 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group"
+              {data.topRoutes.map((route) => (
+                <div
+                  key={route.from}                  className="flex items-start gap-4 p-4 bg-surface border border-border rounded-xl hover:border-accent/20 transition-colors group"
                 >
-                  <span className="text-xl flex-shrink-0">{route.flag}</span>
+                  <span className="text-xl flex-shrink-0"><Flag emoji={route.flag} /></span>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
                       <span className="font-semibold text-sm text-primary-text group-hover:text-accent transition-colors">
@@ -64,17 +52,12 @@ export default function GettingThere({ city }: { city: City }) {
                       <p className="text-xs text-teal italic mt-1">{route.note}</p>
                     )}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
             {/* Booking tip */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="p-4 bg-teal/5 border border-teal/20 rounded-xl flex gap-3"
+            <div              className="p-4 bg-teal/5 border border-teal/20 rounded-xl flex gap-3"
             >
               <Tag size={16} className="text-teal flex-shrink-0 mt-0.5" />
               <div>
@@ -85,20 +68,15 @@ export default function GettingThere({ city }: { city: City }) {
                   {data.bestTimeToBuyTip}
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right: Airports + CTA */}
           <div className="space-y-5">
             {/* Airport cards */}
-            {data.airports.map((airport, i) => (
-              <motion.div
-                key={airport.code}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-surface border border-border rounded-2xl overflow-hidden"
+            {data.airports.map((airport) => (
+              <div
+                key={airport.code}                className="bg-surface border border-border rounded-2xl overflow-hidden"
               >
                 {/* Airport header */}
                 <div className="flex items-center justify-between p-4 border-b border-border/50">
@@ -149,7 +127,7 @@ export default function GettingThere({ city }: { city: City }) {
                     </ul>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
 
             {/* Pro booking tip */}

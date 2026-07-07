@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Calendar, Wallet, Languages, Coins, Stamp } from 'lucide-react';
 import { City } from '@/lib/types';
 
@@ -28,12 +25,7 @@ export default function AtAGlance({ city }: { city: City }) {
   return (
     <section className="py-10 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <div        >
           <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-5">
             At a Glance
           </p>
@@ -80,7 +72,7 @@ export default function AtAGlance({ city }: { city: City }) {
             Costs are typical per-person estimates — always confirm prices and visa
             rules with official sources before you book.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

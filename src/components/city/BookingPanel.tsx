@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Hotel, Plane, Ticket, Shield, ArrowRight, Sparkles, Map } from 'lucide-react';
 import { City } from '@/lib/types';
@@ -63,8 +61,8 @@ export default function BookingPanel({ city }: { city: City }) {
             <p className="text-xs text-muted mt-0.5">Day-by-day plan, budget &amp; packing list — generated instantly</p>
           </div>
         </div>
-        <span className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-white text-sm font-semibold flex-shrink-0 group-hover:bg-accent/90 transition-colors">
-          Plan My Trip
+        <span className="btn btn-primary flex-shrink-0">
+          Plan a Trip
           <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
         </span>
       </Link>

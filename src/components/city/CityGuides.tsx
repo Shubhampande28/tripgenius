@@ -29,7 +29,7 @@ export default function CityGuides({ city }: { city: City }) {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex gap-4 bg-surface border border-border hover:border-accent/40 rounded-2xl p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10"
+            className="group flex gap-4 bg-surface border border-border hover:border-accent/40 rounded-2xl p-4 card-lift"
           >
             <div className="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden">
               <Image
@@ -37,7 +37,7 @@ export default function CityGuides({ city }: { city: City }) {
                 alt={post.title}
                 fill
                 sizes="80px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover card-img"
               />
             </div>
             <div className="flex flex-col min-w-0">

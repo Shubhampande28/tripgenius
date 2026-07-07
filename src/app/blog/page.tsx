@@ -134,12 +134,12 @@ export default function BlogPage() {
               {featured && (
                 <div className="mb-10">
                   <Link href={`/blog/${featured.slug}`}
-                    className="group grid grid-cols-1 md:grid-cols-2 gap-0 bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 hover:shadow-lg transition-all">
+                    className="group grid grid-cols-1 md:grid-cols-2 gap-0 bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-64 md:h-auto min-h-[260px]">
                       <Image
                         src={`https://images.unsplash.com/${featured.coverPhoto}?auto=format&fit=crop&w=800&q=80`}
                         alt={featured.title} fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover card-img"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20" />
@@ -163,12 +163,12 @@ export default function BlogPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {rest.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
-                    className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 hover:shadow-md transition-all">
+                    className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-44 overflow-hidden">
                       <Image
                         src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&q=80`}
                         alt={post.title} fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover card-img"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

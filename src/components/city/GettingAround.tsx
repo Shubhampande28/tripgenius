@@ -1,9 +1,5 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Navigation } from 'lucide-react';
 import { City } from '@/lib/types';
-import { fadeUp, VIEWPORT } from '@/lib/animations';
 import { AnimateList, AnimateItem } from '@/components/AnimateList';
 
 export default function GettingAround({ city }: { city: City }) {
@@ -11,12 +7,7 @@ export default function GettingAround({ city }: { city: City }) {
   return (
     <section id="getting-around" className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <div        >
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Transport
           </p>
@@ -36,7 +27,7 @@ export default function GettingAround({ city }: { city: City }) {
               </AnimateItem>
             ))}
           </AnimateList>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

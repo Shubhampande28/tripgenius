@@ -10,6 +10,7 @@ import {
 import { TripPlanRequest } from '@/lib/types';
 import { getDestinationSuggestions } from '@/lib/searchSuggestions';
 import Highlight from '@/components/Highlight';
+import Flag from '@/components/Flag';
 
 const styles = [
   { value: 'adventure', label: 'Adventure', icon: Mountain, color: 'text-accent', bg: 'bg-accent/10 border-accent/30' },
@@ -175,7 +176,7 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
                   } ${i > 0 ? 'border-t border-border/40' : ''}`}
                 >
                   <span className="text-lg flex-shrink-0">
-                    {s.type === 'country' ? s.flag : s.city.flag}
+                    <Flag emoji={s.type === 'country' ? s.flag : s.city.flag} />
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -323,7 +324,7 @@ export default function PlannerForm({ onSubmit, isLoading, initialDestination = 
       <button
         type="submit"
         disabled={isLoading || !destination || !startDate || !endDate || !style}
-        className="w-full flex items-center justify-center gap-3 py-4 rounded-xl bg-accent text-white font-semibold text-base hover:bg-accent/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-accent/25"
+        className="btn btn-primary w-full py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <>

@@ -11,6 +11,7 @@ import { getCityBySlug } from '@/lib/cities';
 import { getCountrySlugForCity } from '@/lib/getCountrySlug';
 import { allPosts } from '@/lib/blog';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
+import Flag from '@/components/Flag';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -154,7 +155,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
           <div className="grid grid-cols-2 gap-4 mb-8">
             {[city1, city2].map(city => (
               <div key={city.slug} className="bg-surface border border-border rounded-2xl p-5 text-center">
-                <div className="text-4xl mb-2">{city.flag}</div>
+                <div className="text-4xl mb-2"><Flag emoji={city.flag} /></div>
                 <h2 className="font-heading text-xl font-bold text-primary-text">{city.name}</h2>
                 <p className="text-sm text-muted italic">{city.tagline}</p>
               </div>
@@ -169,8 +170,8 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
             <div className="rounded-2xl border border-border overflow-hidden">
               <div className="grid grid-cols-3 bg-elevated px-4 py-3 text-xs font-bold uppercase tracking-wider text-muted">
                 <span>Factor</span>
-                <span className="text-center">{city1.flag} {city1.name}</span>
-                <span className="text-center">{city2.flag} {city2.name}</span>
+                <span className="text-center"><Flag emoji={city1.flag} /> {city1.name}</span>
+                <span className="text-center"><Flag emoji={city2.flag} /> {city2.name}</span>
               </div>
               {COMPARE_ROWS.map((row, i) => (
                 <div key={row.label} className={`grid grid-cols-3 px-4 py-3 border-t border-border ${i % 2 === 0 ? 'bg-surface' : ''}`}>
@@ -193,7 +194,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
                 return (
                   <div key={city.slug} className="bg-surface border border-border rounded-2xl p-5">
                     <h3 className="font-semibold text-primary-text mb-2">
-                      Choose {city.flag} {city.name} if you want:
+                      Choose <Flag emoji={city.flag} /> {city.name} if you want:
                     </h3>
                     <ul className="space-y-2">
                       {city.vibes?.map(v => (
@@ -243,7 +244,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
                   return (
                     <Link key={hrefSlug} href={`/compare/${hrefSlug}`}
                       className="text-sm px-3 py-1.5 rounded-full border border-border hover:border-accent/40 text-muted hover:text-accent transition-colors">
-                      {c1.flag} {c1.name} vs {c2.flag} {c2.name}
+                      <Flag emoji={c1.flag} /> {c1.name} vs <Flag emoji={c2.flag} /> {c2.name}
                     </Link>
                   );
                 })}
