@@ -40,6 +40,65 @@ function verdict(city: string, month: string, m: MonthInfo): string {
   }
 }
 
+// ── Decision-first SERP metadata ─────────────────────────────────────────────
+// These pages rank but lose clicks to Google's SERP weather widget. The widget
+// answers "what's the weather" — the snippet must promise what it can't:
+// "is it worth going?". Everything below is derived from the month's data.
+
+const isMonsoonMonth = (city: { country: string }, m: MonthInfo) =>
+  city.country === 'India' && /monsoon|heavy rain|torrential|rainy|rainiest|downpour/i.test(`${m.weather} ${m.highlight}`);
+
+function buildVisitTitle(cityName: string, M: string, year: number, monsoon: boolean): string {
+  const candidates = monsoon
+    ? [
+        `${cityName} in ${M}: Monsoon Reality, Crowds & Costs`,
+        `${cityName} in ${M}: Monsoon Reality & Costs`,
+        `${cityName} in ${M} (${year})`,
+      ]
+    : [
+        `${cityName} in ${M} ${year}: Worth It? Weather, Crowds & Costs`,
+        `${cityName} in ${M}: Worth Visiting? Weather & Costs`,
+        `${cityName} in ${M}: Worth It? Weather & Costs`,
+        `${cityName} in ${M} (${year})`,
+      ];
+  return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
+}
+
+const VERDICT_PHRASE: Record<MonthInfo['rating'], (monsoon: boolean) => string> = {
+  excellent: () => 'one of the best months to go',
+  good:      () => 'a solid time to visit',
+  average:   () => 'a shoulder-season trade-off',
+  avoid:     (monsoon) => (monsoon ? 'skip unless you love rain' : 'better months exist'),
+};
+
+/** Approx daily budget in INR from the city's budget string; null if unparseable. */
+function dailyBudgetINR(budget: string): { min: number; max: number } | null {
+  const RATES: Record<string, number> = {
+    USD: 86, INR: 1, EUR: 93, GBP: 109, AUD: 56, CAD: 63, CHF: 96, NZD: 51,
+    AED: 23.4, JPY: 0.57, KRW: 0.062, THB: 2.4, IDR: 0.0052, VND: 0.0034,
+    PHP: 1.48, MYR: 18, LKR: 0.28, NPR: 0.64, BTN: 1.02, EGP: 1.7, MAD: 8.6,
+    JOD: 121, ZAR: 4.6,
+  };
+  const m = budget.replace(/,/g, '').match(/^(₹|\$|[A-Z]{3})\s?(\d+(?:\.\d+)?)\s?[–-]\s?(?:₹|\$)?(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  const rate = RATES[m[1] === '$' ? 'USD' : m[1] === '₹' ? 'INR' : m[1]];
+  if (!rate) return null;
+  const round = (n: number) => Math.round(n / 100) * 100;
+  return { min: round(parseFloat(m[2]) * rate), max: round(parseFloat(m[3]) * rate) };
+}
+
+function buildVisitDescription(cityName: string, M: string, m: MonthInfo, budget: string, monsoon: boolean): string {
+  const phrase = VERDICT_PHRASE[m.rating](monsoon);
+  const inr = dailyBudgetINR(budget);
+  const cost = inr ? `daily costs around ₹${inr.min.toLocaleString('en-IN')}+` : `daily costs around ${budget.replace('/day', '')}`;
+  const candidates = [
+    `Honest take on ${cityName} in ${M}: ${phrase}. Expect ${m.temp} weather, ${m.crowds.toLowerCase()} crowds, and ${cost}. Full month guide inside.`,
+    `Honest take on ${cityName} in ${M}: ${phrase}. Expect ${m.crowds.toLowerCase()} crowds and ${cost}. Full month guide inside.`,
+    `Honest take on ${cityName} in ${M}: ${phrase}. Full month guide inside.`,
+  ];
+  return candidates.find((d) => d.length <= 155) ?? candidates[candidates.length - 1];
+}
+
 // Only the pre-generated [city]/[month] combinations exist — any other path
 // 404s, so we never serve arbitrary or thin month pages on demand.
 export const dynamicParams = false;
@@ -61,11 +120,12 @@ export async function generateMetadata(
   const M = cap(month);
   const m = city.monthByMonth.months[idx];
   const year = new Date().getFullYear();
-  const title = `${city.name} in ${M} (${year}): Weather, Crowds & Things to Do`;
-  const desc = `Visiting ${city.name} in ${M}? ${m.weather}, temperatures around ${m.temp}, ${m.crowds.toLowerCase()} crowds and ${m.price.toLowerCase()} prices. Here's what to expect and what to do.`;
+  const monsoon = isMonsoonMonth(city, m);
+  const title = buildVisitTitle(city.name, M, year, monsoon);
+  const desc = buildVisitDescription(city.name, M, m, city.stats.budget, monsoon);
 
   return {
-    title,
+    title: { absolute: title },
     description: desc,
     alternates: { canonical: `${BASE}/visit/${slug}/${month.toLowerCase()}` },
     // Only fires for cities without authored month data (the route is gated to
@@ -97,11 +157,29 @@ export default async function CityInMonthPage(
   const things = (city.thingsToDo ?? []).slice(0, 6);
   const heroImg = getCityImageUrl(slug, 'hero') ?? city.heroImage;
 
+  const monsoon = isMonsoonMonth(city, m);
+  const inr = dailyBudgetINR(city.stats.budget);
+  const budgetLabel = inr
+    ? `₹${inr.min.toLocaleString('en-IN')}–₹${inr.max.toLocaleString('en-IN')}/day`
+    : city.stats.budget;
+
+  // Verdict mapping: excellent/good → Go, average → Go with caveats,
+  // avoid → Better months exist. Crowds mapped to Low/Medium/High.
+  const verdictLabel =
+    m.rating === 'excellent' || m.rating === 'good' ? 'Go' :
+    m.rating === 'average' ? 'Go with caveats' : 'Better months exist';
+  const crowdLevel = m.crowds === 'Moderate' ? 'Medium' : m.crowds === 'Peak' ? 'High' : m.crowds;
+
+  // "Better month?" — first best-month with a live page, skipped when this
+  // month IS a best month (nothing better to suggest).
+  const bestMonthSlug = isBest ? null : mbm.bestMonths
+    .map((b) => b.toLowerCase())
+    .find((b) => (MONTHS as readonly string[]).includes(b)) ?? null;
+
   const faqs = [
     { q: `Is ${M} a good time to visit ${city.name}?`, a: verdict(city.name, M, m) },
-    { q: `What is the weather like in ${city.name} in ${M}?`, a: `In ${M}, ${city.name} sees ${m.weather.toLowerCase()} with temperatures around ${m.temp}. ${m.highlight}` },
-    { q: `Is ${city.name} crowded and expensive in ${M}?`, a: `${M} brings ${m.crowds.toLowerCase()} crowds and ${m.price.toLowerCase()} prices in ${city.name}. The best months overall are ${mbm.bestMonths.join(', ')}, so ${isBest ? 'expect peak demand — book early' : 'you may find better value than peak season'}.` },
-    { q: `What should I pack for ${city.name} in ${M}?`, a: `Pack for temperatures around ${m.temp}. ${m.rating === 'avoid' ? 'Bring rain protection and a flexible plan in case weather disrupts outdoor activities.' : 'Light layers work well, with something warmer for evenings.'}` },
+    { q: `Is ${city.name} expensive in ${M}?`, a: `${M} is a ${m.price.toLowerCase()}-price month in ${city.name}, with ${m.crowds.toLowerCase()} crowds and daily costs around ${budgetLabel} per person. The best-value strategy: ${isBest ? 'book accommodation early — this is peak demand' : 'take advantage of off-peak rates on stays and activities'}.` },
+    { q: `What should I pack for ${city.name} in ${M}?`, a: `Pack for temperatures around ${m.temp}. ${m.rating === 'avoid' || monsoon ? 'Bring rain protection and a flexible plan in case weather disrupts outdoor activities.' : 'Light layers work well, with something warmer for evenings.'} ${m.highlight}` },
   ];
 
   const faqSchema = {
@@ -134,25 +212,53 @@ export default async function CityInMonthPage(
             <span className="text-primary-text">{M}</span>
           </nav>
 
-          {/* Hero image */}
+          {/* Header — H1 + verdict render before any image, so the decision is
+              in the first paint even on a slow phone (GA4 shows 2s exits). */}
+          <span className="text-xs font-bold uppercase tracking-widest text-accent mb-2 block">{M} Travel Guide</span>
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-primary-text mb-4">
+            {city.name} in {M} ({year})
+          </h1>
+
+          {/* Above-the-fold verdict card — the decision Google's weather widget
+              can't make. Fully server-rendered, no loaders, all from month data. */}
+          <div className={`rounded-2xl p-5 mb-6 border ${color.bg} ${color.border}`}>
+            <p className={`text-xs font-bold uppercase tracking-wider mb-1.5 ${color.text}`}>
+              Verdict: {verdictLabel}
+            </p>
+            <p className="text-base text-primary-text leading-relaxed mb-4">{verdict(city.name, M, m)}</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-sm">
+              <div className="bg-dark/20 rounded-xl px-3.5 py-2.5">
+                <p className="text-[11px] text-muted uppercase tracking-wide mb-0.5">Weather</p>
+                <p className="font-semibold text-primary-text leading-snug">{m.temp} · {m.weather}</p>
+              </div>
+              <div className="bg-dark/20 rounded-xl px-3.5 py-2.5">
+                <p className="text-[11px] text-muted uppercase tracking-wide mb-0.5">Crowds</p>
+                <p className="font-semibold text-primary-text leading-snug">{crowdLevel}</p>
+              </div>
+              <div className="bg-dark/20 rounded-xl px-3.5 py-2.5">
+                <p className="text-[11px] text-muted uppercase tracking-wide mb-0.5">Daily budget</p>
+                <p className="font-semibold text-primary-text leading-snug">{budgetLabel}</p>
+              </div>
+            </div>
+
+            {bestMonthSlug && (
+              <Link
+                href={`/visit/${slug}/${bestMonthSlug}`}
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+              >
+                Better month? See {city.name} in {cap(bestMonthSlug)} →
+              </Link>
+            )}
+          </div>
+
+          {/* Hero image — below the verdict, lazy (not the LCP element) */}
           <div className="relative h-44 sm:h-56 rounded-2xl overflow-hidden mb-8">
             <SafeImage src={heroImg} alt={`${city.name} in ${M}`} city={slug} accentColor={city.accentColor} fill sizes="(max-width:768px) 100vw, 896px" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <div className="absolute bottom-4 left-5">
               <span className="text-xs font-bold uppercase tracking-widest text-white/70"><Flag emoji={city.flag} /> {city.country}</span>
             </div>
-          </div>
-
-          {/* Header */}
-          <span className="text-xs font-bold uppercase tracking-widest text-accent mb-2 block">{M} Travel Guide</span>
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-primary-text mb-4">
-            {city.name} in {M} ({year})
-          </h1>
-
-          {/* Verdict / quick answer */}
-          <div className={`rounded-2xl p-5 mb-6 border ${color.bg} ${color.border}`}>
-            <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${color.text}`}>{color.label}</p>
-            <p className="text-base text-primary-text leading-relaxed">{verdict(city.name, M, m)}</p>
           </div>
 
           {/* Month stats */}
