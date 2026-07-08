@@ -33,6 +33,7 @@ const footerLinks = {
   Company: [
     { label: 'About Us', href: '/about' },
     { label: 'Blog', href: '/blog' },
+    { label: 'Travel News', href: '/news' },
     { label: 'Contact', href: '/contact' },
     { label: 'Privacy Policy', href: '/privacy-policy' },
     { label: 'Terms of Service', href: '/terms' },
