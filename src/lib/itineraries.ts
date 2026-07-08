@@ -94,3 +94,87 @@ export function buildRouteOverview(days: ItineraryDay[]): { city: City; startDay
   }
   return Array.from(seen.values());
 }
+
+// ── Trip cost estimation ─────────────────────────────────────────────────────
+// City budgets are strings like "$25–$100/day", "EUR 60-180/day",
+// "₹2,500–₹8,000/day". Parse them and sum per-day ranges across the itinerary.
+// Approximate static FX to USD — totals are labelled as estimates on the page.
+const USD_RATES: Record<string, number> = {
+  USD: 1, INR: 1 / 86, EUR: 1.08, GBP: 1.27, AUD: 0.65, CAD: 0.73, CHF: 1.12,
+  NZD: 0.59, AED: 0.272, JPY: 0.0066, KRW: 0.00072, THB: 0.028, IDR: 0.000061,
+  VND: 0.000039, PHP: 0.0172, MYR: 0.21, LKR: 0.0033, NPR: 0.0074, BTN: 0.0119,
+  EGP: 0.02, MAD: 0.10, JOD: 1.41, ZAR: 0.054,
+};
+const USD_TO_INR = 86;
+
+function parseDailyBudgetUSD(budget: string): { min: number; max: number } | null {
+  const m = budget.replace(/,/g, '').match(/^(₹|\$|[A-Z]{3})\s?(\d+(?:\.\d+)?)\s?[–-]\s?(?:₹|\$)?(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  const cur = m[1] === '$' ? 'USD' : m[1] === '₹' ? 'INR' : m[1];
+  const rate = USD_RATES[cur];
+  if (!rate) return null;
+  return { min: parseFloat(m[2]) * rate, max: parseFloat(m[3]) * rate };
+}
+
+export interface TripCostEstimate {
+  usdMin: number; usdMax: number;
+  inrMin: number; inrMax: number;
+}
+
+/** Sums each day's city budget range. Null when any day's budget can't be
+ *  parsed — callers fall back to per-day budget strings (never fabricate). */
+export function estimateTripCost(days: ItineraryDay[]): TripCostEstimate | null {
+  let min = 0, max = 0;
+  for (const d of days) {
+    const b = parseDailyBudgetUSD(d.city.stats.budget);
+    if (!b) return null;
+    min += b.min; max += b.max;
+  }
+  const round = (n: number, step: number) => Math.round(n / step) * step;
+  return {
+    usdMin: round(min, 5), usdMax: round(max, 5),
+    inrMin: round(min * USD_TO_INR, 500), inrMax: round(max * USD_TO_INR, 500),
+  };
+}
+
+export const fmtINR = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+export const fmtUSD = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+// ── SERP metadata builders ───────────────────────────────────────────────────
+// Shared by generateMetadata and the on-page answer block so title, meta and
+// visible content always agree. CTR-focused formulas (2026-07):
+//   title: "{Country} {N}-Day Itinerary: {Stop1}, {Stop2} & Budget ({Year})"
+//   desc:  day-by-day + costs + concrete place names, unique per page.
+export function buildItineraryTitle(
+  countryName: string,
+  duration: number,
+  route: { city: City }[],
+  year: number,
+): string {
+  const h1 = route[0]?.city.name;
+  const h2 = route[1]?.city.name;
+  // Progressively shorter candidates; country + day count are never truncated.
+  const candidates = [
+    h1 && h2 ? `${countryName} ${duration}-Day Itinerary: ${h1}, ${h2} & Budget (${year})` : null,
+    h1 ? `${countryName} ${duration}-Day Itinerary: ${h1} & Budget (${year})` : null,
+    `${countryName} ${duration}-Day Itinerary: Route & Budget (${year})`,
+    `${countryName} ${duration}-Day Itinerary (${year})`,
+  ].filter((t): t is string => t !== null);
+  return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
+}
+
+export function buildItineraryDescription(
+  countryName: string,
+  duration: number,
+  route: { city: City }[],
+): string {
+  const names = route.map((r) => r.city.name);
+  const stops =
+    names.length === 1 ? `${names[0]} covered end to end` :
+    names.length <= 3  ? names.join(' → ') :
+    `${names[0]} → ${names[names.length - 1]} via ${names.length - 2} more stops`;
+  const desc = `Day-by-day ${countryName} plan for ${duration} days: ${stops}. Daily costs in INR & USD, transport tips and where to stay.`;
+  if (desc.length <= 155) return desc;
+  // fall back to first stop only — always keeps a concrete place name
+  return `Day-by-day ${countryName} plan for ${duration} days from ${names[0]}. Daily costs in INR & USD, transport tips and where to stay.`.slice(0, 155);
+}
