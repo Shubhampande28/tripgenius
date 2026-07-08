@@ -6111,14 +6111,21 @@ export function postWordCount(post: BlogPost): number {
   return words;
 }
 
-// Minimum body length we consider substantial enough to index. Posts below this
-// read as thin / scaled content to Search and AdSense reviewers, so they get
-// noindex and are dropped from the sitemap (they stay readable on the site).
+// Minimum body length for MONETISATION (see isSubstantialPost). Posts below
+// this don't carry ad units — AdSense policy disallows ads on thin pages.
 export const MIN_INDEXABLE_WORDS = 600;
 
+// Indexing gate: every live post with real content is index,follow. Only
+// retired slugs are excluded — they 301-redirect elsewhere and must never
+// appear in the sitemap, listing, homepage or related-post links.
+// (Until 2026-07: also required >= MIN_INDEXABLE_WORDS, which noindexed 42
+// real-but-short posts — surfaced in Search Console as wrongly excluded.)
 export function isIndexablePost(post: BlogPost): boolean {
-  // Retired slugs 301-redirect elsewhere — they must never appear in the
-  // sitemap, listing, homepage or related-post links even if substantial.
-  if (RETIRED_POST_SLUGS.has(post.slug)) return false;
-  return postWordCount(post) >= MIN_INDEXABLE_WORDS;
+  return !RETIRED_POST_SLUGS.has(post.slug);
+}
+
+// Monetisation gate, decoupled from indexing: ad units render only on posts
+// substantial enough to satisfy AdSense's thin-content policy.
+export function isSubstantialPost(post: BlogPost): boolean {
+  return isIndexablePost(post) && postWordCount(post) >= MIN_INDEXABLE_WORDS;
 }

@@ -68,10 +68,9 @@ export async function generateMetadata(
     title,
     description: desc,
     alternates: { canonical: `${BASE}/visit/${slug}/${month.toLowerCase()}` },
-    // Low-intent "average"-rated months on non-flagship cities are noindexed to
-    // avoid indexing near-duplicate seasonal pages at scale; the page stays
-    // reachable and the /best-time-to-visit guide covers every month.
-    ...(!isIndexableMonthPage(city, idx) && { robots: { index: false, follow: false } }),
+    // Only fires for cities without authored month data (the route is gated to
+    // authored cities, so in practice never) — noindex,follow as a safety net.
+    ...(!isIndexableMonthPage(city, idx) && { robots: { index: false, follow: true } }),
     openGraph: {
       title, description: desc, type: 'article',
       url: `${BASE}/visit/${slug}/${month.toLowerCase()}`,

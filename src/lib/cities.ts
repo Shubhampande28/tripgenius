@@ -2530,20 +2530,15 @@ export function isIndexableCity(city: Pick<City, 'slug' | 'stub'>): boolean {
   return !city.stub && hasAuthoredMonths(city.slug);
 }
 
-const featuredSlugs = new Set(cities.map((c) => c.slug));
-
-// Tiers the 840 "[city] in [month]" pages so we don't index near-duplicate,
-// low-intent variations at scale. Flagship cities keep all 12 months (every
-// month is genuinely searched). For the rest, the lukewarm "average"-rated
-// months — the lowest-intent and most templated of the set — are noindexed and
-// dropped from the sitemap; the /best-time-to-visit/[city] page still covers
-// every month, so nothing is lost for users. Months with a clear verdict
-// (excellent / good / avoid) stay indexed because they answer real decisions.
+// "[city] in [month]" pages are indexable whenever the city itself is (i.e. it
+// ships hand-authored month data — real weather/crowds/prices for that exact
+// month). Every such page is real content and must be index,follow.
+// (Until 2026-07: "average"-rated months on non-flagship cities were also
+// noindexed as a near-duplicate heuristic; that wrongly excluded pages with
+// genuine authored data, flagged in Search Console.)
 export function isIndexableMonthPage(city: Pick<City, 'slug' | 'stub' | 'monthByMonth'>, monthIndex: number): boolean {
   if (!isIndexableCity(city)) return false;
-  const m = city.monthByMonth?.months?.[monthIndex];
-  if (!m) return false;
-  return featuredSlugs.has(city.slug) || m.rating !== 'average';
+  return !!city.monthByMonth?.months?.[monthIndex];
 }
 
 export function getCityBySlug(slug: string): City | undefined {

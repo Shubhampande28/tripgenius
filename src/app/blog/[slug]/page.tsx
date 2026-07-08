@@ -6,7 +6,7 @@ import { Clock, ArrowRight, ChevronRight, Tag, MapPin, Hotel, Plane, Ticket } fr
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
-import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, BlockType, BlogCategory } from '@/lib/blog';
+import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, isSubstantialPost, BlockType, BlogCategory } from '@/lib/blog';
 import { RETIRED_POST_SLUGS } from '@/lib/postRedirects';
 import { ChevronDown } from 'lucide-react';
 import AdUnit from '@/components/AdUnit';
@@ -30,10 +30,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: post.title,
     description: post.excerpt,
     alternates: { canonical: `${BASE}/blog/${slug}` },
-    // Keep thin, mass-produced posts out of the index until they're expanded or
-    // consolidated. They remain readable; they just don't count against the
-    // site's content-quality profile during Search / AdSense review.
-    ...(!isIndexablePost(post) && { robots: { index: false, follow: false } }),
+    // Only retired (301-redirected) slugs are noindexed; noindex,FOLLOW so any
+    // straggler crawls still pass link equity. All live posts are index,follow.
+    ...(!isIndexablePost(post) && { robots: { index: false, follow: true } }),
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -293,7 +292,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </article>
           {/* Only monetise substantial, indexed posts — AdSense policy
               disallows ad code on thin pages. */}
-          {isIndexablePost(post) && <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />}
+          {isSubstantialPost(post) && <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />}
 
           {comparisonGuideSlug && (
             <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">

@@ -61,7 +61,7 @@ export async function generateMetadata(
     // Index only substantial, authored guides. Cities without hand-authored
     // month data are template-generated (fabricated weather/hotels/restaurants)
     // and must stay out of the index to satisfy AdSense low-value-content rules.
-    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: true } }),
     openGraph: {
       title, description: desc,
       url:   `https://www.tripgenius.in/cities/${slug}`,

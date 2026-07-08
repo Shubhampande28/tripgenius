@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     // enrichCity gives every city a monthByMonth, so the old `!city.monthByMonth`
     // guard never fired and ~300 pages of fabricated weather stayed indexed.
     // Gate on authored month data instead (single source of truth).
-    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: true } }),
     openGraph: {
       title, description: desc,
       url: `${BASE}/best-time-to-visit/${slug}`,

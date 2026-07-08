@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     // The trip-builder tool stays available to users for every city, but only
     // index it for substantial cities — otherwise it's ~300 near-identical thin
     // tool pages, the same low-value pattern as the guide/best-time pages.
-    ...(!isIndexableCity(city) && { robots: { index: false, follow: false } }),
+    ...(!isIndexableCity(city) && { robots: { index: false, follow: true } }),
     openGraph: {
       title,
       description,
