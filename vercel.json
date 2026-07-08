@@ -2,7 +2,15 @@
   "crons": [
     {
       "path": "/api/social/daily",
-      "schedule": "30 4 * * *"
+      "schedule": "30 3 * * *"
+    },
+    {
+      "path": "/api/social/daily",
+      "schedule": "30 8 * * *"
+    },
+    {
+      "path": "/api/social/daily",
+      "schedule": "30 14 * * *"
     }
   ]
 }

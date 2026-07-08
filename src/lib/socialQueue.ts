@@ -102,3 +102,26 @@ export function buildDailyQueue(date: Date, count: number): QueueItem[] {
   }
   return items;
 }
+
+// ── Instagram slot posts ─────────────────────────────────────────────────────
+// 3 posts/day (morning · afternoon · night IST) rotating the three selected
+// designs: Collage, Season card, Things-to-do. design = (day + slot) mod 3
+// guarantees, with zero state:
+//   - each day uses all three designs (rotated order)
+//   - no two consecutive posts share a design, including across midnight
+//     (last of day d = (d+2)%3, first of day d+1 = (d+1)%3)
+//   - the same slot never gets the same design two days running
+export type IgSlot = 'morning' | 'afternoon' | 'night';
+export const IG_SLOTS: IgSlot[] = ['morning', 'afternoon', 'night'];
+const IG_DESIGNS: QueueItem['style'][] = ['collage', 'season', 'things'];
+
+export function buildInstagramSlotPost(date: Date, slot: IgSlot): QueueItem | null {
+  const cities = allCities.filter(isIndexableCity);
+  if (cities.length === 0) return null;
+  const day = dayIndexFor(date);
+  const s = IG_SLOTS.indexOf(slot);
+  const design = IG_DESIGNS[(day + s) % IG_DESIGNS.length];
+  // Cities advance 3/day so a city repeats only every ~23 days.
+  const city = cities[(day * IG_SLOTS.length + s) % cities.length];
+  return buildItem(city, design, date);
+}

@@ -18,11 +18,21 @@
 // ?dry=1 returns the queue without posting — use it to preview any day.
 
 import { NextResponse } from 'next/server';
-import { buildDailyQueue } from '@/lib/socialQueue';
+import { buildDailyQueue, buildInstagramSlotPost, IG_SLOTS, type IgSlot } from '@/lib/socialQueue';
 import { createPin } from '@/lib/pinterestPublisher';
 import { publishInstagramImagePost } from '@/lib/instagramPublisher';
 
 export const maxDuration = 300;
+
+// The cron fires 3×/day (see vercel.json — 9:00 / 14:00 / 20:00 IST). The slot
+// is inferred from the run's UTC hour so a single route serves all three;
+// ?slot=morning|afternoon|night overrides it for manual runs and previews.
+function slotForNow(now: Date): IgSlot {
+  const h = now.getUTCHours(); // 3:30 / 8:30 / 14:30 UTC
+  if (h < 6) return 'morning';
+  if (h < 12) return 'afternoon';
+  return 'night';
+}
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -36,19 +46,23 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const dry = url.searchParams.get('dry') === '1';
+  const now = new Date();
+  const slotParam = url.searchParams.get('slot');
+  const slot: IgSlot = (IG_SLOTS as string[]).includes(slotParam ?? '') ? (slotParam as IgSlot) : slotForNow(now);
   const pinsPerDay = Math.min(Number(process.env.SOCIAL_PINS_PER_DAY ?? 10) || 10, 25);
-  const igPerDay = Math.min(Number(process.env.SOCIAL_IG_PER_DAY ?? 1) || 1, 3);
 
-  const queue = buildDailyQueue(new Date(), pinsPerDay);
+  // Pinterest posts its whole daily queue once, on the morning run only —
+  // the afternoon/night runs are Instagram-only.
+  const pinQueue = slot === 'morning' ? buildDailyQueue(now, pinsPerDay) : [];
+  const igPost = buildInstagramSlotPost(now, slot);
 
   if (dry) {
-    return NextResponse.json({ dry: true, pinsPerDay, igPerDay, queue });
+    return NextResponse.json({ dry: true, slot, pinsPerDay, igPost, pinQueue });
   }
 
   const results: { platform: string; city: string; style: string; ok: boolean; id?: string; error?: string }[] = [];
 
-  // Pinterest — whole queue
-  for (const item of queue) {
+  for (const item of pinQueue) {
     try {
       const { id } = await createPin({
         title: item.title,
@@ -62,20 +76,18 @@ export async function GET(request: Request) {
     }
   }
 
-  // Instagram — first N items only (IG uses the square places image; its API
-  // rejects 2:3 portraits and its spam systems dislike high-volume promo posts)
+  // Instagram — exactly one post per slot (3/day), design rotated by
+  // buildInstagramSlotPost so no design repeats back-to-back.
   const igConfigured = Boolean(process.env.INSTAGRAM_ACCESS_TOKEN && process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID);
-  if (igConfigured) {
-    for (const item of queue.slice(0, igPerDay)) {
-      try {
-        const { id } = await publishInstagramImagePost({ imageUrl: item.igImageUrl, caption: item.igCaption });
-        results.push({ platform: 'instagram', city: item.citySlug, style: item.style, ok: true, id });
-      } catch (e) {
-        results.push({ platform: 'instagram', city: item.citySlug, style: item.style, ok: false, error: e instanceof Error ? e.message : String(e) });
-      }
+  if (igConfigured && igPost) {
+    try {
+      const { id } = await publishInstagramImagePost({ imageUrl: igPost.igImageUrl, caption: igPost.igCaption });
+      results.push({ platform: 'instagram', city: igPost.citySlug, style: igPost.style, ok: true, id });
+    } catch (e) {
+      results.push({ platform: 'instagram', city: igPost.citySlug, style: igPost.style, ok: false, error: e instanceof Error ? e.message : String(e) });
     }
   }
 
   const failed = results.filter(r => !r.ok).length;
-  return NextResponse.json({ posted: results.length - failed, failed, igConfigured, results });
+  return NextResponse.json({ slot, posted: results.length - failed, failed, igConfigured, results });
 }
