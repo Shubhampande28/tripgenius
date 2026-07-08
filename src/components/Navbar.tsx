@@ -116,6 +116,10 @@ export default function Navbar() {
                 className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
                 Blog
               </Link>
+              <Link href="/news"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
+                News
+              </Link>
               <Link href="/compare/goa-vs-bali"
                 className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
                 Compare
@@ -177,6 +181,7 @@ export default function Navbar() {
                 { label:'Home',         href:'/' },
                 { label:'Countries',    href:'/countries' },
                 { label:'Blog',         href:'/blog' },
+                { label:'News',         href:'/news' },
                 { label:'Compare',      href:'/compare/goa-vs-bali' },
               ].map(l => (
                 <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}

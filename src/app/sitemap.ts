@@ -4,6 +4,7 @@ import { allPosts, isIndexablePost } from '@/lib/blog';
 import { countries } from '@/data/countries';
 import { COMPARISONS, comparisonSlug } from '@/lib/comparisons';
 import { getAllItinerarySlugs } from '@/lib/itineraries';
+import { getAllNews } from '@/lib/news';
 import { getCityImageUrl } from '@/lib/cityImages';
 
 const BASE = 'https://www.tripgenius.in';
@@ -77,6 +78,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog articles
     ...blogPages,
+
+    // Travel news — /news listing is only in the sitemap once articles exist.
+    // News is time-sensitive: article lastModified = publish date.
+    ...(getAllNews().length > 0
+      ? [{ url: `${BASE}/news`, lastModified: new Date(getAllNews()[0].date), changeFrequency: 'daily' as const, priority: 0.85 }]
+      : []),
+    ...getAllNews().map((article) => ({
+      url: `${BASE}/news/${article.slug}`,
+      lastModified: new Date(article.date),
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
+      images: [xmlEscape(`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`)],
+    })),
 
     // City guides
     ...cityPages,
