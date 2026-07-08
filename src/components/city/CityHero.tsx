@@ -11,13 +11,12 @@ import Flag from '@/components/Flag';
 
 const UPDATED = 'May 2026';
 
-// "{City} is best visited in {best time}. {What it's known for}. A typical
-// trip costs {budget} per person." — assembled only from structured city data.
+// Answer-first facts only — best time + cost, assembled from structured city
+// data. Deliberately short: the "what it's known for" sentence was dropped
+// because it duplicated heroDescription and made the hero read as two
+// near-identical paragraphs.
 function answerFirstIntro(city: City): string {
-  const firstSentence = city.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? city.description;
-  const knownFor = firstSentence.trim().replace(/[.!?]$/, '');
-  const budget = city.stats.budget.trim();
-  return `${city.name} is best visited in ${city.stats.bestTime}. ${knownFor}. A typical trip costs ${budget} per person.`;
+  return `${city.name} is best visited in ${city.stats.bestTime}. A typical trip costs ${city.stats.budget.trim()} per person.`;
 }
 
 export default function CityHero({ city, countrySlug }: { city: City; countrySlug?: string }) {
@@ -87,13 +86,13 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             {city.tagline}
           </motion.p>
 
-          {/* Answer-first intro — a self-contained summary AI engines can quote
-              verbatim. Driven entirely from structured city data. */}
+          {/* Answer-first fact line — a self-contained summary AI engines can
+              quote verbatim. Driven entirely from structured city data. */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="mt-6 text-white/90 max-w-2xl leading-relaxed text-lg font-medium"
+            className="mt-6 text-white/90 max-w-2xl leading-relaxed text-base font-semibold"
           >
             {answerFirstIntro(city)}
           </motion.p>
@@ -102,7 +101,7 @@ export default function CityHero({ city, countrySlug }: { city: City; countrySlu
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-4 text-white/70 max-w-2xl leading-relaxed text-base"
+            className="mt-3 text-white/75 max-w-2xl leading-relaxed text-base"
           >
             {city.heroDescription}
           </motion.p>
