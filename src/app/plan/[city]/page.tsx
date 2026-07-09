@@ -23,7 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const city = mapReadyCity(slug);
   if (!city) return {};
 
-  const title = `Plan Your ${city.name} Trip — Pick Places on the Map | TripGenius`;
+  // No "| TripGenius" here — the root layout's title template appends it.
+  const title = `Plan Your ${city.name} Trip — Pick Places on the Map`;
   const description = `Build a custom ${city.name} itinerary: browse the best things to do, pin your picks on an interactive map, and arrange them into a day-by-day plan — free, instant, no sign-up.`;
 
   return {

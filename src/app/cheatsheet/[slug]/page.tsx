@@ -14,7 +14,8 @@ export async function generateMetadata(
   const city = getCityBySlug(slug);
   if (!city) return { title: 'Not Found' };
   return {
-    title: `${city.name} Travel Cheatsheet — TripGenius`,
+    // `absolute` skips the root "%s | TripGenius" template (already branded).
+    title: { absolute: `${city.name} Travel Cheatsheet — TripGenius` },
     description: `Your ultimate ${city.name} travel cheatsheet. Save and share this guide.`,
     robots: { index: false, follow: false },
   };

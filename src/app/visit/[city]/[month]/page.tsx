@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import SafeImage from '@/components/SafeImage';
 import Schema from '@/components/Schema';
 import { getCityBySlug, authoredMonthCitySlugs, hasAuthoredMonths, isIndexableMonthPage } from '@/lib/cities';
+import { cityHasMapBuilder } from '@/lib/mapUtils';
 import { getCityImageUrl } from '@/lib/cityImages';
 import type { MonthInfo, MonthRating } from '@/lib/types';
 import Flag from '@/components/Flag';
@@ -176,6 +177,12 @@ export default async function CityInMonthPage(
     .map((b) => b.toLowerCase())
     .find((b) => (MONTHS as readonly string[]).includes(b)) ?? null;
 
+  // Adjacent months — searchers with flexible dates compare neighbours, and
+  // the prev/next links chain the 12 month pages together for crawlers.
+  const prevMonth = MONTHS[(idx + 11) % 12];
+  const nextMonth = MONTHS[(idx + 1) % 12];
+  const hasPlanner = cityHasMapBuilder(city);
+
   const faqs = [
     { q: `Is ${M} a good time to visit ${city.name}?`, a: verdict(city.name, M, m) },
     { q: `Is ${city.name} expensive in ${M}?`, a: `${M} is a ${m.price.toLowerCase()}-price month in ${city.name}, with ${m.crowds.toLowerCase()} crowds and daily costs around ${budgetLabel} per person. The best-value strategy: ${isBest ? 'book accommodation early — this is peak demand' : 'take advantage of off-peak rates on stays and activities'}.` },
@@ -330,6 +337,18 @@ export default async function CityInMonthPage(
             </div>
           </section>
 
+          {/* Adjacent months — flexible-date searchers compare neighbours */}
+          <nav aria-label="Other months" className="flex items-center justify-between gap-3 mb-10 text-sm">
+            <Link href={`/visit/${slug}/${prevMonth}`} className="flex-1 bg-surface border border-border rounded-xl px-4 py-3 hover:border-accent/50 transition-colors">
+              <span className="block text-[11px] text-muted uppercase tracking-wide mb-0.5">← Earlier</span>
+              <span className="font-semibold text-primary-text">{city.name} in {cap(prevMonth)}</span>
+            </Link>
+            <Link href={`/visit/${slug}/${nextMonth}`} className="flex-1 bg-surface border border-border rounded-xl px-4 py-3 text-right hover:border-accent/50 transition-colors">
+              <span className="block text-[11px] text-muted uppercase tracking-wide mb-0.5">Later →</span>
+              <span className="font-semibold text-primary-text">{city.name} in {cap(nextMonth)}</span>
+            </Link>
+          </nav>
+
           {/* CTA */}
           <div className="bg-accent/10 border border-accent/25 rounded-2xl p-6 text-center">
             <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Full Travel Guide</p>
@@ -337,9 +356,16 @@ export default async function CityInMonthPage(
               Planning a {city.name} trip in {M}?
             </h3>
             <p className="text-sm text-muted mb-4">Things to do, where to stay, budgets and local tips — all free.</p>
-            <Link href={`/cities/${slug}`} className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-xl font-semibold hover:bg-accent/90 transition-colors">
-              Read the Full {city.name} Guide →
-            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link href={`/cities/${slug}`} className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-xl font-semibold hover:bg-accent/90 transition-colors">
+                Read the Full {city.name} Guide →
+              </Link>
+              {hasPlanner && (
+                <Link href={`/plan/${slug}`} className="inline-flex items-center gap-2 px-6 py-3 border border-accent/40 text-accent rounded-xl font-semibold hover:bg-accent/10 transition-colors">
+                  Build Your {M} Itinerary
+                </Link>
+              )}
+            </div>
           </div>
 
         </div>

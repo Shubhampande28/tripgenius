@@ -59,7 +59,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: slug } = await params;
   const country = getCountryBySlug(slug);
   if (!country) return { title: 'Not Found' };
-  const title = `${country.name} Travel Guide ${YEAR} — Cities, Itineraries & Tips | TripGenius`;
+  // No "| TripGenius" here — the root layout's title template appends it.
+  const title = `${country.name} Travel Guide ${YEAR} — Cities, Itineraries & Tips`;
   const description = `Plan your ${country.name} trip: city guides, visa info for Indians (${country.visaForIndians}), best time ${country.bestTime}, day-by-day itineraries and honest local tips — all free.`;
   return {
     title, description,
@@ -707,6 +708,12 @@ export default async function CountryPage({ params }: Props) {
                     {visa.badge}
                   </span>
                   <p className="text-sm text-muted leading-relaxed">{country.visaForIndians}</p>
+                  <Link
+                    href="/blog/visa-free-countries-indian-passport-2026"
+                    className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+                  >
+                    Full list: visa-free countries for Indian passports →
+                  </Link>
                 </div>
               </div>
               {/* Practical tips card */}

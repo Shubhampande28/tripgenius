@@ -153,11 +153,15 @@ export function buildItineraryTitle(
 ): string {
   const h1 = route[0]?.city.name;
   const h2 = route[1]?.city.name;
+  // "from India" is deliberate SERP targeting, not decoration: GSC shows these
+  // pages earning thousands of impressions in Brazil/US/etc. at ~0% CTR — the
+  // wrong audience. Naming the audience in the title trades those dead
+  // impressions for Indian searchers who actually click.
   // Progressively shorter candidates; country + day count are never truncated.
   const candidates = [
-    h1 && h2 ? `${countryName} ${duration}-Day Itinerary: ${h1}, ${h2} & Budget (${year})` : null,
-    h1 ? `${countryName} ${duration}-Day Itinerary: ${h1} & Budget (${year})` : null,
-    `${countryName} ${duration}-Day Itinerary: Route & Budget (${year})`,
+    h1 && h2 ? `${countryName} ${duration}-Day Itinerary from India: ${h1}, ${h2} & Costs` : null,
+    h1 ? `${countryName} ${duration}-Day Itinerary from India: ${h1} & Costs` : null,
+    `${countryName} ${duration}-Day Itinerary from India (${year})`,
     `${countryName} ${duration}-Day Itinerary (${year})`,
   ].filter((t): t is string => t !== null);
   return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
@@ -173,8 +177,8 @@ export function buildItineraryDescription(
     names.length === 1 ? `${names[0]} covered end to end` :
     names.length <= 3  ? names.join(' → ') :
     `${names[0]} → ${names[names.length - 1]} via ${names.length - 2} more stops`;
-  const desc = `Day-by-day ${countryName} plan for ${duration} days: ${stops}. Daily costs in INR & USD, transport tips and where to stay.`;
+  const desc = `Day-by-day ${countryName} plan for Indian travellers: ${stops}. Trip costs in INR, visa notes for Indian passports and where to stay.`;
   if (desc.length <= 155) return desc;
   // fall back to first stop only — always keeps a concrete place name
-  return `Day-by-day ${countryName} plan for ${duration} days from ${names[0]}. Daily costs in INR & USD, transport tips and where to stay.`.slice(0, 155);
+  return `Day-by-day ${countryName} plan for Indian travellers, from ${names[0]}. Trip costs in INR, visa notes for Indian passports and where to stay.`.slice(0, 155);
 }

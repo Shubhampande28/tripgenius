@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — TripGenius',
+  title: 'Privacy Policy',
   description: 'Read the TripGenius privacy policy. Learn how we collect, use, and protect your personal data on tripgenius.in.',
   // Without this, the root layout's canonical (the homepage) is inherited and
   // this page claims to be a duplicate of "/".

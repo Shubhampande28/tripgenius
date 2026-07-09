@@ -11,7 +11,8 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) return {};
-  return { title: `${city.name} Instagram Carousel — TripGenius`, robots: { index: false, follow: false } };
+  // `absolute` skips the root "%s | TripGenius" template (the string already brands itself).
+  return { title: { absolute: `${city.name} Instagram Carousel — TripGenius` }, robots: { index: false, follow: false } };
 }
 
 export default async function CarouselPage({ params }: { params: Promise<{ city: string }> }) {

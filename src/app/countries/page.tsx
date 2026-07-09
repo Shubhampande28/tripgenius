@@ -9,7 +9,7 @@ import { countries } from '@/data/countries';
 const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
-  title: 'Travel Guides by Country — Best Places to Visit Worldwide | TripGenius',
+  title: 'Travel Guides by Country — Best Places to Visit Worldwide',
   description: 'Explore honest travel guides for 49 countries. Visa requirements for Indians, best time to visit, top cities, daily budgets and local tips — all in one place.',
   alternates: { canonical: `${BASE}/countries` },
   openGraph: {

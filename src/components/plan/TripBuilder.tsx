@@ -5,6 +5,7 @@ import { Plus, Minus, X, ArrowUp, ArrowDown, Trash2 } from 'lucide-react';
 import { City, ThingToDo } from '@/lib/types';
 import TripBuilderMapWrapper from './TripBuilderMapWrapper';
 import type { PinMeta } from './TripBuilderMap';
+import { trackEvent } from '@/lib/analytics';
 
 const DAY_COLORS = ['#FF6B35', '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899', '#06B6D4'];
 const MAX_DAYS = 7;
@@ -25,11 +26,12 @@ export default function TripBuilder({ city }: { city: City }) {
   const [selected, setSelected] = useState<SelectedItem[]>([]);
 
   function toggle(name: string) {
-    setSelected((prev) =>
-      prev.some((s) => s.name === name)
-        ? prev.filter((s) => s.name !== name)
-        : [...prev, { name, day: activeDay }]
-    );
+    setSelected((prev) => {
+      if (prev.some((s) => s.name === name)) return prev.filter((s) => s.name !== name);
+      // First pin = the "planner engaged" moment; mark as a GA4 key event.
+      if (prev.length === 0) trackEvent('trip_builder_started', { city: city.slug });
+      return [...prev, { name, day: activeDay }];
+    });
   }
 
   function remove(name: string) {

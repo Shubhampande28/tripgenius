@@ -12,6 +12,7 @@ import ItineraryDisplay from '@/components/plan/ItineraryDisplay';
 import { TripPlanRequest, TripItinerary } from '@/lib/types';
 import { allCities } from '@/lib/cities';
 import { cityHasMapBuilder } from '@/lib/mapUtils';
+import { trackEvent } from '@/lib/analytics';
 
 const mapBuilderCities = allCities.filter(cityHasMapBuilder);
 
@@ -27,6 +28,9 @@ function PlannerPageInner() {
     setIsLoading(true);
     setItinerary(null);
     setError(null);
+    // Mark these as key events in GA4 Admin → Events: they answer "does search
+    // traffic actually use the planner?", which pageviews alone can't.
+    trackEvent('planner_started', { destination: data.destination, style: data.style });
 
     try {
       const res = await fetch('/api/plan', {
@@ -42,6 +46,7 @@ function PlannerPageInner() {
 
       const result: TripItinerary = await res.json();
       setItinerary(result);
+      trackEvent('itinerary_generated', { destination: data.destination, style: data.style });
 
       setTimeout(() => {
         document.getElementById('itinerary-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' });

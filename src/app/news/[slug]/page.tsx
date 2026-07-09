@@ -217,6 +217,20 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
             ))}
           </article>
 
+          {/* Visa news → evergreen visa hub. Daily visa articles pass freshness
+              and internal-link signals into the page that ranks for the intent. */}
+          {(article.category === 'Visas' || article.category === 'Policy') && (
+            <div className="mt-8 rounded-2xl border border-blue-500/20 bg-blue-500/5 px-5 py-4">
+              <p className="text-sm text-muted leading-relaxed">
+                <strong className="text-primary-text">Keep this handy:</strong>{' '}
+                <Link href="/blog/visa-free-countries-indian-passport-2026" className="text-accent font-semibold hover:underline">
+                  the full 2026 list of visa-free and visa-on-arrival countries for Indian passport holders
+                </Link>
+                {' '}— updated as rules change.
+              </p>
+            </div>
+          )}
+
           {/* Sources — news credibility signal */}
           {article.sources.length > 0 && (
             <div className="mt-10 pt-6 border-t border-border">

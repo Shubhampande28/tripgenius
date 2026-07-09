@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — TripGenius',
+  title: 'Terms of Service',
   description: 'Read the TripGenius terms of service. By using tripgenius.in, you agree to these terms.',
   // Without this, the root layout's canonical (the homepage) is inherited and
   // this page claims to be a duplicate of "/".
