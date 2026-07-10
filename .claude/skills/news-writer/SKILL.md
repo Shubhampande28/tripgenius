@@ -51,9 +51,16 @@ Skip anything already covered by an existing file in `content/news/`.
 Present the shortlist: headline · date · source · one line on the angle.
 
 ### 4. Write each article (grounded in real reporting)
-For each topic, **before writing**, `WebFetch` 1–2 of its source URLs from the
-CSV to gather the actual facts — who, what, when, real numbers, real quotes.
-Do not write from the headline alone.
+For each topic, **before writing**, gather the actual facts from 1–2 real
+sources — who, what, when, real numbers, real quotes. Do not write from the
+headline alone.
+
+⚠️ The CSV's URLs are **Google News redirect links** (`news.google.com/rss/...`)
+and do NOT resolve via `WebFetch`. Get to the real article instead:
+1. Resolve the redirect in Bash: `curl -sIL -o /dev/null -w '%{url_effective}\n' "<csv url>"`
+   then `WebFetch` the resolved publisher URL, **or**
+2. `WebSearch` the headline (+ source name) and fetch the original article.
+Cite the resolved publisher URLs in `sources:` — never the news.google.com links.
 
 Write each article to `content/news/<article-slug>.md`:
 
