@@ -1,0 +1,55 @@
+name: Weekly Scorecard
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'   # Mondays 04:00 UTC (09:30 IST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  scorecard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Collect data and build report
+        env:
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+        run: npx tsx automation/scorecard/report.ts
+      - name: Commit history.csv trendline
+        run: |
+          git config user.name "tripgenius-automation"
+          git config user.email "automation@tripgenius.in"
+          git add automation/scorecard/history.csv
+          git diff --cached --quiet || git commit -m "scorecard: weekly metrics row [skip ci]"
+          git push
+      - name: Create scorecard issue (close last week's)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('automation/scorecard/report.md', 'utf-8');
+            const date = new Date().toISOString().slice(0, 10);
+
+            const open = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'scorecard',
+            });
+            for (const issue of open.data) {
+              await github.rest.issues.update({
+                ...context.repo, issue_number: issue.number, state: 'closed',
+              });
+            }
+            await github.rest.issues.create({
+              ...context.repo,
+              title: `📊 TripGenius Scorecard — week of ${date}`,
+              body,
+              labels: ['scorecard'],
+            });

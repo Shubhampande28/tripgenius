@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-07-10T06:30:21.204Z",
+  "urlsChecked": 47,
+  "criticalCount": 0,
+  "warningCount": 13,
+  "findings": [
+    {
+      "url": "https://www.tripgenius.in/",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "177 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/countries/india",
+      "severity": "WARNING",
+      "check": "title-length",
+      "detail": "65 chars: \"India Travel Guide 2026 — Cities, Itineraries & Tips | TripGenius\""
+    },
+    {
+      "url": "https://www.tripgenius.in/cities/bali",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "181 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/countries/united-kingdom",
+      "severity": "WARNING",
+      "check": "title-length",
+      "detail": "74 chars: \"United Kingdom Travel Guide 2026 — Cities, Itineraries & Tips | TripGenius\""
+    },
+    {
+      "url": "https://www.tripgenius.in/countries/united-kingdom",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "160 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/best-time-to-visit/alleppey",
+      "severity": "WARNING",
+      "check": "title-length",
+      "detail": "80 chars: \"Best Time to Visit Alleppey (Alappuzha) 2026 — Month by Month Guide | TripGenius\""
+    },
+    {
+      "url": "https://www.tripgenius.in/best-time-to-visit/alleppey",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "177 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/blog/best-time-to-visit-india",
+      "severity": "WARNING",
+      "check": "title-length",
+      "detail": "68 chars: \"Best Time to Visit India 2026: Month-by-Month Guide for Every Region\""
+    },
+    {
+      "url": "https://www.tripgenius.in/blog/best-time-to-visit-india",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "174 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/best-time-to-visit/ahmedabad",
+      "severity": "WARNING",
+      "check": "title-length",
+      "detail": "69 chars: \"Best Time to Visit Ahmedabad 2026 — Month by Month Guide | TripGenius\""
+    },
+    {
+      "url": "https://www.tripgenius.in/best-time-to-visit/ahmedabad",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "166 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/cities/jodhpur",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "182 chars"
+    },
+    {
+      "url": "https://www.tripgenius.in/cities",
+      "severity": "WARNING",
+      "check": "description-length",
+      "detail": "187 chars"
+    }
+  ]
+}

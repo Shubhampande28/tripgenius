@@ -1,0 +1,63 @@
+name: Pinterest Pin Factory
+
+on:
+  schedule:
+    - cron: '30 14 * * 1-5'   # Mon–Fri 14:30 UTC = 20:00 IST — 5 pins/week
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Force a specific queue slug (optional)'
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  pin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Refresh queue from site data
+        run: npx tsx automation/pinterest/build-queue.ts
+      - name: Publish next pin
+        id: publish
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+        run: |
+          npx tsx automation/pinterest/publish.ts ${{ github.event.inputs.slug && format('--slug={0}', github.event.inputs.slug) || '' }} 2>&1 | tee publish.log
+          exit ${PIPESTATUS[0]}
+        continue-on-error: true
+      - name: Commit updated queue
+        run: |
+          git config user.name "tripgenius-automation"
+          git config user.email "automation@tripgenius.in"
+          git add automation/pinterest/queue.json
+          git diff --cached --quiet || git commit -m "pinterest: queue update [skip ci]"
+          git push
+      - name: Open issue on auth failure
+        if: steps.publish.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const log = fs.readFileSync('publish.log', 'utf-8');
+            if (!log.includes('AUTH_ERROR')) return;   // 429s just wait for the next slot
+            const open = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'pinterest',
+            });
+            if (open.data.length > 0) return;
+            await github.rest.issues.create({
+              ...context.repo,
+              title: '🔑 Pinterest token expired',
+              body: 'The pin factory got an auth error from Pinterest. Generate a new long-lived access token (scopes: pins:write, boards:read, boards:write) and update the PINTEREST_ACCESS_TOKEN repo secret.\n\n```\n' + log.slice(-1500) + '\n```',
+              labels: ['pinterest'],
+            });
+      - name: Fail job if publish failed
+        if: steps.publish.outcome == 'failure'
+        run: exit 1
