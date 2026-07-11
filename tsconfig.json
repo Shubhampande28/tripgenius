@@ -30,5 +30,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  // automation/ is excluded: those scripts run via tsx in GitHub Actions and
+  // import devDependencies (satori, cheerio) that production installs on the
+  // server don't have — `next build` must not typecheck them. They have their
+  // own tsconfig (automation/tsconfig.json), checked via `npm run check:automation`.
+  "exclude": ["node_modules", "automation"]
 }
