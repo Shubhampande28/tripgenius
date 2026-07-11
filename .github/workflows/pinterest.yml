@@ -58,6 +58,19 @@ jobs:
               body: 'The pin factory got an auth error from Pinterest. Generate a new long-lived access token (scopes: pins:write, boards:read, boards:write) and update the PINTEREST_ACCESS_TOKEN repo secret.\n\n```\n' + log.slice(-1500) + '\n```',
               labels: ['pinterest'],
             });
+      - name: Report run to site dashboard
+        if: always()
+        continue-on-error: true
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -z "$CRON_SECRET" ] && exit 0
+          STATUS="${{ steps.publish.outcome == 'success' && 'ok' || 'error' }}"
+          DETAIL=$(grep -E "📌 Pinned|Queue empty|AUTH_ERROR|RATE_LIMITED" publish.log | head -1 || echo "see Actions log")
+          curl -s -X POST https://www.tripgenius.in/api/admin/log \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "$(jq -n --arg s "$STATUS" --arg d "$DETAIL" \
+              '{source:"pinterest", status:$s, title:(if $s=="ok" then "Daily pin run finished" else "Daily pin run FAILED" end), detail:$d, url:"https://github.com/Shubhampande28/tripgenius/actions"}')"
       - name: Fail job if publish failed
         if: steps.publish.outcome == 'failure'
         run: exit 1

@@ -34,6 +34,17 @@ jobs:
           git add automation/reddit/seen.json
           git diff --cached --quiet || git commit -m "reddit: update seen threads [skip ci]"
           git push
+      - name: Report run to site dashboard
+        if: always()
+        continue-on-error: true
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -z "$CRON_SECRET" ] && exit 0
+          STATUS="${{ job.status == 'success' && 'ok' || 'error' }}"
+          curl -s -X POST https://www.tripgenius.in/api/admin/log \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "{\"source\":\"reddit\",\"status\":\"$STATUS\",\"title\":\"Weekly Reddit scan finished — digest issue created\",\"url\":\"https://github.com/Shubhampande28/tripgenius/issues?q=label:reddit-digest\"}"
       - name: Create digest issue
         uses: actions/github-script@v7
         with:

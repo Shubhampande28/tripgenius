@@ -53,6 +53,19 @@ jobs:
                 ...context.repo, title, body, labels: ['seo-watchdog'],
               });
             }
+      - name: Report run to site dashboard
+        if: always()
+        continue-on-error: true
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -z "$CRON_SECRET" ] && exit 0
+          STATUS="${{ steps.watchdog.outcome == 'success' && 'ok' || 'error' }}"
+          SUMMARY=$(jq -r '"\(.urlsChecked) URLs, \(.criticalCount) critical, \(.warningCount) warnings"' automation/seo-watchdog/last-report.json 2>/dev/null || echo "run failed before report")
+          curl -s -X POST https://www.tripgenius.in/api/admin/log \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "$(jq -n --arg s "$STATUS" --arg d "$SUMMARY" \
+              '{source:"seo-watchdog", status:$s, title:(if $s=="ok" then "Daily SEO check passed" else "SEO watchdog found CRITICAL issues" end), detail:$d, url:"https://github.com/Shubhampande28/tripgenius/issues?q=label:seo-watchdog"}')"
       - name: Fail the job if criticals were found
         if: steps.watchdog.outcome == 'failure'
         run: exit 1

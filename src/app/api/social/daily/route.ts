@@ -21,6 +21,7 @@ import { NextResponse } from 'next/server';
 import { buildDailyQueue, buildInstagramSlotPost, IG_SLOTS, type IgSlot } from '@/lib/socialQueue';
 import { createPin } from '@/lib/pinterestPublisher';
 import { publishInstagramImagePost } from '@/lib/instagramPublisher';
+import { notify } from '@/lib/notify';
 
 export const maxDuration = 300;
 
@@ -89,5 +90,28 @@ export async function GET(request: Request) {
   }
 
   const failed = results.filter(r => !r.ok).length;
+
+  // Log + email every outcome so /admin and the inbox show what actually ran.
+  for (const r of results) {
+    await notify({
+      source: r.platform === 'instagram' ? 'instagram' : 'pinterest',
+      status: r.ok ? 'ok' : 'error',
+      title: r.ok
+        ? `Posted ${r.city} (${r.style}, ${slot} slot)`
+        : `FAILED posting ${r.city} (${slot} slot)`,
+      detail: r.ok ? `post id ${r.id}` : r.error,
+    });
+  }
+  if (results.length === 0) {
+    await notify({
+      source: 'instagram',
+      status: 'skipped',
+      title: `${slot} slot ran but nothing was posted`,
+      detail: igConfigured
+        ? 'Queue produced no post for this slot.'
+        : 'INSTAGRAM_ACCESS_TOKEN / INSTAGRAM_BUSINESS_ACCOUNT_ID not configured.',
+    });
+  }
+
   return NextResponse.json({ slot, posted: results.length - failed, failed, igConfigured, results });
 }

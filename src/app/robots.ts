@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 export default function robots(): MetadataRoute.Robots {
   // /plan and /cheatsheet are interactive tools (thin for crawlers); /api/ and
   // /_next/ are non-content. Nothing else is blocked for anyone.
-  const disallow = ['/api/', '/plan', '/_next/', '/cheatsheet/'];
+  const disallow = ['/api/', '/plan', '/_next/', '/cheatsheet/', '/admin'];
   return {
     rules: [
       // AI search & citation crawlers — explicitly allowed so the policy is
