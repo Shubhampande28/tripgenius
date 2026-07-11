@@ -61,9 +61,10 @@ export default async function AdminPage(
   const adminKey = process.env.ADMIN_KEY;
   if (!adminKey || key !== adminKey) return <Denied />;
 
-  const activity = readActivity(150);
-  const latest = latestBySource();
-  const news = getAllNews().slice(0, 8);
+  const activity = await readActivity(150);
+  const latest = await latestBySource();
+  let news: ReturnType<typeof getAllNews> = [];
+  try { news = getAllNews().slice(0, 8); } catch { /* content dir not traced — table just shows empty */ }
   const emailConfigured = Boolean(process.env.RESEND_API_KEY && process.env.NOTIFY_EMAIL_TO);
 
   const healthSources: { source: ActivitySource; label: string }[] = [

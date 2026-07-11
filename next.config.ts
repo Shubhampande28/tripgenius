@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 import { RETIRED_POST_REDIRECTS } from "./src/lib/postRedirects";
 
 const nextConfig: NextConfig = {
+  // /admin reads content/news at request time (dynamic route) — trace the
+  // files into its serverless bundle on Vercel or the list renders empty.
+  outputFileTracingIncludes: {
+    '/admin': ['./content/news/**'],
+  },
   async redirects() {
     return [
       // Canonical direction for compare pairs (reverse pairs were removed)

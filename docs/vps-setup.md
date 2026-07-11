@@ -1,5 +1,8 @@
 # VPS Setup — deploys, crons, dashboard, email
 
+> **The site currently runs on Vercel — see `vercel-setup.md` instead.**
+> Keep this doc only for a future move to self-hosting.
+
 The site runs on your own VPS, so three things Vercel used to do (or would have
 done) are now the server's job: **deploying on git push**, **firing the social
 cron**, and there's now an **/admin dashboard + email alerts** to watch it all.

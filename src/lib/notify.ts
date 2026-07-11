@@ -46,7 +46,7 @@ export async function notify(entry: {
   detail?: string;
   url?: string;
 }): Promise<void> {
-  logActivity(entry);
+  await logActivity(entry);
   const subject = `${STATUS_EMOJI[entry.status]} [${entry.source}] ${entry.title}`;
   const body = [
     entry.title,
