@@ -17,6 +17,12 @@ RESEND_API_KEY=<from resend.com — free account, 100 emails/day>
 NOTIFY_EMAIL_TO=shubham.pande1008@gmail.com
 INSTAGRAM_ACCESS_TOKEN=<IG Graph API long-lived token>
 INSTAGRAM_BUSINESS_ACCOUNT_ID=<numeric id>
+# Facebook Page posts (same 3 daily slots as Instagram, captions carry a
+# clickable page link). Get a long-lived PAGE token: Graph API Explorer →
+# your app → permissions pages_manage_posts + pages_read_engagement →
+# GET /me/accounts → copy the page's "access_token" and "id".
+FACEBOOK_PAGE_ID=<numeric Page id>
+FACEBOOK_PAGE_ACCESS_TOKEN=<long-lived Page token>
 ```
 
 After editing: `npm run build && pm2 restart tripgenius` (or your restart command).

@@ -23,6 +23,7 @@ const STATUS_STYLE: Record<string, string> = {
 // How stale each source may be before its health chip turns red.
 const EXPECTED_INTERVAL_HOURS: Partial<Record<ActivitySource, number>> = {
   instagram: 12,       // 3 slots/day
+  facebook: 12,        // mirrors the Instagram slots
   pinterest: 36,       // 1/weekday
   news: 30,            // daily routine
   'seo-watchdog': 30,  // daily
@@ -69,6 +70,7 @@ export default async function AdminPage(
 
   const healthSources: { source: ActivitySource; label: string }[] = [
     { source: 'instagram', label: 'Instagram' },
+    { source: 'facebook', label: 'Facebook' },
     { source: 'pinterest', label: 'Pinterest' },
     { source: 'news', label: 'News' },
     { source: 'seo-watchdog', label: 'Watchdog' },

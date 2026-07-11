@@ -9,6 +9,7 @@
 
 export type ActivitySource =
   | 'instagram'
+  | 'facebook'
   | 'pinterest'
   | 'reddit'
   | 'scorecard'
