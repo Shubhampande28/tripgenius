@@ -264,7 +264,9 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
             </div>
 
             <p className="text-muted text-base sm:text-lg max-w-2xl mb-8 leading-relaxed">
-              A day-by-day itinerary covering the best of {country.name} — designed for Indian travellers with honest costs, visa tips, and the right cities in the right order.
+              {route.length === 1
+                ? `A ${parsed.duration}-day plan for ${route[0].city.name} — designed for Indian travellers with honest costs, visa tips, and a day-by-day pace that's ${suits}.`
+                : `A day-by-day itinerary covering the best of ${country.name} — designed for Indian travellers with honest costs, visa tips, and the right cities in the right order.`}
             </p>
 
             {/* Quick stat bar */}

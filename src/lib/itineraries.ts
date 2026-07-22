@@ -140,6 +140,57 @@ export function estimateTripCost(days: ItineraryDay[]): TripCostEstimate | null 
 export const fmtINR = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 export const fmtUSD = (n: number) => `$${n.toLocaleString('en-US')}`;
 
+// ── Single-city duration framing ─────────────────────────────────────────────
+// Countries with exactly one city (Brazil→Rio, Argentina→Buenos Aires, etc.)
+// otherwise produce 3/5/7-day itinerary pages that differ only by a digit —
+// same route, same "covered end to end" description every time. These
+// candidates key the title's suffix and the description's theme summary off
+// the SINGLE_CITY_THEMES actually rendered on the page for that duration
+// (see buildItineraryDaysForCities), so each duration variant both reads
+// differently and reflects genuinely different on-page content.
+const SINGLE_CITY_TITLE_SUFFIX: Record<number, string> = {
+  3: 'The Essentials',
+  5: 'The Well-Rounded Trip',
+  7: 'The Deep-Dive Trip',
+};
+
+const SINGLE_CITY_THEME_SHORT: Record<string, string> = {
+  'Arrival & First Impressions': 'arrival',
+  'Iconic Highlights': 'icons',
+  'Hidden Gems & Local Life': 'hidden gems',
+  'Adventure & Day Trips': 'day trips',
+  'Culture & Cuisine': 'culture and food',
+  'Relaxation & Slow Travel': 'slow travel',
+  'Final Exploration & Departure': 'departure',
+};
+
+function joinWithAnd(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? '';
+  return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
+
+function buildSingleCityTitle(city: string, duration: number, year: number): string {
+  const suffix = SINGLE_CITY_TITLE_SUFFIX[duration] ?? `${duration}-Day Plan`;
+  const candidates = [
+    `${city} ${duration}-Day Itinerary from India: ${suffix}`,
+    `${city} ${duration}-Day Itinerary from India (${year})`,
+    `${city} ${duration}-Day Itinerary (${year})`,
+  ];
+  return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
+}
+
+function buildSingleCityDescription(countryName: string, city: string, duration: number): string {
+  const themes = SINGLE_CITY_THEMES.slice(0, duration).map((t) => SINGLE_CITY_THEME_SHORT[t] ?? t.toLowerCase());
+  const candidates = [
+    `${duration}-day ${countryName} plan for Indian travellers: ${city} — ${joinWithAnd(themes)}. Trip costs in INR, visa notes for Indian passports and where to stay.`,
+    `${duration}-day ${countryName} plan for Indian travellers: ${city}, from ${themes[0]} to ${themes[themes.length - 1]}. Trip costs in INR, visa notes for Indian passports included.`,
+    // Last resort — always keeps the concrete place name even if the
+    // theme-based phrasing runs long for an unusually long city/country name.
+    `Day-by-day ${countryName} plan for Indian travellers: ${city} covered end to end. Trip costs in INR, visa notes for Indian passports and where to stay.`,
+  ];
+  return candidates.find((c) => c.length <= 155) ?? candidates[candidates.length - 1].slice(0, 155);
+}
+
 // ── SERP metadata builders ───────────────────────────────────────────────────
 // Shared by generateMetadata and the on-page answer block so title, meta and
 // visible content always agree. CTR-focused formulas (2026-07):
@@ -153,6 +204,10 @@ export function buildItineraryTitle(
 ): string {
   const h1 = route[0]?.city.name;
   const h2 = route[1]?.city.name;
+  // Single-city countries have nothing to differentiate 3/5/7-day variants
+  // beyond the digit if we use the generic country-level formula below — use
+  // duration-specific framing instead (see buildSingleCityTitle above).
+  if (route.length === 1 && h1) return buildSingleCityTitle(h1, duration, year);
   // "from India" is deliberate SERP targeting, not decoration: GSC shows these
   // pages earning thousands of impressions in Brazil/US/etc. at ~0% CTR — the
   // wrong audience. Naming the audience in the title trades those dead
@@ -160,6 +215,13 @@ export function buildItineraryTitle(
   // Progressively shorter candidates; country + day count are never truncated.
   const candidates = [
     h1 && h2 ? `${countryName} ${duration}-Day Itinerary from India: ${h1}, ${h2} & Costs` : null,
+    // Drops "from India" and the year to buy back characters while still
+    // naming both stops. Must come before the h1-only candidate below —
+    // otherwise a 3+ stop route (e.g. Cape Town, Johannesburg, Kruger)
+    // whose first candidate is too long would accept the shorter h1-only
+    // title before ever trying to keep both stops, silently losing a
+    // named city even though a 2-stop title would fit.
+    h1 && h2 ? `${countryName} ${duration}-Day Itinerary: ${h1} & ${h2}` : null,
     h1 ? `${countryName} ${duration}-Day Itinerary from India: ${h1} & Costs` : null,
     `${countryName} ${duration}-Day Itinerary from India (${year})`,
     `${countryName} ${duration}-Day Itinerary (${year})`,
@@ -173,9 +235,9 @@ export function buildItineraryDescription(
   route: { city: City }[],
 ): string {
   const names = route.map((r) => r.city.name);
+  if (route.length === 1) return buildSingleCityDescription(countryName, names[0], duration);
   const stops =
-    names.length === 1 ? `${names[0]} covered end to end` :
-    names.length <= 3  ? names.join(' → ') :
+    names.length <= 3 ? names.join(' → ') :
     `${names[0]} → ${names[names.length - 1]} via ${names.length - 2} more stops`;
   const desc = `Day-by-day ${countryName} plan for Indian travellers: ${stops}. Trip costs in INR, visa notes for Indian passports and where to stay.`;
   if (desc.length <= 155) return desc;
