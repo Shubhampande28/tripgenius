@@ -20,7 +20,7 @@ export default function GettingThereAround({ city }: { city: City }) {
   if (!hasLocalTips && apps.length === 0) return null;
 
   return (
-    <section className="py-14">
+    <section id="getting-around" className="py-14 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div        >
           {/* Header */}

@@ -347,26 +347,21 @@ export function enrichCity(city: City): City {
         tip: 'Ask your host or driver for the quietest time to visit.',
       },
     ],
-    neighbourhoods: city.neighbourhoods ?? [
-      {
-        name: firstArea,
-        description: `${firstArea} is the easiest base for a first visit to ${city.name}, with access to the main sights and practical transport.`,
-        bestFor: ['First-time visitors', 'Short stays', 'Sightseeing'],
-        vibe: city.vibes[0] ?? 'Central',
-        priceRange: '$$',
-        highlights: spots.slice(0, 3),
-        notFor: 'Travellers who want a very quiet stay away from the main visitor circuit',
-      },
-      {
-        name: 'Quieter Local Base',
-        description: `A calmer stay outside the busiest core works well if you have extra time in ${city.name}.`,
-        bestFor: ['Slow travellers', 'Couples', 'Repeat visitors'],
-        vibe: 'Relaxed',
-        priceRange: '$$',
-        highlights: spots.slice(3, 6),
-        notFor: 'Travellers trying to cover everything in one day',
-      },
-    ],
+    // Every source city already has a curated area list. Reuse that real data
+    // for the Bali-style area module instead of inventing generic bases such
+    // as "Quieter Local Base" for destinations without authored neighbourhoods.
+    neighbourhoods: city.neighbourhoods ?? city.areas?.map((area, index) => ({
+      name: area.name,
+      description: area.tagline || `${area.name} is one of the main areas to explore in ${city.name}.`,
+      bestFor: [
+        city.vibes[index % city.vibes.length] ?? 'Sightseeing',
+        ...area.spots.slice(0, 2).map((spot) => spot.tag).filter((tag): tag is string => Boolean(tag)),
+      ].filter((value, valueIndex, values) => values.indexOf(value) === valueIndex).slice(0, 3),
+      vibe: city.vibes[index % city.vibes.length] ?? 'Local',
+      priceRange: '$$' as const,
+      highlights: area.spots.map((spot) => spot.name),
+      notFor: 'Travellers whose priorities are concentrated in another part of the destination',
+    })) ?? [],
     gettingThere: city.gettingThere ?? {
       summary: `${city.name} is best reached through the nearest major railhead or airport, then completed by road transfer if needed.`,
       airports: [

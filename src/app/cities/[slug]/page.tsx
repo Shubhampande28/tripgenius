@@ -13,7 +13,7 @@ import ThingsToDo from '@/components/city/ThingsToDo';
 import OffbeatPlaces from '@/components/city/OffbeatPlaces';
 import WhereToStay from '@/components/city/WhereToStay';
 import WhereToEat from '@/components/city/WhereToEat';
-import GettingAround from '@/components/city/GettingAround';
+import GettingThereAround from '@/components/city/GettingThereAround';
 import ProTips from '@/components/city/ProTips';
 import CityFAQ from '@/components/city/CityFAQ';
 import BookingPanel from '@/components/city/BookingPanel';
@@ -249,13 +249,17 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         <AtAGlance city={city} />
         <CityQuickNav city={city} />
 
+        {/* The overview modules stay full width on every destination, matching
+            the city-page composition originally established for Bali. */}
+        <MonthByMonth city={city} />
+        {city.neighbourhoods?.length
+          ? <NeighbourhoodsAreas city={city} />
+          : <ExploreByArea city={city} />
+        }
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
             <div>
-              <MonthByMonth city={city} />
-              {/* "How much does a trip cost?" — renders only for cities with
-                  authored budget tiers (self-guards on budgetBreakdown) */}
-              <BudgetBreakdown city={city} />
               <ThingsToDo city={city} />
 
               {/* Map — server-renders the section shell; Leaflet loads client-side only */}
@@ -269,12 +273,6 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
                 <CityMapWrapper city={city} />
               </section>
 
-              {/* Neighbourhoods if available, otherwise area explorer */}
-              {city.neighbourhoods?.length
-                ? <NeighbourhoodsAreas city={city} />
-                : <ExploreByArea city={city} />
-              }
-
               {/* Suppress template-generated sections so indexed pages show
                   only authored content. WhereToStay/BookingPanel stay — they
                   render real neighbourhoods + affiliate search, not fabricated
@@ -282,9 +280,9 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
                   generated for non-authored cities and would read as thin or
                   factually off (e.g. India-centric tips on a foreign city). */}
               {!city.offbeatSynthetic && <OffbeatPlaces city={city} />}
+              <BudgetBreakdown city={city} />
               <WhereToStay city={city} />
               {!city.restaurantsSynthetic && <WhereToEat city={city} />}
-              {!city.gettingAroundSynthetic && <GettingAround city={city} />}
               {!city.proTipsSynthetic && <ProTips city={city} />}
               <BookingPanel city={city} />
               <CityFAQ city={city} />
@@ -300,6 +298,10 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
             </div>
           </div>
         </div>
+
+        {/* Use Bali's combined transport treatment everywhere authored local
+            guidance exists; synthetic transport copy remains suppressed. */}
+        {!city.gettingAroundSynthetic && <GettingThereAround city={city} />}
 
         <SimilarDestinations city={city} />
       </main>
