@@ -56,6 +56,10 @@ export const countries: CountryData[] = [
       'nagpur', 'indore', 'raipur', 'vijayawada', 'port-blair', 'ranchi', 'salem',
       'ayodhya', 'sanchi', 'chittorgarh', 'kumbhalgarh', 'bharatpur',
       'ujjain', 'jabalpur', 'mahabaleshwar', 'badami', 'pattadakal',
+      'araku-valley', 'mechuka', 'jorhat', 'vaishali', 'jagdalpur',
+      'daman', 'dholavira', 'panchkula-morni', 'sonamarg', 'deoghar',
+      'imphal', 'aizawl', 'kohima', 'chilika-lake', 'kapurthala',
+      'pelling', 'warangal', 'agartala', 'auli', 'kalimpong',
     ],
     regions: [
       {

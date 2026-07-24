@@ -2504,7 +2504,23 @@ import { indianCitiesExtended } from './indianCitiesExtended';
 import { newIndianCities } from './newIndianCities';
 import { enrichCity } from './enrichCity';
 
-export const allCities = [...cities, ...worldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities].map(enrichCity);
+const legacyIndianStateBySlug: Record<string, string> = {
+  goa: 'Goa', srinagar: 'Jammu & Kashmir', jaipur: 'Rajasthan', manali: 'Himachal Pradesh',
+  udaipur: 'Rajasthan', varanasi: 'Uttar Pradesh', kochi: 'Kerala', mumbai: 'Maharashtra',
+  rishikesh: 'Uttarakhand', andaman: 'Andaman & Nicobar Islands', delhi: 'Delhi',
+  agra: 'Uttar Pradesh', amritsar: 'Punjab', jodhpur: 'Rajasthan', kolkata: 'West Bengal',
+  shimla: 'Himachal Pradesh', darjeeling: 'West Bengal', ladakh: 'Ladakh',
+  bengaluru: 'Karnataka', hampi: 'Karnataka', munnar: 'Kerala', alleppey: 'Kerala',
+  mysuru: 'Karnataka', pondicherry: 'Puducherry', pushkar: 'Rajasthan', ahmedabad: 'Gujarat',
+};
+
+export const allCities = [
+  ...cities, ...worldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities,
+].map((city) => (
+  city.country === 'India' && !city.state
+    ? { ...city, state: legacyIndianStateBySlug[city.slug] }
+    : city
+)).map(enrichCity);
 
 // Slugs of cities that ship hand-authored month-by-month data (real weather,
 // temps, crowds) — NOT the generic enrichCity fallback. We gate the per-month

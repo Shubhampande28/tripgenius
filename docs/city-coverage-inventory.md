@@ -4,12 +4,12 @@ Snapshot date: 24 July 2026
 
 ## Coverage summary
 
-- City guides: **313**
+- City guides: **333**
 - Country hubs: **49**
 - Fully authored deep city sections: **6**
-- Safely derived deep city sections: **307**
+- Safely derived deep city sections: **327**
 - Cities with map coordinates: **20**
-- Cities using the map placeholder: **293**
+- Cities using the map placeholder: **313**
 - All city guides use the same canonical section order and belong to exactly one country hub.
 
 ## Covered cities by country
@@ -32,7 +32,7 @@ Snapshot date: 24 July 2026
 | Germany | 6 | Berlin, Cologne, Dresden, Frankfurt, Hamburg, Munich |
 | Greece | 5 | Athens, Crete, Mykonos, Rhodes, Santorini |
 | Hungary | 1 | Budapest |
-| India | 139 | Agra, Ahmedabad, Ajmer, Alleppey, Amritsar, Andaman Islands, Aurangabad, Auroville, Ayodhya, Badami, Badrinath, Bekal, Bengaluru, Bharatpur, Bhopal, Bhubaneswar, Bikaner, Bir Billing, Bodh Gaya, Chandigarh, Chennai, Cherrapunji, Chikmagalur, Chittorgarh, Coimbatore, Coorg, Darjeeling, Dehradun, Delhi, Dhanushkodi, Dharamshala, Digha & Mandarmani, Diu, Dwarka, Dzukou Valley, Gangtok, Ganpatipule, Goa, Gokarna, Gulmarg, Guwahati, Gwalior, Hampi, Haridwar, Hyderabad, Indore, Jabalpur, Jaipur, Jaisalmer, Jim Corbett, Jodhpur, Kanha, Kanyakumari, Kasauli, Kasol, Kaziranga, Kedarnath, Khajuraho, Kochi, Kodaikanal, Kolkata, Konark, Kovalam, Kozhikode, Kumbhalgarh, Lakshadweep, Leh Ladakh, Lonavala & Khandala, Lucknow, Madurai, Mahabaleshwar, Mahabalipuram, Maheshwar, Majuli, Manali, Mandu, Mathura & Vrindavan, Mawlynnong, McLeod Ganj, Mount Abu, Mumbai, Munnar, Murudeshwar, Mussoorie, Mysuru, Nagpur, Nainital, Nalanda, Nashik, Ooty, Orchha, Pachmarhi, Pahalgam, Pattadakal, Patna, Pondicherry, Port Blair, Prayagraj, Pune, Puri, Pushkar, Raipur, Rajgir, Rameswaram, Ranchi, Rann of Kutch, Ranthambore, Rishikesh, Salem, Sanchi, Sasan Gir, Shantiniketan, Shillong, Shimla, Shirdi, Somnath, Spiti Valley, Srinagar, Sundarbans, Tarkarli, Tawang, Thanjavur, Thekkady, Thiruvananthapuram, Thrissur, Tirthan Valley, Tiruchirappalli, Tirupati, Udaipur, Udupi, Ujjain, Vadodara, Varanasi, Varkala, Vijayawada, Visakhapatnam, Vrindavan, Wayanad, Ziro Valley |
+| India | 159 | Agartala, Agra, Ahmedabad, Aizawl, Ajmer, Alleppey, Amritsar, Andaman Islands, Araku Valley, Auli, Aurangabad, Auroville, Ayodhya, Badami, Badrinath, Bekal, Bengaluru, Bharatpur, Bhopal, Bhubaneswar, Bikaner, Bir Billing, Bodh Gaya, Chandigarh, Chennai, Cherrapunji, Chikmagalur, Chilika Lake, Chittorgarh, Coimbatore, Coorg, Daman, Darjeeling, Dehradun, Delhi, Deoghar, Dhanushkodi, Dharamshala, Dholavira, Digha & Mandarmani, Diu, Dwarka, Dzukou Valley, Gangtok, Ganpatipule, Goa, Gokarna, Gulmarg, Guwahati, Gwalior, Hampi, Haridwar, Hyderabad, Imphal, Indore, Jabalpur, Jagdalpur, Jaipur, Jaisalmer, Jim Corbett, Jodhpur, Jorhat, Kalimpong, Kanha, Kanyakumari, Kapurthala, Kasauli, Kasol, Kaziranga, Kedarnath, Khajuraho, Kochi, Kodaikanal, Kohima, Kolkata, Konark, Kovalam, Kozhikode, Kumbhalgarh, Lakshadweep, Leh Ladakh, Lonavala & Khandala, Lucknow, Madurai, Mahabaleshwar, Mahabalipuram, Maheshwar, Majuli, Manali, Mandu, Mathura & Vrindavan, Mawlynnong, McLeod Ganj, Mechuka, Mount Abu, Mumbai, Munnar, Murudeshwar, Mussoorie, Mysuru, Nagpur, Nainital, Nalanda, Nashik, Ooty, Orchha, Pachmarhi, Pahalgam, Panchkula & Morni, Pattadakal, Patna, Pelling, Pondicherry, Port Blair, Prayagraj, Pune, Puri, Pushkar, Raipur, Rajgir, Rameswaram, Ranchi, Rann of Kutch, Ranthambore, Rishikesh, Salem, Sanchi, Sasan Gir, Shantiniketan, Shillong, Shimla, Shirdi, Somnath, Sonamarg, Spiti Valley, Srinagar, Sundarbans, Tarkarli, Tawang, Thanjavur, Thekkady, Thiruvananthapuram, Thrissur, Tirthan Valley, Tiruchirappalli, Tirupati, Udaipur, Udupi, Ujjain, Vadodara, Vaishali, Varanasi, Varkala, Vijayawada, Visakhapatnam, Vrindavan, Warangal, Wayanad, Ziro Valley |
 | Indonesia | 4 | Bali, Labuan Bajo, Lombok, Yogyakarta |
 | Italy | 5 | Amalfi, Florence, Milan, Rome, Venice |
 | Japan | 6 | Fukuoka, Hiroshima, Kyoto, Nara, Osaka, Tokyo |

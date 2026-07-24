@@ -29,26 +29,26 @@ Batch 1 was replaced with high-value Indian tourist destinations and completed.
 | 8 | 1 | Mahabaleshwar ✓ | India |
 | 9 | 1 | Badami ✓ | India |
 | 10 | 1 | Pattadakal ✓ | India |
-| 11 | 2 | Gothenburg | Sweden |
-| 12 | 2 | Oslo | Norway |
-| 13 | 2 | Bergen | Norway |
-| 14 | 2 | Tromso | Norway |
-| 15 | 2 | Helsinki | Finland |
-| 16 | 2 | Rovaniemi | Finland |
-| 17 | 2 | Reykjavik | Iceland |
-| 18 | 2 | Akureyri | Iceland |
-| 19 | 2 | Dublin | Ireland |
-| 20 | 2 | Galway | Ireland |
-| 21 | 3 | Cork | Ireland |
-| 22 | 3 | Warsaw | Poland |
-| 23 | 3 | Krakow | Poland |
-| 24 | 3 | Gdansk | Poland |
-| 25 | 3 | Wroclaw | Poland |
-| 26 | 3 | Bucharest | Romania |
-| 27 | 3 | Brasov | Romania |
-| 28 | 3 | Sibiu | Romania |
-| 29 | 3 | Sofia | Bulgaria |
-| 30 | 3 | Plovdiv | Bulgaria |
+| 11 | 2 | Araku Valley ✓ | India |
+| 12 | 2 | Mechuka ✓ | India |
+| 13 | 2 | Jorhat ✓ | India |
+| 14 | 2 | Vaishali ✓ | India |
+| 15 | 2 | Jagdalpur ✓ | India |
+| 16 | 2 | Daman ✓ | India |
+| 17 | 2 | Dholavira ✓ | India |
+| 18 | 2 | Panchkula & Morni ✓ | India |
+| 19 | 2 | Sonamarg ✓ | India |
+| 20 | 2 | Deoghar ✓ | India |
+| 21 | 3 | Imphal ✓ | India |
+| 22 | 3 | Aizawl ✓ | India |
+| 23 | 3 | Kohima ✓ | India |
+| 24 | 3 | Chilika Lake ✓ | India |
+| 25 | 3 | Kapurthala ✓ | India |
+| 26 | 3 | Pelling ✓ | India |
+| 27 | 3 | Warangal ✓ | India |
+| 28 | 3 | Agartala ✓ | India |
+| 29 | 3 | Auli ✓ | India |
+| 30 | 3 | Kalimpong ✓ | India |
 | 31 | 4 | Varna | Bulgaria |
 | 32 | 4 | Ljubljana | Slovenia |
 | 33 | 4 | Lake Bled | Slovenia |
