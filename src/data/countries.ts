@@ -60,6 +60,8 @@ export const countries: CountryData[] = [
       'daman', 'dholavira', 'panchkula-morni', 'sonamarg', 'deoghar',
       'imphal', 'aizawl', 'kohima', 'chilika-lake', 'kapurthala',
       'pelling', 'warangal', 'agartala', 'auli', 'kalimpong',
+      'gandikota', 'bhoramdeo-kawardha', 'colva-south-goa', 'kumarakom', 'kargil',
+      'loktak-moirang', 'bundi', 'bhongir', 'karaikal', 'sindhudurg',
     ],
     regions: [
       {

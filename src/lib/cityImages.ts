@@ -155,6 +155,16 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   agartala: { card: '/city-images/kolkata.jpg', hero: '/city-images/kolkata.jpg' },
   auli: { card: '/city-images/gulmarg.jpg', hero: '/city-images/gulmarg.jpg' },
   kalimpong: { card: '/city-images/darjeeling.jpg', hero: '/city-images/darjeeling.jpg' },
+  gandikota: { card: '/city-images/hampi.jpg', hero: '/city-images/hampi.jpg' },
+  'bhoramdeo-kawardha': { card: '/city-images/khajuraho.jpg', hero: '/city-images/khajuraho.jpg' },
+  'colva-south-goa': { card: '/city-images/goa.jpg', hero: '/city-images/goa.jpg' },
+  kumarakom: { card: '/city-images/alleppey.jpg', hero: '/city-images/alleppey.jpg' },
+  kargil: { card: '/city-images/ladakh.jpg', hero: '/city-images/ladakh.jpg' },
+  'loktak-moirang': { card: '/city-images/majuli.jpg', hero: '/city-images/majuli.jpg' },
+  bundi: { card: '/city-images/udaipur.jpg', hero: '/city-images/udaipur.jpg' },
+  bhongir: { card: '/city-images/hyderabad.jpg', hero: '/city-images/hyderabad.jpg' },
+  karaikal: { card: '/city-images/pondicherry.jpg', hero: '/city-images/pondicherry.jpg' },
+  sindhudurg: { card: '/city-images/tarkarli.jpg', hero: '/city-images/tarkarli.jpg' },
 
   // ── Andhra Pradesh / Telangana ────────────────────────────────
   vijayawada: { card: '/city-images/vijayawada.jpg', hero: '/city-images/vijayawada.jpg' },
