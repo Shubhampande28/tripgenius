@@ -1,16 +1,21 @@
 # TripGenius City Coverage Inventory
 
-Snapshot date: 24 July 2026
+Generated: 2026-07-24
+
+This file is generated from the application data. Regenerate it with:
+
+```bash
+npx tsx scripts/generate-city-coverage-inventory.ts
+```
 
 ## Coverage summary
 
-- City guides: **333**
+- City guides: **393**
 - Country hubs: **49**
 - Fully authored deep city sections: **6**
-- Safely derived deep city sections: **327**
+- Safely derived deep city sections: **387**
 - Cities with map coordinates: **20**
-- Cities using the map placeholder: **313**
-- All city guides use the same canonical section order and belong to exactly one country hub.
+- Cities using the map placeholder: **373**
 
 ## Covered cities by country
 
@@ -32,7 +37,7 @@ Snapshot date: 24 July 2026
 | Germany | 6 | Berlin, Cologne, Dresden, Frankfurt, Hamburg, Munich |
 | Greece | 5 | Athens, Crete, Mykonos, Rhodes, Santorini |
 | Hungary | 1 | Budapest |
-| India | 159 | Agartala, Agra, Ahmedabad, Aizawl, Ajmer, Alleppey, Amritsar, Andaman Islands, Araku Valley, Auli, Aurangabad, Auroville, Ayodhya, Badami, Badrinath, Bekal, Bengaluru, Bharatpur, Bhopal, Bhubaneswar, Bikaner, Bir Billing, Bodh Gaya, Chandigarh, Chennai, Cherrapunji, Chikmagalur, Chilika Lake, Chittorgarh, Coimbatore, Coorg, Daman, Darjeeling, Dehradun, Delhi, Deoghar, Dhanushkodi, Dharamshala, Dholavira, Digha & Mandarmani, Diu, Dwarka, Dzukou Valley, Gangtok, Ganpatipule, Goa, Gokarna, Gulmarg, Guwahati, Gwalior, Hampi, Haridwar, Hyderabad, Imphal, Indore, Jabalpur, Jagdalpur, Jaipur, Jaisalmer, Jim Corbett, Jodhpur, Jorhat, Kalimpong, Kanha, Kanyakumari, Kapurthala, Kasauli, Kasol, Kaziranga, Kedarnath, Khajuraho, Kochi, Kodaikanal, Kohima, Kolkata, Konark, Kovalam, Kozhikode, Kumbhalgarh, Lakshadweep, Leh Ladakh, Lonavala & Khandala, Lucknow, Madurai, Mahabaleshwar, Mahabalipuram, Maheshwar, Majuli, Manali, Mandu, Mathura & Vrindavan, Mawlynnong, McLeod Ganj, Mechuka, Mount Abu, Mumbai, Munnar, Murudeshwar, Mussoorie, Mysuru, Nagpur, Nainital, Nalanda, Nashik, Ooty, Orchha, Pachmarhi, Pahalgam, Panchkula & Morni, Pattadakal, Patna, Pelling, Pondicherry, Port Blair, Prayagraj, Pune, Puri, Pushkar, Raipur, Rajgir, Rameswaram, Ranchi, Rann of Kutch, Ranthambore, Rishikesh, Salem, Sanchi, Sasan Gir, Shantiniketan, Shillong, Shimla, Shirdi, Somnath, Sonamarg, Spiti Valley, Srinagar, Sundarbans, Tarkarli, Tawang, Thanjavur, Thekkady, Thiruvananthapuram, Thrissur, Tirthan Valley, Tiruchirappalli, Tirupati, Udaipur, Udupi, Ujjain, Vadodara, Vaishali, Varanasi, Varkala, Vijayawada, Visakhapatnam, Vrindavan, Warangal, Wayanad, Ziro Valley |
+| India | 219 | Agartala, Agra, Ahmedabad, Aihole, Aizawl, Ajanta Caves, Ajmer, Alleppey (Alappuzha), Almora, Amritsar, Andaman Islands, Araku Valley, Auli, Aurangabad, Auroville, Ayodhya, Badami, Badrinath, Bekal, Belagavi, Belur & Halebidu, Bengaluru, Bharatpur, Bhongir, Bhopal, Bhoramdeo & Kawardha, Bhubaneswar, Bikaner, Bir Billing, Bodh Gaya, Bundi, Champaner-Pavagadh, Champhai, Chandigarh, Chennai, Cherrapunji, Chettinad, Chikmagalur, Chilika Lake, Chitrakoot, Chittorgarh, Chopta, Coimbatore, Colva & South Goa, Coorg (Kodagu), Dalhousie, Daman, Dandeli, Darjeeling, Dehradun, Delhi, Deoghar, Dhanushkodi, Dharamshala, Dholavira, Digha & Mandarmani, Diu, Dwarka, Dzukou Valley, Elephanta Island, Ellora Caves, Gandikota, Gangtok, Ganpatipule, Goa, Gokarna, Gulmarg, Guwahati, Gwalior, Haflong, Hampi, Hanle, Haridwar, Hemkund Sahib, Hogenakkal Falls, Hyderabad, Imphal, Indore, Jabalpur, Jagdalpur, Jaipur, Jaisalmer, Jim Corbett, Jodhpur, Jog Falls, Jorhat, Junagadh, Kalimpong, Kanha, Kanyakumari, Kapurthala, Karaikal, Kargil, Kasauli, Kasol, Katra & Vaishno Devi, Kausani, Kaziranga, Kedarnath, Khajjiar, Khajuraho, Kinnaur Valley, Kochi, Kodaikanal, Kohima, Kolhapur, Kolkata, Konark, Konaseema, Kovalam, Kozhikode, Kumarakom, Kumbakonam, Kumbhalgarh, Kushinagar, Lachung, Lakshadweep, Leh Ladakh, Lepakshi, Loktak Lake & Moirang, Lonavala & Khandala, Lucknow, Madurai, Mahabaleshwar, Mahabalipuram, Maheshwar, Majuli, Manali, Mandu, Matheran, Mathura & Vrindavan, Mawlynnong, McLeod Ganj, Mechuka, Modhera, Mount Abu, Mumbai, Munnar, Munsiyari, Murudeshwar, Mussoorie, Mysuru (Mysore), Nagpur, Nainital, Nalanda, Nashik, Nubra Valley, Ooty (Udhagamandalam), Orchha, Pachmarhi, Pahalgam, Palitana, Panchgani, Panchkula & Morni, Patna, Patnitop, Pattadakal, Pelling, Pondicherry, Port Blair, Prayagraj, Pune, Puri, Pushkar, Raigad Fort, Raipur, Rajahmundry, Rajgir, Rameswaram, Ranchi, Ranikhet, Rann of Kutch, Ranthambore, Rishikesh, Salem, Sanchi, Saputara, Sasan Gir, Shantiniketan, Shillong, Shimla, Shirdi, Shravanabelagola, Sindhudurg, Sivasagar, Somnath, Sonamarg, Spiti Valley, Srinagar, Srisailam, Sundarbans, Tarkarli, Tawang, Thanjavur, Thekkady, Thiruvananthapuram, Thrissur, Tirthan Valley, Tiruchirappalli, Tirupati, Udaipur, Udupi, Ujjain, Unakoti, Vadodara (Baroda), Vaishali, Valley of Flowers, Varanasi, Varkala, Velankanni, Vijayawada, Visakhapatnam, Vrindavan, Warangal, Wayanad, Yercaud, Yusmarg, Zanskar Valley, Ziro Valley |
 | Indonesia | 4 | Bali, Labuan Bajo, Lombok, Yogyakarta |
 | Italy | 5 | Amalfi, Florence, Milan, Rome, Venice |
 | Japan | 6 | Fukuoka, Hiroshima, Kyoto, Nara, Osaka, Tokyo |
@@ -68,14 +73,10 @@ Snapshot date: 24 July 2026
 
 ## Country hubs
 
-Argentina, Australia, Azerbaijan, Bhutan, Brazil, Cambodia, Canada, Croatia, Czech Republic, Egypt, France, Georgia, Germany, Greece, Hong Kong, Hungary, India, Indonesia, Italy, Japan, Jordan, Kenya, Malaysia, Maldives, Mauritius, Mexico, Morocco, Nepal, Netherlands, New Zealand, Oman, Peru, Philippines, Portugal, Qatar, Singapore, South Africa, South Korea, Spain, Sri Lanka, Switzerland, Tanzania, Thailand, Turkey, UAE, United Kingdom, United States, Uzbekistan, and Vietnam.
+Argentina, Australia, Azerbaijan, Bhutan, Brazil, Cambodia, Canada, Croatia, Czech Republic, Egypt, France, Georgia, Germany, Greece, Hong Kong, Hungary, India, Indonesia, Italy, Japan, Jordan, Kenya, Malaysia, Maldives, Mauritius, Mexico, Morocco, Nepal, Netherlands, New Zealand, Oman, Peru, Philippines, Portugal, Qatar, Singapore, South Africa, South Korea, Spain, Sri Lanka, Switzerland, Tanzania, Thailand, Turkey, UAE, United Kingdom, USA, Uzbekistan, Vietnam
 
 ## Validation
-
-Run:
 
 ```bash
 npm run verify:parity
 ```
-
-The validator checks unique slugs, country membership, required city modules, FAQs, similar destinations, and local image coverage.

@@ -72,7 +72,9 @@ const remainingSpecs: TouristSpec[] = [
   { slug: 'haflong', name: 'Haflong', state: 'Assam', focus: 'nature', highlights: ['Haflong Lake', 'Jatinga', 'Maibang ruins', 'Fiangpui Garden', 'Dima Hasao villages'] },
 ];
 
-export const rankedIndianTouristCities: City[] = specs.map((spec) => {
+const allSpecs = [...specs, ...remainingSpecs];
+
+export const rankedIndianTouristCities: City[] = allSpecs.map((spec) => {
   const theme = focusData[spec.focus];
   return {
     stub: true,
@@ -94,7 +96,7 @@ export const rankedIndianTouristCities: City[] = specs.map((spec) => {
   };
 });
 
-export const rankedIndianTouristSlugs = specs.map((spec) => spec.slug);
+export const rankedIndianTouristSlugs = allSpecs.map((spec) => spec.slug);
 
 const focusImage = {
   heritage: '/city-images/hampi.jpg',
@@ -105,5 +107,5 @@ const focusImage = {
 } as const;
 
 export const rankedIndianTouristImageFallbacks = Object.fromEntries(
-  specs.map((spec) => [spec.slug, { card: focusImage[spec.focus], hero: focusImage[spec.focus] }]),
+  allSpecs.map((spec) => [spec.slug, { card: focusImage[spec.focus], hero: focusImage[spec.focus] }]),
 );
