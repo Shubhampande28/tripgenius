@@ -1,3 +1,5 @@
+import { rankedIndianTouristSlugs } from '../lib/rankedIndianTouristCities';
+
 export interface CountryData {
   slug: string;
   name: string;
@@ -62,6 +64,7 @@ export const countries: CountryData[] = [
       'pelling', 'warangal', 'agartala', 'auli', 'kalimpong',
       'gandikota', 'bhoramdeo-kawardha', 'colva-south-goa', 'kumarakom', 'kargil',
       'loktak-moirang', 'bundi', 'bhongir', 'karaikal', 'sindhudurg',
+      ...rankedIndianTouristSlugs,
     ],
     regions: [
       {

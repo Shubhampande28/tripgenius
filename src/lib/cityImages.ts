@@ -1,3 +1,5 @@
+import { rankedIndianTouristImageFallbacks } from './rankedIndianTouristCities';
+
 export const verifiedCityImages: Record<string, { card: string; hero: string }> = {
 
   // ── 6 Full Guide Cities ───────────────────────────────────────
@@ -409,6 +411,8 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   zagreb: { card: '/city-images/zagreb.jpg', hero: '/city-images/zagreb.jpg' },
   'ziro-valley': { card: '/city-images/ziro-valley.jpg', hero: '/city-images/ziro-valley.jpg' },
 };
+
+Object.assign(verifiedCityImages, rankedIndianTouristImageFallbacks);
 
 const UNSPLASH = 'https://images.unsplash.com';
 
