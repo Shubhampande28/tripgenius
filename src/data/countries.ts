@@ -54,12 +54,14 @@ export const countries: CountryData[] = [
       'pondicherry', 'bekal',
       'dehradun', 'trivandrum', 'kozhikode', 'thrissur', 'vrindavan', 'shirdi', 'patna',
       'nagpur', 'indore', 'raipur', 'vijayawada', 'port-blair', 'ranchi', 'salem',
+      'ayodhya', 'sanchi', 'chittorgarh', 'kumbhalgarh', 'bharatpur',
+      'ujjain', 'jabalpur', 'mahabaleshwar', 'badami', 'pattadakal',
     ],
     regions: [
       {
         name: 'Rajasthan',
         slug: 'rajasthan',
-        cities: ['jaipur', 'udaipur', 'jodhpur', 'jaisalmer', 'pushkar', 'bikaner', 'ajmer', 'mount-abu', 'ranthambore'],
+        cities: ['jaipur', 'udaipur', 'jodhpur', 'jaisalmer', 'pushkar', 'bikaner', 'ajmer', 'mount-abu', 'ranthambore', 'chittorgarh', 'kumbhalgarh', 'bharatpur'],
       },
       {
         name: 'Kerala',

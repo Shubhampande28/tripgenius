@@ -13,20 +13,22 @@ Every destination below was checked against the current 303-guide inventory. The
 ordering balances visitor importance, geographic coverage, and usefulness as a
 travel-planning destination. Each implementation batch contains exactly ten guides.
 
-## Europe
+## India priority and Europe
+
+Batch 1 was replaced with high-value Indian tourist destinations and completed.
 
 | # | Batch | Destination | Country |
 |---:|---:|---|---|
-| 1 | 1 | Vienna | Austria |
-| 2 | 1 | Salzburg | Austria |
-| 3 | 1 | Innsbruck | Austria |
-| 4 | 1 | Brussels | Belgium |
-| 5 | 1 | Bruges | Belgium |
-| 6 | 1 | Ghent | Belgium |
-| 7 | 1 | Antwerp | Belgium |
-| 8 | 1 | Copenhagen | Denmark |
-| 9 | 1 | Aarhus | Denmark |
-| 10 | 1 | Stockholm | Sweden |
+| 1 | 1 | Ayodhya ✓ | India |
+| 2 | 1 | Sanchi ✓ | India |
+| 3 | 1 | Chittorgarh ✓ | India |
+| 4 | 1 | Kumbhalgarh ✓ | India |
+| 5 | 1 | Bharatpur ✓ | India |
+| 6 | 1 | Ujjain ✓ | India |
+| 7 | 1 | Jabalpur ✓ | India |
+| 8 | 1 | Mahabaleshwar ✓ | India |
+| 9 | 1 | Badami ✓ | India |
+| 10 | 1 | Pattadakal ✓ | India |
 | 11 | 2 | Gothenburg | Sweden |
 | 12 | 2 | Oslo | Norway |
 | 13 | 2 | Bergen | Norway |

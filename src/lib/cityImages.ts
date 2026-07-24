@@ -107,6 +107,7 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   vrindavan: { card: '/city-images/vrindavan.jpg', hero: '/city-images/vrindavan.jpg' },
   mathura: { card: '/city-images/mathura.jpg', hero: '/city-images/mathura.jpg' },
   shirdi: { card: '/city-images/shirdi.jpg', hero: '/city-images/shirdi.jpg' },
+  ayodhya: { card: '/city-images/varanasi.jpg', hero: '/city-images/varanasi.jpg' },
 
   // ── Bihar / Odisha / East ─────────────────────────────────────
   'bodh-gaya': { card: '/city-images/bodh-gaya.jpg', hero: '/city-images/bodh-gaya.jpg' },
@@ -123,6 +124,17 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   bhopal: { card: '/city-images/bhopal.jpg', hero: '/city-images/bhopal.jpg' },
   indore: { card: '/city-images/indore.jpg', hero: '/city-images/indore.jpg' },
   raipur: { card: '/city-images/raipur.jpg', hero: '/city-images/raipur.jpg' },
+  sanchi: { card: '/city-images/khajuraho.jpg', hero: '/city-images/khajuraho.jpg' },
+  ujjain: { card: '/city-images/indore.jpg', hero: '/city-images/indore.jpg' },
+  jabalpur: { card: '/city-images/pachmarhi.jpg', hero: '/city-images/pachmarhi.jpg' },
+
+  // ── India-priority tourist destinations (category fallbacks) ──
+  chittorgarh: { card: '/city-images/udaipur.jpg', hero: '/city-images/udaipur.jpg' },
+  kumbhalgarh: { card: '/city-images/udaipur.jpg', hero: '/city-images/udaipur.jpg' },
+  bharatpur: { card: '/city-images/ranthambore.jpg', hero: '/city-images/ranthambore.jpg' },
+  mahabaleshwar: { card: '/city-images/lonavala.jpg', hero: '/city-images/lonavala.jpg' },
+  badami: { card: '/city-images/hampi.jpg', hero: '/city-images/hampi.jpg' },
+  pattadakal: { card: '/city-images/hampi.jpg', hero: '/city-images/hampi.jpg' },
 
   // ── Andhra Pradesh / Telangana ────────────────────────────────
   vijayawada: { card: '/city-images/vijayawada.jpg', hero: '/city-images/vijayawada.jpg' },
