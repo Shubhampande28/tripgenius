@@ -19,6 +19,12 @@ import { ITINERARY_DURATIONS, getItinerarySlug, buildItineraryDays, buildRouteOv
 const BASE  = 'https://www.tripgenius.in';
 const YEAR  = new Date().getFullYear();
 
+const INDIA_FEATURED_DESTINATIONS = [
+  'varanasi', 'kedarnath', 'badrinath', 'ayodhya',
+  'rishikesh', 'haridwar', 'katra-vaishno-devi', 'amritsar',
+  'delhi', 'agra', 'jaipur', 'goa',
+];
+
 // ── static helpers ──────────────────────────────────────────────────────────
 const FLIGHT_FROM_INDIA: Record<string, string> = {
   india: 'Domestic', thailand: '~4 hrs', japan: '~7–8 hrs',
@@ -80,8 +86,16 @@ export default async function CountryPage({ params }: Props) {
     .map((s) => getCityBySlug(s))
     .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
 
-  const displayCities = citiesData.slice(0, 9);
-  const hasMoreCities  = citiesData.length > 9;
+  const featuredPriority = slug === 'india' ? INDIA_FEATURED_DESTINATIONS : [];
+  const priorityIndex = new Map(featuredPriority.map((citySlug, index) => [citySlug, index]));
+  const rankedCities = featuredPriority.length > 0
+    ? [...citiesData].sort((a, b) =>
+        (priorityIndex.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+        (priorityIndex.get(b.slug) ?? Number.MAX_SAFE_INTEGER))
+    : citiesData;
+  const displayLimit = slug === 'india' ? 12 : 9;
+  const displayCities = rankedCities.slice(0, displayLimit);
+  const hasMoreCities = citiesData.length > displayLimit;
 
   // Every country gets destination groupings. Authored regions win; any
   // ungrouped cities are retained in a final collection. Countries without
@@ -351,7 +365,7 @@ export default async function CountryPage({ params }: Props) {
                 noMargin
               />
               {hasMoreCities && (
-                <Link href="/destinations"
+                <Link href={slug === 'india' ? '/cities?q=India' : '/destinations'}
                   className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline flex-shrink-0 ml-4">
                   View all {citiesData.length} <ArrowRight size={12} />
                 </Link>
