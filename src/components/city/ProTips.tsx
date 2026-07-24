@@ -15,6 +15,11 @@ export default function ProTips({ city }: { city: City }) {
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text">
             What Should You Know Before Visiting {city.name}?
           </h2>
+          {city.proTipsSynthetic && (
+            <p className="mt-2 text-sm text-muted max-w-2xl">
+              Practical planning principles based on this guide’s areas, attractions, and seasonal summary. Confirm changing local rules before travel.
+            </p>
+          )}
         </div>
 
         <AnimateList stagger={0.08} className="grid grid-cols-1 md:grid-cols-2 gap-4">

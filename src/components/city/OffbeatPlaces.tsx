@@ -62,8 +62,9 @@ export default function OffbeatPlaces({ city }: { city: City }) {
             Hidden Gems in {city.name}: Offbeat Places Locals Love
           </h2>
           <p className="mt-2 text-muted max-w-2xl leading-relaxed">
-            The places locals know and tourists miss. No queues, no crowds —
-            just the side of {city.name} that makes you feel like you actually discovered something.
+            {city.offbeatSynthetic
+              ? `Slower alternatives built from ${city.name}'s existing area and attraction guide — useful when you want a break from the headline sights.`
+              : `The places locals know and tourists miss. No queues, no crowds — just a different side of ${city.name}.`}
           </p>
         </motion.div>
 

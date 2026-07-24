@@ -16,7 +16,9 @@ export default function WhereToEat({ city }: { city: City }) {
             What Should You Eat in {city.name}? Local Food &amp; Restaurants
           </h2>
           <p className="mt-2 text-muted text-sm max-w-2xl">
-            From street food to fine dining — the dishes you must try and the restaurants locals actually go to.
+            {city.restaurantsSynthetic
+              ? `Use these practical dining formats to explore ${city.name} without relying on invented venue recommendations. Check current local reviews before choosing a specific restaurant.`
+              : 'From street food to fine dining — the dishes you must try and the restaurants locals actually go to.'}
           </p>
         </div>
 

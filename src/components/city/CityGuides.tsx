@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { BookOpen, ArrowRight, Clock } from 'lucide-react';
+import { BookOpen, ArrowRight, Clock, CalendarDays, ClipboardList } from 'lucide-react';
 import { getPostsForCity } from '@/lib/blog';
 import { City } from '@/lib/types';
 
@@ -10,7 +10,20 @@ import { City } from '@/lib/types';
 // city-guide CTA, forming a topic cluster around the city hub.
 export default function CityGuides({ city }: { city: City }) {
   const posts = getPostsForCity(city.slug, city.name);
-  if (posts.length === 0) return null;
+  const planningResources = [
+    {
+      href: `/best-time-to-visit/${city.slug}`,
+      title: `Best Time to Visit ${city.name}`,
+      description: `Compare seasons and choose the right travel window for ${city.name}.`,
+      icon: CalendarDays,
+    },
+    {
+      href: `/cheatsheet/${city.slug}`,
+      title: `${city.name} Travel Cheatsheet`,
+      description: 'Keep the essential areas, costs, and planning details in one compact guide.',
+      icon: ClipboardList,
+    },
+  ];
 
   return (
     <section id="city-guides" className="py-8 border-t border-border">
@@ -20,12 +33,15 @@ export default function CityGuides({ city }: { city: City }) {
           {city.name} Guides &amp; Itineraries
         </h2>
         <p className="text-sm text-muted mt-1">
-          In-depth articles from our blog to plan your {city.name} trip properly
+          {posts.length > 0
+            ? `In-depth articles from our blog to plan your ${city.name} trip properly`
+            : `Practical planning resources for your ${city.name} trip`}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {posts.map((post) => (
+      {posts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
@@ -55,14 +71,38 @@ export default function CityGuides({ city }: { city: City }) {
               </span>
             </div>
           </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {planningResources.map(({ href, title, description, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex gap-4 bg-surface border border-border hover:border-accent/40 rounded-2xl p-5 card-lift"
+            >
+              <div className="w-11 h-11 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <Icon size={18} className="text-accent" />
+              </div>
+              <div>
+                <h3 className="font-heading text-sm font-bold text-primary-text group-hover:text-accent transition-colors">
+                  {title}
+                </h3>
+                <p className="text-xs text-muted leading-relaxed mt-1">{description}</p>
+                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-accent">
+                  Open resource <ArrowRight size={11} />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
 
       <Link
         href="/blog"
         className="inline-flex items-center gap-1.5 mt-4 text-xs font-semibold text-accent hover:underline"
       >
-        <BookOpen size={12} /> All travel guides
+        <BookOpen size={12} /> {posts.length > 0 ? 'All travel guides' : 'Browse the travel blog'}
       </Link>
     </section>
   );

@@ -1873,7 +1873,7 @@ const worldCitiesCore: City[] = ([
 
   // ── AMERICAS ─────────────────────────────────────────────────────────────
   {
-    slug: 'new-york', name: 'New York', country: 'USA', flag: '🇺🇸',
+    slug: 'new-york', name: 'New York', country: 'United States', flag: '🇺🇸',
     tagline: 'The City That Never Sleeps', gradient: 'from-blue-600 to-slate-800',
     accentColor: '#1D4ED8', heroDescription: 'Central Park, the High Line, a different world cuisine on every block, Broadway, and a skyline that still takes your breath away every time. There is nowhere else like it.',
     description: 'New York City operates at a frequency unlike anywhere else — more energy, more variety, more ambition per square mile than any place on earth.',

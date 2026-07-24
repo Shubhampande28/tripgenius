@@ -21,7 +21,7 @@ const REGION_MAP: Record<string, string> = {
   Romania: 'Europe', Bulgaria: 'Europe', Montenegro: 'Europe', Slovenia: 'Europe',
   Slovakia: 'Europe', Serbia: 'Europe', Malta: 'Europe',
   // Americas
-  USA: 'Americas', Mexico: 'Americas', Brazil: 'Americas', Argentina: 'Americas',
+  USA: 'Americas', 'United States': 'Americas', Mexico: 'Americas', Brazil: 'Americas', Argentina: 'Americas',
   Peru: 'Americas', Colombia: 'Americas', Chile: 'Americas', Ecuador: 'Americas',
   Bolivia: 'Americas', Uruguay: 'Americas', Canada: 'Americas',
   'Costa Rica': 'Americas', Cuba: 'Americas', Panama: 'Americas',
@@ -172,7 +172,6 @@ export function getSimilarCities(
 export const similarityMap: Record<string, SimilarCity[]> = (() => {
   const map: Record<string, SimilarCity[]> = {};
   for (const city of allCities) {
-    if (city.stub) continue;
     map[city.slug] = getSimilarCities(city, allCities, 6);
   }
   return map;

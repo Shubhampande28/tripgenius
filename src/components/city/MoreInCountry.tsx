@@ -19,8 +19,6 @@ export default function MoreInCountry({ city, countrySlug }: { city: City; count
     .map((s) => getCityBySlug(s))
     .filter((c): c is City => c !== undefined)
     .slice(0, 6);
-  if (siblings.length === 0) return null;
-
   return (
     <section id="more-in-country" className="py-8 border-t border-border">
       <div className="flex items-end justify-between mb-5">
@@ -38,8 +36,9 @@ export default function MoreInCountry({ city, countrySlug }: { city: City; count
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {siblings.map((sibling) => {
+      {siblings.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {siblings.map((sibling) => {
           const img = getCityImageUrl(sibling.slug, 'card');
           return (
             <Link
@@ -71,8 +70,24 @@ export default function MoreInCountry({ city, countrySlug }: { city: City; count
               </div>
             </Link>
           );
-        })}
-      </div>
+          })}
+        </div>
+      ) : (
+        <Link
+          href={`/countries/${countrySlug}`}
+          className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-5 hover:border-accent/40 card-lift"
+        >
+          <div>
+            <p className="font-heading text-lg font-bold text-primary-text group-hover:text-accent transition-colors">
+              Explore the complete {country.name} guide
+            </p>
+            <p className="text-sm text-muted mt-1">
+              Visa information, seasonal guidance, budgets, itineraries, and related destinations.
+            </p>
+          </div>
+          <ArrowRight size={18} className="text-accent flex-shrink-0" />
+        </Link>
+      )}
 
       <Link
         href={`/countries/${countrySlug}`}

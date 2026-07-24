@@ -33,6 +33,11 @@ export default function GettingThereAround({ city }: { city: City }) {
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-primary-text mb-8">
             Getting Around {city.name}
           </h2>
+          {city.gettingAroundSynthetic && (
+            <p className="text-sm text-muted leading-relaxed max-w-2xl -mt-5 mb-8">
+              A destination-planning framework rather than operator-specific advice. Check current local routes, fares, and licensed transport options before travelling.
+            </p>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
 

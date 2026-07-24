@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { City } from '@/lib/types';
 
 const SECTIONS = [
-  { id: 'best-time-to-visit', label: 'Best Time to Visit', emoji: '📅' },
   { id: 'things-to-do',       label: 'Things to Do',       emoji: '🗺️' },
+  { id: 'city-map',           label: 'Map',                emoji: '📌' },
+  { id: 'best-time-to-visit', label: 'Best Time to Visit', emoji: '📅' },
   { id: 'explore-areas',      label: 'Explore Areas',       emoji: '📍' },
   { id: 'hidden-gems',        label: 'Hidden Gems',         emoji: '💎' },
   { id: 'where-to-stay',      label: 'Where to Stay',       emoji: '🏨' },
@@ -39,12 +40,12 @@ export default function CityTOC({ city }: { city: City }) {
   const visible = SECTIONS.filter(({ id }) => {
     if (id === 'best-time-to-visit') return !!city.monthByMonth;
     if (id === 'things-to-do')       return !!city.thingsToDo?.length;
-    if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length && !city.offbeatSynthetic;
+    if (id === 'hidden-gems')        return !!city.offbeatPlaces?.length;
     if (id === 'explore-areas')      return !!(city.neighbourhoods?.length || city.areas?.length);
     if (id === 'where-to-stay')      return !!(city.neighbourhoods?.length || city.hotels?.length);
-    if (id === 'where-to-eat')       return !!city.restaurants?.length && !city.restaurantsSynthetic;
-    if (id === 'getting-around')     return !!city.gettingAround?.length && !city.gettingAroundSynthetic;
-    if (id === 'pro-tips')           return !!city.proTips?.length && !city.proTipsSynthetic;
+    if (id === 'where-to-eat')       return !!city.restaurants?.length;
+    if (id === 'getting-around')     return !!city.gettingAround?.length;
+    if (id === 'pro-tips')           return !!city.proTips?.length;
     return true;
   });
 

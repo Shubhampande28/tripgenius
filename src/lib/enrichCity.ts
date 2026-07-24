@@ -292,41 +292,43 @@ export function enrichCity(city: City): City {
         highlight: 'More space, views, and curated service',
       },
     ],
+    // Derived dining guidance describes useful meal formats rather than
+    // inventing named restaurants. It remains excluded from Restaurant schema.
     restaurants: city.restaurants ?? [
       {
-        name: `${city.name} Local Food Trail`,
-        description: `Start with simple local restaurants around ${firstArea}; the best meals are usually regional staples rather than generic tourist menus.`,
-        cuisine: 'Regional Indian',
-        priceRange: '$3-$12/person',
-        mustTry: 'Regional thali or local breakfast',
+        name: 'Everyday Local Dining',
+        description: `Start around ${firstArea} with busy, well-reviewed places serving the food of ${city.country}. Ask what is cooked fresh that day instead of relying on a generic tourist menu.`,
+        cuisine: `${city.country} cuisine`,
+        priceRange: 'Budget to mid-range',
+        mustTry: 'A regional speciality recommended locally',
       },
       {
-        name: `${city.name} Cafe Stop`,
-        description: 'A relaxed break between sightseeing stops, useful for planning the next leg and escaping midday heat or rain.',
-        cuisine: 'Cafe and snacks',
-        priceRange: '$4-$15/person',
-        mustTry: 'Tea, coffee, bakery items, or local snacks',
+        name: 'Markets and Casual Bites',
+        description: `Use a busy market or casual food street near one of ${city.name}'s main sights for a flexible meal. Choose stalls with high turnover and food cooked in front of you.`,
+        cuisine: 'Markets and casual food',
+        priceRange: 'Usually budget-friendly',
+        mustTry: 'A freshly cooked local snack',
       },
       {
-        name: `${city.name} Special Dinner`,
-        description: 'Choose one dinner with a view, heritage setting, or standout regional kitchen to anchor the trip.',
-        cuisine: 'Regional / Contemporary Indian',
-        priceRange: '$12-$40/person',
-        mustTry: 'House speciality',
+        name: 'One Destination Dinner',
+        description: `Reserve one slower meal in ${city.name} at a restaurant with a regional menu, a memorable setting, or a view. Check current reviews and opening hours before booking.`,
+        cuisine: 'Regional or contemporary',
+        priceRange: 'Mid-range to special occasion',
+        mustTry: 'A seasonal or house speciality',
       },
     ],
     gettingAround: city.gettingAround ?? [
       `Base yourself near ${firstArea} if you only have 1-2 days.`,
-      'Use autos or app cabs for short hops where available; agree prices before starting if rides are not metered.',
-      'Hire a local driver for spread-out sights or day trips.',
+      'Use official public transport, licensed taxis, or established ride-booking services where available; confirm the fare before an unmetered journey.',
+      'Group nearby sights into the same day and consider a licensed driver or organised excursion for spread-out day trips.',
       'Start outdoor sightseeing early for better light, lower heat, and fewer crowds.',
-      'Keep cash for small entries, parking, local snacks, and places without reliable card payments.',
+      'Keep a small amount of local currency for tickets, markets, parking, and places that do not accept cards.',
     ],
     proTips: city.proTips ?? [
       `Prioritise ${mainSpot} early in the day before crowds build.`,
       `Pair ${secondarySpot} with nearby food stops instead of crossing the city repeatedly.`,
       'Check weekly closures and festival dates before locking the itinerary.',
-      'Carry a light layer, sun protection, and water; Indian travel days often run longer than expected.',
+      'Carry water, sun protection, and a light layer; sightseeing days often take longer than map estimates suggest.',
       'Book peak-season accommodation ahead, especially around long weekends and school holidays.',
     ],
     offbeatPlaces: city.offbeatPlaces ?? [
@@ -341,7 +343,7 @@ export function enrichCity(city: City): City {
       {
         name: `${thirdSpot} Detour`,
         description: `Use ${thirdSpot} as a lower-pressure stop between bigger attractions.`,
-        why: 'Smaller stops often become the most memorable part of an India trip.',
+        why: `Smaller stops can reveal a quieter side of ${city.name} between its headline attractions.`,
         icon: '✨',
         type: 'Hidden Stop',
         tip: 'Ask your host or driver for the quietest time to visit.',
@@ -363,15 +365,15 @@ export function enrichCity(city: City): City {
       notFor: 'Travellers whose priorities are concentrated in another part of the destination',
     })) ?? [],
     gettingThere: city.gettingThere ?? {
-      summary: `${city.name} is best reached through the nearest major railhead or airport, then completed by road transfer if needed.`,
+      summary: `Compare the nearest practical airport, rail station, and overland connections for ${city.name}; the best arrival point depends on your origin and final accommodation.`,
       airports: [
         {
-          name: `Nearest airport or rail hub for ${city.name}`,
+          name: `Nearest practical arrival hub for ${city.name}`,
           code: 'N/A',
           note: 'Check the most convenient hub based on your starting city.',
           distanceFromCity: 'Varies by route',
-          transferTime: 'Plan buffer time for Indian road conditions',
-          transferOptions: ['Private taxi', 'State bus', 'Train plus local transfer'],
+          transferTime: 'Allow extra time for the final transfer',
+          transferOptions: ['Licensed taxi or transfer', 'Public transport where available', 'Rail or coach connection'],
         },
       ],
       topRoutes: [
@@ -379,8 +381,8 @@ export function enrichCity(city: City): City {
         { from: 'Mumbai', flag: '🇮🇳', duration: 'Varies', airlines: 'Flight or rail connections where available' },
         { from: 'Bengaluru', flag: '🇮🇳', duration: 'Varies', airlines: 'Flight or rail connections where available' },
       ],
-      bestTimeToBuyTip: 'For peak season and long weekends, book transport and stays 4-8 weeks ahead.',
-      bookingTip: 'Confirm final-mile transfers in advance; the last 30-80 km can take longer than maps suggest.',
+      bestTimeToBuyTip: 'For peak season, festivals, and major holidays, book long-distance transport and accommodation early.',
+      bookingTip: 'Confirm the final transfer and late-arrival options with your accommodation before travel.',
     },
   };
 }

@@ -191,15 +191,13 @@ const cityFaqs: Record<string, FAQ[]> = {
   ],
 };
 
-import { getCityBySlug, isIndexableCity } from './cities';
+import { getCityBySlug } from './cities';
 import type { City } from './types';
 
 const MIN_FAQS = 4;
 
-// FAQs derived strictly from the city's hand-authored structured data —
-// no invented facts. Only called for indexable cities (their stats and
-// month-by-month data are real); template-generated stub cities are excluded
-// because deriving FAQs from fabricated stats would publish fiction.
+// FAQs are derived strictly from the city's source stats — no invented
+// businesses, opening hours, route details, or safety claims.
 function derivedFaqs(city: City): FAQ[] {
   const out: FAQ[] = [];
   const { name } = city;
@@ -242,7 +240,7 @@ export function getCityFaqs(slug: string): FAQ[] {
   if (authored.length >= MIN_FAQS) return authored;
 
   const city = getCityBySlug(slug);
-  if (!city || !isIndexableCity(city)) return authored;
+  if (!city) return authored;
 
   // Top up with data-derived FAQs, skipping topics an authored FAQ already covers
   const covered = (q: string) => authored.some((f) => {
@@ -250,4 +248,8 @@ export function getCityFaqs(slug: string): FAQ[] {
     return ['best time', 'cost', 'currency', 'language', 'visa'].some((k) => a.includes(k) && b.includes(k));
   });
   return [...authored, ...derivedFaqs(city).filter((f) => !covered(f.q))];
+}
+
+export function getAuthoredCityFaqs(slug: string): FAQ[] {
+  return cityFaqs[slug] ?? [];
 }

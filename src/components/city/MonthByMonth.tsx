@@ -23,6 +23,33 @@ export default function MonthByMonth({ city }: { city: City }) {
   // positions 6–12 in GSC and need internal links from the city hub to climb.
   const linkable = hasAuthoredMonths(city.slug);
 
+  if (city.monthByMonthSynthetic) {
+    return (
+      <section id="best-time-to-visit" className="py-12 border-y border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-1">
+            <CalendarDays size={14} className="text-accent" />
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">When to Visit</p>
+          </div>
+          <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mb-5">
+            When Is the Best Time to Visit {city.name}?
+          </h2>
+          <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/8 p-6 sm:p-8">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-2">
+              Recommended travel window
+            </p>
+            <p className="font-heading text-2xl sm:text-3xl font-bold text-primary-text">
+              {city.stats.bestTime}
+            </p>
+            <p className="text-sm text-muted leading-relaxed mt-3 max-w-2xl">
+              {summary} Detailed monthly weather is not yet editorially verified, so this guide avoids presenting estimated month-by-month conditions as fact.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="best-time-to-visit" className="py-12 border-y border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

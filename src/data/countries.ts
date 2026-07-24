@@ -52,6 +52,8 @@ export const countries: CountryData[] = [
       'hyderabad', 'visakhapatnam',
       'chandigarh', 'auroville', 'badrinath', 'kedarnath', 'jim-corbett', 'kanha', 'lucknow',
       'pondicherry', 'bekal',
+      'dehradun', 'trivandrum', 'kozhikode', 'thrissur', 'vrindavan', 'shirdi', 'patna',
+      'nagpur', 'indore', 'raipur', 'vijayawada', 'port-blair', 'ranchi', 'salem',
     ],
     regions: [
       {

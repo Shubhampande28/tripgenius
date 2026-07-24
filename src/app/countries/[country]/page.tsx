@@ -83,6 +83,29 @@ export default async function CountryPage({ params }: Props) {
   const displayCities = citiesData.slice(0, 9);
   const hasMoreCities  = citiesData.length > 9;
 
+  // Every country gets destination groupings. Authored regions win; any
+  // ungrouped cities are retained in a final collection. Countries without
+  // region data use compact, deterministic destination collections.
+  const authoredGroups = country.regions ?? [];
+  const authoredGroupSlugs = new Set(authoredGroups.flatMap((group) => group.cities));
+  const ungroupedCitySlugs = citiesData
+    .map((city) => city.slug)
+    .filter((citySlug) => !authoredGroupSlugs.has(citySlug));
+  const derivedGroups = authoredGroups.length > 0
+    ? (ungroupedCitySlugs.length > 0 ? [{
+        name: 'More Destinations',
+        slug: 'more-destinations',
+        cities: ungroupedCitySlugs,
+      }] : [])
+    : Array.from({ length: Math.ceil(citiesData.length / 4) }, (_, index) => ({
+        name: citiesData.length === 1
+          ? `${country.name} Essential Destination`
+          : index === 0 ? 'Essential Stops' : `More to Explore ${index > 1 ? index : ''}`.trim(),
+        slug: `destination-group-${index + 1}`,
+        cities: citiesData.slice(index * 4, index * 4 + 4).map((city) => city.slug),
+      }));
+  const destinationGroups = [...authoredGroups, ...derivedGroups];
+
   // Trip planner — ready-made 3/5/7 day itineraries for this country
   type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };
   const itineraryOptions = ITINERARY_DURATIONS
@@ -117,7 +140,7 @@ export default async function CountryPage({ params }: Props) {
   const budgetTiers = budgetCity?.budgetBreakdown?.tiers ?? null;
 
   // Monthly calendar — first city with full 12-month data
-  const monthCity = citiesData.find((c) => c.monthByMonth?.months?.length === 12);
+  const monthCity = citiesData.find((c) => !c.monthByMonthSynthetic && c.monthByMonth?.months?.length === 12);
   const monthData = monthCity?.monthByMonth?.months ?? null;
 
   // Hero image — first city's hero photo
@@ -461,8 +484,7 @@ export default async function CountryPage({ params }: Props) {
           )}
 
           {/* ── TRAVEL GUIDES ────────────────────────────────────────────── */}
-          {blogLinks.length > 0 && (
-            <section id="guides">
+          <section id="guides">
               <div className="flex items-end justify-between mb-8">
                 <SectionHeader
                   label="travel guides"
@@ -476,8 +498,9 @@ export default async function CountryPage({ params }: Props) {
                 </Link>
               </div>
 
-              <div className="space-y-4">
-                {blogLinks.map((post) => (
+              {blogLinks.length > 0 ? (
+                <div className="space-y-4">
+                  {blogLinks.map((post) => (
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
@@ -519,21 +542,59 @@ export default async function CountryPage({ params }: Props) {
                       </div>
                     </div>
                   </Link>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Link
+                    href={`/cities/${displayCities[0].slug}`}
+                    className="group rounded-2xl border border-border bg-surface p-5 hover:border-accent/40 card-lift"
+                  >
+                    <MapPin size={18} className="text-accent mb-4" />
+                    <h3 className="font-heading text-base font-bold text-primary-text group-hover:text-accent">
+                      {displayCities[0].name} City Guide
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed mt-2">
+                      Start with the essential destination guide for {country.name}.
+                    </p>
+                  </Link>
+                  <Link
+                    href={`/best-time-to-visit/${displayCities[0].slug}`}
+                    className="group rounded-2xl border border-border bg-surface p-5 hover:border-accent/40 card-lift"
+                  >
+                    <Calendar size={18} className="text-accent mb-4" />
+                    <h3 className="font-heading text-base font-bold text-primary-text group-hover:text-accent">
+                      When to Visit
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed mt-2">
+                      Compare seasons and plan around {country.bestTime}.
+                    </p>
+                  </Link>
+                  <Link
+                    href={`/itinerary/${getItinerarySlug(country.slug, itineraryOptions[1]?.duration ?? itineraryOptions[0].duration)}`}
+                    className="group rounded-2xl border border-border bg-surface p-5 hover:border-accent/40 card-lift"
+                  >
+                    <BookOpen size={18} className="text-accent mb-4" />
+                    <h3 className="font-heading text-base font-bold text-primary-text group-hover:text-accent">
+                      Ready-Made Itinerary
+                    </h3>
+                    <p className="text-xs text-muted leading-relaxed mt-2">
+                      Follow a practical day-by-day route through {country.name}.
+                    </p>
+                  </Link>
+                </div>
+              )}
             </section>
-          )}
 
           {/* ── REGIONS ──────────────────────────────────────────────────── */}
-          {country.regions && country.regions.length > 0 && (
-            <section>
-              <SectionHeader
-                label="explore by region"
-                heading={`${country.name} by Region`}
-                sub={`${country.name}'s regions each have their own character, climate, and cuisine`}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {country.regions.map((region) => {
+          <section>
+            <SectionHeader
+              label="explore destinations"
+              heading={`Where to Go in ${country.name}`}
+              sub="Browse the country's destinations in practical groups and choose the stops that fit your route"
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {destinationGroups.map((region) => {
                   const regionCities = region.cities
                     .map((s) => getCityBySlug(s))
                     .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
@@ -556,10 +617,9 @@ export default async function CountryPage({ params }: Props) {
                       </div>
                     </div>
                   );
-                })}
-              </div>
-            </section>
-          )}
+              })}
+            </div>
+          </section>
 
           {/* ── BUDGET BREAKDOWN ─────────────────────────────────────────── */}
           {budgetTiers && budgetTiers.length > 0 && (
