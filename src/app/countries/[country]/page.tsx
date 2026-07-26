@@ -97,15 +97,37 @@ export default async function CountryPage({ params }: Props) {
   const displayCities = rankedCities.slice(0, displayLimit);
   const hasMoreCities = citiesData.length > displayLimit;
 
-  // Every country gets destination groupings. Authored regions win; any
-  // ungrouped cities are retained in a final collection. Countries without
-  // region data use compact, deterministic destination collections.
-  const authoredGroups = country.regions ?? [];
+  // Destination groupings, in priority order:
+  //   1. City-level `state` data (most complete — covers ~85% of India's
+  //      cities) groups every city under its actual state, not just the
+  //      handful of hand-authored regions.
+  //   2. Hand-authored country.regions cover any remaining cities without
+  //      a `state` field.
+  //   3. Whatever's left lands in a final "More Destinations" bucket, or
+  //      gets auto-chunked if the country has no region data at all.
+  const stateGroupMap = new Map<string, string[]>();
+  const noStateCities: typeof citiesData = [];
+  for (const city of citiesData) {
+    if (city.state) {
+      const list = stateGroupMap.get(city.state) ?? [];
+      list.push(city.slug);
+      stateGroupMap.set(city.state, list);
+    } else {
+      noStateCities.push(city);
+    }
+  }
+  const stateGroups = Array.from(stateGroupMap.entries())
+    .map(([name, cities]) => ({ name, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), cities }))
+    .sort((a, b) => b.cities.length - a.cities.length || a.name.localeCompare(b.name));
+
+  const authoredGroups = (country.regions ?? []).filter((group) =>
+    group.cities.some((slug) => noStateCities.some((c) => c.slug === slug)));
   const authoredGroupSlugs = new Set(authoredGroups.flatMap((group) => group.cities));
-  const ungroupedCitySlugs = citiesData
+  const ungroupedCitySlugs = noStateCities
     .map((city) => city.slug)
     .filter((citySlug) => !authoredGroupSlugs.has(citySlug));
-  const derivedGroups = authoredGroups.length > 0
+
+  const derivedGroups = stateGroups.length > 0 || authoredGroups.length > 0
     ? (ungroupedCitySlugs.length > 0 ? [{
         name: 'More Destinations',
         slug: 'more-destinations',
@@ -118,7 +140,7 @@ export default async function CountryPage({ params }: Props) {
         slug: `destination-group-${index + 1}`,
         cities: citiesData.slice(index * 4, index * 4 + 4).map((city) => city.slug),
       }));
-  const destinationGroups = [...authoredGroups, ...derivedGroups];
+  const destinationGroups = [...stateGroups, ...authoredGroups, ...derivedGroups];
 
   // Trip planner — ready-made 3/5/7 day itineraries for this country
   type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };

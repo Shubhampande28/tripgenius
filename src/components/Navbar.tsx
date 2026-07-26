@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -53,9 +53,22 @@ export default function Navbar() {
     label: string; items: {label:string; href:string}[];
     open: boolean; setOpen: (v:boolean) => void;
   }) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!open) return;
+      function onClickOutside(e: MouseEvent) {
+        if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      }
+      document.addEventListener('mousedown', onClickOutside);
+      return () => document.removeEventListener('mousedown', onClickOutside);
+    }, [open, setOpen]);
+
     return (
-      <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <div ref={ref} className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
         <button
+          type="button"
+          onClick={() => setOpen(!open)}
           aria-haspopup="true"
           aria-expanded={open}
           className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -177,9 +190,22 @@ export default function Navbar() {
             className="fixed inset-x-0 top-24 z-40 bg-dark/96 backdrop-blur-xl border-b border-border lg:hidden"
           >
             <div className="max-w-[1280px] mx-auto px-6 py-5 space-y-1">
+              <Link href="/" onClick={() => setMobileOpen(false)}
+                className="block px-4 py-3 rounded-lg text-base font-medium text-primary-text hover:text-accent hover:bg-elevated transition-colors">
+                Home
+              </Link>
+
+              <div className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-muted">
+                Destinations
+              </div>
+              {DEST_MENU.map(l => (
+                <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-text hover:text-accent hover:bg-elevated transition-colors">
+                  {l.label}
+                </Link>
+              ))}
+
               {[
-                { label:'Home',         href:'/' },
-                { label:'Countries',    href:'/countries' },
                 { label:'Blog',         href:'/blog' },
                 { label:'News',         href:'/news' },
                 { label:'Compare',      href:'/compare/goa-vs-bali' },

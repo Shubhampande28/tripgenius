@@ -14,7 +14,6 @@ export function getDestinationSuggestions(q: string): DestinationSuggestion[] {
   const matchedCountries = countries
     .filter((c) =>
       c.name.toLowerCase().startsWith(lower) ||
-      c.name.toLowerCase().includes(lower) ||
       c.capital.toLowerCase().startsWith(lower),
     )
     .slice(0, 3);
@@ -29,10 +28,7 @@ export function getDestinationSuggestions(q: string): DestinationSuggestion[] {
 
   // City matches
   const matchedCities = allCities
-    .filter((c) => !c.stub && (
-      c.name.toLowerCase().startsWith(lower) ||
-      c.name.toLowerCase().includes(lower)
-    ))
+    .filter((c) => !c.stub && c.name.toLowerCase().startsWith(lower))
     .slice(0, 3);
 
   const citySuggestions: DestinationSuggestion[] = matchedCities.map((city) => ({

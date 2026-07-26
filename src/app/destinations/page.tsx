@@ -116,8 +116,8 @@ export default function DestinationsPage() {
     if (searchQuery.trim().length >= 2) {
       const q = searchQuery.toLowerCase();
       list = list.filter(c =>
-        c.name.toLowerCase().includes(q) ||
-        c.country.toLowerCase().includes(q)
+        c.name.toLowerCase().startsWith(q) ||
+        c.country.toLowerCase().startsWith(q)
       );
     }
 
