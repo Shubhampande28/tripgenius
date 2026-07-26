@@ -4,8 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, ChevronDown, Sparkles } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, ChevronRight, Sparkles } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
+import indiaNavIndexRaw from '@/data/indiaNavIndex.json';
+
+type IndiaStateGroup = { state: string; cities: { name: string; slug: string }[] };
+const INDIA_STATES = indiaNavIndexRaw as IndiaStateGroup[];
 
 const THEME_EVENT = 'tripgenius-theme-change';
 function getSnap() {
@@ -22,7 +26,7 @@ function subTheme(cb: () => void) {
 // Destination sub-menu categories
 const DEST_MENU = [
   { label: '🌍 Browse by Country', href: '/countries' },
-  { label: 'India',                href: '/countries/india' },
+  { label: 'India',                href: '/countries/india', key: 'india' },
   { label: 'Asia',                 href: '/cities?region=Asia' },
   { label: 'Europe',               href: '/cities?region=Europe' },
   { label: 'Americas',             href: '/cities?region=Americas' },
@@ -49,11 +53,10 @@ export default function Navbar() {
     window.dispatchEvent(new Event(THEME_EVENT));
   }
 
-  function NavDropdown({ label, items, open, setOpen }: {
-    label: string; items: {label:string; href:string}[];
-    open: boolean; setOpen: (v:boolean) => void;
-  }) {
+  function DestinationsMenu({ open, setOpen }: { open: boolean; setOpen: (v:boolean) => void }) {
     const ref = useRef<HTMLDivElement>(null);
+    const [hoveredKey, setHoveredKey]     = useState<string | null>(null);
+    const [hoveredState, setHoveredState] = useState<string | null>(null);
 
     useEffect(() => {
       if (!open) return;
@@ -64,8 +67,23 @@ export default function Navbar() {
       return () => document.removeEventListener('mousedown', onClickOutside);
     }, [open, setOpen]);
 
+    function close() {
+      setOpen(false);
+      setHoveredKey(null);
+      setHoveredState(null);
+    }
+
+    const activeStateCities = hoveredState
+      ? INDIA_STATES.find((s) => s.state === hoveredState)?.cities ?? []
+      : [];
+
     return (
-      <div ref={ref} className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <div
+        ref={ref}
+        className="relative"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => { setOpen(false); setHoveredKey(null); setHoveredState(null); }}
+      >
         <button
           type="button"
           onClick={() => setOpen(!open)}
@@ -73,7 +91,7 @@ export default function Navbar() {
           aria-expanded={open}
           className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
-          {label} <ChevronDown size={13} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+          Destinations <ChevronDown size={13} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
         </button>
         <AnimatePresence>
           {open && (
@@ -82,15 +100,59 @@ export default function Navbar() {
               animate={{ opacity:1, y:0 }}
               exit={{ opacity:0, y:6 }}
               transition={{ duration:0.15 }}
-              className="absolute top-full left-0 mt-1 w-48 glass-card rounded-xl overflow-hidden z-50"
+              className="absolute top-full left-0 mt-1 flex items-start z-50"
             >
-              {items.map(item => (
-                <Link key={item.label} href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-sm text-muted hover:text-primary-text hover:bg-elevated transition-colors">
-                  {item.label}
-                </Link>
-              ))}
+              {/* Level 1 — top categories */}
+              <div className="w-56 glass-card rounded-xl overflow-hidden">
+                {DEST_MENU.map(item => (
+                  <div key={item.label} onMouseEnter={() => setHoveredKey(item.key ?? null)}>
+                    <Link
+                      href={item.href}
+                      onClick={close}
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                        hoveredKey === item.key && item.key ? 'bg-elevated text-primary-text' : 'text-muted hover:text-primary-text hover:bg-elevated'
+                      }`}
+                    >
+                      {item.label}
+                      {item.key === 'india' && <ChevronRight size={13} />}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Level 2 — India's states */}
+              {hoveredKey === 'india' && (
+                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                  {INDIA_STATES.map(s => (
+                    <div
+                      key={s.state}
+                      onMouseEnter={() => setHoveredState(s.state)}
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-default transition-colors ${
+                        hoveredState === s.state ? 'bg-elevated text-primary-text' : 'text-muted'
+                      }`}
+                    >
+                      {s.state}
+                      <ChevronRight size={13} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Level 3 — cities in the hovered state */}
+              {hoveredKey === 'india' && hoveredState && activeStateCities.length > 0 && (
+                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                  {activeStateCities.map(city => (
+                    <Link
+                      key={city.slug}
+                      href={`/cities/${city.slug}`}
+                      onClick={close}
+                      className="block px-4 py-2.5 text-sm text-muted hover:text-primary-text hover:bg-elevated transition-colors"
+                    >
+                      {city.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -124,7 +186,7 @@ export default function Navbar() {
 
             {/* Desktop nav — centered */}
             <nav className="hidden lg:flex items-center gap-1">
-              <NavDropdown label="Destinations" items={DEST_MENU} open={destOpen} setOpen={setDestOpen} />
+              <DestinationsMenu open={destOpen} setOpen={setDestOpen} />
               <Link href="/blog"
                 className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
                 Blog

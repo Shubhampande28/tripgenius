@@ -1,0 +1,408 @@
+[
+  {
+    "state": "Kerala",
+    "cities": [
+      {
+        "name": "Alleppey (Alappuzha)",
+        "slug": "alleppey"
+      },
+      {
+        "name": "Kochi",
+        "slug": "kochi"
+      },
+      {
+        "name": "Kozhikode",
+        "slug": "kozhikode"
+      },
+      {
+        "name": "Munnar",
+        "slug": "munnar"
+      },
+      {
+        "name": "Thekkady",
+        "slug": "thekkady"
+      },
+      {
+        "name": "Thiruvananthapuram",
+        "slug": "trivandrum"
+      },
+      {
+        "name": "Thrissur",
+        "slug": "thrissur"
+      },
+      {
+        "name": "Varkala",
+        "slug": "varkala"
+      }
+    ]
+  },
+  {
+    "state": "Rajasthan",
+    "cities": [
+      {
+        "name": "Bikaner",
+        "slug": "bikaner"
+      },
+      {
+        "name": "Jaipur",
+        "slug": "jaipur"
+      },
+      {
+        "name": "Jaisalmer",
+        "slug": "jaisalmer"
+      },
+      {
+        "name": "Jodhpur",
+        "slug": "jodhpur"
+      },
+      {
+        "name": "Pushkar",
+        "slug": "pushkar"
+      },
+      {
+        "name": "Ranthambore",
+        "slug": "ranthambore"
+      },
+      {
+        "name": "Udaipur",
+        "slug": "udaipur"
+      }
+    ]
+  },
+  {
+    "state": "Uttarakhand",
+    "cities": [
+      {
+        "name": "Dehradun",
+        "slug": "dehradun"
+      },
+      {
+        "name": "Haridwar",
+        "slug": "haridwar"
+      },
+      {
+        "name": "Jim Corbett",
+        "slug": "jim-corbett"
+      },
+      {
+        "name": "Mussoorie",
+        "slug": "mussoorie"
+      },
+      {
+        "name": "Nainital",
+        "slug": "nainital"
+      },
+      {
+        "name": "Rishikesh",
+        "slug": "rishikesh"
+      }
+    ]
+  },
+  {
+    "state": "Himachal Pradesh",
+    "cities": [
+      {
+        "name": "Dharamshala",
+        "slug": "dharamshala"
+      },
+      {
+        "name": "Kasol",
+        "slug": "kasol"
+      },
+      {
+        "name": "Manali",
+        "slug": "manali"
+      },
+      {
+        "name": "Shimla",
+        "slug": "shimla"
+      },
+      {
+        "name": "Spiti Valley",
+        "slug": "spiti"
+      }
+    ]
+  },
+  {
+    "state": "Karnataka",
+    "cities": [
+      {
+        "name": "Bengaluru",
+        "slug": "bengaluru"
+      },
+      {
+        "name": "Coorg (Kodagu)",
+        "slug": "coorg"
+      },
+      {
+        "name": "Gokarna",
+        "slug": "gokarna"
+      },
+      {
+        "name": "Hampi",
+        "slug": "hampi"
+      },
+      {
+        "name": "Mysuru (Mysore)",
+        "slug": "mysuru"
+      }
+    ]
+  },
+  {
+    "state": "Maharashtra",
+    "cities": [
+      {
+        "name": "Aurangabad",
+        "slug": "aurangabad"
+      },
+      {
+        "name": "Mumbai",
+        "slug": "mumbai"
+      },
+      {
+        "name": "Nagpur",
+        "slug": "nagpur"
+      },
+      {
+        "name": "Pune",
+        "slug": "pune"
+      },
+      {
+        "name": "Shirdi",
+        "slug": "shirdi"
+      }
+    ]
+  },
+  {
+    "state": "Tamil Nadu",
+    "cities": [
+      {
+        "name": "Chennai",
+        "slug": "chennai"
+      },
+      {
+        "name": "Madurai",
+        "slug": "madurai"
+      },
+      {
+        "name": "Mahabalipuram",
+        "slug": "mahabalipuram"
+      },
+      {
+        "name": "Ooty (Udhagamandalam)",
+        "slug": "ooty"
+      },
+      {
+        "name": "Salem",
+        "slug": "salem"
+      }
+    ]
+  },
+  {
+    "state": "Uttar Pradesh",
+    "cities": [
+      {
+        "name": "Agra",
+        "slug": "agra"
+      },
+      {
+        "name": "Lucknow",
+        "slug": "lucknow"
+      },
+      {
+        "name": "Varanasi",
+        "slug": "varanasi"
+      },
+      {
+        "name": "Vrindavan",
+        "slug": "vrindavan"
+      }
+    ]
+  },
+  {
+    "state": "Andaman & Nicobar Islands",
+    "cities": [
+      {
+        "name": "Andaman Islands",
+        "slug": "andaman"
+      },
+      {
+        "name": "Port Blair",
+        "slug": "port-blair"
+      }
+    ]
+  },
+  {
+    "state": "Assam",
+    "cities": [
+      {
+        "name": "Guwahati",
+        "slug": "guwahati"
+      },
+      {
+        "name": "Kaziranga",
+        "slug": "kaziranga"
+      }
+    ]
+  },
+  {
+    "state": "Bihar",
+    "cities": [
+      {
+        "name": "Bodh Gaya",
+        "slug": "bodh-gaya"
+      },
+      {
+        "name": "Patna",
+        "slug": "patna"
+      }
+    ]
+  },
+  {
+    "state": "Jammu & Kashmir",
+    "cities": [
+      {
+        "name": "Gulmarg",
+        "slug": "gulmarg"
+      },
+      {
+        "name": "Srinagar",
+        "slug": "srinagar"
+      }
+    ]
+  },
+  {
+    "state": "Madhya Pradesh",
+    "cities": [
+      {
+        "name": "Indore",
+        "slug": "indore"
+      },
+      {
+        "name": "Khajuraho",
+        "slug": "khajuraho"
+      }
+    ]
+  },
+  {
+    "state": "West Bengal",
+    "cities": [
+      {
+        "name": "Darjeeling",
+        "slug": "darjeeling"
+      },
+      {
+        "name": "Kolkata",
+        "slug": "kolkata"
+      }
+    ]
+  },
+  {
+    "state": "Andhra Pradesh",
+    "cities": [
+      {
+        "name": "Vijayawada",
+        "slug": "vijayawada"
+      }
+    ]
+  },
+  {
+    "state": "Chandigarh",
+    "cities": [
+      {
+        "name": "Chandigarh",
+        "slug": "chandigarh"
+      }
+    ]
+  },
+  {
+    "state": "Chhattisgarh",
+    "cities": [
+      {
+        "name": "Raipur",
+        "slug": "raipur"
+      }
+    ]
+  },
+  {
+    "state": "Delhi",
+    "cities": [
+      {
+        "name": "Delhi",
+        "slug": "delhi"
+      }
+    ]
+  },
+  {
+    "state": "Goa",
+    "cities": [
+      {
+        "name": "Goa",
+        "slug": "goa"
+      }
+    ]
+  },
+  {
+    "state": "Gujarat",
+    "cities": [
+      {
+        "name": "Ahmedabad",
+        "slug": "ahmedabad"
+      }
+    ]
+  },
+  {
+    "state": "Jharkhand",
+    "cities": [
+      {
+        "name": "Ranchi",
+        "slug": "ranchi"
+      }
+    ]
+  },
+  {
+    "state": "Ladakh",
+    "cities": [
+      {
+        "name": "Leh Ladakh",
+        "slug": "ladakh"
+      }
+    ]
+  },
+  {
+    "state": "Odisha",
+    "cities": [
+      {
+        "name": "Puri",
+        "slug": "puri"
+      }
+    ]
+  },
+  {
+    "state": "Puducherry",
+    "cities": [
+      {
+        "name": "Pondicherry",
+        "slug": "pondicherry"
+      }
+    ]
+  },
+  {
+    "state": "Punjab",
+    "cities": [
+      {
+        "name": "Amritsar",
+        "slug": "amritsar"
+      }
+    ]
+  },
+  {
+    "state": "Telangana",
+    "cities": [
+      {
+        "name": "Hyderabad",
+        "slug": "hyderabad"
+      }
+    ]
+  }
+]
