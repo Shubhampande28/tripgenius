@@ -93,54 +93,10 @@ export default async function CountryPage({ params }: Props) {
         (priorityIndex.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
         (priorityIndex.get(b.slug) ?? Number.MAX_SAFE_INTEGER))
     : citiesData;
-  const displayLimit = slug === 'india' ? 12 : 9;
-  const displayCities = rankedCities.slice(0, displayLimit);
-  const hasMoreCities = citiesData.length > displayLimit;
-
-  // Destination groupings, in priority order:
-  //   1. City-level `state` data (most complete — covers ~85% of India's
-  //      cities) groups every city under its actual state, not just the
-  //      handful of hand-authored regions.
-  //   2. Hand-authored country.regions cover any remaining cities without
-  //      a `state` field.
-  //   3. Whatever's left lands in a final "More Destinations" bucket, or
-  //      gets auto-chunked if the country has no region data at all.
-  const stateGroupMap = new Map<string, string[]>();
-  const noStateCities: typeof citiesData = [];
-  for (const city of citiesData) {
-    if (city.state) {
-      const list = stateGroupMap.get(city.state) ?? [];
-      list.push(city.slug);
-      stateGroupMap.set(city.state, list);
-    } else {
-      noStateCities.push(city);
-    }
-  }
-  const stateGroups = Array.from(stateGroupMap.entries())
-    .map(([name, cities]) => ({ name, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), cities }))
-    .sort((a, b) => b.cities.length - a.cities.length || a.name.localeCompare(b.name));
-
-  const authoredGroups = (country.regions ?? []).filter((group) =>
-    group.cities.some((slug) => noStateCities.some((c) => c.slug === slug)));
-  const authoredGroupSlugs = new Set(authoredGroups.flatMap((group) => group.cities));
-  const ungroupedCitySlugs = noStateCities
-    .map((city) => city.slug)
-    .filter((citySlug) => !authoredGroupSlugs.has(citySlug));
-
-  const derivedGroups = stateGroups.length > 0 || authoredGroups.length > 0
-    ? (ungroupedCitySlugs.length > 0 ? [{
-        name: 'More Destinations',
-        slug: 'more-destinations',
-        cities: ungroupedCitySlugs,
-      }] : [])
-    : Array.from({ length: Math.ceil(citiesData.length / 4) }, (_, index) => ({
-        name: citiesData.length === 1
-          ? `${country.name} Essential Destination`
-          : index === 0 ? 'Essential Stops' : `More to Explore ${index > 1 ? index : ''}`.trim(),
-        slug: `destination-group-${index + 1}`,
-        cities: citiesData.slice(index * 4, index * 4 + 4).map((city) => city.slug),
-      }));
-  const destinationGroups = [...stateGroups, ...authoredGroups, ...derivedGroups];
+  // Show every city for this country — no cap, no "view all" link buried
+  // further down. Clicking a country should surface the full list at once.
+  const displayCities = rankedCities;
+  const hasMoreCities = false;
 
   // Trip planner — ready-made 3/5/7 day itineraries for this country
   type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };
@@ -621,41 +577,6 @@ export default async function CountryPage({ params }: Props) {
                 </div>
               )}
             </section>
-
-          {/* ── REGIONS ──────────────────────────────────────────────────── */}
-          <section>
-            <SectionHeader
-              label="explore destinations"
-              heading={`Where to Go in ${country.name}`}
-              sub="Browse the country's destinations in practical groups and choose the stops that fit your route"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {destinationGroups.map((region) => {
-                  const regionCities = region.cities
-                    .map((s) => getCityBySlug(s))
-                    .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
-                  return (
-                    <div key={region.slug}
-                      className="bg-surface border border-border rounded-2xl p-5 hover:border-accent/25 transition-colors">
-                      <h3 className="font-heading text-base font-semibold text-primary-text mb-3">
-                        {region.name}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {regionCities.map((city) => (
-                          <Link
-                            key={city.slug}
-                            href={`/cities/${city.slug}`}
-                            className="text-xs px-3 py-1.5 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/40 transition-colors"
-                          >
-                            {city.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  );
-              })}
-            </div>
-          </section>
 
           {/* ── BUDGET BREAKDOWN ─────────────────────────────────────────── */}
           {budgetTiers && budgetTiers.length > 0 && (
