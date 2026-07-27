@@ -84,6 +84,14 @@ export default function Navbar() {
     const ref = useRef<HTMLDivElement>(null);
     const [hoveredKey, setHoveredKey]     = useState<string | null>(null);
     const [hoveredState, setHoveredState] = useState<string | null>(null);
+    // Each next-level panel should open flush with the row that opened it
+    // (like a native OS submenu), not always snap back to the very top of
+    // the flyout — otherwise a panel three rows down the list still pops up
+    // level with row one, looking disconnected from what you're hovering.
+    const [level2Offset, setLevel2Offset] = useState(0);
+    const [level3Offset, setLevel3Offset] = useState(0);
+    const level1RowRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const level2RowRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
     useEffect(() => {
       if (!open) return;
@@ -98,6 +106,19 @@ export default function Navbar() {
       setOpen(false);
       setHoveredKey(null);
       setHoveredState(null);
+    }
+
+    function hoverLevel1(key: string | null) {
+      setHoveredKey(key);
+      setHoveredState(null);
+      const el = key ? level1RowRefs.current.get(key) : null;
+      setLevel2Offset(el?.offsetTop ?? 0);
+    }
+
+    function hoverLevel2(name: string) {
+      setHoveredState(name);
+      const el = level2RowRefs.current.get(name);
+      setLevel3Offset(el?.offsetTop ?? 0);
     }
 
     const cascadeGroups = hoveredKey ? getCascadeGroups(hoveredKey) : null;
@@ -139,7 +160,16 @@ export default function Navbar() {
               {/* Level 1 — top categories */}
               <div className="w-56 glass-card glass-card--menu rounded-xl overflow-hidden">
                 {DEST_MENU.map(item => (
-                  <div key={item.label} onMouseEnter={() => setHoveredKey(item.key ?? null)}>
+                  <div
+                    key={item.label}
+                    ref={(el) => {
+                      if (item.key) {
+                        if (el) level1RowRefs.current.set(item.key, el);
+                        else level1RowRefs.current.delete(item.key);
+                      }
+                    }}
+                    onMouseEnter={() => hoverLevel1(item.key ?? null)}
+                  >
                     <Link
                       href={item.href}
                       onClick={close}
@@ -156,11 +186,18 @@ export default function Navbar() {
 
               {/* Level 2 — regions (or, for countries with no region data, the flat city list) */}
               {hoveredKey && cascadeGroups && !isFlatCascade && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
+                <div
+                  style={{ marginTop: level2Offset }}
+                  className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1"
+                >
                   {cascadeGroups.map(g => (
                     <div
                       key={g.name}
-                      onMouseEnter={() => setHoveredState(g.name)}
+                      ref={(el) => {
+                        if (el) level2RowRefs.current.set(g.name, el);
+                        else level2RowRefs.current.delete(g.name);
+                      }}
+                      onMouseEnter={() => hoverLevel2(g.name)}
                       className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-default transition-colors ${
                         hoveredState === g.name ? 'bg-elevated text-primary-text' : 'text-muted'
                       }`}
@@ -173,7 +210,10 @@ export default function Navbar() {
               )}
 
               {hoveredKey && isFlatCascade && flatCities.length > 0 && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
+                <div
+                  style={{ marginTop: level2Offset }}
+                  className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1"
+                >
                   {flatCities.map(city => (
                     <Link
                       key={city.slug}
@@ -189,7 +229,10 @@ export default function Navbar() {
 
               {/* Level 3 — cities in the hovered region (only when regions exist) */}
               {hoveredKey && !isFlatCascade && hoveredState && activeGroupCities.length > 0 && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
+                <div
+                  style={{ marginTop: level3Offset }}
+                  className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1"
+                >
                   {activeGroupCities.map(city => (
                     <Link
                       key={city.slug}
