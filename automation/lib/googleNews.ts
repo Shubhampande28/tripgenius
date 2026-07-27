@@ -1,20 +1,26 @@
-// Shared Google News RSS discovery + article fetching, used by both
+// Shared news RSS discovery + article fetching, used by both
 // automation/news/generate.ts and automation/trending/generate.ts.
 //
-// Replicates .claude/skills/news-writer/news_topics.py in TypeScript (no
-// Python in CI): Google News RSS needs no API key, just a query string.
-// https://news.google.com/rss/search?q=<query>&hl=en-IN&gl=IN&ceid=IN:en
+// Originally targeted Google News RSS (mirroring
+// .claude/skills/news-writer/news_topics.py), but Google now wraps every
+// article link behind a JS-rendered redirect page (a `c-wiz` component that
+// calls an internal batchexecute RPC to decode the real URL) — there is no
+// plain HTTP 3xx or meta-refresh to follow, so a plain `fetch` can never
+// resolve it. Bing News RSS solves this: its `apiclick.aspx` links carry the
+// real publisher URL directly as a `url=` query parameter, no redirect
+// resolution needed at all.
+// https://www.bing.com/news/search?q=<query>&format=RSS&mkt=en-in
 
 import * as cheerio from 'cheerio';
 
-const GOOGLE_NEWS_RSS = 'https://news.google.com/rss/search';
+const BING_NEWS_RSS = 'https://www.bing.com/news/search';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
 export interface NewsHeadline {
   title: string;
   source: string;
   pubDate: string | null; // ISO date, if parseable
-  link: string;           // Google News redirect link
+  link: string;           // Bing apiclick link (carries the real URL in ?url=)
   query: string;
 }
 
@@ -22,11 +28,9 @@ function normalizeTitle(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
-export async function fetchGoogleNewsRSS(query: string, opts?: { hl?: string; gl?: string; ceid?: string }): Promise<NewsHeadline[]> {
-  const hl = opts?.hl ?? 'en-IN';
-  const gl = opts?.gl ?? 'IN';
-  const ceid = opts?.ceid ?? 'IN:en';
-  const url = `${GOOGLE_NEWS_RSS}?${new URLSearchParams({ q: query, hl, gl, ceid }).toString()}`;
+export async function fetchGoogleNewsRSS(query: string, opts?: { mkt?: string }): Promise<NewsHeadline[]> {
+  const mkt = opts?.mkt ?? 'en-in';
+  const url = `${BING_NEWS_RSS}?${new URLSearchParams({ q: query, format: 'RSS', mkt }).toString()}`;
 
   const res = await fetch(url, { headers: { 'User-Agent': UA } });
   if (!res.ok) {
@@ -39,14 +43,11 @@ export async function fetchGoogleNewsRSS(query: string, opts?: { hl?: string; gl
   const items: NewsHeadline[] = [];
   $('item').each((_, el) => {
     const $el = $(el);
-    let title = $el.find('title').first().text().trim();
+    const title = $el.find('title').first().text().trim();
     const link = $el.find('link').first().text().trim();
     const pubDateRaw = $el.find('pubDate').first().text().trim();
-    const source = $el.find('source').first().text().trim();
+    const source = $el.find('News\\:Source, source').first().text().trim();
 
-    if (source && title.endsWith(` - ${source}`)) {
-      title = title.slice(0, -(` - ${source}`.length)).trim();
-    }
     if (!title) return;
 
     let pubDate: string | null = null;
@@ -97,26 +98,33 @@ export function dedupeAndFilterFresh(items: NewsHeadline[], days = 14): NewsHead
 }
 
 /**
- * Resolve a Google News redirect link to the real publisher URL by following
- * redirects and reading response.url. Google News links are sometimes a
- * client-side redirect page rather than a plain HTTP 3xx, so this also falls
- * back to scraping a canonical/meta-refresh URL out of the HTML if the fetch
- * lands back on news.google.com.
+ * Resolve a headline link to the real publisher URL. Bing's `apiclick.aspx`
+ * links carry it directly as a `?url=` query param — no network round trip
+ * needed. Falls back to following redirects / scraping a canonical link for
+ * any link shape that isn't a Bing apiclick link (e.g. if a query source
+ * changes format later).
  */
-export async function resolvePublisherUrl(googleNewsLink: string): Promise<string | null> {
+export async function resolvePublisherUrl(link: string): Promise<string | null> {
   try {
-    const res = await fetch(googleNewsLink, { redirect: 'follow', headers: { 'User-Agent': UA } });
-    const finalUrl = res.url || googleNewsLink;
-    if (!finalUrl.includes('news.google.com')) return finalUrl;
+    const parsed = new URL(link);
+    const direct = parsed.searchParams.get('url');
+    if (direct) return direct;
+  } catch {
+    // not a parseable URL — fall through to the network-based fallback below
+  }
 
-    // Still on Google News — look for a meta-refresh / canonical link in the body.
+  try {
+    const res = await fetch(link, { redirect: 'follow', headers: { 'User-Agent': UA } });
+    const finalUrl = res.url || link;
+    if (!finalUrl.includes('news.google.com') && !finalUrl.includes('bing.com')) return finalUrl;
+
     const html = await res.text();
     const $ = cheerio.load(html);
     const canonical = $('link[rel="canonical"]').attr('href');
-    if (canonical && !canonical.includes('news.google.com')) return canonical;
+    if (canonical && !canonical.includes('news.google.com') && !canonical.includes('bing.com')) return canonical;
     const metaRefresh = $('meta[http-equiv="refresh"]').attr('content');
     const m = metaRefresh?.match(/url=(\S+)/i);
-    if (m && !m[1].includes('news.google.com')) return m[1];
+    if (m && !m[1].includes('news.google.com') && !m[1].includes('bing.com')) return m[1];
 
     return null;
   } catch (err) {
