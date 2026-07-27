@@ -17,6 +17,7 @@ import {
   resolvePublisherUrl,
   fetchArticleText,
   slugify,
+  isLikelyUnscrapable,
   type NewsHeadline,
 } from '../lib/googleNews';
 
@@ -149,8 +150,10 @@ async function main() {
   console.log(`\n${fresh.length} fresh, deduped headlines from ${raw.length} raw results.`);
 
   const { slugs: existingSlugs, titles: existingTitles } = existingTrendingSignals();
-  const candidates = fresh.filter(h => !looksAlreadyCovered(h, existingTitles));
-  console.log(`${candidates.length} candidates after removing already-covered topics.`);
+  const candidates = fresh
+    .filter(h => !looksAlreadyCovered(h, existingTitles))
+    .filter(h => !isLikelyUnscrapable(h));
+  console.log(`${candidates.length} candidates after removing already-covered topics and MSN-syndication links.`);
 
   if (candidates.length === 0) {
     console.log('\nNo fresh, uncovered trending topics today — normal day, exiting cleanly.');

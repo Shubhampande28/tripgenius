@@ -61,19 +61,48 @@ export async function fetchGoogleNewsRSS(query: string, opts?: { mkt?: string })
   return items;
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function fetchManyQueries(queries: string[]): Promise<NewsHeadline[]> {
   const collected: NewsHeadline[] = [];
-  for (const q of queries) {
+  for (const [i, q] of queries.entries()) {
+    // A CI runner firing every query back-to-back has been observed getting
+    // rate-limited into empty (0-headline) responses from Bing; a small
+    // stagger between requests avoids that.
+    if (i > 0) await sleep(1200);
     console.log(`  querying ${JSON.stringify(q)} ...`);
     try {
       const items = await fetchGoogleNewsRSS(q);
       console.log(`    -> ${items.length} headlines`);
-      collected.push(...items);
+      if (items.length === 0) {
+        // Single retry after a longer pause — likely a transient rate limit
+        // rather than a genuinely empty result set.
+        await sleep(2500);
+        const retry = await fetchGoogleNewsRSS(q);
+        if (retry.length > 0) console.log(`    -> retry: ${retry.length} headlines`);
+        collected.push(...retry);
+      } else {
+        collected.push(...items);
+      }
     } catch (err) {
       console.log(`    fetch error for ${JSON.stringify(q)}: ${(err as Error).message}`);
     }
   }
   return collected;
+}
+
+/**
+ * MSN's syndicated article pages are a client-rendered shell with zero
+ * server-rendered body text (confirmed empirically — a plain fetch returns
+ * ~40KB of JS bootstrap and no article copy at all), so they can never clear
+ * fetchArticleText's grounding-length bar. Filter them out before spending a
+ * resolve+fetch round trip on a headline that can't be used anyway; Bing
+ * News RSS reliably labels these with a "<Source> on MSN" source name.
+ */
+export function isLikelyUnscrapable(headline: NewsHeadline): boolean {
+  return /\bmsn\b/i.test(headline.source) || /\bmsn\b/i.test(headline.title);
 }
 
 /** Dedupe by normalized title, keep first occurrence, filter to last N days. */
