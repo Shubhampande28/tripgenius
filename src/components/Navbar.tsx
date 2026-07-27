@@ -7,9 +7,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, ChevronDown, ChevronRight, Sparkles } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 import indiaNavIndexRaw from '@/data/indiaNavIndex.json';
+import globalNavIndexRaw from '@/data/globalNavIndex.json';
 
 type IndiaStateGroup = { state: string; cities: { name: string; slug: string }[] };
 const INDIA_STATES = indiaNavIndexRaw as IndiaStateGroup[];
+
+type NavCity = { name: string; slug: string };
+type NavGroup = { name: string; cities: NavCity[] };
+type NavCountry = { countrySlug: string; countryLabel: string; groups: NavGroup[] };
+const GLOBAL_NAV_INDEX = globalNavIndexRaw as NavCountry[];
+
+// Unified shape used to render level 2 / level 3 of the Destinations dropdown,
+// regardless of whether the data came from indiaNavIndex.json (India's
+// state cascade) or globalNavIndex.json (the other cascading countries).
+type CascadeGroup = { name: string; cities: NavCity[] };
+function getCascadeGroups(key: string): CascadeGroup[] | null {
+  if (key === 'india') {
+    return INDIA_STATES.map((s) => ({ name: s.state, cities: s.cities }));
+  }
+  const country = GLOBAL_NAV_INDEX.find((c) => c.countrySlug === key);
+  return country ? country.groups : null;
+}
 
 const THEME_EVENT = 'tripgenius-theme-change';
 function getSnap() {
@@ -27,11 +45,20 @@ function subTheme(cb: () => void) {
 const DEST_MENU = [
   { label: '🌍 Browse by Country', href: '/countries' },
   { label: 'India',                href: '/countries/india', key: 'india' },
+  { label: 'Thailand',             href: '/countries/thailand', key: 'thailand' },
+  { label: 'Indonesia',            href: '/countries/indonesia', key: 'indonesia' },
+  { label: 'UAE',                  href: '/countries/uae', key: 'uae' },
+  { label: 'Vietnam',              href: '/countries/vietnam', key: 'vietnam' },
+  { label: 'Sri Lanka',            href: '/countries/sri-lanka', key: 'sri-lanka' },
+  { label: 'Nepal',                href: '/countries/nepal', key: 'nepal' },
+  { label: 'Singapore',            href: '/countries/singapore', key: 'singapore' },
   { label: 'Asia',                 href: '/cities?region=Asia' },
   { label: 'Europe',               href: '/cities?region=Europe' },
   { label: 'Americas',             href: '/cities?region=Americas' },
   { label: 'All Cities',           href: '/destinations' },
 ];
+
+const CASCADE_KEYS = new Set(['india', 'thailand', 'indonesia', 'uae', 'vietnam', 'sri-lanka', 'nepal', 'singapore']);
 
 export default function Navbar() {
   const [scrolled, setScrolled]       = useState(false);
@@ -73,8 +100,15 @@ export default function Navbar() {
       setHoveredState(null);
     }
 
-    const activeStateCities = hoveredState
-      ? INDIA_STATES.find((s) => s.state === hoveredState)?.cities ?? []
+    const cascadeGroups = hoveredKey ? getCascadeGroups(hoveredKey) : null;
+    // When a country has no region breakdown, globalNavIndex.json gives it a
+    // single group with an empty name — treat that as "flat city list", i.e.
+    // skip the region column entirely and go straight to cities.
+    const isFlatCascade = !!cascadeGroups && cascadeGroups.length === 1 && cascadeGroups[0].name === '';
+    const flatCities = isFlatCascade ? cascadeGroups![0].cities : [];
+
+    const activeGroupCities = hoveredState && cascadeGroups
+      ? cascadeGroups.find((g) => g.name === hoveredState)?.cities ?? []
       : [];
 
     return (
@@ -114,34 +148,49 @@ export default function Navbar() {
                       }`}
                     >
                       {item.label}
-                      {item.key === 'india' && <ChevronRight size={13} />}
+                      {item.key && CASCADE_KEYS.has(item.key) && <ChevronRight size={13} />}
                     </Link>
                   </div>
                 ))}
               </div>
 
-              {/* Level 2 — India's states */}
-              {hoveredKey === 'india' && (
+              {/* Level 2 — regions (or, for countries with no region data, the flat city list) */}
+              {hoveredKey && cascadeGroups && !isFlatCascade && (
                 <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
-                  {INDIA_STATES.map(s => (
+                  {cascadeGroups.map(g => (
                     <div
-                      key={s.state}
-                      onMouseEnter={() => setHoveredState(s.state)}
+                      key={g.name}
+                      onMouseEnter={() => setHoveredState(g.name)}
                       className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-default transition-colors ${
-                        hoveredState === s.state ? 'bg-elevated text-primary-text' : 'text-muted'
+                        hoveredState === g.name ? 'bg-elevated text-primary-text' : 'text-muted'
                       }`}
                     >
-                      {s.state}
+                      {g.name}
                       <ChevronRight size={13} />
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Level 3 — cities in the hovered state */}
-              {hoveredKey === 'india' && hoveredState && activeStateCities.length > 0 && (
+              {hoveredKey && isFlatCascade && flatCities.length > 0 && (
                 <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
-                  {activeStateCities.map(city => (
+                  {flatCities.map(city => (
+                    <Link
+                      key={city.slug}
+                      href={`/cities/${city.slug}`}
+                      onClick={close}
+                      className="block px-4 py-2.5 text-sm text-muted hover:text-primary-text hover:bg-elevated transition-colors"
+                    >
+                      {city.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              {/* Level 3 — cities in the hovered region (only when regions exist) */}
+              {hoveredKey && !isFlatCascade && hoveredState && activeGroupCities.length > 0 && (
+                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                  {activeGroupCities.map(city => (
                     <Link
                       key={city.slug}
                       href={`/cities/${city.slug}`}

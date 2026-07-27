@@ -1,0 +1,211 @@
+[
+  {
+    "countrySlug": "thailand",
+    "countryLabel": "Thailand",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Bangkok",
+            "slug": "bangkok"
+          },
+          {
+            "name": "Phuket",
+            "slug": "phuket"
+          },
+          {
+            "name": "Chiang Mai",
+            "slug": "chiang-mai"
+          },
+          {
+            "name": "Koh Samui",
+            "slug": "koh-samui"
+          },
+          {
+            "name": "Koh Phi Phi",
+            "slug": "koh-phi-phi"
+          },
+          {
+            "name": "Ayutthaya",
+            "slug": "ayutthaya"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "indonesia",
+    "countryLabel": "Indonesia",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Bali",
+            "slug": "bali"
+          },
+          {
+            "name": "Yogyakarta",
+            "slug": "yogyakarta"
+          },
+          {
+            "name": "Lombok",
+            "slug": "lombok"
+          },
+          {
+            "name": "Labuan Bajo",
+            "slug": "labuan-bajo"
+          },
+          {
+            "name": "Bandung",
+            "slug": "bandung"
+          },
+          {
+            "name": "Gili Islands",
+            "slug": "gili-islands"
+          },
+          {
+            "name": "Raja Ampat",
+            "slug": "raja-ampat"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "uae",
+    "countryLabel": "UAE",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Dubai",
+            "slug": "dubai"
+          },
+          {
+            "name": "Abu Dhabi",
+            "slug": "abu-dhabi"
+          },
+          {
+            "name": "Sharjah",
+            "slug": "sharjah"
+          },
+          {
+            "name": "Fujairah",
+            "slug": "fujairah"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "vietnam",
+    "countryLabel": "Vietnam",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Hanoi",
+            "slug": "hanoi"
+          },
+          {
+            "name": "Hoi An",
+            "slug": "hoi-an"
+          },
+          {
+            "name": "Ho Chi Minh City",
+            "slug": "ho-chi-minh-city"
+          },
+          {
+            "name": "Da Nang",
+            "slug": "da-nang"
+          },
+          {
+            "name": "Nha Trang",
+            "slug": "nha-trang"
+          },
+          {
+            "name": "Phu Quoc",
+            "slug": "phu-quoc"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "sri-lanka",
+    "countryLabel": "Sri Lanka",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Colombo",
+            "slug": "colombo"
+          },
+          {
+            "name": "Ella",
+            "slug": "ella"
+          },
+          {
+            "name": "Kandy",
+            "slug": "kandy"
+          },
+          {
+            "name": "Galle",
+            "slug": "galle"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "nepal",
+    "countryLabel": "Nepal",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Kathmandu",
+            "slug": "kathmandu"
+          },
+          {
+            "name": "Pokhara",
+            "slug": "pokhara"
+          },
+          {
+            "name": "Chitwan",
+            "slug": "chitwan"
+          },
+          {
+            "name": "Lumbini",
+            "slug": "lumbini"
+          },
+          {
+            "name": "Nagarkot",
+            "slug": "nagarkot"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countrySlug": "singapore",
+    "countryLabel": "Singapore",
+    "groups": [
+      {
+        "name": "",
+        "cities": [
+          {
+            "name": "Singapore",
+            "slug": "singapore"
+          }
+        ]
+      }
+    ]
+  }
+]

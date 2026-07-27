@@ -1,6 +1,6 @@
 import { City } from './types';
 
-type AddedCityData = {
+export type AddedCityData = {
   slug: string;
   name: string;
   country: string;
@@ -20,7 +20,7 @@ type AddedCityData = {
   highlights: string[];
 };
 
-const makeAddedCityGuide = (city: AddedCityData): City => {
+export const makeAddedCityGuide = (city: AddedCityData): City => {
   const icons = ['*', '*', '*', '*', '*', '*', '*', '*'];
   const durations = ['1-2 hrs', '2-3 hrs', 'Half day', 'Half day', '2-4 hrs', 'Full day', '2-3 hrs', 'Half day'];
   const categories = ['Iconic', 'Cultural', 'Nature', 'Food', 'Local', 'Day trip', 'Hidden gem', 'Neighbourhood'];

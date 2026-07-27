@@ -15,6 +15,7 @@ export type ActivitySource =
   | 'scorecard'
   | 'seo-watchdog'
   | 'news'
+  | 'content-pipeline'
   | 'deploy'
   | 'other';
 
