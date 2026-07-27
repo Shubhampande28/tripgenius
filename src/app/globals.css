@@ -407,6 +407,21 @@ html.light .glass-card {
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
+/* Functional dropdown/listbox menus float over arbitrary page content (hero
+   text, images) and must stay legible regardless of backdrop-filter support
+   or compositing quirks (several browser/GPU combos render it inconsistently
+   across sibling elements, leaving faint ghosting even at high opacity) — so
+   menus go fully solid with no blur, unlike the decorative .glass-card
+   default which is tuned for cards sitting over a single flat background. */
+.glass-card--menu {
+  background: var(--color-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light .glass-card--menu {
+  background: #ffffff;
+}
+
 .glass-panel {
   background: rgba(13, 17, 23, 0.34);
   backdrop-filter: blur(10px) saturate(130%);

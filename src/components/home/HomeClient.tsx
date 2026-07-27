@@ -216,7 +216,7 @@ export default function HomeClient() {
                     transition={{ duration:0.15 }}
                     id="search-suggestions-listbox"
                     role="listbox"
-                    className="absolute top-full left-0 right-0 mt-2 glass-card rounded-2xl overflow-hidden z-50 text-left"
+                    className="absolute top-full left-0 right-0 mt-2 glass-card glass-card--menu rounded-2xl overflow-hidden z-50 text-left"
                   >
                     {suggestions.map((s, i) => (
                       <div

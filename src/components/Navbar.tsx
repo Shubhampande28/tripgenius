@@ -137,7 +137,7 @@ export default function Navbar() {
               className="absolute top-full left-0 mt-1 flex items-start z-50"
             >
               {/* Level 1 — top categories */}
-              <div className="w-56 glass-card rounded-xl overflow-hidden">
+              <div className="w-56 glass-card glass-card--menu rounded-xl overflow-hidden">
                 {DEST_MENU.map(item => (
                   <div key={item.label} onMouseEnter={() => setHoveredKey(item.key ?? null)}>
                     <Link
@@ -156,7 +156,7 @@ export default function Navbar() {
 
               {/* Level 2 — regions (or, for countries with no region data, the flat city list) */}
               {hoveredKey && cascadeGroups && !isFlatCascade && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
                   {cascadeGroups.map(g => (
                     <div
                       key={g.name}
@@ -173,7 +173,7 @@ export default function Navbar() {
               )}
 
               {hoveredKey && isFlatCascade && flatCities.length > 0 && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
                   {flatCities.map(city => (
                     <Link
                       key={city.slug}
@@ -189,7 +189,7 @@ export default function Navbar() {
 
               {/* Level 3 — cities in the hovered region (only when regions exist) */}
               {hoveredKey && !isFlatCascade && hoveredState && activeGroupCities.length > 0 && (
-                <div className="w-56 max-h-96 overflow-y-auto glass-card rounded-xl overflow-hidden ml-1">
+                <div className="w-56 max-h-96 overflow-y-auto glass-card glass-card--menu rounded-xl overflow-hidden ml-1">
                   {activeGroupCities.map(city => (
                     <Link
                       key={city.slug}
