@@ -11,31 +11,31 @@ import { makeAddedCityGuide, AddedCityData } from './worldCities';
 const moreWorldCitiesData: AddedCityData[] = [
   // ===================== IRELAND (new) =====================
   {
-    slug: 'dublin', name: 'Dublin', country: 'Ireland', flag: '🇮🇪', tagline: 'Literary Capital', gradient: 'from-emerald-700 to-slate-500', accentColor: '#047857', photo: 'photo-1516905041604-7f3f4b1ef50c', bestTime: 'May - Sep', budget: 'EUR 90-220/day', language: 'English, Irish', currency: 'EUR', vibes: ['Pubs', 'Literature', 'History'],
+    slug: 'dublin', name: 'Dublin', country: 'Ireland', flag: '🇮🇪', tagline: 'Literary Capital', gradient: 'from-emerald-700 to-slate-500', accentColor: '#047857', photo: 'photo-1651127403819-6c15d8b5f589', bestTime: 'May - Sep', budget: 'EUR 90-220/day', language: 'English, Irish', currency: 'EUR', vibes: ['Pubs', 'Literature', 'History'],
     heroDescription: 'Dublin is a compact capital built around the River Liffey, where Georgian squares, literary pubs, and Trinity College\'s medieval library sit within a twenty-minute walk of each other.',
     description: 'It rewards slow walking and pub conversation more than a checklist — the Guinness Storehouse and Book of Kells are the anchors, but the city\'s real character is in Temple Bar\'s side streets and traditional music sessions.',
     highlights: ['Trinity College & Book of Kells', 'Temple Bar', 'Guinness Storehouse', 'St Patrick\'s Cathedral', 'Grafton Street', 'Kilmainham Gaol', 'Phoenix Park', 'Ha\'penny Bridge', 'Dublin Castle', 'Christ Church Cathedral'],
   },
   {
-    slug: 'galway', name: 'Galway', country: 'Ireland', flag: '🇮🇪', tagline: 'Gateway to the West', gradient: 'from-cyan-700 to-emerald-500', accentColor: '#0E7490', photo: 'photo-1544735716-392fe2489ffa', bestTime: 'May - Sep', budget: 'EUR 85-200/day', language: 'English, Irish', currency: 'EUR', vibes: ['Music', 'Coastal', 'Bohemian'],
+    slug: 'galway', name: 'Galway', country: 'Ireland', flag: '🇮🇪', tagline: 'Gateway to the West', gradient: 'from-cyan-700 to-emerald-500', accentColor: '#0E7490', photo: 'photo-1692804238058-53c0fbcefe09', bestTime: 'May - Sep', budget: 'EUR 85-200/day', language: 'English, Irish', currency: 'EUR', vibes: ['Music', 'Coastal', 'Bohemian'],
     heroDescription: 'Galway is Ireland\'s festival city, a colourful harbour town on the edge of Connemara where traditional music spills out of pub doors most nights of the week.',
     description: 'Its real value is as a base — the Cliffs of Moher and the Aran Islands are both an easy day trip away, and the Latin Quarter itself is small enough to enjoy in an afternoon.',
     highlights: ['Latin Quarter', 'Galway Cathedral', 'Salthill Promenade', 'Spanish Arch', 'Cliffs of Moher day trip', 'Aran Islands ferry', 'Eyre Square', 'Galway City Museum', 'Connemara day trip', 'Traditional music pub crawl'],
   },
   {
-    slug: 'killarney', name: 'Killarney', country: 'Ireland', flag: '🇮🇪', tagline: 'Lakes & Mountains', gradient: 'from-emerald-800 to-green-500', accentColor: '#065F46', photo: 'photo-1502989642968-94fbdc9b4bce', bestTime: 'May - Sep', budget: 'EUR 85-210/day', language: 'English, Irish', currency: 'EUR', vibes: ['Nature', 'Scenic drives', 'Lakes'],
+    slug: 'killarney', name: 'Killarney', country: 'Ireland', flag: '🇮🇪', tagline: 'Lakes & Mountains', gradient: 'from-emerald-800 to-green-500', accentColor: '#065F46', photo: 'photo-1654466575131-30849f381296', bestTime: 'May - Sep', budget: 'EUR 85-210/day', language: 'English, Irish', currency: 'EUR', vibes: ['Nature', 'Scenic drives', 'Lakes'],
     heroDescription: 'Killarney is the base camp for the Ring of Kerry and Killarney National Park, a small town wrapped around lakes, waterfalls, and Ireland\'s only wild native red deer herd.',
     description: 'Hire a jaunting car (horse and trap) for the national park, then give at least a full day to the Ring of Kerry loop drive.',
     highlights: ['Killarney National Park', 'Ring of Kerry', 'Muckross House & Gardens', 'Gap of Dunloe', 'Torc Waterfall', 'Ross Castle', 'Lakes of Killarney boat tour', 'Ladies View', 'Dingle Peninsula day trip', 'Jaunting car ride'],
   },
   {
-    slug: 'cork', name: 'Cork', country: 'Ireland', flag: '🇮🇪', tagline: 'Ireland\'s Food Capital', gradient: 'from-red-700 to-amber-500', accentColor: '#B91C1C', photo: 'photo-1541943181603-d8fe267a5dcf', bestTime: 'May - Sep', budget: 'EUR 85-200/day', language: 'English, Irish', currency: 'EUR', vibes: ['Food', 'Heritage', 'Riverside'],
+    slug: 'cork', name: 'Cork', country: 'Ireland', flag: '🇮🇪', tagline: 'Ireland\'s Food Capital', gradient: 'from-red-700 to-amber-500', accentColor: '#B91C1C', photo: 'photo-1711270991025-4b4b362e1525', bestTime: 'May - Sep', budget: 'EUR 85-200/day', language: 'English, Irish', currency: 'EUR', vibes: ['Food', 'Heritage', 'Riverside'],
     heroDescription: 'Cork is Ireland\'s food capital, built around the covered stalls of the English Market and a hilly, riverside old town that locals will tell you is better than Dublin.',
     description: 'Blarney Castle is the famous day trip, but Cork itself — its market, its gaol, and Cobh\'s Titanic history nearby — is worth two unhurried days.',
     highlights: ['English Market', 'Blarney Castle & Stone', 'Cork City Gaol', 'St Fin Barre\'s Cathedral', 'Shandon Bells', 'Cobh Titanic departure port', 'Fitzgerald Park', 'Elizabeth Fort', 'Kinsale day trip', 'Crawford Art Gallery'],
   },
   {
-    slug: 'kilkenny', name: 'Kilkenny', country: 'Ireland', flag: '🇮🇪', tagline: 'Medieval Ireland', gradient: 'from-slate-700 to-amber-500', accentColor: '#475569', photo: 'photo-1558618666-fcd25c85cd64', bestTime: 'May - Sep', budget: 'EUR 80-190/day', language: 'English, Irish', currency: 'EUR', vibes: ['Medieval', 'Small town', 'Crafts'],
+    slug: 'kilkenny', name: 'Kilkenny', country: 'Ireland', flag: '🇮🇪', tagline: 'Medieval Ireland', gradient: 'from-slate-700 to-amber-500', accentColor: '#475569', photo: 'photo-1654466521540-43659fedeebf', bestTime: 'May - Sep', budget: 'EUR 80-190/day', language: 'English, Irish', currency: 'EUR', vibes: ['Medieval', 'Small town', 'Crafts'],
     heroDescription: 'Kilkenny packs a Norman castle, a medieval cathedral, and a whole "Medieval Mile" of laneways into one of Ireland\'s smallest and best-preserved heritage towns.',
     description: 'It is an easy day trip from Dublin or a relaxed overnight stop, with the castle grounds and riverside walk filling a satisfying half-day.',
     highlights: ['Kilkenny Castle', 'Medieval Mile', 'St Canice\'s Cathedral', 'Kilkenny Design Centre', 'Smithwick\'s Experience', 'Rothe House', 'Kyteler\'s Inn', 'Dunmore Cave', 'Woodstock Gardens', 'Kilkenny Arts Festival venues'],
@@ -43,31 +43,31 @@ const moreWorldCitiesData: AddedCityData[] = [
 
   // ===================== AUSTRIA (new) =====================
   {
-    slug: 'vienna', name: 'Vienna', country: 'Austria', flag: '🇦🇹', tagline: 'Imperial Capital', gradient: 'from-amber-700 to-slate-500', accentColor: '#B45309', photo: 'photo-1516747773236-7adb06e3c5bd', bestTime: 'Apr - Jun, Sep - Oct', budget: 'EUR 100-260/day', language: 'German', currency: 'EUR', vibes: ['Imperial', 'Music', 'Coffeehouses'],
+    slug: 'vienna', name: 'Vienna', country: 'Austria', flag: '🇦🇹', tagline: 'Imperial Capital', gradient: 'from-amber-700 to-slate-500', accentColor: '#B45309', photo: 'photo-1561111249-d6ec884a8d49', bestTime: 'Apr - Jun, Sep - Oct', budget: 'EUR 100-260/day', language: 'German', currency: 'EUR', vibes: ['Imperial', 'Music', 'Coffeehouses'],
     heroDescription: 'Vienna is the Habsburg empire\'s old capital, a city of palaces, opera houses, and coffeehouse culture that still runs on the rhythm of classical music.',
     description: 'Give the Schönbrunn and Hofburg palaces a full day between them, then slow down for a Naschmarkt lunch and an evening at the State Opera.',
     highlights: ['Schönbrunn Palace', 'St Stephen\'s Cathedral', 'Hofburg Palace', 'Belvedere Palace', 'Vienna State Opera', 'Naschmarkt', 'Prater amusement park', 'Ringstrasse tram loop', 'Kunsthistorisches Museum', 'Café Central'],
   },
   {
-    slug: 'salzburg', name: 'Salzburg', country: 'Austria', flag: '🇦🇹', tagline: 'Sound of Music City', gradient: 'from-emerald-700 to-amber-500', accentColor: '#047857', photo: 'photo-1533105079780-92b9be482077', bestTime: 'May - Sep', budget: 'EUR 95-240/day', language: 'German', currency: 'EUR', vibes: ['Music', 'Baroque', 'Alpine'],
+    slug: 'salzburg', name: 'Salzburg', country: 'Austria', flag: '🇦🇹', tagline: 'Sound of Music City', gradient: 'from-emerald-700 to-amber-500', accentColor: '#047857', photo: 'photo-1760456309029-dedb5c3b19df', bestTime: 'May - Sep', budget: 'EUR 95-240/day', language: 'German', currency: 'EUR', vibes: ['Music', 'Baroque', 'Alpine'],
     heroDescription: 'Salzburg is Mozart\'s birthplace and the real-life set of The Sound of Music, a baroque old town squeezed between a fortress hill and the Salzach River.',
     description: 'The fortress cable car and a Sound of Music-themed walk cover most first-timers\' priorities, with day trips into the Salzkammergut lakes an easy add-on.',
     highlights: ['Hohensalzburg Fortress', 'Mirabell Palace & Gardens', 'Getreidegasse', 'Salzburg Cathedral', 'Sound of Music tour', 'Hellbrunn Palace', 'St Peter\'s Abbey', 'Salzach River walk', 'Mönchsberg viewpoint', 'Hangar-7'],
   },
   {
-    slug: 'innsbruck', name: 'Innsbruck', country: 'Austria', flag: '🇦🇹', tagline: 'Alps in the City', gradient: 'from-sky-700 to-slate-500', accentColor: '#0369A1', photo: 'photo-1502989642968-94fbdc9b4bce', bestTime: 'Jun - Sep, Dec - Mar', budget: 'EUR 100-250/day', language: 'German', currency: 'EUR', vibes: ['Mountains', 'Skiing', 'Old town'],
+    slug: 'innsbruck', name: 'Innsbruck', country: 'Austria', flag: '🇦🇹', tagline: 'Alps in the City', gradient: 'from-sky-700 to-slate-500', accentColor: '#0369A1', photo: 'photo-1661553914969-1c781d515fae', bestTime: 'Jun - Sep, Dec - Mar', budget: 'EUR 100-250/day', language: 'German', currency: 'EUR', vibes: ['Mountains', 'Skiing', 'Old town'],
     heroDescription: 'Innsbruck is the rare capital where a cable car from the old town drops you straight onto an alpine ridge, making it a two-time Winter Olympics host with a genuinely walkable medieval centre.',
     description: 'Ride the Nordkette cable car for mountain views, then spend the afternoon under the Golden Roof in the compact historic core.',
     highlights: ['Golden Roof', 'Nordkette cable car', 'Swarovski Crystal Worlds', 'Imperial Palace (Hofburg)', 'Ambras Castle', 'Maria-Theresien-Strasse', 'Bergisel Ski Jump', 'Tyrolean Folk Art Museum', 'Alpenzoo', 'Old Town walking tour'],
   },
   {
-    slug: 'hallstatt', name: 'Hallstatt', country: 'Austria', flag: '🇦🇹', tagline: 'Lakeside Postcard', gradient: 'from-cyan-700 to-emerald-500', accentColor: '#0E7490', photo: 'photo-1560969184-10fe8719e047', bestTime: 'May - Sep', budget: 'EUR 100-260/day', language: 'German', currency: 'EUR', vibes: ['Lakes', 'Scenic', 'Alpine village'],
+    slug: 'hallstatt', name: 'Hallstatt', country: 'Austria', flag: '🇦🇹', tagline: 'Lakeside Postcard', gradient: 'from-cyan-700 to-emerald-500', accentColor: '#0E7490', photo: 'photo-1665945203723-d823de195bf4', bestTime: 'May - Sep', budget: 'EUR 100-260/day', language: 'German', currency: 'EUR', vibes: ['Lakes', 'Scenic', 'Alpine village'],
     heroDescription: 'Hallstatt is a tiny lakeside village pressed between mountain and water, famous for one of the oldest salt mines on earth and views that look staged even in person.',
     description: 'Arrive early or stay overnight to beat the day-tripper crowds at the Skywalk and the lakefront photo point.',
     highlights: ['Hallstatt Skywalk', 'Salt mine tour', 'Hallstätter See lakefront', 'Catholic parish church & bone house', 'Market square', 'Echern Valley', 'Five Fingers viewpoint', 'Ice cave day trip', 'Funicular railway', 'Lakeside photo point'],
   },
   {
-    slug: 'graz', name: 'Graz', country: 'Austria', flag: '🇦🇹', tagline: 'Student City', gradient: 'from-rose-700 to-slate-500', accentColor: '#BE123C', photo: 'photo-1558618666-fcd25c85cd64', bestTime: 'Apr - Oct', budget: 'EUR 85-210/day', language: 'German', currency: 'EUR', vibes: ['Student city', 'Architecture', 'Relaxed'],
+    slug: 'graz', name: 'Graz', country: 'Austria', flag: '🇦🇹', tagline: 'Student City', gradient: 'from-rose-700 to-slate-500', accentColor: '#BE123C', photo: 'photo-1537795754868-0998dbf5d12d', bestTime: 'Apr - Oct', budget: 'EUR 85-210/day', language: 'German', currency: 'EUR', vibes: ['Student city', 'Architecture', 'Relaxed'],
     heroDescription: 'Graz is Austria\'s second city and a UNESCO World Heritage old town, mixing a medieval clock tower with the futuristic bulge of the Kunsthaus art museum.',
     description: 'It moves at a slower, more affordable pace than Vienna, with a young university-town energy along the Mur River.',
     highlights: ['Schlossberg clock tower', 'Graz Old Town', 'Kunsthaus Graz', 'Eggenberg Palace', 'Graz Armoury', 'Murinsel bridge island', 'Graz farmers market', 'Herz-Jesu-Kirche', 'Graz Opera House', 'Piber stud farm day trip'],
@@ -75,25 +75,25 @@ const moreWorldCitiesData: AddedCityData[] = [
 
   // ===================== POLAND (new) =====================
   {
-    slug: 'warsaw', name: 'Warsaw', country: 'Poland', flag: '🇵🇱', tagline: 'Rebuilt Capital', gradient: 'from-red-700 to-slate-500', accentColor: '#B91C1C', photo: 'photo-1516905041604-7f3f4b1ef50c', bestTime: 'May - Sep', budget: 'PLN 350-900/day', language: 'Polish', currency: 'PLN', vibes: ['History', 'Resilience', 'Urban'],
+    slug: 'warsaw', name: 'Warsaw', country: 'Poland', flag: '🇵🇱', tagline: 'Rebuilt Capital', gradient: 'from-red-700 to-slate-500', accentColor: '#B91C1C', photo: 'photo-1490643504675-d15d8b3149cc', bestTime: 'May - Sep', budget: 'PLN 350-900/day', language: 'Polish', currency: 'PLN', vibes: ['History', 'Resilience', 'Urban'],
     heroDescription: 'Warsaw was rebuilt brick by brick after near-total wartime destruction, and its Old Town — a meticulous reconstruction — is now a UNESCO World Heritage Site in its own right.',
     description: 'The Warsaw Uprising Museum is essential context before wandering the Old Town Market Square, and Łazienki Park offers a green, peaceful counterpoint.',
     highlights: ['Old Town Market Square', 'Royal Castle', 'Warsaw Uprising Museum', 'Łazienki Park', 'Palace of Culture & Science', 'Wilanów Palace', 'Chopin Museum', 'Praga district', 'POLIN Museum', 'Vistula Boulevards'],
   },
   {
-    slug: 'krakow', name: 'Krakow', country: 'Poland', flag: '🇵🇱', tagline: 'Poland\'s Cultural Soul', gradient: 'from-amber-700 to-slate-600', accentColor: '#B45309', photo: 'photo-1541943181603-d8fe267a5dcf', bestTime: 'May - Sep', budget: 'PLN 300-800/day', language: 'Polish', currency: 'PLN', vibes: ['Medieval', 'History', 'Nightlife'],
+    slug: 'krakow', name: 'Krakow', country: 'Poland', flag: '🇵🇱', tagline: 'Poland\'s Cultural Soul', gradient: 'from-amber-700 to-slate-600', accentColor: '#B45309', photo: 'photo-1526839948326-b8397e4c5a20', bestTime: 'May - Sep', budget: 'PLN 300-800/day', language: 'Polish', currency: 'PLN', vibes: ['Medieval', 'History', 'Nightlife'],
     heroDescription: 'Krakow escaped WWII largely intact, leaving Poland\'s grandest medieval square, a hilltop royal castle, and a Jewish quarter with a difficult, essential history.',
     description: 'Most visitors combine the Old Town with a sobering day trip to Auschwitz-Birkenau and the underground chambers of the Wieliczka Salt Mine.',
     highlights: ['Wawel Castle', 'Main Market Square', 'St Mary\'s Basilica', 'Kazimierz Jewish Quarter', 'Auschwitz-Birkenau day trip', 'Wieliczka Salt Mine', 'Cloth Hall', 'Schindler\'s Factory', 'Rynek Underground Museum', 'Wawel Dragon\'s Den'],
   },
   {
-    slug: 'wroclaw', name: 'Wroclaw', country: 'Poland', flag: '🇵🇱', tagline: 'City of Bridges', gradient: 'from-emerald-700 to-slate-500', accentColor: '#047857', photo: 'photo-1558618666-fcd25c85cd64', bestTime: 'May - Sep', budget: 'PLN 280-700/day', language: 'Polish', currency: 'PLN', vibes: ['Riverside', 'Playful', 'Architecture'],
+    slug: 'wroclaw', name: 'Wroclaw', country: 'Poland', flag: '🇵🇱', tagline: 'City of Bridges', gradient: 'from-emerald-700 to-slate-500', accentColor: '#047857', photo: 'photo-1658265463672-19c20a8042c3', bestTime: 'May - Sep', budget: 'PLN 280-700/day', language: 'Polish', currency: 'PLN', vibes: ['Riverside', 'Playful', 'Architecture'],
     heroDescription: 'Wroclaw sits on a dozen islands linked by more bridges than Venice, with a colourful market square and a scavenger-hunt gimmick of hundreds of tiny bronze dwarf statues hidden around town.',
     description: 'Climb the university tower for skyline views, then wander Ostrów Tumski, the cathedral island where the city began.',
     highlights: ['Wroclaw Market Square', 'Centennial Hall', 'Ostrów Tumski (Cathedral Island)', 'Dwarf statue hunt', 'Panorama Racławicka', 'Wroclaw University tower', 'Grunwaldzki Bridge', 'Botanical Garden', 'Wroclaw Zoo', 'Sand Island'],
   },
   {
-    slug: 'gdansk', name: 'Gdansk', country: 'Poland', flag: '🇵🇱', tagline: 'Baltic Port City', gradient: 'from-cyan-700 to-amber-500', accentColor: '#0E7490', photo: 'photo-1547471080-7cc2caa01a7e', bestTime: 'May - Sep', budget: 'PLN 300-750/day', language: 'Polish', currency: 'PLN', vibes: ['Maritime', 'History', 'Amber'],
+    slug: 'gdansk', name: 'Gdansk', country: 'Poland', flag: '🇵🇱', tagline: 'Baltic Port City', gradient: 'from-cyan-700 to-amber-500', accentColor: '#0E7490', photo: 'photo-1691915172368-48b858498daf', bestTime: 'May - Sep', budget: 'PLN 300-750/day', language: 'Polish', currency: 'PLN', vibes: ['Maritime', 'History', 'Amber'],
     heroDescription: 'Gdansk is a Hanseatic port city on the Baltic where the Solidarity movement began, its rebuilt merchant houses lining the Long Market above a working shipyard with real history.',
     description: 'Pair the amber-trading old town with the Solidarity museum at the shipyard gates, and take the extra half-day for Malbork, the largest brick castle in the world.',
     highlights: ['Long Market (Długi Targ)', 'St Mary\'s Church', 'Gdansk Shipyard & Solidarity Museum', 'Neptune\'s Fountain', 'Westerplatte', 'Malbork Castle day trip', 'Motława River promenade', 'Amber Museum', 'Gdansk Crane', 'Sopot pier day trip'],
@@ -101,19 +101,19 @@ const moreWorldCitiesData: AddedCityData[] = [
 
   // ===================== ICELAND (new) =====================
   {
-    slug: 'reykjavik', name: 'Reykjavik', country: 'Iceland', flag: '🇮🇸', tagline: 'Northern Lights Capital', gradient: 'from-sky-700 to-slate-600', accentColor: '#0369A1', photo: 'photo-1502602898657-3e91760cbb34', bestTime: 'Jun - Aug (midnight sun), Sep - Mar (Northern Lights)', budget: 'USD 130-320/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Northern Lights', 'Geothermal', 'Quirky'],
+    slug: 'reykjavik', name: 'Reykjavik', country: 'Iceland', flag: '🇮🇸', tagline: 'Northern Lights Capital', gradient: 'from-sky-700 to-slate-600', accentColor: '#0369A1', photo: 'photo-1661605937555-7550bcd061ca', bestTime: 'Jun - Aug (midnight sun), Sep - Mar (Northern Lights)', budget: 'USD 130-320/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Northern Lights', 'Geothermal', 'Quirky'],
     heroDescription: 'Reykjavik is the world\'s northernmost capital and the launchpad for the Golden Circle and the Blue Lagoon, a small, colourful harbour city that punches well above its size on design and food.',
     description: 'Base here for two or three nights, using it as a hub for day trips into geysers, waterfalls, and glacier country rather than a long standalone stay.',
     highlights: ['Hallgrímskirkja', 'Golden Circle day trip', 'Blue Lagoon', 'Harpa Concert Hall', 'Sun Voyager sculpture', 'Perlan Museum', 'Laugavegur shopping street', 'Northern Lights hunting', 'Reykjavik Old Harbour whale watching', 'Reykjadalur hot river hike'],
   },
   {
-    slug: 'vik', name: 'Vik', country: 'Iceland', flag: '🇮🇸', tagline: 'Black Sand South Coast', gradient: 'from-slate-800 to-cyan-600', accentColor: '#1E293B', photo: 'photo-1502989642968-94fbdc9b4bce', bestTime: 'Jun - Sep', budget: 'USD 120-300/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Waterfalls', 'Black sand', 'Glaciers'],
+    slug: 'vik', name: 'Vik', country: 'Iceland', flag: '🇮🇸', tagline: 'Black Sand South Coast', gradient: 'from-slate-800 to-cyan-600', accentColor: '#1E293B', photo: 'photo-1741660420528-fb38970b3f7f', bestTime: 'Jun - Sep', budget: 'USD 120-300/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Waterfalls', 'Black sand', 'Glaciers'],
     heroDescription: 'Vik is a tiny village on Iceland\'s dramatic south coast, wedged between the black-sand beach at Reynisfjara and a run of the country\'s most photographed waterfalls.',
     description: 'It works best as an overnight stop on a south coast road trip, with Skógafoss and Seljalandsfoss both within a short drive.',
     highlights: ['Reynisfjara black sand beach', 'Reynisdrangar sea stacks', 'Skógafoss waterfall', 'Seljalandsfoss waterfall', 'Dyrhólaey promontory', 'Vik church viewpoint', 'Mýrdalsjökull glacier hike', 'Katla ice cave', 'Sólheimajökull glacier walk', 'South Coast waterfall route'],
   },
   {
-    slug: 'akureyri', name: 'Akureyri', country: 'Iceland', flag: '🇮🇸', tagline: 'Capital of the North', gradient: 'from-emerald-700 to-sky-600', accentColor: '#047857', photo: 'photo-1533105079780-92b9be482077', bestTime: 'Jun - Aug', budget: 'USD 120-290/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Fjords', 'Whales', 'Small city'],
+    slug: 'akureyri', name: 'Akureyri', country: 'Iceland', flag: '🇮🇸', tagline: 'Capital of the North', gradient: 'from-emerald-700 to-sky-600', accentColor: '#047857', photo: 'photo-1533491234113-15f548aeb265', bestTime: 'Jun - Aug', budget: 'USD 120-290/day', language: 'Icelandic, English', currency: 'ISK', vibes: ['Fjords', 'Whales', 'Small city'],
     heroDescription: 'Akureyri is Iceland\'s second city, tucked at the head of a long fjord in the north and used as the base for the Lake Mývatn geothermal area and Arctic whale watching.',
     description: 'It is a good counterpoint to the south coast crowds, with easier access to Goðafoss and Húsavík\'s whale-watching boats.',
     highlights: ['Akureyrarkirkja church', 'Akureyri Botanical Garden', 'Lake Mývatn day trip', 'Goðafoss waterfall', 'Whale watching in Eyjafjörður', 'Hlíðarfjall ski area', 'Christmas House', 'Akureyri harbour', 'Dettifoss day trip', 'Húsavík whale watching add-on'],
