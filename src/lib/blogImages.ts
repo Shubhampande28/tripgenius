@@ -13,5 +13,6 @@ export const COVER_W = {
 } as const;
 
 export function getPostCoverUrl(coverPhoto: string, width: number, quality = 80): string {
+  if (coverPhoto.startsWith('/') || coverPhoto.startsWith('https://')) return coverPhoto;
   return `${UNSPLASH_BASE}/${coverPhoto}?auto=format&fit=crop&w=${width}&q=${quality}`;
 }

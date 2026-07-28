@@ -504,6 +504,16 @@ export const verifiedCityImages: Record<string, { card: string; hero: string }> 
   rotterdam: { card: '/city-images/rotterdam.jpg', hero: '/city-images/rotterdam.jpg' },
   utrecht: { card: '/city-images/utrecht.jpg', hero: '/city-images/utrecht.jpg' },
   giethoorn: { card: '/city-images/giethoorn.jpg', hero: '/city-images/giethoorn.jpg' },
+  varna: { card: '/city-images/varna.jpg', hero: '/city-images/varna.jpg' },
+  ljubljana: { card: '/city-images/ljubljana.jpg', hero: '/city-images/ljubljana.jpg' },
+  'lake-bled': { card: '/city-images/lake-bled.jpg', hero: '/city-images/lake-bled.jpg' },
+  piran: { card: '/city-images/piran.jpg', hero: '/city-images/piran.jpg' },
+  belgrade: { card: '/city-images/belgrade.jpg', hero: '/city-images/belgrade.jpg' },
+  'novi-sad': { card: '/city-images/novi-sad.jpg', hero: '/city-images/novi-sad.jpg' },
+  kotor: { card: '/city-images/kotor.jpg', hero: '/city-images/kotor.jpg' },
+  budva: { card: '/city-images/budva.jpg', hero: '/city-images/budva.jpg' },
+  bratislava: { card: '/city-images/bratislava.jpg', hero: '/city-images/bratislava.jpg' },
+  tallinn: { card: '/city-images/tallinn.jpg', hero: '/city-images/tallinn.jpg' },
 };
 
 Object.assign(verifiedCityImages, rankedIndianTouristImageFallbacks);

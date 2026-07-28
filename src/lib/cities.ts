@@ -2504,6 +2504,7 @@ import { indianCities } from './indianCities';
 import { indianCitiesExtended } from './indianCitiesExtended';
 import { newIndianCities } from './newIndianCities';
 import { rankedIndianTouristCities } from './rankedIndianTouristCities';
+import { tourismExpansionCities } from './tourismExpansionCities';
 import { enrichCity } from './enrichCity';
 
 const legacyIndianStateBySlug: Record<string, string> = {
@@ -2517,7 +2518,7 @@ const legacyIndianStateBySlug: Record<string, string> = {
 };
 
 export const allCities = [
-  ...cities, ...worldCities, ...moreWorldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities, ...rankedIndianTouristCities,
+  ...cities, ...worldCities, ...moreWorldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities, ...rankedIndianTouristCities, ...tourismExpansionCities,
 ].map((city) => (
   city.country === 'India' && !city.state
     ? { ...city, state: legacyIndianStateBySlug[city.slug] }
@@ -2529,7 +2530,7 @@ export const allCities = [
 // "[city] in [month]" pages to this set so every page is substantial and we
 // never publish templated, thin content at scale.
 export const authoredMonthCitySlugs: string[] = [
-  ...cities, ...worldCities, ...moreWorldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities, ...rankedIndianTouristCities,
+  ...cities, ...worldCities, ...moreWorldCities, ...indianCities, ...indianCitiesExtended, ...newIndianCities, ...rankedIndianTouristCities, ...tourismExpansionCities,
 ].filter((c) => c.monthByMonth).map((c) => c.slug);
 
 export function hasAuthoredMonths(slug: string): boolean {

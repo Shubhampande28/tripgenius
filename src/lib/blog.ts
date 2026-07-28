@@ -1,4 +1,5 @@
 import { RETIRED_POST_SLUGS } from './postRedirects';
+import { tourismExpansionPosts } from './tourismExpansionPosts';
 
 export type BlockType =
   | { type: 'p'; text: string }
@@ -41,6 +42,7 @@ export interface BlogPost {
 }
 
 export const allPosts: BlogPost[] = [
+  ...tourismExpansionPosts,
 
   {
     slug: 'bali-vs-thailand-indian-travellers',

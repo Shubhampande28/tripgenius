@@ -1,4 +1,5 @@
 import { rankedIndianTouristSlugs } from '../lib/rankedIndianTouristCities';
+import { tourismExpansionCountries } from './tourismExpansionCountries';
 
 export interface CountryData {
   slug: string;
@@ -20,6 +21,7 @@ export interface CountryData {
 }
 
 export const countries: CountryData[] = [
+  ...tourismExpansionCountries,
   {
     slug: 'india',
     name: 'India',
