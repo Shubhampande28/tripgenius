@@ -5737,6 +5737,25 @@ export const indianCitiesExtended: City[] = [
       { name: 'Nazarbaug Palace', description: 'A lesser-visited Gaekwad palace with an interesting clock tower and faded colonial-era grandeur.', icon: '🏰', duration: '30-45 min', category: 'Historical' },
       { name: 'Mandvi Gate Street Food Trail', description: 'Sample Vadodara\'s famous street food around the historic Mandvi Gate, from sev usal to fafda-jalebi.', icon: '🍛', duration: '1 hr', category: 'Food' },
     ],
+    monthByMonth: {
+      summary: 'Vadodara is brutally hot from March to June, peaking near 40°C in May, then humid through the southwest monsoon (mid-June to mid-September). November to February is cool, dry, and by far the best stretch for touring the Gaekwad palaces and Champaner\'s hilltop fort, with Navratri and Diwali lighting up the shoulder season in October–November.',
+      bestMonths: ['November', 'December', 'January'],
+      avoidMonths: ['April', 'May'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'excellent', weather: 'Cool, dry and sunny — the year\'s best', temp: '29°C / 13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Uttarayan kite festival (Jan 14) fills the skies over the old city' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Warm days, cool nights, still dry', temp: '32°C / 15°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Pleasant weather holds before the heat builds' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Heat builds fast, dry and dusty', temp: '37°C / 20°C', crowds: 'Low', price: 'Low', highlight: 'Holi (Mar 3–4) — colour-throwing across the old city' },
+        { month: 'April', short: 'Apr', rating: 'avoid', weather: 'Severe pre-monsoon heat', temp: '39°C / 24°C', crowds: 'Low', price: 'Low', highlight: 'Best kept to early mornings and indoor palace/museum visits' },
+        { month: 'May', short: 'May', rating: 'avoid', weather: 'Hottest month, scorching afternoons', temp: '40°C / 27°C', crowds: 'Low', price: 'Low', highlight: 'Hottest month of the year — Laxmi Vilas Palace interiors offer real relief' },
+        { month: 'June', short: 'Jun', rating: 'average', weather: 'Monsoon breaks mid-month, humid', temp: '37°C / 28°C', crowds: 'Low', price: 'Low', highlight: 'First rains cool the air noticeably after mid-June' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Full monsoon, frequent heavy showers', temp: '33°C / 26°C', crowds: 'Low', price: 'Low', highlight: 'Sayaji Baug turns lush and green despite the rain' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Monsoon continues, humid but greener', temp: '32°C / 26°C', crowds: 'Low', price: 'Low', highlight: 'Champaner-Pavagadh hillside is at its greenest' },
+        { month: 'September', short: 'Sep', rating: 'average', weather: 'Monsoon tapering off, still humid', temp: '33°C / 25°C', crowds: 'Low', price: 'Low', highlight: 'Ganesh Chaturthi (Sep 14) processions add colour to the streets' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Post-monsoon, hot days but drier air', temp: '36°C / 23°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Navratri (Oct 11–20) — nine nights of Garba, Gujarat\'s biggest festival' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Cooling fast, dry and pleasant', temp: '34°C / 18°C', crowds: 'High', price: 'High', highlight: 'Diwali (Nov 8) and Bestu Varas (Gujarati New Year) light up the city' },
+        { month: 'December', short: 'Dec', rating: 'excellent', weather: 'Coolest month, dry and sunny', temp: '31°C / 14°C', crowds: 'High', price: 'High', highlight: 'Best weather of the year for palace tours and street food walks' },
+      ],
+    },
   },
 
   {

@@ -1,4 +1,4 @@
-import { City } from './types';
+import { City, MonthByMonth } from './types';
 
 export type AddedCityData = {
   slug: string;
@@ -18,6 +18,7 @@ export type AddedCityData = {
   heroDescription: string;
   description: string;
   highlights: string[];
+  monthByMonth?: MonthByMonth;
 };
 
 export const makeAddedCityGuide = (city: AddedCityData): City => {
@@ -45,6 +46,7 @@ export const makeAddedCityGuide = (city: AddedCityData): City => {
     heroImage: `https://images.unsplash.com/${city.photo}?auto=format&fit=crop&w=1600&q=85`,
     stats: { bestTime: city.bestTime, budget: city.budget, language: city.language, currency: city.currency },
     vibes: city.vibes,
+    monthByMonth: city.monthByMonth,
     thingsToDo: city.highlights.map((name, index) => ({
       name,
       description: `${name} is one of ${city.name}'s signature experiences. Plan it with a relaxed buffer, book timed-entry or transport ahead in peak season, and pair it with a nearby meal or neighbourhood walk for the best rhythm.`,
@@ -66,18 +68,56 @@ export const makeAddedCityGuide = (city: AddedCityData): City => {
   };
 };
 
-const addedWorldCities: City[] = [
+const addedCitiesRaw: AddedCityData[] = [
   {
     slug: 'sydney', name: 'Sydney', country: 'Australia', flag: '🇦🇺', tagline: 'Harbour City', gradient: 'from-sky-600 to-blue-400', accentColor: '#0EA5E9', photo: 'photo-1506973035872-a4ec16b8e8d9', bestTime: 'Sep - Nov, Mar - May', budget: 'AUD 120-300/day', language: 'English', currency: 'AUD', vibes: ['Beaches', 'Outdoor', 'Cosmopolitan'],
     heroDescription: 'Sydney wraps a world-class harbour city around one of the most dramatic coastlines on earth, with the Opera House, Bondi Beach, and the Blue Mountains all within easy reach.',
     description: 'Australia\'s most iconic city delivers sunshine, beaches, ferries, and a laid-back energy that works beautifully for first-time visitors.',
     highlights: ['Sydney Opera House', 'Bondi to Coogee Coastal Walk', 'Sydney Harbour Bridge', 'Manly Ferry', 'The Rocks', 'Blue Mountains Day Trip', 'Taronga Zoo', 'Royal Botanic Garden', 'Darling Harbour', 'Sydney Tower Eye'],
+    monthByMonth: {
+      summary: 'Sydney is southern hemisphere, so December–February is peak summer and June–August is winter. Autumn (Mar–May) and spring (Sep–Nov) bring warm, dry, low-humidity days with fewer crowds — the best value stretch of the year. Winter is mild by global standards but grey and quiet, apart from the Vivid Sydney light festival in late May and June.',
+      bestMonths: ['March', 'April', 'May', 'October'],
+      avoidMonths: ['July'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'good', weather: 'Peak summer, hot and humid, occasional storms', temp: '20°C to 27°C', crowds: 'Peak', price: 'Peak', highlight: 'Sydney Festival and Australia Day (Jan 26) harbour events' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Still summer-hot, humidity easing late month', temp: '20°C to 27°C', crowds: 'High', price: 'High', highlight: 'Sydney WorldPride season builds toward the March Mardi Gras parade' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Warm days, less humid, settled', temp: '18°C to 26°C', crowds: 'High', price: 'High', highlight: 'Sydney Gay and Lesbian Mardi Gras parade' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild and dry, ideal beach-to-city balance', temp: '15°C to 24°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Sydney Royal Easter Show; crisp autumn light over the harbour' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Cooling, clear skies, low humidity', temp: '12°C to 21°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Vivid Sydney light festival begins late in the month (May 22)' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Cool and crisp, occasional rain', temp: '10°C to 18°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Vivid Sydney light and music festival runs through mid-June' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Coolest month, chilly mornings and evenings', temp: '9°C to 18°C', crowds: 'Low', price: 'Low', highlight: 'Quiet season with the best hotel rates of the year' },
+        { month: 'August', short: 'Aug', rating: 'average', weather: 'Still cool but days lengthening', temp: '10°C to 19°C', crowds: 'Low', price: 'Low', highlight: 'City2Surf fun run draws 80,000 runners from Hyde Park to Bondi' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Mild spring warmth returns', temp: '12°C to 22°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Jacaranda buds appear as footy finals season grips the city' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Warm, dry, jacarandas in bloom', temp: '15°C to 23°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Purple jacaranda blooms line harbourside streets' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Warm, low humidity, long days', temp: '17°C to 24°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Shoulder-season warmth before summer crowds and prices arrive' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Summer heat builds, festive city', temp: '18°C to 26°C', crowds: 'Peak', price: 'Peak', highlight: 'New Year\'s Eve fireworks over Sydney Harbour Bridge' },
+      ],
+    },
   },
   {
     slug: 'melbourne', name: 'Melbourne', country: 'Australia', flag: '🇦🇺', tagline: 'Laneways & Culture', gradient: 'from-indigo-700 to-slate-500', accentColor: '#4F46E5', photo: 'photo-1545044846-351ba102b6d5', bestTime: 'Mar - May, Sep - Nov', budget: 'AUD 110-280/day', language: 'English', currency: 'AUD', vibes: ['Coffee', 'Arts', 'Food'],
     heroDescription: 'Melbourne is Australia\'s cultural capital: laneway cafes, street art, galleries, sport, and easy road trips to vineyards and the Great Ocean Road.',
     description: 'Choose Melbourne for food, design, cricket, coffee, and neighbourhood wandering rather than postcard landmarks alone.',
     highlights: ['Hosier Lane Street Art', 'Queen Victoria Market', 'Royal Botanic Gardens', 'MCG Tour or Match', 'St Kilda Foreshore', 'Great Ocean Road', 'National Gallery of Victoria', 'Federation Square', 'Yarra Valley Wine Tasting', 'Eureka Skydeck'],
+    monthByMonth: {
+      summary: 'Melbourne is southern hemisphere, so December–February is summer and June–August is winter. The city is famous for "four seasons in one day" year-round, but autumn (Mar–Apr) and spring (Oct–Nov) are the most reliably pleasant, and both bookend the city\'s biggest events — the Australian Open in January and the Melbourne Cup in November.',
+      bestMonths: ['March', 'April', 'October', 'November'],
+      avoidMonths: ['July'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'good', weather: 'Warm summer, changeable, can spike hot', temp: '14°C to 27°C', crowds: 'High', price: 'High', highlight: 'Australian Open tennis at Melbourne Park (Jan 12 – Feb 1)' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Warm, occasional heatwaves', temp: '14°C to 27°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Australian Open finals weekend; St Kilda Festival' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Mild, settled, famously changeable', temp: '13°C to 24°C', crowds: 'High', price: 'High', highlight: 'Moomba Festival and Melbourne Food and Wine Festival' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Cooling, crisp autumn light', temp: '10°C to 21°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Melbourne International Comedy Festival wraps up' },
+        { month: 'May', short: 'May', rating: 'good', weather: 'Cool, wetter, autumn colour in the Dandenongs', temp: '8°C to 17°C', crowds: 'Low', price: 'Low', highlight: 'AFL season in full swing, easy match tickets' },
+        { month: 'June', short: 'Jun', rating: 'average', weather: 'Cold, shortest days, frequent rain', temp: '6°C to 14°C', crowds: 'Low', price: 'Low', highlight: 'Rising Festival brings light and art installations to winter nights' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Coldest month, grey and drizzly', temp: '6°C to 13°C', crowds: 'Low', price: 'Low', highlight: 'School-holiday crowds at the Melbourne Museum and Sea Life Aquarium' },
+        { month: 'August', short: 'Aug', rating: 'average', weather: 'Still cold, first signs of spring late month', temp: '6°C to 15°C', crowds: 'Low', price: 'Low', highlight: 'Best off-season hotel rates before spring racing season' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Mild spring warmth returns', temp: '7°C to 17°C', crowds: 'High', price: 'High', highlight: 'AFL Grand Final (Sept 26) fills the city with finals fever' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Warm, sunny, blooming gardens', temp: '9°C to 20°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Royal Botanic Gardens in full spring bloom' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Warm, long days, spring racing energy', temp: '11°C to 23°C', crowds: 'High', price: 'High', highlight: 'Melbourne Cup Day (Nov 3) — the race that stops a nation' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Early summer, warm with cool snaps', temp: '12°C to 25°C', crowds: 'High', price: 'High', highlight: 'Boxing Day Test build-up and festive laneway markets' },
+      ],
+    },
   },
   {
     slug: 'cairns', name: 'Cairns', country: 'Australia', flag: '🇦🇺', tagline: 'Reef Gateway', gradient: 'from-teal-600 to-cyan-400', accentColor: '#0D9488', photo: 'photo-1587300003388-59208cc962cb', bestTime: 'Jun - Oct', budget: 'AUD 100-260/day', language: 'English', currency: 'AUD', vibes: ['Reef', 'Rainforest', 'Adventure'],
@@ -96,12 +136,50 @@ const addedWorldCities: City[] = [
     heroDescription: 'Vancouver pairs glass towers with seawalls, beaches, forests, and snow-capped mountains close enough for a morning hike and an evening sushi crawl.',
     description: 'It is one of Canada\'s easiest cities to love, especially for travellers who want nature without giving up big-city comfort.',
     highlights: ['Stanley Park Seawall', 'Granville Island', 'Capilano Suspension Bridge', 'Gastown', 'Grouse Mountain', 'Whistler Day Trip', 'Museum of Anthropology', 'Vancouver Lookout', 'Queen Elizabeth Park', 'Steveston Fishing Village'],
+    monthByMonth: {
+      summary: 'Vancouver is northern hemisphere, so winter (Dec–Feb) is the wettest, greyest stretch while Whistler runs its main ski season, and summer (Jun–Aug) is dry, warm, and the busiest time to visit. May, June, and September are the sweet spot — warm enough for the seawall and beaches, without July–August crowds or prices.',
+      bestMonths: ['May', 'June', 'July', 'September'],
+      avoidMonths: ['November', 'January'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'avoid', weather: 'Cool and rainy, mountains snowy', temp: '1°C to 7°C', crowds: 'Low', price: 'Low', highlight: 'Whistler ski season in full swing, short lift lines on weekdays' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Still wet, milder than eastern Canada', temp: '2°C to 8°C', crowds: 'Low', price: 'Low', highlight: 'Family Day long weekend brings local ski crowds to Whistler' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Rainy with lengthening days', temp: '3°C to 10°C', crowds: 'Low', price: 'Low', highlight: 'Cherry blossoms begin along West 10th Avenue' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Drier, mild, blossoms peak', temp: '6°C to 13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Vancouver cherry blossom season peaks city-wide' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, drier, long evenings', temp: '9°C to 17°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Vancouver International Children\'s Festival; Whistler spring skiing winds down' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm and mostly dry', temp: '12°C to 20°C', crowds: 'High', price: 'High', highlight: 'Bard on the Beach Shakespeare festival and the Jazz Festival open' },
+        { month: 'July', short: 'Jul', rating: 'excellent', weather: 'Warm, sunny, driest stretch of the year', temp: '14°C to 22°C', crowds: 'Peak', price: 'Peak', highlight: 'Celebration of Light fireworks festival over English Bay' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Warm and dry, occasional wildfire smoke haze', temp: '14°C to 22°C', crowds: 'Peak', price: 'Peak', highlight: 'Vancouver Pride Parade (Aug 2) and Pride Week festivities' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Mild, drier, fewer crowds', temp: '11°C to 19°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Bard on the Beach closes; Fraser Valley harvest season begins' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Cooling, rain returning, fall colour', temp: '7°C to 14°C', crowds: 'Low', price: 'Low', highlight: 'Stanley Park and Queen Elizabeth Park fall foliage' },
+        { month: 'November', short: 'Nov', rating: 'avoid', weather: 'Wettest month, short grey days', temp: '4°C to 9°C', crowds: 'Low', price: 'Low', highlight: 'Whistler Blackcomb opens for the ski season' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold and rainy, snow at higher elevation', temp: '1°C to 7°C', crowds: 'Moderate', price: 'High', highlight: 'Canyon Lights at Capilano Suspension Bridge; peak Whistler season begins' },
+      ],
+    },
   },
   {
     slug: 'toronto', name: 'Toronto', country: 'Canada', flag: '🇨🇦', tagline: 'Global City', gradient: 'from-blue-700 to-slate-500', accentColor: '#2563EB', photo: 'photo-1516747773236-7adb06e3c5bd', bestTime: 'May - Oct', budget: 'CAD 120-300/day', language: 'English', currency: 'CAD', vibes: ['Food', 'Museums', 'Urban'],
     heroDescription: 'Toronto is Canada\'s most diverse city, a high-rise lakefront metropolis where neighbourhoods, food scenes, museums, and Niagara Falls all sit within easy planning distance.',
     description: 'It is especially friendly for Indian travellers, with strong South Asian communities, direct flight options, and familiar food never far away.',
     highlights: ['CN Tower', 'Royal Ontario Museum', 'Kensington Market', 'Toronto Islands', 'Distillery District', 'Niagara Falls Day Trip', 'Casa Loma', 'St Lawrence Market', 'Ripley\'s Aquarium of Canada', 'Art Gallery of Ontario'],
+    monthByMonth: {
+      summary: 'Toronto is northern hemisphere, with a cold, snowy winter (Dec–Mar) and a hot, humid summer (Jun–Aug). Late spring and fall (May–June, September–October) bring the best combination of mild weather, blooming or colourful parks, and manageable crowds, while July–August is peak season for Caribana, the CNE, and TIFF.',
+      bestMonths: ['May', 'June', 'September', 'October'],
+      avoidMonths: ['January', 'February'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'avoid', weather: 'Cold, snow common, short days', temp: '-7°C to 0°C', crowds: 'Low', price: 'Low', highlight: 'Winterlicious prix-fixe dining deals across the city' },
+        { month: 'February', short: 'Feb', rating: 'avoid', weather: 'Coldest month, frequent snow', temp: '-6°C to 1°C', crowds: 'Low', price: 'Low', highlight: 'Toronto Light Festival illuminates the Distillery District' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Still cold, snow turning to rain', temp: '-2°C to 5°C', crowds: 'Low', price: 'Low', highlight: 'March break brings families out despite the raw weather' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild, changeable, some rain', temp: '4°C to 12°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Cherry blossoms begin at High Park in late April' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warming fast, blossoms and green parks', temp: '10°C to 19°C', crowds: 'Moderate', price: 'Moderate', highlight: 'High Park cherry blossoms peak; patio season begins' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm, long daylight, occasional storms', temp: '15°C to 24°C', crowds: 'High', price: 'High', highlight: 'Toronto Jazz Festival and Pride Month events' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Hot and humid', temp: '18°C to 27°C', crowds: 'Peak', price: 'Peak', highlight: 'Caribana Caribbean Carnival builds toward the Aug 1 Grand Parade' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Hot and humid, occasional heat waves', temp: '18°C to 26°C', crowds: 'Peak', price: 'Peak', highlight: 'Canadian National Exhibition (CNE) fairground opens' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm days, cool evenings, fewer crowds', temp: '14°C to 22°C', crowds: 'High', price: 'High', highlight: 'Toronto International Film Festival (TIFF), Sept 10–20' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Crisp, colourful fall foliage', temp: '8°C to 15°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Peak fall colours in High Park and on Niagara day trips' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cold, grey, early snow possible', temp: '2°C to 8°C', crowds: 'Low', price: 'Low', highlight: 'Distillery District Winter Village and Christmas Market open' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold, snow likely, festive city', temp: '-3°C to 3°C', crowds: 'Moderate', price: 'High', highlight: 'Christmas Market lights and the Nathan Phillips Square skating rink' },
+      ],
+    },
   },
   {
     slug: 'banff', name: 'Banff', country: 'Canada', flag: '🇨🇦', tagline: 'Rocky Mountain Classic', gradient: 'from-emerald-700 to-sky-500', accentColor: '#047857', photo: 'photo-1502989642968-94fbdc9b4bce', bestTime: 'Jun - Sep, Dec - Mar', budget: 'CAD 140-350/day', language: 'English', currency: 'CAD', vibes: ['Mountains', 'Lakes', 'Wildlife'],
@@ -210,6 +288,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Berlin is Europe\'s great unfinished city: layered history, boundary-pushing art, parks, memorials, museums, clubs, and a creative energy that never feels polished flat.',
     description: 'Give it time; Berlin rewards neighbourhood wandering as much as landmark ticking.',
     highlights: ['Brandenburg Gate', 'Berlin Wall Memorial', 'Museum Island', 'Reichstag Dome', 'East Side Gallery', 'Kreuzberg Food Crawl', 'Checkpoint Charlie', 'Tiergarten Park', 'Berlin TV Tower', 'Charlottenburg Palace'],
+    monthByMonth: {
+      summary: 'Berlin has a temperate continental climate: cold, grey winters with highs barely above freezing and warm, long-daylight summers in the mid-20s°C. May to September is the best window for beer gardens, lake days at Wannsee, and outdoor festivals, while November and January are the coldest, greyest, and quietest months outside of the Christmas markets.',
+      bestMonths: ['May', 'June', 'September'],
+      avoidMonths: ['January', 'November'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'avoid', weather: 'Cold, grey, occasional snow', temp: '3°C / -2°C', crowds: 'Low', price: 'Low', highlight: 'Quiet post-holiday season — cosy Kneipen and museum time at the cheapest hotel rates of the year' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Still cold, brightening slightly', temp: '5°C / -2°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Berlinale film festival (Feb 12-22, 2026) fills cinemas across Potsdamer Platz' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Cold-to-mild, unpredictable thaw', temp: '9°C / 0°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Early spring thaw — parks reopen but a warm coat is still needed' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild, lengthening days', temp: '15°C / 4°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Beer gardens and Tiergarten reopen as the city shakes off winter' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, long evenings', temp: '20°C / 8°C', crowds: 'High', price: 'High', highlight: 'Karneval der Kulturen street parade fills Kreuzberg over the Whitsun weekend' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm, very long daylight hours', temp: '23°C / 12°C', crowds: 'High', price: 'High', highlight: 'Sunset near 9:30pm — beer gardens and lake swimming season peaks' },
+        { month: 'July', short: 'Jul', rating: 'excellent', weather: 'Warm, peak summer', temp: '25°C / 14°C', crowds: 'High', price: 'Peak', highlight: 'Christopher Street Day (Pride) parade and open-air club season peak' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Warm, occasional thunderstorms', temp: '25°C / 14°C', crowds: 'High', price: 'Peak', highlight: 'Peak outdoor season — lake days at Wannsee and open-air techno floors' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Mild, crisp mornings', temp: '20°C / 10°C', crowds: 'High', price: 'High', highlight: 'Berlin Marathon closes streets citywide on its late-September Sunday' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Cooling, autumn colour', temp: '14°C / 6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Autumn colour in Tiergarten; museum queues thin out noticeably' },
+        { month: 'November', short: 'Nov', rating: 'avoid', weather: 'Cold, damp, short days', temp: '8°C / 2°C', crowds: 'Low', price: 'Low', highlight: 'Grey and rainy — the lull just before the Christmas markets open' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold, occasional snow', temp: '4°C / -1°C', crowds: 'High', price: 'Peak', highlight: 'Christmas markets light up Gendarmenmarkt and Alexanderplatz through Dec 24' },
+      ],
+    },
   },
   {
     slug: 'munich', name: 'Munich', country: 'Germany', flag: '🇩🇪', tagline: 'Bavarian Capital', gradient: 'from-blue-700 to-amber-500', accentColor: '#2563EB', photo: 'photo-1513622470522-26c3c8a854bc', bestTime: 'May - Sep, Dec', budget: 'EUR 90-240/day', language: 'German, English', currency: 'EUR', vibes: ['Beer halls', 'Museums', 'Alps'],
@@ -336,12 +433,50 @@ const addedWorldCities: City[] = [
     heroDescription: 'Venice is a city built on water, where palaces, churches, bridges, gondolas, and quiet back canals create one of Europe\'s strangest urban miracles.',
     description: 'Stay overnight if possible; early mornings and late evenings are when Venice becomes magical again.',
     highlights: ['St Mark\'s Basilica', 'Doge\'s Palace', 'Grand Canal Vaporetto', 'Rialto Market', 'Burano Island', 'Gondola or Traghetto Ride', 'Murano Island Glassblowing', 'Peggy Guggenheim Collection', 'Scuola Grande di San Rocco', 'Dorsoduro Sunset at Punta della Dogana'],
+    monthByMonth: {
+      summary: 'Venice swings from cool, damp winters (0–8°C) to warm, humid summers (19–28°C). Late spring and early autumn hit the sweet spot of mild weather and manageable crowds, while Carnevale (late Jan–Feb) and acqua alta flood season (Oct–Mar, peaking Nov–Dec) both need planning around. Summer is hot, humid, and the most crowded time of year.',
+      bestMonths: ['April', 'May', 'September', 'October'],
+      avoidMonths: ['July', 'August', 'November'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, damp, occasional fog off the lagoon', temp: '1–8°C', crowds: 'Low', price: 'Low', highlight: 'Quiet canals and low rates; Carnevale festivities begin building from Jan 31' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Cold but often crisp and clear', temp: '1–9°C', crowds: 'High', price: 'High', highlight: 'Carnevale di Venezia — masked balls and Piazza San Marco parades (core events Feb 7–17, 2026)' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool, increasingly mild', temp: '5–13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Shoulder season begins, fewer queues at the Doge\'s Palace' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild and fresh, some rain showers', temp: '9–17°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Best light for photos on the Grand Canal, gardens in bloom' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, mostly dry', temp: '14–22°C', crowds: 'High', price: 'High', highlight: 'Voga Longa rowing regatta fills the canals with colour' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Warm to hot, humid', temp: '17–26°C', crowds: 'High', price: 'High', highlight: 'Long daylight hours for island-hopping to Murano and Burano' },
+        { month: 'July', short: 'Jul', rating: 'average', weather: 'Hot and humid, little rain', temp: '19–29°C', crowds: 'Peak', price: 'Peak', highlight: 'Festa del Redentore fireworks over the Giudecca Canal (mid-July)' },
+        { month: 'August', short: 'Aug', rating: 'average', weather: 'Hottest month, humid and sticky', temp: '19–28°C', crowds: 'Peak', price: 'Peak', highlight: 'Venice Film Festival opens on the Lido (late Aug–early Sep)' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm days, cooling evenings', temp: '15–24°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Regata Storica — historic gondola regatta on the Grand Canal' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Mild, wetter, first acqua alta risk', temp: '11–18°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Good value with fewer crowds; carry boots for occasional high tides' },
+        { month: 'November', short: 'Nov', rating: 'avoid', weather: 'Cold, wet, peak acqua alta flooding risk', temp: '6–13°C', crowds: 'Low', price: 'Low', highlight: 'Highest flood-tide frequency of the year — raised walkways go up in St Mark\'s Square' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold, damp, occasional flooding', temp: '1–8°C', crowds: 'Moderate', price: 'High', highlight: 'Christmas lights and markets, though acqua alta risk remains elevated' },
+      ],
+    },
   },
   {
     slug: 'florence', name: 'Florence', country: 'Italy', flag: '🇮🇹', tagline: 'Renaissance Capital', gradient: 'from-amber-700 to-red-500', accentColor: '#B45309', photo: 'photo-1541943181603-d8fe267a5dcf', bestTime: 'Apr - Jun, Sep - Oct', budget: 'EUR 80-230/day', language: 'Italian, English', currency: 'EUR', vibes: ['Art', 'Food', 'History'],
     heroDescription: 'Florence is the Renaissance in city form, with Brunelleschi\'s dome, Michelangelo, Botticelli, Tuscan food, and golden evening light over the Arno.',
     description: 'Book major museums ahead and leave room for unplanned church, gelato, and viewpoint stops.',
     highlights: ['Uffizi Gallery', 'Duomo Climb', 'Accademia David', 'Ponte Vecchio', 'Piazzale Michelangelo', 'Chianti Day Trip', 'Palazzo Vecchio & Piazza della Signoria', 'Pitti Palace & Boboli Gardens', 'Basilica di Santa Croce', 'Mercato Centrale Food Hall'],
+    monthByMonth: {
+      summary: 'Florence has a Mediterranean climate: cool, damp winters (2–11°C) and hot, increasingly muggy summers (18–32°C) in a landlocked valley that traps heat. Late spring and early autumn bring the best balance of pleasant temperatures and manageable museum queues; July and August turn punishing at midday even though they draw the biggest crowds.',
+      bestMonths: ['April', 'May', 'September', 'October'],
+      avoidMonths: ['July', 'August'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, damp, occasional frost', temp: '2–11°C', crowds: 'Low', price: 'Low', highlight: 'Quietest month — walk-in access to the Uffizi with barely a queue' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cold, brightening toward month end', temp: '3–13°C', crowds: 'Low', price: 'Low', highlight: 'Carnival season treats in Tuscan cafes, low hotel rates' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool, turning mild', temp: '5–16°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Scoppio del Carro cart explosion in Piazza del Duomo on Easter Sunday' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild, occasional spring showers', temp: '8–20°C', crowds: 'High', price: 'High', highlight: 'Wisteria blooms along the Arno, ideal walking weather' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm and mostly dry', temp: '12–24°C', crowds: 'High', price: 'High', highlight: 'Maggio Musicale Fiorentino opera and classical music festival opens' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Hot, dry, long daylight', temp: '16–29°C', crowds: 'Peak', price: 'Peak', highlight: 'Festa di San Giovanni (Jun 24) — Calcio Storico final and Arno-side fireworks' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Very hot, dry, intense midday sun', temp: '18–32°C', crowds: 'Peak', price: 'Peak', highlight: 'Book air-conditioned stays; museum mornings beat the afternoon heat' },
+        { month: 'August', short: 'Aug', rating: 'avoid', weather: 'Hottest month, many locals leave town', temp: '19–32°C', crowds: 'High', price: 'High', highlight: 'Some family-run trattorias close for ferragosto — check ahead' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm days, comfortable evenings', temp: '15–27°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Grape harvest begins in nearby Chianti — ideal month for a wine day trip' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Mild, golden autumn light', temp: '11–22°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Fewer tour groups, olive harvest season in the Tuscan hills' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cool, rainiest month of the year', temp: '6–16°C', crowds: 'Low', price: 'Low', highlight: 'Low rates, indoor museum days pair well with unpredictable rain' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Cold, crisp, occasional rain', temp: '3–11°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Christmas markets and illuminated Piazza della Signoria' },
+      ],
+    },
   },
   {
     slug: 'milan', name: 'Milan', country: 'Italy', flag: '🇮🇹', tagline: 'Design & Fashion', gradient: 'from-slate-800 to-emerald-500', accentColor: '#334155', photo: 'photo-1555992336-03a23c7b20ee', bestTime: 'Apr - Jun, Sep - Oct', budget: 'EUR 90-260/day', language: 'Italian, English', currency: 'EUR', vibes: ['Fashion', 'Design', 'Food'],
@@ -360,6 +495,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Nice anchors the French Riviera with a pebbled bay, pastel old town, art museums, markets, and easy trains to Monaco, Cannes, and hill villages.',
     description: 'It is the most practical Riviera base for travellers without a car.',
     highlights: ['Promenade des Anglais', 'Old Nice', 'Cours Saleya Market', 'Castle Hill', 'Matisse Museum', 'Eze and Monaco Day Trip', 'Marc Chagall National Museum', 'Port Lympia Harbour', 'Mont Boron Coastal Walk', 'Russian Orthodox Cathedral'],
+    monthByMonth: {
+      summary: 'Nice has mild, moderately wet winters (6–14°C) and warm, dry, sunny summers (21–28°C) typical of the French Riviera. Spring and early autumn deliver the best mix of pleasant sea-swimming weather and thinner crowds, while July–August bring peak heat, peak prices, and a packed Promenade des Anglais.',
+      bestMonths: ['May', 'June', 'September'],
+      avoidMonths: ['August'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Mild days, cool nights, occasional rain', temp: '6–13°C', crowds: 'Low', price: 'Low', highlight: 'Quietest month on the Promenade des Anglais, lowest hotel rates' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Mild, brightening toward spring', temp: '6–14°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Nice Carnival flower battles and parades (Feb 11–Mar 1, 2026)' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool mornings, mild afternoons', temp: '8–15°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Carnival closes out, mimosa season along the coast toward Grasse' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild, occasional showers', temp: '11–17°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable walking weather for Old Nice and the Castle Hill climb' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, mostly dry, sea warming up', temp: '14–21°C', crowds: 'High', price: 'High', highlight: 'Cannes Film Festival (May 12–23, 2026) fills the Riviera 30 minutes away' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm and sunny', temp: '18–25°C', crowds: 'High', price: 'High', highlight: 'Warm enough to swim, Fete de la Musique (Jun 21) fills the old town with live music' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Hot, dry, peak sunshine', temp: '21–28°C', crowds: 'Peak', price: 'Peak', highlight: 'Nice Jazz Fest at the Jardin Albert Ier (Jul 23–26, 2026)' },
+        { month: 'August', short: 'Aug', rating: 'avoid', weather: 'Hottest month, still dry and sunny', temp: '21–28°C', crowds: 'Peak', price: 'Peak', highlight: 'French domestic holiday month — beaches and restaurants at their busiest' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm days, cooling evenings', temp: '18–25°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Sea still warm from summer, crowds thin out noticeably after Aug 31' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Mild, increasing rain', temp: '14–21°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Good value shoulder month for day trips to Eze and Monaco' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cool, wettest month of the year', temp: '10–17°C', crowds: 'Low', price: 'Low', highlight: 'Quiet season — indoor time at the Matisse and Chagall museums' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Mild by northern-Europe standards, some rain', temp: '7–14°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Christmas lights along Avenue Jean Medecin and the old town' },
+      ],
+    },
   },
   {
     slug: 'marseille', name: 'Marseille', country: 'France', flag: '🇫🇷', tagline: 'Mediterranean Port', gradient: 'from-blue-800 to-orange-500', accentColor: '#2563EB', photo: 'photo-1491557345352-5929e343eb89', bestTime: 'Apr - Jun, Sep - Oct', budget: 'EUR 70-200/day', language: 'French, English', currency: 'EUR', vibes: ['Port', 'Food', 'Sea'],
@@ -378,6 +532,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Madrid is Spain\'s energetic capital, with royal boulevards, world-class art museums, late dinners, football, plazas, and tapas-heavy nights.',
     description: 'It is less visually obvious than Barcelona but deeper, warmer, and excellent for food and museums.',
     highlights: ['Prado Museum', 'Royal Palace', 'Retiro Park', 'Plaza Mayor', 'Mercado de San Miguel', 'Toledo Day Trip'],
+    monthByMonth: {
+      summary: 'Madrid has a continental Mediterranean climate: hot, dry summers and cool but rarely freezing winters. April-May and September-October bring the most comfortable temperatures for walking the city, while July and August routinely push past 32°C and send many Madrilenos to the coast. December-February stay mild by European standards, with Christmas lights and a full football calendar.',
+      bestMonths: ['April', 'May', 'October'],
+      avoidMonths: ['July', 'August'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold but sunny, rarely freezing', temp: '10°C / 3°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Cabalgata de Reyes parade (Jan 5) kicks off the year across the city centre' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cool, clear skies', temp: '12°C / 4°C', crowds: 'Low', price: 'Low', highlight: 'Quiet shoulder month — good museum queues and tapas-bar value' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Mild spring warmth returning', temp: '16°C / 6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Retiro Park terraces reopen as the city warms up' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Warm, comfortable days', temp: '19°C / 8°C', crowds: 'High', price: 'High', highlight: 'Semana Santa (Holy Week) processions when Easter falls in April' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, before the summer heat sets in', temp: '23°C / 12°C', crowds: 'High', price: 'High', highlight: 'San Isidro festival (May 7-17) and the Mutua Madrid Open tennis fill the calendar' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Hot, dry days begin', temp: '29°C / 17°C', crowds: 'Moderate', price: 'Moderate', highlight: 'La Liga season winds down; rooftop bars and late terraza dinners take over' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Very hot, dry heat', temp: '33°C / 20°C', crowds: 'High', price: 'High', highlight: 'Peak heat above 32°C on average — afternoons are for siesta, not sightseeing' },
+        { month: 'August', short: 'Aug', rating: 'avoid', weather: 'Hottest month, dry', temp: '32°C / 19°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Madrilenos empty out for the coast; some family-run restaurants close for the month' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Cooling, comfortable evenings', temp: '27°C / 16°C', crowds: 'Moderate', price: 'Moderate', highlight: 'La Liga football season kicks off and La Noche en Blanco lights up the city overnight' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Mild, ideal walking weather', temp: '20°C / 11°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable temperatures return — a strong month for museum and walking days' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cool, occasional rain', temp: '14°C / 6°C', crowds: 'Low', price: 'Low', highlight: 'Gran Via and Plaza Mayor Christmas lights switch on in late November' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold but mild by European standards', temp: '10°C / 4°C', crowds: 'High', price: 'High', highlight: 'Christmas markets fill Plaza Mayor; look out for a December Real Madrid fixture' },
+      ],
+    },
   },
   {
     slug: 'seville', name: 'Seville', country: 'Spain', flag: '🇪🇸', tagline: 'Andalusian Soul', gradient: 'from-orange-700 to-red-500', accentColor: '#EA580C', photo: 'photo-1588668214407-6ea9a6d8c272', bestTime: 'Mar - May, Oct - Nov', budget: 'EUR 60-180/day', language: 'Spanish, English', currency: 'EUR', vibes: ['Flamenco', 'Architecture', 'Food'],
@@ -402,6 +575,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Hiroshima is a moving, resilient city built around peace, riverfront parks, okonomiyaki, and the beautiful shrine island of Miyajima.',
     description: 'It is essential for understanding modern Japan and easy to combine with western Japan itineraries.',
     highlights: ['Peace Memorial Park', 'Atomic Bomb Dome', 'Peace Memorial Museum', 'Miyajima Island', 'Itsukushima Shrine', 'Hiroshima Okonomiyaki'],
+    monthByMonth: {
+      summary: 'Hiroshima has cold winters (2–10°C) and hot, humid summers that push past 30°C in August. Spring (cherry blossoms) and autumn (Miyajima\'s maple foliage) are the clear high points; the tsuyu rainy season through June into mid-July brings frequent showers, and August is muggy though it carries the city\'s most meaningful date, the Peace Memorial Ceremony on the 6th.',
+      bestMonths: ['March', 'April', 'November'],
+      avoidMonths: ['June', 'July'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, dry, occasional light snow', temp: '2–10°C', crowds: 'Low', price: 'Low', highlight: 'Quiet Peace Memorial Park, clear winter light over the Atomic Bomb Dome' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cold, driest month of the year', temp: '2–11°C', crowds: 'Low', price: 'Low', highlight: 'Low rates and thin crowds before the cherry blossom rush' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Cool, warming quickly through the month', temp: '5–15°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Cherry blossoms begin opening late March around Peace Memorial Park' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild and pleasant', temp: '10–20°C', crowds: 'High', price: 'High', highlight: 'Peak sakura season on Miyajima and along the Motoyasu River (early April)' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, comfortable, still dry', temp: '15–24°C', crowds: 'High', price: 'High', highlight: 'Hiroshima Flower Festival (May 3–5) — parades and fireworks in Peace Boulevard' },
+        { month: 'June', short: 'Jun', rating: 'avoid', weather: 'Rainy season (tsuyu) begins, humid', temp: '20–27°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Hydrangeas bloom in temple gardens despite the frequent rain' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Rainy season continues into mid-month, then hot', temp: '24–31°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Coastal breeze makes Miyajima more bearable than inland Hiroshima' },
+        { month: 'August', short: 'Aug', rating: 'average', weather: 'Hottest month, humid, minimal rain', temp: '25–33°C', crowds: 'High', price: 'High', highlight: 'Peace Memorial Ceremony (Aug 6) and lantern-floating on the Motoyasu River' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Still warm, typhoon season risk', temp: '21–29°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Fewer crowds than summer; check typhoon forecasts before ferry trips' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Warm days, cool evenings, drier', temp: '15–24°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable temperatures for walking Peace Memorial Park and central Hiroshima' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Cool, crisp, clear skies', temp: '9–18°C', crowds: 'High', price: 'High', highlight: 'Miyajima\'s Momijidani Park maples peak mid-November, with night illuminations' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold, dry, occasional snow', temp: '4–12°C', crowds: 'Low', price: 'Moderate', highlight: 'Winter illuminations along the riverfront, quiet season for museums' },
+      ],
+    },
   },
   {
     slug: 'nara', name: 'Nara', country: 'Japan', flag: '🇯🇵', tagline: 'Ancient Capital', gradient: 'from-emerald-700 to-amber-500', accentColor: '#16A34A', photo: 'photo-1578270671993-0a50a5e4cb1d', bestTime: 'Mar - May, Oct - Nov', budget: 'JPY 8000-22000/day', language: 'Japanese, English', currency: 'JPY', vibes: ['Temples', 'Deer', 'History'],
@@ -456,12 +648,50 @@ const addedWorldCities: City[] = [
     heroDescription: 'Edinburgh is Scotland\'s theatrical capital, with a castle above volcanic rock, medieval closes, Georgian squares, festivals, whisky, and moody views.',
     description: 'It is compact but hilly; bring good shoes and book festival accommodation early.',
     highlights: ['Edinburgh Castle', 'Royal Mile', 'Arthur\'s Seat', 'National Museum of Scotland', 'Calton Hill', 'Whisky Tasting'],
+    monthByMonth: {
+      summary: 'Edinburgh is cool and changeable year-round, rarely dropping far below freezing or climbing past 20°C. May offers the best mix of mild weather and light crowds, August brings the world\'s largest arts festival (and its highest prices), and Hogmanay turns the darkest month into one of the world\'s great street parties.',
+      bestMonths: ['May', 'August', 'December'],
+      avoidMonths: ['January', 'February'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, short daylight, occasional snow', temp: '6°C / 0°C', crowds: 'Low', price: 'Low', highlight: 'Quiet after Hogmanay — the year\'s cheapest flights and hotel rates' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Still cold and damp, brief sunny spells', temp: '6°C / 0°C', crowds: 'Low', price: 'Low', highlight: 'Six Nations rugby weekends bring a buzz to Murrayfield pubs' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Cool with lengthening days', temp: '8°C / 1°C', crowds: 'Low', price: 'Low', highlight: 'Six Nations continues; daffodils appear in Princes Street Gardens' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Milder, longer days, showery', temp: '11°C / 3°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Beltane Fire Festival (Apr 30) lights up Calton Hill' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Mild, the driest month of spring', temp: '14°C / 5°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Best spring weather, with none of the Fringe-season crowds' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm with very long daylight hours', temp: '17°C / 8°C', crowds: 'Moderate', price: 'High', highlight: 'Long "simmer dim" evenings make Arthur\'s Seat sunsets last for hours' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Warmest lead-up month, some rain', temp: '18°C / 10°C', crowds: 'High', price: 'High', highlight: 'Pre-Fringe buzz builds as preview shows begin' },
+        { month: 'August', short: 'Aug', rating: 'excellent', weather: 'Mild but unpredictable, showers likely', temp: '18°C / 10°C', crowds: 'Peak', price: 'Peak', highlight: 'Edinburgh Festival Fringe (Aug 7–31) — book flights and rooms months ahead' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Cooling, crisp autumn light', temp: '16°C / 9°C', crowds: 'Moderate', price: 'Moderate', highlight: 'The city exhales after the Fringe — a calmer, local feel returns' },
+        { month: 'October', short: 'Oct', rating: 'average', weather: 'Cool, wetter, shortening days', temp: '13°C / 6°C', crowds: 'Low', price: 'Low', highlight: 'Autumn colour across Holyrood Park and Calton Hill' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cold with early darkness by late afternoon', temp: '8°C / 2°C', crowds: 'Low', price: 'Low', highlight: 'Edinburgh\'s Christmas market opens (from Nov 14)' },
+        { month: 'December', short: 'Dec', rating: 'excellent', weather: 'Cold, festive, occasional snow', temp: '6°C / 1°C', crowds: 'High', price: 'High', highlight: 'Hogmanay street party (Dec 31) — one of the world\'s great New Year celebrations' },
+      ],
+    },
   },
   {
     slug: 'manchester', name: 'Manchester', country: 'United Kingdom', flag: '🇬🇧', tagline: 'Music & Football', gradient: 'from-red-700 to-slate-600', accentColor: '#B91C1C', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'May - Sep', budget: 'GBP 70-190/day', language: 'English', currency: 'GBP', vibes: ['Football', 'Music', 'Industrial'],
     heroDescription: 'Manchester is a proud northern city of football, music, red-brick warehouses, universities, galleries, and a fast-growing food scene.',
     description: 'It is ideal for repeat UK travellers and football fans adding depth beyond London.',
     highlights: ['Old Trafford', 'Etihad Stadium', 'Northern Quarter', 'Science and Industry Museum', 'John Rylands Library', 'Manchester Art Gallery'],
+    monthByMonth: {
+      summary: 'Manchester runs cool and rainy through winter and mild through summer, warmer than Edinburgh but still firmly northern. May to September is the sweet spot for weather, beer gardens, and the football season\'s run-in, while August adds Manchester Pride to the mix. Winters are grey but the Christmas markets and matchday atmosphere make December worthwhile anyway.',
+      bestMonths: ['May', 'June', 'September'],
+      avoidMonths: ['January', 'February'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, grey, frequent rain', temp: '7°C / 2°C', crowds: 'Low', price: 'Low', highlight: 'Football resumes after the winter break, with easy-to-get match tickets' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Still cold and damp, occasional sleet', temp: '8°C / 2°C', crowds: 'Low', price: 'Low', highlight: 'Quietest month of the year for hotel rates' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool, brightening, less rain', temp: '10°C / 4°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Longer days bring the Northern Quarter\'s bars and galleries back to life' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild with showers and first sunny spells', temp: '13°C / 5°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Football season run-in sharpens the Old Trafford–Etihad rivalry' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Mild and increasingly dry', temp: '16°C / 8°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Premier League season finale weekend and long light evenings' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm, the driest stretch of the year', temp: '19°C / 10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Football off-season keeps the city calmer despite the best weather' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Warmest lead-in month, some sun', temp: '21°C / 13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Beer gardens and rooftop bars are in full swing' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Warmest month, occasional showers', temp: '21°C / 13°C', crowds: 'High', price: 'High', highlight: 'Manchester Pride (Aug 28–31) and the new football season\'s kick-off' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Mild and drying out', temp: '18°C / 10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Football season in full swing as students return to the city' },
+        { month: 'October', short: 'Oct', rating: 'average', weather: 'Cooling fast, wetter', temp: '14°C / 7°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Autumn colour in Heaton Park alongside a building matchday atmosphere' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cold, wet, short days', temp: '10°C / 4°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Manchester Christmas Markets open across the city centre' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Cold and festive, occasional frost', temp: '7°C / 2°C', crowds: 'High', price: 'High', highlight: 'Christmas markets run alongside a full festive fixture list at Old Trafford' },
+      ],
+    },
   },
   {
     slug: 'bath', name: 'Bath', country: 'United Kingdom', flag: '🇬🇧', tagline: 'Roman Spa City', gradient: 'from-amber-600 to-stone-400', accentColor: '#B45309', photo: 'photo-1500530855697-b586d89ba3ee', bestTime: 'Apr - Oct', budget: 'GBP 80-220/day', language: 'English', currency: 'GBP', vibes: ['Heritage', 'Architecture', 'Romantic'],
@@ -546,6 +776,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Da Nang is central Vietnam\'s easy beach city, with riverside bridges, seafood, resorts, and quick access to Hoi An and Hue.',
     description: 'It is practical, cleaner than many big cities, and ideal for mixing relaxation with cultural day trips.',
     highlights: ['My Khe Beach', 'Dragon Bridge', 'Marble Mountains', 'Ba Na Hills', 'Son Tra Peninsula', 'Hoi An Day Trip'],
+    monthByMonth: {
+      summary: 'Da Nang runs on a distinct two-season monsoon pattern: a long dry season from January to August (driest and most reliable February-April) and a wet, typhoon-prone season from September to December, when Central Vietnam sees its heaviest rain and roughest seas. This is the reverse of what many travellers expect from Hanoi or Ho Chi Minh City, so plan a beach-focused trip for the first eight months of the year.',
+      bestMonths: ['February', 'March', 'April'],
+      avoidMonths: ['October', 'November'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Coolest month, often overcast', temp: '25°C / 19°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Coolest and cloudiest month of the year — comfortable for sightseeing but not ideal for beach days' },
+        { month: 'February', short: 'Feb', rating: 'excellent', weather: 'Dry season settles in, mild', temp: '26°C / 20°C', crowds: 'Moderate', price: 'Moderate', highlight: 'One of the driest months of the year, with reliably clear skies' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Warm and dry', temp: '28°C / 21°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Reliably dry and warm — one of the best all-round months to visit' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Warm, driest stretch of the year', temp: '30°C / 23°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Driest month of the year continues; My Khe Beach at its calmest and clearest' },
+        { month: 'May', short: 'May', rating: 'good', weather: 'Hot, still mostly dry', temp: '33°C / 25°C', crowds: 'High', price: 'High', highlight: 'Da Nang International Fireworks Festival (DIFF) launches its show nights over the Han River' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Hottest month, humid', temp: '34°C / 26°C', crowds: 'High', price: 'High', highlight: 'DIFF fireworks continue through the heat of Vietnamese school-holiday season' },
+        { month: 'July', short: 'Jul', rating: 'average', weather: 'Very hot and humid', temp: '34°C / 26°C', crowds: 'High', price: 'High', highlight: 'DIFF wraps up in early July; expect the year\'s most intense heat and humidity' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Hot, last of the dry season', temp: '33°C / 25°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Last reliably dry month before the shift toward the autumn wet season' },
+        { month: 'September', short: 'Sep', rating: 'avoid', weather: 'Typhoon and wet season begins', temp: '31°C / 24°C', crowds: 'Low', price: 'Low', highlight: 'Typhoon and wet season begins — sudden storms and rough seas become common' },
+        { month: 'October', short: 'Oct', rating: 'avoid', weather: 'Peak wet season, heavy rain', temp: '29°C / 23°C', crowds: 'Low', price: 'Low', highlight: 'Historically one of the wettest months, with flooding and storm disruption possible' },
+        { month: 'November', short: 'Nov', rating: 'avoid', weather: 'Wet season continues, storms', temp: '27°C / 21°C', crowds: 'Low', price: 'Low', highlight: 'Wet season continues with the year\'s highest storm risk' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Rain easing toward month\'s end', temp: '25°C / 19°C', crowds: 'Low', price: 'Low', highlight: 'Rain gradually eases as the dry season approaches' },
+      ],
+    },
   },
   {
     slug: 'nha-trang', name: 'Nha Trang', country: 'Vietnam', flag: '🇻🇳', tagline: 'Vietnamese Riviera', gradient: 'from-cyan-600 to-blue-500', accentColor: '#06B6D4', photo: 'photo-1507525428034-b723cf961d3e', bestTime: 'Feb - Aug', budget: 'VND 800000-2600000/day', language: 'Vietnamese, English', currency: 'VND', vibes: ['Beach', 'Diving', 'Seafood'],
@@ -564,6 +813,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Johannesburg is South Africa\'s economic engine and a powerful place to understand apartheid history, urban creativity, and modern African energy.',
     description: 'It requires more planning than Cape Town, but guided history tours are deeply worthwhile.',
     highlights: ['Apartheid Museum', 'Soweto Tour', 'Constitution Hill', 'Maboneng Precinct', 'Cradle of Humankind', 'Neighbourgoods Market'],
+    monthByMonth: {
+      summary: 'Johannesburg sits at 1,750m and runs opposite to the Northern Hemisphere: December-February is warm and stormy, with lush greenery and daily afternoon thunderstorms, while the dry winter (May-September) brings sunny days, cold nights, and the best game-viewing conditions at Kruger and other nearby reserves. April-May and September-October are the sweet spot — dry and mild, with neither summer storms nor winter\'s night-time chill.',
+      bestMonths: ['April', 'May', 'September'],
+      avoidMonths: ['December', 'January'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Hot with daily afternoon thunderstorms', temp: '25°C / 15°C', crowds: 'Peak', price: 'Peak', highlight: 'Peak South African summer holiday season — expect afternoon storms most days' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Warm, still rainy but easing', temp: '25°C / 14°C', crowds: 'Moderate', price: 'Moderate', highlight: 'School holidays end and storms taper off, though the city stays lush and green' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Warm days, thunderstorms tapering off', temp: '24°C / 13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Reliable late-summer warmth as the rains start to ease' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild and dry, autumn colour', temp: '21°C / 10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Dry season begins — comfortable days and cool, clear evenings' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Dry, sunny days, cold nights arrive', temp: '19°C / 7°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Kruger safari season opens as the bush thins out and animals gather at waterholes' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Dry, sunny, coldest month — frost possible at night', temp: '17°C / 4°C', crowds: 'High', price: 'High', highlight: 'Coldest month of the year, but prime dry-season game viewing at nearby Kruger' },
+        { month: 'July', short: 'Jul', rating: 'excellent', weather: 'Dry and sunny, cold mornings', temp: '18°C / 4°C', crowds: 'High', price: 'High', highlight: 'Peak safari season — South African winter school holidays add crowds at Kruger gateway towns' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Dry, windy, warming afternoons', temp: '21°C / 6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Last of the dry season — low water levels still concentrate wildlife around waterholes' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warming quickly, first spring showers', temp: '23°C / 10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Jacaranda buds appear across the city as spring warmth returns' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Warm with occasional afternoon storms', temp: '25°C / 12°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Jacaranda season paints the city\'s streets and suburbs purple' },
+        { month: 'November', short: 'Nov', rating: 'good', weather: 'Warm, rain becoming more frequent', temp: '25°C / 13°C', crowds: 'Moderate', price: 'High', highlight: 'Late jacaranda colour lingers as the rains build toward summer' },
+        { month: 'December', short: 'Dec', rating: 'avoid', weather: 'Hot and humid with daily thunderstorm risk', temp: '25°C / 15°C', crowds: 'Peak', price: 'Peak', highlight: 'Festive season peak — book Kruger safaris and city hotels well ahead' },
+      ],
+    },
   },
   {
     slug: 'kruger', name: 'Kruger National Park', country: 'South Africa', flag: '🇿🇦', tagline: 'Big Five Safari', gradient: 'from-emerald-700 to-yellow-600', accentColor: '#16A34A', photo: 'photo-1547471080-7cc2caa01a7e', bestTime: 'May - Sep', budget: 'ZAR 1800-9000/day', language: 'English, Afrikaans', currency: 'ZAR', vibes: ['Safari', 'Wildlife', 'Nature'],
@@ -606,6 +874,25 @@ const addedWorldCities: City[] = [
     heroDescription: 'Los Angeles is sprawling and cinematic, with beaches, studios, museums, hikes, food trucks, neighbourhoods, and the mythology of Hollywood.',
     description: 'Plan by area to avoid losing the day in traffic, and rent a car if your itinerary is spread out.',
     highlights: ['Griffith Observatory', 'Santa Monica Pier', 'Hollywood Walk of Fame', 'Getty Center', 'Universal Studios Hollywood', 'Venice Beach'],
+    monthByMonth: {
+      summary: 'Los Angeles stays mild year-round — rarely below 9°C at night or much past 29°C by day — so weather alone rarely rules out a month. March, April, October, and November combine the clearest skies with lighter crowds; the coastal "June gloom" marine layer and the peak-price, peak-crowd stretch of July–August are the closest things to a downside.',
+      bestMonths: ['March', 'April', 'October', 'November'],
+      avoidMonths: [],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'good', weather: 'Mild, sunny days, cool nights, occasional rain', temp: '20°C / 9°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Rose Parade (Jan 1) in nearby Pasadena kicks off the year' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Mild, the year\'s best chance of rain', temp: '20°C / 10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Some of the lowest hotel rates outside the holidays' },
+        { month: 'March', short: 'Mar', rating: 'excellent', weather: 'Warming, clear skies becoming more common', temp: '21°C / 11°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Academy Awards season puts Hollywood Boulevard on lockdown' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Warm and dry, coastal haze still light', temp: '22°C / 13°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Arguably the best all-round month before summer crowds arrive' },
+        { month: 'May', short: 'May', rating: 'good', weather: '"May gray" coastal cloud in the mornings, warm inland', temp: '23°C / 15°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Beaches are quiet before school holidays begin' },
+        { month: 'June', short: 'Jun', rating: 'average', weather: '"June gloom" — overcast mornings, sunny afternoons', temp: '25°C / 16°C', crowds: 'Moderate', price: 'Moderate', highlight: 'WeHo Pride (Jun 5–7) and the LA Pride Parade (Jun 14)' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Hot, sunny, and dry once the morning fog burns off', temp: '28°C / 18°C', crowds: 'Peak', price: 'Peak', highlight: 'Peak summer season at Santa Monica and Venice beaches' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Hottest month, dry heat inland', temp: '29°C / 19°C', crowds: 'Peak', price: 'Peak', highlight: 'Warmest ocean temperatures of the year for beach days' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Still hot but drier air, fewer crowds', temp: '28°C / 18°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Emmy Awards season and a calmer, post-summer city' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Warm days, cooler nights, occasional Santa Ana winds', temp: '26°C / 16°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Best-value shoulder season with reliably sunny days' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Mild and drier, first winter rain possible', temp: '23°C / 12°C', crowds: 'Low', price: 'Low', highlight: 'Hollywood Christmas Parade (Nov 29) kicks off the holiday season' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Mild days, cool nights, the rainiest month', temp: '20°C / 9°C', crowds: 'High', price: 'High', highlight: 'Griffith Observatory holiday light displays and festive Grove crowds' },
+      ],
+    },
   },
   {
     slug: 'san-francisco', name: 'San Francisco', country: 'United States', flag: '🇺🇸', tagline: 'Bay City', gradient: 'from-red-700 to-blue-500', accentColor: '#DC2626', photo: 'photo-1501594907352-04cda38ebc29', bestTime: 'Sep - Nov, Apr - Jun', budget: 'USD 130-360/day', language: 'English', currency: 'USD', vibes: ['Views', 'Food', 'Tech'],
@@ -847,7 +1134,9 @@ const addedWorldCities: City[] = [
     description: 'It is slow, beautiful, and culturally rich, best for travellers comfortable with simple island rhythms.',
     highlights: ['Lamu Old Town', 'Dhow Sunset Sail', 'Shela Beach', 'Lamu Museum', 'Takwa Ruins', 'Swahili House Museum', 'Manda Island'],
   },
-].map(makeAddedCityGuide);
+];
+
+const addedWorldCities: City[] = addedCitiesRaw.map(makeAddedCityGuide);
 
 const phaseThreeThingsToDoAdditions: Record<string, string[]> = {
   'samarkand': ['Registan Evening Light Show', 'Afrosiab Museum', 'Hazrat Khizr Mosque', 'Konigil Paper Mill'],
