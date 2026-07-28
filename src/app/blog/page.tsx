@@ -1,26 +1,17 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Clock, ArrowRight, Tag, Search } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Search } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PostCard from '@/components/blog/PostCard';
 import { allPosts, isIndexablePost, BlogCategory } from '@/lib/blog';
 
 // Only promote substantial guides. Thin posts stay reachable by direct URL but
 // are kept out of the listing and internal linking (and are noindex) until they
 // are expanded or consolidated, so the blog reads as a quality-first library.
 const publishedPosts = allPosts.filter(isIndexablePost);
-
-const CATEGORY_COLORS: Record<BlogCategory, string> = {
-  Planning:  'bg-blue-500/15 text-blue-500 border-blue-500/25',
-  Budget:    'bg-teal/15 text-teal border-teal/25',
-  India:     'bg-orange-500/15 text-orange-500 border-orange-500/25',
-  Asia:      'bg-purple-500/15 text-purple-500 border-purple-500/25',
-  Europe:    'bg-indigo-500/15 text-indigo-500 border-indigo-500/25',
-  Tips:      'bg-accent/15 text-accent border-accent/25',
-};
 
 const TABS: { label: string; value: BlogCategory | 'all' }[] = [
   { label: 'All', value: 'all' },
@@ -32,28 +23,40 @@ const TABS: { label: string; value: BlogCategory | 'all' }[] = [
   { label: '💡 Tips', value: 'Tips' },
 ];
 
-function CategoryBadge({ category }: { category: BlogCategory }) {
-  return (
-    <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[category]}`}>
-      <Tag size={8} /> {category}
-    </span>
-  );
-}
+// A small hand-picked set of our strongest, most complete guides — mirrors
+// CountriesExplorer.tsx's FEATURED Set pattern. The old behaviour picked
+// `filtered[0]` (whatever sorted first), which was an accidental, unstable
+// "featured" post. Prefer one of these when present in the current filtered
+// list; otherwise fall back to filtered[0] so a tab/search with no featured
+// match never breaks.
+const FEATURED_SLUGS = new Set([
+  'thailand-travel-guide-2025',
+  'japan-first-time-travel-tips-2025',
+  'dubai-travel-guide-2025',
+  'paris-travel-guide-2025',
+  'italy-travel-guide-2025',
+  'bali-vs-thailand-indian-travellers',
+  'goa-vs-kerala',
+  'visa-free-countries-indian-passport-2026',
+  'sri-lanka-travel-guide-2025',
+  'santorini-travel-guide',
+]);
 
-// No dates — travel guides don't expire, dates make them feel stale
-function PostMeta({ readTime }: { date: string; readTime: number }) {
-  return (
-    <div className="flex items-center gap-2 text-xs text-muted">
-      <span className="flex items-center gap-1"><Clock size={11} /> {readTime} min read</span>
-      <span className="w-1 h-1 rounded-full bg-border" />
-      <span className="text-accent font-medium">Free Guide</span>
-    </div>
-  );
-}
+const PAGE_SIZE = 24;
 
 export default function BlogPage() {
   const [activeTab, setActiveTab] = useState<BlogCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // Honour ?tag= links (e.g. from the detail page's tag chips) by pre-filling
+  // the search box on mount. Read on mount rather than useSearchParams to
+  // keep this statically prerenderable, same pattern as cities/page.tsx's ?q=.
+  useEffect(() => {
+    const tag = new URLSearchParams(window.location.search).get('tag');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (tag) setSearchQuery(tag);
+  }, []);
 
   const filtered = useMemo(() => {
     let posts = publishedPosts;
@@ -69,44 +72,70 @@ export default function BlogPage() {
     return posts;
   }, [activeTab, searchQuery]);
 
-  const [featured, ...rest] = filtered;
+  const featured = useMemo(() => {
+    return filtered.find(p => FEATURED_SLUGS.has(p.slug)) ?? filtered[0];
+  }, [filtered]);
+
+  const rest = useMemo(() => filtered.filter(p => p.slug !== featured?.slug), [filtered, featured]);
+  const visibleRest = rest.slice(0, visibleCount);
+  const categoryCount = useMemo(() => new Set(publishedPosts.map(p => p.category)).size, []);
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen">
 
-        {/* Header */}
-        <div className="pt-24 pb-10 border-b border-border">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-accent mb-3">Travel Blog</p>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-primary-text mb-3">
-              Travel Guides & Tips
-            </h1>
-            <p className="text-muted text-base mb-6">
-              {publishedPosts.length} free travel guides — itineraries, budgets, tips and honest advice.
-            </p>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-4">
+          {/* ── Hero ── */}
+          <div className="relative overflow-hidden rounded-3xl mb-10 border border-border bg-gradient-to-br from-accent/15 via-surface to-elevated px-6 sm:px-12 py-12 text-center">
+            <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-accent/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-teal/10 blur-3xl" />
 
-            {/* Search */}
-            <div className="relative max-w-sm mx-auto">
-              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search guides…"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-surface text-sm text-primary-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
-              />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="relative z-10"
+            >
+              <span className="inline-block text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full mb-4">
+                Travel Blog
+              </span>
+              <h1 className="font-heading text-4xl sm:text-5xl font-bold text-primary-text mb-3">
+                Travel Guides &amp; Tips
+              </h1>
+              <p className="text-muted text-base sm:text-lg max-w-lg mx-auto mb-8 leading-relaxed">
+                Honest travel guides — itineraries, budgets, tips and real advice, written for Indian travellers.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
+                {[
+                  { icon: '📝', label: `${publishedPosts.length} Guides` },
+                  { icon: '🗂️', label: `${categoryCount} Categories` },
+                ].map((s) => (
+                  <span key={s.label}
+                    className="flex items-center gap-1.5 text-sm font-medium text-primary-text bg-elevated/80 backdrop-blur-sm border border-border rounded-full px-4 py-1.5">
+                    {s.icon} {s.label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Search */}
+              <div className="relative max-w-sm mx-auto">
+                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="Search guides…"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-surface text-sm text-primary-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
+                />
+              </div>
+            </motion.div>
           </div>
-        </div>
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
           {/* Category tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1 mb-8" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex gap-2 overflow-x-auto pb-1 mb-8 scrollbar-hide">
             {TABS.map(tab => (
-              <button key={tab.value} onClick={() => setActiveTab(tab.value)}
+              <button key={tab.value} onClick={() => { setActiveTab(tab.value); setVisibleCount(PAGE_SIZE); }}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   activeTab === tab.value
                     ? 'bg-accent text-white shadow-sm'
@@ -130,62 +159,30 @@ export default function BlogPage() {
             </div>
           ) : (
             <>
-              {/* Featured post — first result */}
+              {/* Featured post */}
               {featured && (
                 <div className="mb-10">
-                  <Link href={`/blog/${featured.slug}`}
-                    className="group grid grid-cols-1 md:grid-cols-2 gap-0 bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
-                    <div className="relative h-64 md:h-auto min-h-[260px]">
-                      <Image
-                        src={`https://images.unsplash.com/${featured.coverPhoto}?auto=format&fit=crop&w=800&q=80`}
-                        alt={featured.title} fill
-                        className="object-cover card-img"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20" />
-                    </div>
-                    <div className="p-6 sm:p-8 flex flex-col justify-center">
-                      <CategoryBadge category={featured.category} />
-                      <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary-text mt-3 mb-3 leading-snug group-hover:text-accent transition-colors">
-                        {featured.title}
-                      </h2>
-                      <p className="text-muted text-sm leading-relaxed mb-4 line-clamp-3">{featured.excerpt}</p>
-                      <PostMeta date={featured.date} readTime={featured.readTime} />
-                      <div className="mt-5 flex items-center gap-1.5 text-accent text-sm font-semibold">
-                        Read guide <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </Link>
+                  <PostCard post={featured} variant="featured" priority />
                 </div>
               )}
 
               {/* All other posts */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {rest.map(post => (
-                  <Link key={post.slug} href={`/blog/${post.slug}`}
-                    className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
-                    <div className="relative h-44 overflow-hidden">
-                      <Image
-                        src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&q=80`}
-                        alt={post.title} fill
-                        className="object-cover card-img"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute top-3 left-3">
-                        <CategoryBadge category={post.category} />
-                      </div>
-                    </div>
-                    <div className="flex flex-col flex-1 p-4">
-                      <h2 className="font-heading text-base font-bold text-primary-text mb-2 leading-snug group-hover:text-accent transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
-                      <p className="text-muted text-xs leading-relaxed mb-3 line-clamp-2 flex-1">{post.excerpt}</p>
-                      <PostMeta date={post.date} readTime={post.readTime} />
-                    </div>
-                  </Link>
+                {visibleRest.map(post => (
+                  <PostCard key={post.slug} post={post} variant="grid" />
                 ))}
               </div>
+
+              {rest.length > visibleCount && (
+                <div className="flex justify-center mt-10">
+                  <button
+                    onClick={() => setVisibleCount(c => c + PAGE_SIZE)}
+                    className="btn btn-secondary"
+                  >
+                    Show more guides
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

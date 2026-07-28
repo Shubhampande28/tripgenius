@@ -494,6 +494,16 @@ html.light .glass-hover:hover {
           mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
+/* Hide scrollbar on horizontally-scrollable rows (tabs, chip strips) across
+   every engine — scrollbarWidth alone only covers Firefox. */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-reverse {

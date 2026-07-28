@@ -2,11 +2,16 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, ArrowRight, ChevronRight, Tag, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
+import { Clock, ArrowRight, ChevronRight, MapPin, Hotel, Plane, Ticket } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
-import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, isSubstantialPost, BlockType, BlogCategory } from '@/lib/blog';
+import CategoryBadge from '@/components/blog/CategoryBadge';
+import PostCard from '@/components/blog/PostCard';
+import PostTOC from '@/components/blog/PostTOC';
+import { getPostCoverUrl, COVER_W } from '@/lib/blogImages';
+import { slugifyHeading } from '@/lib/slugifyHeading';
+import { allPosts, getPostBySlug, getRelatedPosts, isIndexablePost, isSubstantialPost, BlockType } from '@/lib/blog';
 import { RETIRED_POST_SLUGS } from '@/lib/postRedirects';
 import { ChevronDown } from 'lucide-react';
 import AdUnit from '@/components/AdUnit';
@@ -41,25 +46,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       publishedTime: post.date,
       authors: ['TripGenius'],
       tags: post.tags,
-      images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getPostCoverUrl(post.coverPhoto, COVER_W.hero)],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: [`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getPostCoverUrl(post.coverPhoto, COVER_W.hero)],
     },
   };
 }
-
-const CATEGORY_COLORS: Record<BlogCategory, string> = {
-  Planning:  'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  Budget:    'bg-teal/10 text-teal border-teal/20',
-  India:     'bg-orange-500/10 text-orange-400 border-orange-500/20',
-  Asia:      'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  Europe:    'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-  Tips:      'bg-accent/10 text-accent border-accent/20',
-};
 
 // `linkify` auto-links first destination mentions — applied ONLY to paragraph
 // and list text, never headings, callouts, tables, or blocks with their own link.
@@ -67,9 +63,9 @@ function ContentBlock({ block, linkify }: { block: BlockType; linkify?: AutoLink
   const auto = linkify ?? ((t: string) => t);
   switch (block.type) {
     case 'h2':
-      return <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mt-10 mb-4">{block.text}</h2>;
+      return <h2 id={slugifyHeading(block.text)} className="font-heading text-2xl sm:text-3xl font-semibold text-primary-text mt-10 mb-4 scroll-mt-24">{block.text}</h2>;
     case 'h3':
-      return <h3 className="font-heading text-xl font-semibold text-primary-text mt-7 mb-3">{block.text}</h3>;
+      return <h3 id={slugifyHeading(block.text)} className="font-heading text-xl font-semibold text-primary-text mt-7 mb-3 scroll-mt-24">{block.text}</h3>;
     case 'p':
       return <p className="text-muted leading-relaxed mb-4 text-[15px]">{auto(block.text)}</p>;
     case 'ul':
@@ -181,7 +177,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.title,
     description: post.excerpt,
     url: postUrl,
-    image: `https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
+    image: getPostCoverUrl(post.coverPhoto, COVER_W.hero),
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
     author: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${BASE}/about` },
@@ -226,7 +222,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Cover image */}
         <div className="relative h-64 sm:h-80 lg:h-96 w-full pt-16">
           <Image
-            src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=1400&q=80`}
+            src={getPostCoverUrl(post.coverPhoto, COVER_W.hero)}
             alt={post.title}
             fill
             priority
@@ -238,6 +234,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Article */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 relative z-10 pb-20">
+        <div className="glass-card rounded-3xl p-6 sm:p-10">
 
           {/* Breadcrumb — mirrors the BreadcrumbList JSON-LD */}
           <nav aria-label="Breadcrumb" className="mb-6">
@@ -252,11 +249,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* Meta — no date, travel guides don't expire */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[post.category]}`}>
-              <Tag size={8} /> {post.category}
-            </span>
+            <CategoryBadge category={post.category} />
             <span className="flex items-center gap-1 text-xs text-muted"><Clock size={11} /> {post.readTime} min read</span>
-            <span className="text-xs text-accent font-semibold">Free Guide</span>
             <span className="text-xs text-muted">By <Link href="/about" className="text-primary-text font-medium hover:text-accent transition-colors">TripGenius Editorial Team</Link></span>
           </div>
 
@@ -280,6 +274,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.excerpt}
           </p>
 
+          <PostTOC content={post.content} />
+
           {/* Content — one auto-linker per render so "first mention only" and
               the per-post cap hold across the whole article */}
           <article>
@@ -295,13 +291,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {isSubstantialPost(post) && <AdUnit slot={AD_SLOTS.blogBottom} format="horizontal" className="mt-8 mb-2" />}
 
           {comparisonGuideSlug && (
-            <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">
+            <div className="glass-card mt-8 p-5 rounded-2xl flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs text-accent font-bold uppercase tracking-wider mb-1">Quick Comparison</p>
                 <p className="text-sm text-primary-text font-medium">Use the side-by-side comparison for costs, timing, and trip-fit at a glance.</p>
               </div>
-              <Link href={`/compare/${comparisonGuideSlug}`}
-                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
+              <Link href={`/compare/${comparisonGuideSlug}`} className="btn btn-secondary flex-shrink-0">
                 Compare <ArrowRight size={13} />
               </Link>
             </div>
@@ -310,9 +305,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-10 pt-8 border-t border-border">
             {post.tags.map(tag => (
-              <span key={tag} className="text-xs px-3 py-1 rounded-full bg-elevated border border-border text-muted">
+              <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}
+                className="text-xs px-3 py-1 rounded-full bg-elevated border border-border text-muted hover:text-accent hover:border-accent/30 transition-colors">
                 #{tag}
-              </span>
+              </Link>
             ))}
           </div>
 
@@ -338,45 +334,49 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* City guide CTA */}
           {post.citySlug && (
-            <div className="mt-8 p-5 bg-surface border border-accent/20 rounded-2xl flex items-center justify-between gap-4">
+            <div className="glass-card mt-8 p-5 rounded-2xl flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs text-accent font-bold uppercase tracking-wider mb-1">Full City Guide</p>
                 <p className="text-sm text-primary-text font-medium">Read our complete guide with things to do, where to eat, and where to stay.</p>
               </div>
-              <Link href={`/cities/${post.citySlug}`}
-                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors">
+              <Link href={`/cities/${post.citySlug}`} className="btn btn-secondary flex-shrink-0">
                 <MapPin size={13} /> Open Guide
               </Link>
             </div>
           )}
 
-          {/* Affiliate booking links */}
+          {/* Affiliate booking links — highest-intent monetisation module, given
+              the most premium chrome (glass-sheen + hover glow + solid CTA chips). */}
           {cityData && (
-            <div className="mt-4 p-5 bg-surface border border-border rounded-2xl">
+            <div className="glass-card glass-hover glass-sheen mt-4 p-5 rounded-2xl">
               <p className="text-xs font-bold uppercase tracking-wider text-muted mb-3">Book Your Trip to {cityData.name}</p>
               <div className="grid grid-cols-3 gap-2">
-                <a href={hotelUrl(cityData.name)} target="_blank" rel="noopener noreferrer sponsored"
-                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/15 transition-colors group text-center">
-                  <Hotel size={16} className="text-blue-400" />
-                  <p className="text-xs font-semibold text-primary-text group-hover:text-blue-400 transition-colors">Hotels</p>
-                  <p className="text-[10px] text-muted">Booking.com</p>
+                <a href={hotelUrl(cityData.name)} target="_blank" rel="noopener noreferrer sponsored" className="min-w-0">
+                  <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
+                    <Hotel size={16} />
+                    <span className="text-xs font-semibold">Hotels</span>
+                    <span className="text-[10px] opacity-80">Booking.com</span>
+                  </span>
                 </a>
-                <a href={activitiesUrl(cityData.slug, cityData.name)} target="_blank" rel="noopener noreferrer sponsored"
-                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/15 transition-colors group text-center">
-                  <Ticket size={16} className="text-accent" />
-                  <p className="text-xs font-semibold text-primary-text group-hover:text-accent transition-colors">Tours</p>
-                  <p className="text-[10px] text-muted">{activitiesLabel(cityData.slug)}</p>
+                <a href={activitiesUrl(cityData.slug, cityData.name)} target="_blank" rel="noopener noreferrer sponsored" className="min-w-0">
+                  <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
+                    <Ticket size={16} />
+                    <span className="text-xs font-semibold">Tours</span>
+                    <span className="text-[10px] opacity-80">{activitiesLabel(cityData.slug)}</span>
+                  </span>
                 </a>
-                <a href={flightUrl(cityData.name)} target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-teal/10 border border-teal/20 hover:bg-teal/15 transition-colors group text-center">
-                  <Plane size={16} className="text-teal" />
-                  <p className="text-xs font-semibold text-primary-text group-hover:text-teal transition-colors">Flights</p>
-                  <p className="text-[10px] text-muted">Skyscanner</p>
+                <a href={flightUrl(cityData.name)} target="_blank" rel="noopener noreferrer" className="min-w-0">
+                  <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
+                    <Plane size={16} />
+                    <span className="text-xs font-semibold">Flights</span>
+                    <span className="text-[10px] opacity-80">Skyscanner</span>
+                  </span>
                 </a>
               </div>
-              <p className="text-[10px] text-muted/40 mt-2.5 text-center">We earn a small commission — at no extra cost to you.</p>
+              <p className="text-[10px] text-muted/70 mt-2.5 text-center">We earn a small commission — at no extra cost to you.</p>
             </div>
           )}
+        </div>
         </div>
 
         {/* Related posts */}
@@ -392,27 +392,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {related.map(p => (
-                  <Link key={p.slug} href={`/blog/${p.slug}`}
-                    className="group flex flex-col bg-elevated border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
-                    <div className="relative h-40">
-                      <Image
-                        src={`https://images.unsplash.com/${p.coverPhoto}?auto=format&fit=crop&w=400&q=75`}
-                        alt={p.title}
-                        fill
-                        className="object-cover card-img"
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
-                    <div className="p-4">
-                      <p className="font-heading text-base font-semibold text-primary-text group-hover:text-accent transition-colors leading-snug line-clamp-2">
-                        {p.title}
-                      </p>
-                      <p className="text-xs text-muted mt-1.5 flex items-center gap-1">
-                        <Clock size={10} /> {p.readTime} min read
-                      </p>
-                    </div>
-                  </Link>
+                  <PostCard key={p.slug} post={p} variant="related" />
                 ))}
               </div>
             </div>

@@ -4,13 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import SafeImage from '@/components/SafeImage';
 import Schema from '@/components/Schema';
+import Flag from '@/components/Flag';
+import CountryCard from '@/components/country/CountryCard';
+import CountryDestinationsGrid from '@/components/country/CountryDestinationsGrid';
 import {
   ChevronRight, ArrowRight, MapPin, Globe, Calendar,
   BookOpen, Plane, ChevronDown, Clock,
 } from 'lucide-react';
-import { countries, getCountryBySlug } from '@/data/countries';
+import { countries, getCountryBySlug, type CountryData } from '@/data/countries';
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts, isIndexablePost } from '@/lib/blog';
@@ -33,6 +35,20 @@ const FLIGHT_FROM_INDIA: Record<string, string> = {
   georgia: '~5–6 hrs', morocco: '~9–10 hrs', france: '~8–9 hrs',
   italy: '~9–10 hrs', malaysia: '~4–5 hrs', maldives: '~3–4 hrs',
 };
+
+// Continent-based fallback so the "From India" stat never shows a bare "—"
+// for the 34 countries FLIGHT_FROM_INDIA doesn't have an exact figure for.
+const CONTINENT_FLIGHT_ESTIMATE: Record<string, string> = {
+  Asia: '~4–8 hrs',
+  Europe: '~8–10 hrs',
+  Africa: '~9–11 hrs',
+  Americas: '~16–20 hrs',
+  Oceania: '~12–14 hrs',
+};
+
+function estimateFlightTime(country: CountryData): string {
+  return CONTINENT_FLIGHT_ESTIMATE[country.continent] ?? '~6–12 hrs';
+}
 
 const MONTH_ABR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 type Rating = 'excellent' | 'good' | 'average' | 'avoid';
@@ -93,10 +109,10 @@ export default async function CountryPage({ params }: Props) {
         (priorityIndex.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
         (priorityIndex.get(b.slug) ?? Number.MAX_SAFE_INTEGER))
     : citiesData;
-  // Show every city for this country — no cap, no "view all" link buried
-  // further down. Clicking a country should surface the full list at once.
+  // The Destinations section (CountryDestinationsGrid) now handles grouping
+  // by region (India) and capping/expanding flat lists — displayCities is
+  // still used for the ItemList schema, which should list every city.
   const displayCities = rankedCities;
-  const hasMoreCities = false;
 
   // Trip planner — ready-made 3/5/7 day itineraries for this country
   type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };
@@ -127,19 +143,19 @@ export default async function CountryPage({ params }: Props) {
     .flatMap((c) => (c.thingsToDo ?? []).slice(0, 3).map((t) => ({ ...t, cityName: c.name, citySlug: c.slug })))
     .slice(0, 6);
 
-  // Budget — first city that has it
-  const budgetCity  = citiesData.find((c) => c.budgetBreakdown);
+  // Budget — flagship/priority city (rankedCities order) that has it
+  const budgetCity  = rankedCities.find((c) => c.budgetBreakdown);
   const budgetTiers = budgetCity?.budgetBreakdown?.tiers ?? null;
 
-  // Monthly calendar — first city with full 12-month data
-  const monthCity = citiesData.find((c) => !c.monthByMonthSynthetic && c.monthByMonth?.months?.length === 12);
+  // Monthly calendar — flagship/priority city with full 12-month data
+  const monthCity = rankedCities.find((c) => !c.monthByMonthSynthetic && c.monthByMonth?.months?.length === 12);
   const monthData = monthCity?.monthByMonth?.months ?? null;
 
-  // Hero image — first city's hero photo
-  const heroBg = citiesData[0] ? getCityImageUrl(citiesData[0].slug, 'hero') : null;
+  // Hero image — flagship/priority city's hero photo
+  const heroBg = rankedCities[0] ? getCityImageUrl(rankedCities[0].slug, 'hero') : null;
 
   const visa = visaInfo(country.visaForIndians);
-  const flightHrs = FLIGHT_FROM_INDIA[slug] ?? '—';
+  const flightHrs = FLIGHT_FROM_INDIA[slug] ?? estimateFlightTime(country);
 
   // ── structured data ────────────────────────────────────────────────────────
   const breadcrumbSchema = {
@@ -238,7 +254,8 @@ export default async function CountryPage({ params }: Props) {
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/50 mb-3">
               {country.continent} · {citiesData.length} {citiesData.length === 1 ? 'destination' : 'destinations'}
             </p>
-            <h1 className="font-heading text-5xl sm:text-7xl lg:text-8xl font-bold text-white mb-4 leading-none tracking-tight">
+            <h1 className="font-heading text-5xl sm:text-7xl lg:text-8xl font-bold text-white mb-4 leading-none tracking-tight flex items-center gap-4">
+              <Flag emoji={country.flag} className="rounded-lg" />
               {country.name}
             </h1>
             <p className="text-white/70 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
@@ -261,7 +278,7 @@ export default async function CountryPage({ params }: Props) {
         {/* ══ AT A GLANCE BAR ════════════════════════════════════════════════ */}
         <div className="bg-surface border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-8">
-            <div className="flex overflow-x-auto divide-x divide-border" style={{ scrollbarWidth: 'none' }}>
+            <div className="flex overflow-x-auto divide-x divide-border scrollbar-hide marquee-mask">
               {([
                 { icon: <Plane size={13} className="text-accent" />,     label: 'From India',  value: flightHrs },
                 { icon: <span className="text-sm leading-none">🛂</span>, label: 'Visa',        value: visa.badge,            extra: visa.pill },
@@ -292,6 +309,53 @@ export default async function CountryPage({ params }: Props) {
 
         {/* ══ BODY ═══════════════════════════════════════════════════════════ */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-20">
+
+          {/* ── VISA GUIDE ───────────────────────────────────────────────── */}
+          <section>
+            <SectionHeader
+              label="visa & entry"
+              heading="Entry Requirements for Indians"
+              sub="What Indian passport holders need to know before booking"
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Visa status card */}
+              <div className="glass-card glass-hover rounded-2xl p-6 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-elevated flex items-center justify-center flex-shrink-0 text-2xl">
+                  🛂
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-1">Visa status</p>
+                  <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full border mb-3 ${visa.pill}`}>
+                    {visa.badge}
+                  </span>
+                  <p className="text-sm text-muted leading-relaxed">{country.visaForIndians}</p>
+                  <Link
+                    href="/blog/visa-free-countries-indian-passport-2026"
+                    className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+                  >
+                    Full list: visa-free countries for Indian passports →
+                  </Link>
+                </div>
+              </div>
+              {/* Practical tips card */}
+              <div className="glass-card glass-hover rounded-2xl p-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Practical tips</p>
+                <ul className="space-y-2.5">
+                  {[
+                    'Always carry a digital copy of your passport and visa',
+                    'Check the official embassy website for the latest requirements before booking',
+                    'Book return flights before applying for visa',
+                    'Keep proof of sufficient funds (bank statements)',
+                  ].map((tip) => (
+                    <li key={tip} className="flex gap-2.5 text-xs text-muted leading-relaxed">
+                      <span className="text-accent mt-0.5 flex-shrink-0">›</span>
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
 
           {/* ── TOP EXPERIENCES ──────────────────────────────────────────── */}
           {allExperiences.length >= 3 && (
@@ -335,108 +399,7 @@ export default async function CountryPage({ params }: Props) {
 
           {/* ── DESTINATIONS ─────────────────────────────────────────────── */}
           <section id="destinations">
-            <div className="flex items-end justify-between mb-8">
-              <SectionHeader
-                label={`${citiesData.length} ${citiesData.length === 1 ? 'destination' : 'destinations'}`}
-                heading={`Best Places to Visit in ${country.name}`}
-                sub="City guides with things to do, honest costs, and local tips"
-                noMargin
-              />
-              {hasMoreCities && (
-                <Link href={slug === 'india' ? '/cities?q=India' : '/destinations'}
-                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline flex-shrink-0 ml-4">
-                  View all {citiesData.length} <ArrowRight size={12} />
-                </Link>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {displayCities.map((city, idx) => {
-                const imgSrc = getCityImageUrl(city.slug, 'card');
-                const isFeatured = idx === 0 && displayCities.length >= 3;
-                return (
-                  <Link
-                    key={city.slug}
-                    href={`/cities/${city.slug}`}
-                    className={`group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 card-lift ${isFeatured ? 'sm:col-span-2 lg:col-span-1' : ''}`}
-                    style={{ aspectRatio: isFeatured ? '16/9' : '4/3' }}
-                  >
-                    {imgSrc ? (
-                      <SafeImage
-                        src={imgSrc}
-                        alt={`${city.name} — ${city.tagline}`}
-                        city={city.slug}
-                        accentColor={city.accentColor}
-                        fill
-                        sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                        className="object-cover card-img"
-                      />
-                    ) : (
-                      <div
-                        className="absolute inset-0"
-                        style={{ background: `linear-gradient(135deg, ${city.accentColor ?? '#dc2626'}30, ${city.accentColor ?? '#dc2626'}70)` }}
-                      />
-                    )}
-
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/25 to-transparent" />
-
-                    {/* Top chips */}
-                    <div className="absolute top-3 right-3 flex gap-1.5">
-                      <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white/80 border border-white/10">
-                        <Clock className="w-2.5 h-2.5 inline mr-0.5 -mt-0.5" />{city.stats.bestTime}
-                      </span>
-                    </div>
-
-                    {/* Hover: things count */}
-                    {city.thingsToDo && city.thingsToDo.length > 0 && (
-                      <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white/80 border border-white/10">
-                          {city.thingsToDo.length} things to do
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Bottom content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="font-heading text-xl font-bold text-white mb-1 leading-tight tracking-tight">
-                        {city.name}
-                      </h3>
-                      <p className="text-white/60 text-xs leading-snug mb-3 line-clamp-1">
-                        {city.tagline}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-wrap gap-1.5">
-                          {city.vibes.slice(0, 2).map((v) => (
-                            <span key={v}
-                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-white/75 border border-white/12">
-                              {v}
-                            </span>
-                          ))}
-                          {city.stats.budget && (
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent/30 backdrop-blur-sm text-white/80 border border-accent/25">
-                              {city.stats.budget}
-                            </span>
-                          )}
-                        </div>
-                        <span className="flex items-center gap-1 text-xs font-semibold text-white/80 group-hover:text-white group-hover:gap-1.5 transition-all">
-                          Guide <ArrowRight className="w-3 h-3" />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-
-            {hasMoreCities && (
-              <div className="mt-6 text-center">
-                <Link href="/destinations"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
-                  View all {citiesData.length} destinations in {country.name} <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            )}
+            <CountryDestinationsGrid country={country} cities={rankedCities} countrySlug={slug} />
           </section>
 
           {/* ── TRIP PLANNER ─────────────────────────────────────────────── */}
@@ -589,7 +552,9 @@ export default async function CountryPage({ params }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {budgetTiers.map((tier, i) => (
                   <div key={tier.label}
-                    className={`rounded-2xl p-6 border ${i === 1 ? 'bg-accent/5 border-accent/25' : 'bg-surface border-border'}`}>
+                    className={i === 1
+                      ? 'glass-card glass-hover rounded-2xl p-6'
+                      : 'rounded-2xl p-6 border bg-surface border-border'}>
                     <div className="flex items-center gap-2.5 mb-4">
                       <span className="text-2xl">{tier.icon}</span>
                       <div>
@@ -706,52 +671,6 @@ export default async function CountryPage({ params }: Props) {
             )}
           </section>
 
-          {/* ── VISA GUIDE ───────────────────────────────────────────────── */}
-          <section>
-            <SectionHeader
-              label="visa & entry"
-              heading="Entry Requirements for Indians"
-              sub="What Indian passport holders need to know before booking"
-            />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Visa status card */}
-              <div className="bg-surface border border-border rounded-2xl p-6 flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-elevated flex items-center justify-center flex-shrink-0 text-2xl">
-                  🛂
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted mb-1">Visa status</p>
-                  <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full border mb-3 ${visa.pill}`}>
-                    {visa.badge}
-                  </span>
-                  <p className="text-sm text-muted leading-relaxed">{country.visaForIndians}</p>
-                  <Link
-                    href="/blog/visa-free-countries-indian-passport-2026"
-                    className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
-                  >
-                    Full list: visa-free countries for Indian passports →
-                  </Link>
-                </div>
-              </div>
-              {/* Practical tips card */}
-              <div className="bg-surface border border-border rounded-2xl p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted mb-3">Practical tips</p>
-                <ul className="space-y-2.5">
-                  {[
-                    'Always carry a digital copy of your passport and visa',
-                    'Check the official embassy website for the latest requirements before booking',
-                    'Book return flights before applying for visa',
-                    'Keep proof of sufficient funds (bank statements)',
-                  ].map((tip) => (
-                    <li key={tip} className="flex gap-2.5 text-xs text-muted leading-relaxed">
-                      <span className="text-accent mt-0.5 flex-shrink-0">›</span>
-                      {tip}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
 
           {/* ── FAQ ──────────────────────────────────────────────────────── */}
           <section id="faq">
@@ -784,36 +703,9 @@ export default async function CountryPage({ params }: Props) {
                 heading={`More Destinations in ${country.continent}`}
               />
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {relatedCountries.map((rc) => {
-                  const rcImg = getCityImageUrl(rc.cities[0], 'card');
-                  return (
-                    <Link
-                      key={rc.slug}
-                      href={`/countries/${rc.slug}`}
-                      className="group relative block overflow-hidden rounded-2xl border border-border hover:border-accent/40 card-lift"
-                      style={{ aspectRatio: '3/4' }}
-                    >
-                      {rcImg ? (
-                        <Image
-                          src={rcImg}
-                          alt={`${rc.name} travel guide`}
-                          fill
-                          className="object-cover card-img"
-                          sizes="(max-width:640px) 50vw, 25vw"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-elevated" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <p className="font-heading text-base font-bold text-white leading-tight">{rc.name}</p>
-                        <p className="text-white/55 text-[11px] mt-0.5">
-                          {rc.cities.length} {rc.cities.length === 1 ? 'destination' : 'destinations'}
-                        </p>
-                      </div>
-                    </Link>
-                  );
-                })}
+                {relatedCountries.map((rc) => (
+                  <CountryCard key={rc.slug} country={rc} variant="compact" />
+                ))}
               </div>
             </section>
           )}

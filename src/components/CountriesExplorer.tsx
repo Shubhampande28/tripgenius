@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import { Search, Globe, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, Globe } from 'lucide-react';
 import type { CountryData } from '@/data/countries';
-import { getCityImageUrl } from '@/lib/cityImages';
-import Flag from '@/components/Flag';
+import CountryCard from '@/components/country/CountryCard';
 
 // ─── Continent tab config ───────────────────────────────────────────────────
 const CONTINENT_TABS = [
@@ -16,26 +15,6 @@ const CONTINENT_TABS = [
   { label: 'Americas', value: 'Americas', emoji: '🌎' },
   { label: 'Oceania',  value: 'Oceania',  emoji: '🦘' },
 ];
-
-const CONTINENT_COLORS: Record<string, { text: string; bg: string; border: string; bar: string }> = {
-  Asia:     { text: 'text-teal',        bg: 'bg-teal/10',        border: 'border-teal/30',        bar: 'bg-teal' },
-  Europe:   { text: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/30',    bar: 'bg-blue-400' },
-  Africa:   { text: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/30',   bar: 'bg-amber-400' },
-  Americas: { text: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/30', bar: 'bg-emerald-400' },
-  Oceania:  { text: 'text-sky-400',     bg: 'bg-sky-400/10',     border: 'border-sky-400/30',     bar: 'bg-sky-400' },
-};
-
-// ─── Visa badge helper ──────────────────────────────────────────────────────
-function visaInfo(visa: string): { label: string; dot: string; cls: string } {
-  const v = visa.toLowerCase();
-  if (v.includes('no visa') || v.includes('visa-free'))
-    return { label: 'Visa-free', dot: '✓', cls: 'text-teal bg-teal/10 border-teal/30' };
-  if (v.includes('on arrival'))
-    return { label: 'Visa on arrival', dot: '●', cls: 'text-amber-400 bg-amber-400/10 border-amber-400/30' };
-  if (v.includes('e-visa'))
-    return { label: 'E-visa', dot: '●', cls: 'text-blue-400 bg-blue-400/10 border-blue-400/30' };
-  return { label: 'Visa required', dot: '○', cls: 'text-muted bg-elevated border-border' };
-}
 
 // ─── Featured slugs ─────────────────────────────────────────────────────────
 const FEATURED = new Set(['india', 'japan', 'thailand', 'italy', 'france', 'maldives', 'indonesia', 'sri-lanka']);
@@ -59,9 +38,12 @@ export default function CountriesExplorer({ countries }: Props) {
   const easyVisaCount = useMemo(() =>
     countries.filter((c) => {
       const v = c.visaForIndians.toLowerCase();
-      return v.includes('no visa') || v.includes('visa-free') || v.includes('on arrival');
+      return v.includes('no visa') || v.includes('visa-free') || v.includes('on arrival') || v.includes('e-visa');
     }).length
   , [countries]);
+
+  // Continents actually represented in the data — drives the hero stat
+  const continentCount = useMemo(() => new Set(countries.map((c) => c.continent)).size, [countries]);
 
   // Filtered list
   const filtered = useMemo(() => {
@@ -89,7 +71,12 @@ export default function CountriesExplorer({ countries }: Props) {
         <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-accent/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-teal/10 blur-3xl" />
 
-        <div className="relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="relative z-10"
+        >
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full mb-4">
             TripGenius World Guides
           </span>
@@ -103,7 +90,7 @@ export default function CountriesExplorer({ countries }: Props) {
             {[
               { icon: '🌍', label: `${countries.length} Countries` },
               { icon: '✅', label: `${easyVisaCount} Easy Visa` },
-              { icon: '🗺️', label: '4 Continents' },
+              { icon: '🗺️', label: `${continentCount} Continents` },
             ].map((s) => (
               <span key={s.label}
                 className="flex items-center gap-1.5 text-sm font-medium text-primary-text bg-elevated/80 backdrop-blur-sm border border-border rounded-full px-4 py-1.5">
@@ -111,7 +98,7 @@ export default function CountriesExplorer({ countries }: Props) {
               </span>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Search + Tabs ─────────────────────────────────────────────── */}
@@ -127,7 +114,7 @@ export default function CountriesExplorer({ countries }: Props) {
           />
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-0.5 w-full sm:w-auto" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex gap-2 overflow-x-auto pb-0.5 w-full sm:w-auto scrollbar-hide">
           {CONTINENT_TABS.map((tab) => {
             const active = activeTab === tab.value;
             return (
@@ -160,53 +147,9 @@ export default function CountriesExplorer({ countries }: Props) {
             ✨ <span>Popular Destinations</span>
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {featured.map((country) => {
-              const visa   = visaInfo(country.visaForIndians);
-              const imgUrl = country.cities.length > 0 ? getCityImageUrl(country.cities[0], 'card') : null;
-              return (
-                <Link
-                  key={country.slug}
-                  href={`/countries/${country.slug}`}
-                  className="group relative overflow-hidden bg-surface border border-border hover:border-accent/50 rounded-2xl card-lift"
-                >
-                  {/* Photo header */}
-                  <div className="relative h-36 overflow-hidden">
-                    {imgUrl ? (
-                      <img
-                        src={imgUrl}
-                        alt={`${country.name} travel guide — top cities and best time to visit`}
-                        loading="lazy"
-                        className="w-full h-full object-cover card-img"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
-                        <span className="text-5xl"><Flag emoji={country.flag} /></span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                    <div className="absolute bottom-2.5 left-3 right-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xl"><Flag emoji={country.flag} /></span>
-                        <h3 className="font-heading text-sm font-bold text-white group-hover:text-teal-200 transition-colors leading-tight truncate">
-                          {country.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card body */}
-                  <div className="p-3">
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${visa.cls}`}>
-                      {visa.dot} {visa.label}
-                    </span>
-                    <div className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-accent">
-                      <span>{country.cities.length} {country.cities.length === 1 ? 'city' : 'cities'}</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+            {featured.map((country) => (
+              <CountryCard key={country.slug} country={country} variant="compact" />
+            ))}
           </div>
         </section>
       )}
@@ -234,90 +177,10 @@ export default function CountriesExplorer({ countries }: Props) {
       {rest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {rest.map((country) => (
-            <CountryCard key={country.slug} country={country} />
+            <CountryCard key={country.slug} country={country} variant="grid" />
           ))}
         </div>
       )}
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-function CountryCard({ country }: { country: CountryData }) {
-  const visa   = visaInfo(country.visaForIndians);
-  const cc     = CONTINENT_COLORS[country.continent];
-  const imgUrl = country.cities.length > 0 ? getCityImageUrl(country.cities[0], 'card') : null;
-
-  return (
-    <Link
-      href={`/countries/${country.slug}`}
-      className="group flex flex-col bg-surface border border-border hover:border-accent/40 rounded-2xl overflow-hidden card-lift"
-    >
-      {/* Photo header */}
-      <div className="relative h-44 overflow-hidden flex-shrink-0">
-        {imgUrl ? (
-          <img
-            src={imgUrl}
-            alt={`${country.name} travel guide`}
-            loading="lazy"
-            className="w-full h-full object-cover card-img"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-surface to-elevated flex items-center justify-center">
-            <span className="text-6xl"><Flag emoji={country.flag} /></span>
-          </div>
-        )}
-        {/* gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-        {/* continent bar */}
-        <div className={`absolute top-0 left-0 right-0 h-0.5 ${cc?.bar ?? 'bg-muted/30'}`} />
-        {/* continent badge */}
-        <span className={`absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm ${cc?.text ?? 'text-white/70'}`}>
-          {country.continent}
-        </span>
-        {/* country name over photo */}
-        <div className="absolute bottom-3 left-4 right-4">
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-2xl leading-none"><Flag emoji={country.flag} /></span>
-            <h3 className="font-heading text-base font-bold text-white group-hover:text-teal-200 transition-colors leading-tight">
-              {country.name}
-            </h3>
-          </div>
-          <p className="text-xs text-white/60 ml-8">{country.capital}</p>
-        </div>
-      </div>
-
-      {/* Card body */}
-      <div className="p-4 flex flex-col flex-1">
-        {/* Stats */}
-        <div className="space-y-1.5 mb-3 text-xs">
-          {[
-            { label: 'Best time', value: country.bestTime },
-            { label: 'Currency',  value: country.currency },
-            { label: 'Language',  value: country.language },
-          ].map((s) => (
-            <div key={s.label} className="flex items-center justify-between gap-4">
-              <span className="text-muted flex-shrink-0">{s.label}</span>
-              <span className="font-medium text-primary-text text-right truncate">{s.value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Visa */}
-        <span className={`self-start text-xs font-semibold px-2.5 py-1 rounded-full border ${visa.cls} mb-3`}>
-          {visa.dot} {visa.label}
-        </span>
-
-        {/* Footer */}
-        <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
-          <span className="text-xs text-muted">
-            {country.cities.length} {country.cities.length === 1 ? 'city' : 'cities'}
-          </span>
-          <span className="text-xs font-semibold text-accent inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">
-            Explore <ArrowRight className="w-3 h-3" />
-          </span>
-        </div>
-      </div>
-    </Link>
   );
 }
