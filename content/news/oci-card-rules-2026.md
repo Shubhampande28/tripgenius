@@ -3,7 +3,7 @@ title: "OCI Card Rules 2026: Paper Documents Dropped, Fully Digital Now"
 description: "India has scrapped the RC/RP requirement for in-country OCI applications and moved to a digital-only e-OCI card. Here's what changed and when."
 date: 2026-07-27
 category: Visas
-coverPhoto: photo-1436491865332-7a61a109cc05
+coverPhoto: /blog-images/visa-stamp-indian-passport-1.jpg
 tags: [OCI Card, India Entry Rules, e-OCI, NRI]
 sources:
   - https://www.indianeagle.com/travelbeats/oci-card-rules-fees-documents/

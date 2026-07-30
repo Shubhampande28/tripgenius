@@ -3,7 +3,7 @@ title: "Saudi Launches 1-Year Multiple-Entry Umrah Visa for 90-Day Stays"
 description: "Saudi Arabia's new Umrah visa lets pilgrims enter multiple times over 365 days for a cumulative 90-day stay, applied for via the Nusuk platform."
 date: 2026-07-27
 category: Visas
-coverPhoto: photo-1500375592092-40eb2168fd21
+coverPhoto: /city-images/jeddah.jpg
 tags: [Saudi Arabia, Umrah Visa, Nusuk, Indian Passport]
 sources:
   - https://www.khaleejtimes.com/world/gulf/saudi-arabia-launches-90-day-multiple-entry-umrah-visa-with-1-year-validity-2

@@ -3,7 +3,7 @@ title: "Air India to Fly Delhi-Toronto Non-Stop Daily from August 1"
 description: "Air India is upgrading Delhi-Toronto to a daily non-stop 787-9 service, cutting flight time by 3 hours and adding Premium Economy. Here's what changes."
 date: 2026-07-27
 category: Airlines
-coverPhoto: photo-1436491865332-7a61a109cc05
+coverPhoto: /city-images/toronto.jpg
 tags: [Air India, Toronto, Canada, Non-stop Flights, Premium Economy]
 sources:
   - https://theindianeye.com/2026/07/24/air-india-to-launch-non-stop-delhi-toronto-flight/

@@ -3,7 +3,7 @@ title: "IndiGo Suspends 6 International Routes Through September"
 description: "IndiGo has paused flights to Langkawi, Krabi, Ho Chi Minh City, Hong Kong, Shanghai and Siem Reap from July 1 through September 30, citing soft demand and costs."
 date: 2026-07-27
 category: Airlines
-coverPhoto: photo-1436491865332-7a61a109cc05
+coverPhoto: /city-images/hanoi.jpg
 tags: [IndiGo, Route Suspension, Southeast Asia, Flight Cancellations]
 sources:
   - https://www.ttrweekly.com/site/2026/06/indigo-cuts-four-international-services-in-july/

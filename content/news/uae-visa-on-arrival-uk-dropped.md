@@ -3,7 +3,7 @@ title: "UAE Visa-on-Arrival for Indians: UK Visa No Longer Qualifies"
 description: "The UAE has dropped UK visas and residence permits from its visa-on-arrival list for Indian passport holders. Here's who still qualifies in 2026."
 date: 2026-07-27
 category: Visas
-coverPhoto: photo-1489493887464-892be6d1daae
+coverPhoto: /city-images/dubai.jpg
 tags: [UAE, Visa on Arrival, Indian Passport, Dubai]
 sources:
   - https://www.tribuneindia.com/news/business/uae-visa-on-arrival-policy-for-indians-changed-heres-who-still-qualifies-in-2026/

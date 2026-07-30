@@ -3,7 +3,7 @@ title: "Saudi Arabia's New Package Visa: What It Means for Indians"
 description: "Saudi Arabia has launched a Package Visa bundling e-visa, flights and hotels for Indian travellers, starting around ₹1,00,920. Here's how it works."
 date: 2026-07-27
 category: Visas
-coverPhoto: photo-1544644181-1484b3fdfc62
+coverPhoto: /city-images/jeddah.jpg
 tags: [Saudi Arabia, Package Visa, e-Visa, Indian Passport]
 sources:
   - https://www.theweek.in/news/middle-east/2026/07/08/saudi-arabia-package-visa-tourist-india-flight-hotel.html

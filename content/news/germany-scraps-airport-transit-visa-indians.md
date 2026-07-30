@@ -3,7 +3,7 @@ title: "Germany Scraps Airport Transit Visa for Indians via Frankfurt, Munich"
 description: "From June 3, 2026, Indians connecting through German airports to non-Schengen destinations no longer need an airport transit visa. What changed and what didn't."
 date: 2026-07-09
 category: Visas
-coverPhoto: photo-1556388158-158ea5ccacbd
+coverPhoto: /city-images/frankfurt.jpg
 tags: [Germany, Transit Visa, Frankfurt, Munich, Schengen]
 sources:
   - https://gulfnews.com/business/tourism/germany-launches-visa-free-airport-transit-for-indian-nationals-1.500563047

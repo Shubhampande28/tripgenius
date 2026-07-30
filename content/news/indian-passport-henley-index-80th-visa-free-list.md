@@ -3,7 +3,7 @@ title: "Indian Passport Slips to 80th on Henley Index: What's Still Visa-Free"
 description: "India dropped to 80th on the July 2026 Henley Passport Index. Indians still reach 56 destinations without a pre-arranged visa — here's the list that matters."
 date: 2026-07-09
 category: Policy
-coverPhoto: photo-1436491865332-7a61a109cc05
+coverPhoto: /blog-images/visa-stamp-indian-passport-2.jpg
 tags: [Indian Passport, Henley Index, Visa-Free, Travel Policy]
 sources:
   - https://www.businesstoday.in/nri/visa/story/henley-passport-index-india-slips-to-80th-in-july-down-from-78th-in-may-56-nations-still-visa-free-540771-2026-07-03

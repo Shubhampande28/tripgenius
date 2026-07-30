@@ -3,7 +3,7 @@ title: "Air India Express Restores Direct Indore-Abu Dhabi Flights"
 description: "Air India Express relaunched direct Indore-Abu Dhabi flights from July 15, four times a week, reconnecting central India to the Gulf after months without a link."
 date: 2026-07-27
 category: Airlines
-coverPhoto: photo-1528181304800-259b08848526
+coverPhoto: /city-images/abu-dhabi.jpg
 tags: [Air India Express, Indore, Abu Dhabi, UAE, Central India]
 sources:
   - https://www.freepressjournal.in/indore/air-india-express-launches-direct-indore-abu-dhabi-flights-from-july-15-check-full-schedule

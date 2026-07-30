@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Clock, ChevronRight, Tag, ArrowRight, ExternalLink } from 'lucide-react';
+import { Clock, ChevronRight, ArrowRight, ExternalLink } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
-import { getAllNews, getNewsBySlug, NewsBlock, NewsCategory } from '@/lib/news';
+import SafeImage from '@/components/SafeImage';
+import NewsCategoryBadge from '@/components/news/NewsCategoryBadge';
+import { getNewsCoverUrl, COVER_W } from '@/lib/newsImages';
+import { getAllNews, getNewsBySlug, NewsBlock } from '@/lib/news';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -30,25 +32,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       publishedTime: article.date,
       authors: ['TripGenius'],
       tags: article.tags,
-      images: [`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getNewsCoverUrl(article.coverPhoto, COVER_W.hero)],
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
       description: article.description,
-      images: [`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getNewsCoverUrl(article.coverPhoto, COVER_W.hero)],
     },
   };
 }
-
-const CATEGORY_COLORS: Record<NewsCategory, string> = {
-  Visas:        'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  Airlines:     'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  Destinations: 'bg-teal/10 text-teal border-teal/20',
-  Advisories:   'bg-orange-500/10 text-orange-400 border-orange-500/20',
-  Deals:        'bg-green-500/10 text-green-400 border-green-500/20',
-  Policy:       'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-};
 
 // Renders the markdown inline subset the news-writer skill produces:
 // **bold** and [text](url). Relative links use <Link>, external open new tab.
@@ -132,7 +125,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
     headline: article.title,
     description: article.description,
     url: articleUrl,
-    image: `https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
+    image: getNewsCoverUrl(article.coverPhoto, COVER_W.hero),
     datePublished: article.date,
     dateModified: article.date,
     author: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${BASE}/about` },
@@ -165,9 +158,10 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
 
         {/* Cover image */}
         <div className="relative h-64 sm:h-80 lg:h-96 w-full pt-16">
-          <Image
-            src={`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1400&q=80`}
+          <SafeImage
+            src={getNewsCoverUrl(article.coverPhoto, COVER_W.hero)}
             alt={article.title}
+            city={article.slug}
             fill
             priority
             className="object-cover"
@@ -191,9 +185,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
 
           {/* Meta — news is dated content, show the date prominently */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[article.category]}`}>
-              <Tag size={8} /> {article.category}
-            </span>
+            <NewsCategoryBadge category={article.category} />
             <time dateTime={article.date} className="text-xs text-primary-text font-medium">
               {new Date(article.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
             </time>
@@ -257,9 +249,9 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
                   <Link key={a.slug} href={`/news/${a.slug}`}
                     className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-32 overflow-hidden">
-                      <Image
-                        src={`https://images.unsplash.com/${a.coverPhoto}?auto=format&fit=crop&w=400&q=80`}
-                        alt={a.title} fill className="object-cover card-img"
+                      <SafeImage
+                        src={getNewsCoverUrl(a.coverPhoto, COVER_W.related)}
+                        alt={a.title} city={a.slug} fill className="object-cover card-img"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                     </div>

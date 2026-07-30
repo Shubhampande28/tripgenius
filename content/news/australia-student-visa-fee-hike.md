@@ -3,7 +3,7 @@ title: "Australia Student Visa Fee Jumps to AUD 2,500 for Indian Applicants"
 description: "Australia raised its Subclass 500 student visa fee to AUD 2,500 (about ₹1.37 lakh) from July 1, 2026 — a fresh cost hit for Indian students."
 date: 2026-07-27
 category: Visas
-coverPhoto: photo-1544967082-d9d25d867d66
+coverPhoto: /city-images/sydney.jpg
 tags: [Australia, Student Visa, Indian Students, Visa Fees]
 sources:
   - https://studyabroadlife.org/australia-student-visa-fees-increased-from-1-july-2026-what-indian-students-should-know/
