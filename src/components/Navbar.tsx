@@ -266,48 +266,55 @@ export default function Navbar() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-[116px]">
 
-            {/* Logo — 60px height */}
-            <Link href="/" className="flex items-center flex-shrink-0 group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.png"
-                alt="TripGenius"
-                className="h-[110px] w-auto object-contain group-hover:opacity-90 transition-opacity"
-              />
-            </Link>
+            {/* Logo — own flex-1 third so the nav below centers on the true
+                page midpoint, not just the visual gap between logo and CTAs */}
+            <div className="flex-1 flex justify-start">
+              <Link href="/" className="flex items-center flex-shrink-0 group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="TripGenius"
+                  className="h-[110px] w-auto object-contain group-hover:opacity-90 transition-opacity"
+                />
+              </Link>
+            </div>
 
-            {/* Desktop nav — centered */}
-            <nav className="hidden lg:flex items-center gap-1">
+            {/* Desktop nav — genuinely centered (own flex-1 third), "Explore
+                Guides" lives here as a plain link so there's one clear
+                primary CTA on the right instead of two competing buttons */}
+            <nav className="flex-1 hidden lg:flex items-center justify-center gap-1">
               <DestinationsMenu open={destOpen} setOpen={setDestOpen} />
               <Link href="/blog"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 whitespace-nowrap">
                 Blog
               </Link>
               <Link href="/news"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 whitespace-nowrap">
                 News
               </Link>
               <Link href="/compare/goa-vs-bali"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150">
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 whitespace-nowrap">
                 Compare
+              </Link>
+              <Link href="/destinations"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted hover:text-primary-text hover:bg-elevated transition-colors duration-150 whitespace-nowrap">
+                Explore Guides
               </Link>
             </nav>
 
-            {/* Right — theme toggle + CTAs */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* Right — icon-only theme toggle (utility, not a third CTA) +
+                the single primary action */}
+            <div className="flex-1 hidden lg:flex items-center justify-end gap-3">
               <button
                 onClick={toggleTheme}
                 aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-accent/40 bg-surface hover:bg-elevated text-muted hover:text-primary-text transition-all duration-200 text-xs font-medium"
+                className="flex items-center justify-center w-9 h-9 rounded-full border border-border hover:border-accent/40 bg-surface hover:bg-elevated text-muted hover:text-primary-text transition-all duration-200"
               >
-                {isLight ? <><Moon size={13} strokeWidth={2} /> Dark</> : <><Sun size={13} strokeWidth={2} /> Light</>}
+                {isLight ? <Moon size={15} strokeWidth={2} /> : <Sun size={15} strokeWidth={2} />}
               </button>
-              <Link href="/plan" className="btn btn-tertiary">
+              <Link href="/plan" className="btn btn-primary">
                 <Sparkles size={14} />
-                Plan a Trip
-              </Link>
-              <Link href="/destinations" className="btn btn-primary">
-                Explore Guides
+                Plan with AI
               </Link>
             </div>
 
@@ -360,24 +367,21 @@ export default function Navbar() {
               ))}
 
               {[
-                { label:'Blog',         href:'/blog' },
-                { label:'News',         href:'/news' },
-                { label:'Compare',      href:'/compare/goa-vs-bali' },
+                { label:'Blog',           href:'/blog' },
+                { label:'News',           href:'/news' },
+                { label:'Compare',        href:'/compare/goa-vs-bali' },
+                { label:'Explore Guides', href:'/destinations' },
               ].map(l => (
                 <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}
                   className="block px-4 py-3 rounded-lg text-base font-medium text-primary-text hover:text-accent hover:bg-elevated transition-colors">
                   {l.label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-border space-y-2">
+              <div className="pt-3 border-t border-border">
                 <Link href="/plan" onClick={() => setMobileOpen(false)}
-                  className="btn btn-tertiary w-full">
-                  <Sparkles size={15} />
-                  Plan a Trip
-                </Link>
-                <Link href="/destinations" onClick={() => setMobileOpen(false)}
                   className="btn btn-primary w-full">
-                  Explore Guides
+                  <Sparkles size={15} />
+                  Plan with AI
                 </Link>
               </div>
             </div>
