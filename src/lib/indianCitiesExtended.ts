@@ -3738,8 +3738,8 @@ export const indianCitiesExtended: City[] = [
     heroDescription: 'Paragliders launch from the Billing plateau and drift down over prayer flags and tea gardens to land in Bir\'s Tibetan settlement — one of the world\'s best sites for the sport, with monastery bells as a soundtrack.',
     stats: { bestTime: 'Mar – Jun · Oct – Nov', budget: '$15–$60/day', language: 'Hindi, Tibetan, English', currency: 'INR (Rupee)' },
     vibes: ['Adventure', 'Bohemian', 'Spiritual'], gradient: 'from-sky-900 to-green-900', accentColor: '#0EA5E9',
-    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
-    heroImage: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85',
+    image: '/city-images/bir-billing.jpg',
+    heroImage: '/city-images/bir-billing.jpg',
     areas: [
       { name: 'Billing Take-Off & Trails', emoji: '🪂', accentColor: '#0EA5E9',
         image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80',
@@ -6160,4 +6160,53 @@ export const indianCitiesExtended: City[] = [
     gradient: 'from-blue-900 to-emerald-800', accentColor: '#0369A1', image: '', areaTagline: 'Sea forts, diving and Malvani coast',
     highlights: ['Sindhudurg Fort', 'Tarkarli Beach', 'Devbag Beach', 'Scuba diving', 'Malvan food trail'],
   }),
+
+  // -- BATCH 2 (Track B) — hand-authored, real thingsToDo/monthByMonth (no quickIndianCity/makeAddedCityGuide) --
+  // NOTE: of the five cities assigned in this batch, four (Alleppey, McLeodganj, Mathura/Vrindavan,
+  // Mysore/Mysuru) already exist as full hand-authored City entries elsewhere in the data model —
+  // 'alleppey' in indianCities.ts, 'mathura' and 'mcleod-ganj' above in this file, and 'mysuru' in
+  // indianCities.ts. Adding new near-duplicate entries under slightly different slugs (e.g. 'mysore'
+  // vs the existing 'mysuru') would create competing/cannibalising pages for the same real place,
+  // which the site's own content architecture explicitly avoids. Only Bir was genuinely missing, so
+  // only Bir is appended below. See batch2-verification-log-trackb2.md for the full explanation and
+  // per-city sourcing.
+  {
+    slug: 'bir', name: 'Bir (Bir Billing)', state: 'Himachal Pradesh',
+    country: 'India', flag: '🇮🇳',
+    tagline: 'India\'s Paragliding Capital',
+    description: 'A small Kangra Valley village that has become India\'s best-known paragliding destination — tandem flights launch from the Billing ridge above a Tibetan settlement of monasteries, a tea cooperative, and a renowned centre for classical Indian wisdom traditions.',
+    heroDescription: 'Prayer flags snap in the wind at 2,400 metres while paragliders lift off the Billing ridge and drift down over pine forest to the village below — a rare combination of adrenaline and quiet Tibetan-exile calm in the Dhauladhar foothills.',
+    stats: { bestTime: 'Oct – Nov · Mar – May', budget: '$15–$45/day', language: 'Hindi, Tibetan, English', currency: 'INR (Rupee)' },
+    vibes: ['Adventure', 'Spiritual', 'Nature'], gradient: 'from-sky-800 to-orange-700', accentColor: '#0369A1',
+    image: '/city-images/bir-billing.jpg',
+    heroImage: '/city-images/bir-billing.jpg',
+    thingsToDo: [
+      { name: 'Paragliding from Billing', description: 'The launch site at Billing sits roughly 2,400m up a ridge 14km above Bir, marketed as one of the world\'s highest paragliding take-off points. Tandem flights ride thermals for 15–30 minutes before landing at the Chowgan ground in Bir village — Himachal\'s single most popular adventure activity.', icon: '🪂', duration: '2–3 hrs (incl. transfer)', category: 'Adventure' },
+      { name: 'Chokling Monastery', description: 'A Nyingma-tradition monastery in Bir known for its Tibetan architecture and a large gilded stupa, home to a community of monks who periodically hold ceremonies open to visitors. One of the most striking buildings in the Tibetan colony.', icon: '🏯', duration: '45 min', category: 'Spiritual' },
+      { name: 'Bir Tibetan Colony', description: 'Settled in the early 1960s by Tibetan refugees, this colony holds monasteries from the Nyingma, Kagyu, and Sakya traditions alongside a handicraft centre, school, and clinic — a living community rather than a museum piece.', icon: '🙏', duration: '1.5 hrs', category: 'Cultural' },
+      { name: 'Deer Park Institute', description: 'A centre for the study of classical Indian wisdom traditions, founded in 2006 on the site of a former Buddhist monastic campus set in pine forest. It runs short courses and retreats on Buddhist philosophy, yoga, and the arts, and welcomes day visitors to its peaceful grounds.', icon: '📚', duration: '1 hr', category: 'Cultural' },
+      { name: 'Bir Tea Factory', description: 'A long-running local tea cooperative that offers walk-through tours of the withering, rolling, and drying process behind Kangra tea — a quieter, low-key counterpart to Bir\'s adrenaline-sport reputation.', icon: '🍃', duration: '1 hr', category: 'Cultural' },
+      { name: 'Palpung Sherabling Monastery', description: 'The monastic seat of the 12th Kenting Tai Situpa, one of the larger Tibetan Buddhist institutions in the region, set in forested foothills a short drive from Bir. Its shrine halls and debate courtyards are open to respectful visitors.', icon: '🕉️', duration: '2 hrs', category: 'Spiritual' },
+      { name: 'Baijnath Temple', description: 'An ASI-protected 1204 CE stone temple dedicated to Shiva as Vaidyanath ("lord of physicians"), in the town of Baijnath in the Kangra Valley — one of the oldest continuously worshipped temples in Himachal, reachable as a half-day trip from Bir.', icon: '🛕', duration: 'Half day (incl. drive)', category: 'Historical' },
+    ],
+    monthByMonth: {
+      summary: 'Bir\'s calendar is built around paragliding conditions, not just comfort: October–November brings the clearest air and the most reliable autumn thermals (the season for competitions), while March–May offers the longest window of flyable days as spring thermals build. The July–September monsoon grounds flights and turns trails slippery; December–February is cold with light flying limited to clear, calm days.',
+      bestMonths: ['October', 'November', 'April'],
+      avoidMonths: ['July', 'August'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, occasional light snow at higher points', temp: '8°C day / -4°C night', crowds: 'Low', price: 'Low', highlight: 'Quiet monasteries; paragliding only on rare calm, clear days' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cold, skies clearing toward month-end', temp: '10°C day / -2°C night', crowds: 'Low', price: 'Low', highlight: 'Losar (Tibetan New Year) observances in the Tibetan colony' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Mild, thermals beginning to build', temp: '15°C day / 3°C night', crowds: 'Moderate', price: 'Moderate', highlight: 'Paragliding season reopens as spring thermals strengthen' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Warm days, cool evenings, reliable thermals', temp: '20°C day / 8°C night', crowds: 'High', price: 'High', highlight: 'One of the two peak flying windows of the year' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, clear mountain air before monsoon haze', temp: '24°C day / 12°C night', crowds: 'High', price: 'High', highlight: 'Long flyable days; the spring season\'s final strong month' },
+        { month: 'June', short: 'Jun', rating: 'average', weather: 'Hot, humidity building ahead of monsoon', temp: '25°C day / 14°C night', crowds: 'Moderate', price: 'Moderate', highlight: 'Flying grows less predictable as pre-monsoon cloud builds' },
+        { month: 'July', short: 'Jul', rating: 'avoid', weather: 'Monsoon rain, heaviest of the year', temp: '23°C day / 16°C night', crowds: 'Low', price: 'Low', highlight: 'Paragliding largely suspended; trails muddy and slick' },
+        { month: 'August', short: 'Aug', rating: 'avoid', weather: 'Continued heavy monsoon rain', temp: '22°C day / 16°C night', crowds: 'Low', price: 'Low', highlight: 'Lush valley views but poor flying and trekking conditions' },
+        { month: 'September', short: 'Sep', rating: 'good', weather: 'Monsoon easing, air clearing', temp: '22°C day / 14°C night', crowds: 'Moderate', price: 'Moderate', highlight: 'Flying resumes toward month-end as skies dry out' },
+        { month: 'October', short: 'Oct', rating: 'excellent', weather: 'Crisp, clear autumn air, strong steady thermals', temp: '20°C day / 10°C night', crowds: 'Peak', price: 'Peak', highlight: 'Peak paragliding season — competitions and cross-country flying' },
+        { month: 'November', short: 'Nov', rating: 'excellent', weather: 'Cool, dry, excellent visibility', temp: '17°C day / 5°C night', crowds: 'High', price: 'High', highlight: 'Flying window tapers off toward month-end as it turns colder' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Cold, first snow possible on higher ground', temp: '11°C day / 0°C night', crowds: 'Low', price: 'Low', highlight: 'Off-season calm; monasteries and Deer Park Institute at their quietest' },
+      ],
+    },
+  },
 ];

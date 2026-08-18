@@ -1,5 +1,33 @@
 # Zone 4 Batch 2 — Candidate List (Track A + Track B)
 
+> **⚠️ CORRECTION (2026-08-19) — Track B below is wrong. Do not build it.**
+> The original "unmatched query" scan that produced Track B's 10 India
+> hill-station/pilgrimage candidates had a name-matching bug: it checked
+> queries against each city's exact `name` string, which fails for any city
+> whose real name carries a parenthetical or compound form —
+> `"Coorg (Kodagu)"`, `"Ooty (Udhagamandalam)"`, `"Spiti Valley"`,
+> `"Leh Ladakh"`, `"Alleppey (Alappuzha)"`, `"Mysuru (Mysore)"`,
+> `"Mathura & Vrindavan"` — none of those match a plain `"coorg"` /
+> `"ooty"` substring check. **All 10 Track B cities already exist in the
+> codebase and are already fully authored (12/12 months live)** — verified
+> directly via `allCities`/`authoredMonthCitySlugs`, not the flawed script:
+> `coorg`, `spiti`, `ooty`, `rameswaram` (not `rameshwaram` — spelling
+> differs), `ladakh` (covers Leh), `alleppey`, `mcleod-ganj`, `mathura`,
+> `mysuru` (not `mysore`), `bir-billing`. One of the build agents caught
+> this before writing anything and correctly refused rather than create
+> duplicate, cannibalizing pages — see its report for the line numbers.
+>
+> **What this actually means:** the GSC impressions behind Track B (Ooty's
+> 764, Coorg's 376, etc.) are landing on pages that already exist, not
+> missing ones. That's a genuinely different problem — a ranking/CTR gap on
+> live pages, not a content gap — and needs its own investigation (check
+> each page's actual current ranking position, title/meta, and whether the
+> monthByMonth data on file is current) rather than a "build 10 cities"
+> batch. Track A below is unaffected — its pool was built by excluding
+> already-authored *slugs* directly, not by fuzzy name matching, and was
+> independently re-verified against `authoredMonthCitySlugs` before Batch 2
+> build work started.
+
 Source: GSC export `Performance-on-Search-2026-08-12` (`Pages.csv` + `Queries.csv`,
 28-day window, most recent available). Cross-referenced against the live
 `allCities` export (493 cities: 184 authored/12-months-live, 215 non-stub with
