@@ -13,7 +13,7 @@ import { notify } from '@/lib/notify';
 import type { ActivitySource } from '@/lib/activityLog';
 
 const SOURCES: ActivitySource[] = [
-  'instagram', 'facebook', 'pinterest', 'reddit', 'scorecard', 'seo-watchdog', 'news', 'content-pipeline', 'deploy', 'other',
+  'instagram', 'facebook', 'telegram', 'pinterest', 'reddit', 'scorecard', 'daily-pulse', 'seo-watchdog', 'news', 'content-pipeline', 'deploy', 'other',
 ];
 
 export async function POST(request: Request) {

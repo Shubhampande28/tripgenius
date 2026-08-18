@@ -14,6 +14,7 @@ export type ActivitySource =
   | 'pinterest'
   | 'reddit'
   | 'scorecard'
+  | 'daily-pulse'
   | 'seo-watchdog'
   | 'news'
   | 'content-pipeline'

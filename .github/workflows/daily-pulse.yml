@@ -1,0 +1,60 @@
+name: Daily Pulse
+
+on:
+  schedule:
+    - cron: '30 15 * * *'   # daily 15:30 UTC (21:00 IST — end of day)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pulse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Collect GA4 + GSC and write today's read
+        id: pulse
+        env:
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npx tsx automation/daily-pulse/report.ts
+        continue-on-error: true
+      - name: Commit report + history row
+        if: steps.pulse.outcome == 'success'
+        run: |
+          git config user.name "tripgenius-automation"
+          git config user.email "automation@tripgenius.in"
+          git add automation/daily-pulse/report.md automation/daily-pulse/history.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "daily-pulse: $(date -u +%F) read [skip ci]"
+            git pull --rebase origin main
+            git push origin main
+          fi
+      - name: Report run to site dashboard
+        if: always()
+        continue-on-error: true
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -z "$CRON_SECRET" ] && exit 0
+          if [ "${{ steps.pulse.outcome }}" = "success" ] && [ -f automation/daily-pulse/summary.json ]; then
+            jq -n --slurpfile s automation/daily-pulse/summary.json \
+              '{source:"daily-pulse", status:"ok", title:$s[0].title, detail:$s[0].detail, url:"https://www.tripgenius.in/admin"}' \
+              > /tmp/payload.json
+          else
+            jq -n '{source:"daily-pulse", status:"error", title:"Daily pulse failed to run", detail:"Check the workflow log — likely GOOGLE_SA_KEY / GA4_PROPERTY_ID not configured yet."}' \
+              > /tmp/payload.json
+          fi
+          curl -s -X POST https://www.tripgenius.in/api/admin/log \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d @/tmp/payload.json
+      - name: Fail the job if the pulse script failed
+        if: steps.pulse.outcome == 'failure'
+        run: exit 1

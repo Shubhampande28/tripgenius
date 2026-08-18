@@ -28,6 +28,7 @@ const EXPECTED_INTERVAL_HOURS: Partial<Record<ActivitySource, number>> = {
   pinterest: 36,       // 1/weekday
   news: 30,            // daily routine
   'seo-watchdog': 30,  // daily
+  'daily-pulse': 30,   // daily
   scorecard: 8 * 24,   // weekly
   reddit: 8 * 24,      // weekly
 };
@@ -76,6 +77,7 @@ export default async function AdminPage(
     { source: 'pinterest', label: 'Pinterest' },
     { source: 'news', label: 'News' },
     { source: 'seo-watchdog', label: 'Watchdog' },
+    { source: 'daily-pulse', label: 'Daily Pulse' },
     { source: 'scorecard', label: 'Scorecard' },
     { source: 'reddit', label: 'Reddit' },
   ];
@@ -91,7 +93,7 @@ export default async function AdminPage(
         </div>
 
         {/* Health strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-10">
           {healthSources.map(({ source, label }) => {
             const last = latest[source];
             const maxHours = EXPECTED_INTERVAL_HOURS[source] ?? 48;
