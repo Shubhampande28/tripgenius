@@ -24,6 +24,7 @@ const STATUS_STYLE: Record<string, string> = {
 const EXPECTED_INTERVAL_HOURS: Partial<Record<ActivitySource, number>> = {
   instagram: 12,       // 3 slots/day
   facebook: 12,        // mirrors the Instagram slots
+  telegram: 30,        // n8n-triggered, ~1-2/day
   pinterest: 36,       // 1/weekday
   news: 30,            // daily routine
   'seo-watchdog': 30,  // daily
@@ -71,6 +72,7 @@ export default async function AdminPage(
   const healthSources: { source: ActivitySource; label: string }[] = [
     { source: 'instagram', label: 'Instagram' },
     { source: 'facebook', label: 'Facebook' },
+    { source: 'telegram', label: 'Telegram' },
     { source: 'pinterest', label: 'Pinterest' },
     { source: 'news', label: 'News' },
     { source: 'seo-watchdog', label: 'Watchdog' },
@@ -89,7 +91,7 @@ export default async function AdminPage(
         </div>
 
         {/* Health strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-10">
           {healthSources.map(({ source, label }) => {
             const last = latest[source];
             const maxHours = EXPECTED_INTERVAL_HOURS[source] ?? 48;

@@ -125,3 +125,22 @@ export function buildInstagramSlotPost(date: Date, slot: IgSlot): QueueItem | nu
   const city = cities[(day * IG_SLOTS.length + s) % cities.length];
   return buildItem(city, design, date);
 }
+
+// ── Telegram slot posts ──────────────────────────────────────────────────────
+// Same deterministic-rotation approach as Instagram, but offset (different
+// multipliers, all 4 styles including 'cover') so a Telegram post never shows
+// the exact same city+style pairing as the Instagram/Facebook post running
+// the same day — the two channels feel independently curated, not mirrored.
+export type TgSlot = 'midday' | 'evening';
+export const TG_SLOTS: TgSlot[] = ['midday', 'evening'];
+const TG_DESIGNS: QueueItem['style'][] = ['cover', 'things', 'collage', 'season'];
+
+export function buildTelegramSlotPost(date: Date, slot: TgSlot): QueueItem | null {
+  const cities = allCities.filter(isIndexableCity);
+  if (cities.length === 0) return null;
+  const day = dayIndexFor(date);
+  const s = TG_SLOTS.indexOf(slot);
+  const design = TG_DESIGNS[(day * 7 + s * 3 + 5) % TG_DESIGNS.length];
+  const city = cities[(day * TG_SLOTS.length + s + 11) % cities.length];
+  return buildItem(city, design, date);
+}

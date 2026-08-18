@@ -1,0 +1,85 @@
+{
+  "name": "TripGenius — Telegram Social Poster",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "30 5 * * *" }
+          ]
+        }
+      },
+      "id": "a1a1a1a1-0001-4000-8000-000000000001",
+      "name": "Midday Trigger (11:00 IST)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-400, -80]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "30 12 * * *" }
+          ]
+        }
+      },
+      "id": "a1a1a1a1-0002-4000-8000-000000000002",
+      "name": "Evening Trigger (18:00 IST)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-400, 120]
+    },
+    {
+      "parameters": {
+        "url": "https://www.tripgenius.in/api/social/telegram?slot=midday",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "a1a1a1a1-0003-4000-8000-000000000003",
+      "name": "Post Midday Slot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-160, -80],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "TripGenius CRON_SECRET"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.tripgenius.in/api/social/telegram?slot=evening",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "a1a1a1a1-0004-4000-8000-000000000004",
+      "name": "Post Evening Slot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-160, 120],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "TripGenius CRON_SECRET"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Midday Trigger (11:00 IST)": {
+      "main": [[{ "node": "Post Midday Slot", "type": "main", "index": 0 }]]
+    },
+    "Evening Trigger (18:00 IST)": {
+      "main": [[{ "node": "Post Evening Slot", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "instructions": "Before activating: 1) Settings > Credentials > New > 'Header Auth' — Name: Authorization, Value: Bearer <your CRON_SECRET from /var/www/tripgenius/.env.local>. Save it as 'TripGenius CRON_SECRET'. 2) Open each HTTP Request node and select that credential from the dropdown (the imported credential id won't match your instance). 3) Toggle the workflow Active. All logic, captions and image generation live server-side at tripgenius.in — this workflow is only the scheduler."
+  }
+}
