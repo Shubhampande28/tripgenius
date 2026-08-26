@@ -6,6 +6,8 @@
 import type { Metadata } from 'next';
 import { readActivity, latestBySource, type ActivitySource } from '@/lib/activityLog';
 import { getAllNews } from '@/lib/news';
+import { isAdminAuthorized } from '@/lib/adminAuth';
+import AdminDenied from '@/components/admin/AdminDenied';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,29 +42,11 @@ function ago(iso: string): string {
   return `${Math.floor(mins / 1440)}d ago`;
 }
 
-function Denied() {
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-dark px-4">
-      <form method="GET" className="bg-surface border border-border rounded-2xl p-8 max-w-sm w-full text-center">
-        <h1 className="font-heading text-xl font-bold text-primary-text mb-4">Admin access</h1>
-        <input
-          type="password" name="key" placeholder="Admin key" autoFocus
-          className="w-full bg-dark border border-border rounded-xl px-4 py-2.5 text-sm text-primary-text mb-3 outline-none focus:border-accent"
-        />
-        <button type="submit" className="w-full bg-accent text-white rounded-xl py-2.5 text-sm font-semibold hover:bg-accent/90">
-          Open dashboard
-        </button>
-      </form>
-    </main>
-  );
-}
-
 export default async function AdminPage(
   { searchParams }: { searchParams: Promise<{ key?: string }> },
 ) {
   const { key } = await searchParams;
-  const adminKey = process.env.ADMIN_KEY;
-  if (!adminKey || key !== adminKey) return <Denied />;
+  if (!isAdminAuthorized(key)) return <AdminDenied />;
 
   const activity = await readActivity(150);
   const latest = await latestBySource();

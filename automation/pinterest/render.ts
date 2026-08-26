@@ -16,10 +16,42 @@ import type { QueueEntry } from './build-queue';
 
 const DIR = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 const OUT_DIR = path.join(DIR, 'output');
+const PUBLIC_DIR = path.join(DIR, '..', '..', 'public');
+const SITE_ORIGIN = 'https://www.tripgenius.in';
 const W = 1000;
 const H = 1500;
 const BRAND = '#FF6B35';
 const DARK = '#151A22';
+
+const MIME_BY_EXT: Record<string, string> = {
+  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
+  '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml',
+};
+
+// Every pin's image is one of our own /public assets served at
+// {SITE_ORIGIN}/city-images/*.jpg (see build-queue.ts's absoluteImage()) — no
+// need for a network round-trip to fetch a file that's already sitting on
+// disk. Returns the resolved path only for same-origin/root-relative URLs
+// whose file actually exists under public/; anything else (external fallback
+// photos, dynamic /api/ routes) returns null so the caller falls back to
+// fetch(). Guards against path traversal escaping public/.
+function localPublicPath(url: string): string | null {
+  let pathname: string;
+  if (url.startsWith('/')) {
+    pathname = url;
+  } else {
+    try {
+      const parsed = new URL(url);
+      if (parsed.origin !== SITE_ORIGIN) return null;
+      pathname = parsed.pathname;
+    } catch {
+      return null;
+    }
+  }
+  const resolved = path.join(PUBLIC_DIR, decodeURIComponent(pathname));
+  if (resolved !== PUBLIC_DIR && !resolved.startsWith(PUBLIC_DIR + path.sep)) return null;
+  return fs.existsSync(resolved) && fs.statSync(resolved).isFile() ? resolved : null;
+}
 
 export type Variant = 'a' | 'b';
 
@@ -39,6 +71,13 @@ const img = (src: string, style: Record<string, unknown>) => ({
 });
 
 async function fetchImageDataUri(url: string): Promise<string> {
+  const localPath = localPublicPath(url);
+  if (localPath) {
+    const type = MIME_BY_EXT[path.extname(localPath).toLowerCase()] ?? 'image/jpeg';
+    const buf = fs.readFileSync(localPath);
+    return `data:${type};base64,${buf.toString('base64')}`;
+  }
+
   const res = await fetch(url, { headers: { 'User-Agent': 'TripGeniusPinFactory/1.0' } });
   if (!res.ok) throw new Error(`Image fetch failed (${res.status}): ${url}`);
   const type = res.headers.get('content-type') ?? 'image/jpeg';

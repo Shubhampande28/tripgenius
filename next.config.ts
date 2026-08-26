@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/admin': ['./content/news/**'],
   },
+  // @resvg/resvg-js is a native addon (SVG->PNG) used by the Pinterest pin
+  // renderer (automation/pinterest/render.ts), imported directly by
+  // /admin/pinterest's on-demand image route. Native addons must be excluded
+  // from Server Component bundling and required natively — see
+  // node_modules/next/dist/docs/.../serverExternalPackages.md.
+  serverExternalPackages: ['@resvg/resvg-js'],
   async redirects() {
     return [
       // Canonical direction for compare pairs (reverse pairs were removed)

@@ -30,9 +30,12 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  // automation/ is excluded: those scripts run via tsx in GitHub Actions and
-  // import devDependencies (satori, cheerio) that production installs on the
-  // server don't have — `next build` must not typecheck them. They have their
-  // own tsconfig (automation/tsconfig.json), checked via `npm run check:automation`.
+  // automation/ is excluded: those scripts run via tsx in GitHub Actions with
+  // their own module/target settings, plus one devDependency (cheerio) not
+  // installed in the app's production dependencies — `next build` must not
+  // typecheck them. (satori/@resvg/resvg-js moved to dependencies — the
+  // Pinterest renderer is now also called from /admin/pinterest at runtime,
+  // not just from CI.) automation/ has its own tsconfig
+  // (automation/tsconfig.json), checked via `npm run check:automation`.
   "exclude": ["node_modules", "automation"]
 }

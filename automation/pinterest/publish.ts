@@ -19,7 +19,7 @@ const DIR = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]
 const QUEUE_FILE = path.join(DIR, 'queue.json');
 const API = 'https://api.pinterest.com/v5';
 
-const BOARDS: Record<QueueEntry['type'], string> = {
+export const BOARDS: Record<QueueEntry['type'], string> = {
   itinerary: 'Day-by-Day Itineraries',
   visit: 'Best Time to Visit',
 };
@@ -67,14 +67,14 @@ async function ensureBoards(): Promise<Record<string, string>> {
   return existing;
 }
 
-function pinTitle(e: QueueEntry): string {
+export function pinTitle(e: QueueEntry): string {
   const t = e.type === 'itinerary'
     ? `${e.country} ${e.days}-Day Itinerary — Full Plan + Costs in ₹`
     : `${e.city} in ${e.month} — Weather, Crowds & Costs`;
   return t.slice(0, 100);
 }
 
-function pinDescription(e: QueueEntry): string {
+export function pinDescription(e: QueueEntry): string {
   const tagBase = (e.country ?? e.city ?? '').toLowerCase().replace(/[^a-z]/g, '');
   const body = e.type === 'itinerary'
     ? `The exact ${e.days}-day ${e.country} route: which cities, in what order, and what it really costs from India${e.costINR ? ` (from ₹${e.costINR.toLocaleString('en-IN')})` : ''}. Day-by-day plan with no fluff.`
@@ -82,7 +82,7 @@ function pinDescription(e: QueueEntry): string {
   return `${body}\n\n#travelindia #budgettravel #${tagBase}travel #itinerary #traveltips`;
 }
 
-function pinLink(e: QueueEntry): string {
+export function pinLink(e: QueueEntry): string {
   return `${e.url}?utm_source=pinterest&utm_medium=pin&utm_campaign=itineraries`;
 }
 
@@ -138,8 +138,13 @@ async function main() {
   console.log('queue.json updated');
 }
 
-main().catch((err) => {
-  // Auth errors are surfaced as a GitHub Issue by the workflow (it greps the log).
-  console.error(String(err));
-  process.exit(1);
-});
+// CLI-only — gated so importing BOARDS/pinTitle/pinDescription/pinLink from
+// elsewhere (e.g. the /admin/pinterest manual-posting page) never triggers a
+// real publish run as an import side effect.
+if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1]))) {
+  main().catch((err) => {
+    // Auth errors are surfaced as a GitHub Issue by the workflow (it greps the log).
+    console.error(String(err));
+    process.exit(1);
+  });
+}
