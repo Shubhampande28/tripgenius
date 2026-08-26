@@ -12,14 +12,18 @@ import {
   parseItinerarySlug,
   buildItineraryDays,
   buildRouteOverview,
+  buildCityActivityPool,
   getItinerarySlug,
   ITINERARY_DURATIONS,
+  ITINERARY_FLEXIBLE_PLANS,
+  ITINERARY_COMING_SOON,
   estimateTripCost,
   buildItineraryTitle,
   buildItineraryDescription,
   fmtINR,
   fmtUSD,
   type ItineraryDay,
+  type ItineraryFlexiblePlan,
 } from '@/lib/itineraries';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts, isIndexablePost } from '@/lib/blog';
@@ -38,6 +42,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const country = getCountryBySlug(parsed.countrySlug);
   if (!country) return { title: 'Not Found' };
+
+  // Genuinely thin data gap, too large a share of the page to caption
+  // honestly (see ITINERARY_COMING_SOON above) — noindex until real content
+  // exists to support the claimed duration.
+  const comingSoon = ITINERARY_COMING_SOON[slug];
+  if (comingSoon) {
+    return {
+      title: { absolute: `${country.name} ${parsed.duration}-Day Itinerary — Coming Soon | TripGenius` },
+      description: `We don't yet have enough real, distinct places authored for ${country.name} to responsibly fill a full ${parsed.duration}-day itinerary. Check back soon, or see our shorter ${country.name} itinerary that's live today.`,
+      robots: { index: false, follow: false },
+      alternates: { canonical: `${BASE}/itinerary/${slug}` },
+    };
+  }
 
   const route = buildRouteOverview(buildItineraryDays(parsed.countrySlug, parsed.duration));
   // CTR formula: "{Country} {N}-Day Itinerary: {Stop1}, {Stop2} & Budget ({Year})",
@@ -68,6 +85,7 @@ function buildItineraryFaqs(
   route: { city: { name: string }; startDay: number; endDay: number }[],
   days: ItineraryDay[],
   bestTime: string,
+  flexiblePlan?: ItineraryFlexiblePlan,
 ) {
   const names = route.map((r) => r.city.name);
   const routeWithDays = route
@@ -79,10 +97,21 @@ function buildItineraryFaqs(
     : `a budget in the range of ${days[0].city.stats.budget} per person per day`;
   const single = names.length === 1;
 
+  // These pages don't have enough distinct authored content to make every
+  // day a packed sightseeing day — flexiblePlan names exactly which days are
+  // captioned as rest/optional-add-on days on the visible page (and in the
+  // schema below), so the FAQ text has to say the same thing rather than
+  // implying all `duration` days are equally full.
+  const flexCount = flexiblePlan?.days.length ?? 0;
+  const solidDays = flexiblePlan?.solidDays;
+  const flexNote = flexiblePlan
+    ? ` ${flexCount} of those ${duration} days ${flexCount === 1 ? 'is' : 'are'} left flexible for rest or an optional add-on rather than packed sightseeing — see the day-by-day plan below for exactly which.`
+    : '';
+
   return [
     {
       q: `How many days do you need in ${countryName}?`,
-      a: `Most first-time visitors need 5–7 days in ${countryName} to see the highlights at a comfortable pace. This ${duration}-day plan covers ${names.join(', ')}${single ? ' in depth' : ''}. With more time, slow the pace or add day trips; with less, focus on ${names[0]} and skip the longer transfers.`,
+      a: `Most first-time visitors need 5–7 days in ${countryName} to see the highlights at a comfortable pace. This ${duration}-day plan covers ${names.join(', ')}${single ? ' in depth' : ''}.${flexNote} With more time, slow the pace or add day trips; with less, focus on ${names[0]} and skip the longer transfers.`,
     },
     {
       q: `How much does a ${duration}-day ${countryName} trip cost from India?`,
@@ -91,14 +120,20 @@ function buildItineraryFaqs(
     {
       q: `What is the best route for ${duration} days in ${countryName}?`,
       a: single
-        ? `With ${duration} days, base yourself in ${names[0]} the whole time: ${routeWithDays}. Staying in one base cuts out transfer days, so each day goes to sights, food and neighbourhoods instead of transit — the day-by-day plan below structures every day around a different side of the city.`
-        : `The most efficient ${duration}-day route is ${routeWithDays}. This order keeps travel legs short and one-directional, so you never backtrack. Each stop's day count matches how much there genuinely is to see — the day-by-day plan below breaks down exactly what to do in each.`,
+        ? (flexiblePlan
+          ? `With ${duration} days, base yourself in ${names[0]} the whole time: ${routeWithDays}. ${solidDays} of those days are structured sightseeing, each built around a different side of the city; the rest are left flexible for rest, a slower pace, or an optional day trip — the day-by-day plan below marks exactly which.`
+          : `With ${duration} days, base yourself in ${names[0]} the whole time: ${routeWithDays}. Staying in one base cuts out transfer days, so each day goes to sights, food and neighbourhoods instead of transit — the day-by-day plan below structures every day around a different side of the city.`)
+        : (flexiblePlan
+          ? `The most efficient ${duration}-day route is ${routeWithDays}. This order keeps travel legs short and one-directional, so you never backtrack. Each stop gets as many packed sightseeing days as it has real content for — ${solidDays} in total — with ${flexCount} further day${flexCount === 1 ? '' : 's'} left flexible for rest or an optional add-on; the day-by-day plan below marks exactly which.`
+          : `The most efficient ${duration}-day route is ${routeWithDays}. This order keeps travel legs short and one-directional, so you never backtrack. Each stop's day count matches how much there genuinely is to see — the day-by-day plan below breaks down exactly what to do in each.`),
     },
     {
       q: `Is ${duration} days enough for ${countryName}?`,
-      a: duration >= 7
-        ? `Yes — ${duration} days is enough for a complete first visit to ${countryName}, comfortably covering ${names.join(', ')} with time to explore each. You'd only need longer for regional deep-dives or a slower pace. The best months for this route are ${bestTime}.`
-        : `${duration} days is enough for a focused first look at ${countryName} — this plan covers ${names.join(', ')} without feeling rushed. For the full experience, the 7-day version adds more depth. The best months to do this route are ${bestTime}.`,
+      a: flexiblePlan
+        ? `Yes — ${duration} days is enough for a relaxed first visit to ${countryName}: ${solidDays} focused sightseeing days across ${names.join(', ')}, plus ${flexCount} flexible day${flexCount === 1 ? '' : 's'} for rest or an optional add-on so nothing feels rushed. The best months for this route are ${bestTime}.`
+        : duration >= 7
+          ? `Yes — ${duration} days is enough for a complete first visit to ${countryName}, comfortably covering ${names.join(', ')} with time to explore each. You'd only need longer for regional deep-dives or a slower pace. The best months for this route are ${bestTime}.`
+          : `${duration} days is enough for a focused first look at ${countryName} — this plan covers ${names.join(', ')} without feeling rushed. For the full experience, the 7-day version adds more depth. The best months to do this route are ${bestTime}.`,
     },
   ];
 }
@@ -111,10 +146,53 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
   const country = getCountryBySlug(parsed.countrySlug);
   if (!country) notFound();
 
+  // Genuinely thin data gap, noindexed — see ITINERARY_COMING_SOON.
+  const comingSoon = ITINERARY_COMING_SOON[slug];
+  if (comingSoon) {
+    const redirect = parseItinerarySlug(comingSoon.redirectSlug);
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-dark flex items-center justify-center px-4 py-24">
+          <div className="max-w-xl text-center space-y-6">
+            <div className="text-5xl mb-2 select-none">{country.flag}</div>
+            <h1 className="font-heading text-3xl font-bold text-primary-text">
+              {country.name} {parsed.duration}-Day Itinerary — Coming Soon
+            </h1>
+            <p className="text-muted leading-relaxed">
+              We don&apos;t yet have enough real, distinct places authored for {country.name} to
+              responsibly fill a full {parsed.duration}-day, day-by-day plan without repeating
+              ourselves or leaving days empty. Rather than publish a thin itinerary, we&apos;re
+              holding this page back until there&apos;s genuine content to fill it.
+            </p>
+            {redirect && (
+              <p className="text-muted leading-relaxed">
+                In the meantime, our{' '}
+                <Link href={`/itinerary/${comingSoon.redirectSlug}`} className="text-accent font-semibold hover:underline">
+                  {redirect.duration}-Day {country.name} Itinerary
+                </Link>{' '}
+                covers exactly what we can vouch for today.
+              </p>
+            )}
+            <div>
+              <Link href={`/countries/${country.slug}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline">
+                {country.name} Travel Guide <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   const days = buildItineraryDays(parsed.countrySlug, parsed.duration);
   if (days.length === 0) notFound();
 
   const route = buildRouteOverview(days);
+  const flexiblePlan = ITINERARY_FLEXIBLE_PLANS[slug];
+  const flexibleDayMap = new Map(flexiblePlan?.days.map((d) => [d.day, d]) ?? []);
 
   const countryCitySlugs = new Set(country.cities);
   const relatedPosts = allPosts
@@ -130,7 +208,7 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
 
   const pageUrl = `${BASE}/itinerary/${slug}`;
   const cost = estimateTripCost(days);
-  const faqs = buildItineraryFaqs(country.name, parsed.duration, route, days, country.bestTime);
+  const faqs = buildItineraryFaqs(country.name, parsed.duration, route, days, country.bestTime, flexiblePlan);
   const suits =
     parsed.duration === 3 ? 'ideal for a long weekend or a first taste' :
     parsed.duration === 5 ? 'the sweet spot for a comfortable first visit' :
@@ -165,7 +243,7 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
     itemListElement: days.map((d) => ({
       '@type': 'ListItem',
       position: d.day,
-      name: `Day ${d.day}: ${d.theme ?? d.city.name}`,
+      name: `Day ${d.day}: ${flexibleDayMap.get(d.day)?.label ?? d.theme ?? d.city.name}`,
       url: `${pageUrl}#day-${d.day}`,
     })),
   };
@@ -190,16 +268,26 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
     touristType: 'Indian travellers',
     itinerary: {
       '@type': 'ItemList',
-      itemListElement: days.map((d) => ({
-        '@type': 'ListItem',
-        position: d.day,
-        item: {
-          '@type': 'TouristAttraction',
-          name: d.theme ?? d.city.name,
-          description: d.city.tagline,
-          url: `${BASE}/cities/${d.city.slug}`,
-        },
-      })),
+      itemListElement: days.map((d) => {
+        const flex = flexibleDayMap.get(d.day);
+        return {
+          '@type': 'ListItem',
+          position: d.day,
+          item: flex
+            ? {
+              '@type': 'TouristAttraction',
+              name: flex.label,
+              description: flex.suggestion,
+              url: `${BASE}/cities/${d.city.slug}`,
+            }
+            : {
+              '@type': 'TouristAttraction',
+              name: d.theme ?? d.city.name,
+              description: d.city.tagline,
+              url: `${BASE}/cities/${d.city.slug}`,
+            },
+        };
+      }),
     },
     provider: { '@type': 'Organization', name: 'TripGenius', url: BASE },
   };
@@ -261,6 +349,14 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
                 <Calendar size={13} className="inline text-accent mr-1.5 -mt-0.5" />
                 Best months for this route: <span className="font-semibold text-primary-text">{country.bestTime}</span>
               </p>
+              {flexiblePlan && (
+                <p className="text-sm text-muted leading-relaxed">
+                  <MapPin size={13} className="inline text-accent mr-1.5 -mt-0.5" />
+                  {flexiblePlan.solidDays} of these are packed sightseeing days
+                  {' '}— the other {flexiblePlan.days.length === 1 ? 'day is' : `${flexiblePlan.days.length} days are`} left
+                  {' '}flexible for rest or an optional add-on (marked below).
+                </p>
+              )}
             </div>
 
             <p className="text-muted text-base sm:text-lg max-w-2xl mb-8 leading-relaxed">
@@ -324,10 +420,19 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
             <div className="space-y-6">
               {days.map((d) => {
                 const imgSrc = getCityImageUrl(d.city.slug, 'card');
-                const activities = d.city.thingsToDo?.slice(
+                // Pool merges thingsToDo with any unused-but-real areas.spots
+                // data so cities with more authored content than thingsToDo
+                // alone suggests (e.g. Hong Kong, Singapore) fill every day —
+                // see buildCityActivityPool.
+                const activities = buildCityActivityPool(d.city).slice(
                   d.activityIndex * 3,
                   d.activityIndex * 3 + 3,
-                ) ?? [];
+                );
+                // Genuinely thin-data days are captioned as flexible/rest/
+                // transfer days instead of a content day with <2 activities
+                // — see ITINERARY_FLEXIBLE_PLANS. Must stay in sync with the
+                // FAQ text and JSON-LD above, which describe the same days.
+                const flex = flexibleDayMap.get(d.day);
 
                 return (
                   <div key={d.day} id={`day-${d.day}`}
@@ -367,10 +472,10 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
                             <div className="flex items-center gap-2 mb-0.5">
                               <span className="text-lg">{d.city.flag}</span>
                               <h3 className="font-heading text-lg font-bold text-primary-text">
-                                {d.theme ?? d.city.name}
+                                {flex ? flex.label : (d.theme ?? d.city.name)}
                               </h3>
                             </div>
-                            {d.theme && (
+                            {(flex || d.theme) && (
                               <p className="text-xs text-muted ml-7">{d.city.name}</p>
                             )}
                           </div>
@@ -380,20 +485,25 @@ export default async function ItineraryPage({ params }: { params: Promise<{ slug
                           </Link>
                         </div>
 
-                        <p className="text-sm text-muted leading-relaxed mb-4">{d.city.tagline}</p>
-
-                        {activities.length > 0 && (
-                          <div className="space-y-1.5">
-                            {activities.map((act) => (
-                              <div key={act.name} className="flex items-start gap-2 text-xs">
-                                <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
-                                <span className="text-muted">
-                                  <span className="font-medium text-primary-text">{act.name}</span>
-                                  {act.description && ` — ${act.description.slice(0, 80)}${act.description.length > 80 ? '…' : ''}`}
-                                </span>
+                        {flex ? (
+                          <p className="text-sm text-muted leading-relaxed">{flex.suggestion}</p>
+                        ) : (
+                          <>
+                            <p className="text-sm text-muted leading-relaxed mb-4">{d.city.tagline}</p>
+                            {activities.length > 0 && (
+                              <div className="space-y-1.5">
+                                {activities.map((act) => (
+                                  <div key={act.name} className="flex items-start gap-2 text-xs">
+                                    <span className="text-accent mt-0.5 flex-shrink-0">✓</span>
+                                    <span className="text-muted">
+                                      <span className="font-medium text-primary-text">{act.name}</span>
+                                      {act.description && ` — ${act.description.slice(0, 80)}${act.description.length > 80 ? '…' : ''}`}
+                                    </span>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
+                            )}
+                          </>
                         )}
 
                         <div className="flex gap-3 mt-4 pt-3 border-t border-border text-xs text-muted">

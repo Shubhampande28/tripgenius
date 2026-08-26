@@ -82,6 +82,171 @@ export function buildItineraryDaysForCities(citiesData: City[], duration: number
   return days;
 }
 
+// ── Day-fill activity pool ───────────────────────────────────────────────────
+// A handful of cities (Hong Kong, Singapore, Prague, Budapest, Rio, Buenos
+// Aires, Cusco, Muscat, Tbilisi, Baku, Doha, Zanzibar, Mauritius, Maldives)
+// have exactly 10 thingsToDo entries — enough for 3 full days at 3/day, then
+// nothing — while a longer, hand-authored `areas[].spots[]` breakdown for the
+// same city sits unused. Those spots name real, distinct places; merging them
+// into the fill pool (deduped against thingsToDo so near-duplicates like
+// "Star Ferry Crossing" vs "Star Ferry crossing" don't double up) is what lets
+// 5- and 7-day single-city itineraries actually fill every day instead of
+// running dry after day 3.
+export interface ItineraryActivity {
+  name: string;
+  description?: string;
+}
+
+function normalizePlaceName(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+export function buildCityActivityPool(city: City): ItineraryActivity[] {
+  const pool: ItineraryActivity[] = (city.thingsToDo ?? []).map((t) => ({
+    name: t.name,
+    description: t.description,
+  }));
+  const seen = pool.map((p) => normalizePlaceName(p.name));
+
+  for (const area of city.areas ?? []) {
+    for (const spot of area.spots) {
+      const n = normalizePlaceName(spot.name);
+      if (seen.some((s) => s.includes(n) || n.includes(s))) continue;
+      seen.push(n);
+      pool.push({ name: spot.name });
+    }
+  }
+
+  return pool;
+}
+
+// ── Genuine data-gap remediation ─────────────────────────────────────────────
+// A handful of itinerary slugs cover cities whose authored place inventory
+// (thingsToDo + areas.spots, deduped) genuinely isn't enough to fill every
+// advertised day with 2+ activities — merging in areas.spots (above) doesn't
+// help because there's nothing extra to merge. Two different remedies:
+//
+//   ITINERARY_FLEXIBLE_PLANS — the thin day(s) are a small fraction of the
+//   page (≤29%), so the honest fix is to caption those specific days as
+//   flexible/rest/transfer days instead of full sightseeing content, both on
+//   the visible day card and in every FAQ/schema field that references day
+//   counts.
+//
+//   ITINERARY_COMING_SOON — the thin days are too large a fraction of the
+//   page (≥43%) for any caption to be an honest description of a "{duration}
+//   day itinerary"; those variants are noindexed and show a maintenance
+//   state instead, pointing at whichever shorter duration for that country
+//   *is* fully real.
+//
+// See itinerary-day-fill-audit.md for the per-page reasoning and thresholds.
+export interface ItineraryFlexibleDay {
+  day: number;
+  /** Short heading shown on the day card in place of a theme/city name. */
+  label: string;
+  /** Honest, city-specific suggestion — must match the visible card and the schema exactly. */
+  suggestion: string;
+}
+
+export interface ItineraryFlexiblePlan {
+  /** Real days actually filled with 2+ activities. */
+  solidDays: number;
+  days: ItineraryFlexibleDay[];
+}
+
+export const ITINERARY_FLEXIBLE_PLANS: Record<string, ItineraryFlexiblePlan> = {
+  'bulgaria-3-days': {
+    solidDays: 2,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Beach & Rest',
+        suggestion: "Sleep in, spend a slow morning on Varna's Central Beach and the Sea Garden promenade, and use the afternoon for a half-day trip to the Stone Forest (Pobiti Kamani) if you want one more thing to do.",
+      },
+    ],
+  },
+  'slovakia-3-days': {
+    solidDays: 2,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Optional Day Trip',
+        suggestion: "Bratislava's old town is genuinely a 2-day city. Use day 3 for a slow morning, or take the hour-long train to Vienna for a half-day add-on before heading home.",
+      },
+    ],
+  },
+  'estonia-3-days': {
+    solidDays: 2,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Slow Morning',
+        suggestion: "Tallinn's Old Town and Kadriorg cover 2 solid days. Spend day 3 revisiting a favourite café at a slower pace, or browsing Telliskivi's design shops again before your flight.",
+      },
+    ],
+  },
+  'serbia-5-days': {
+    solidDays: 4,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Belgrade at Your Pace',
+        suggestion: 'Belgrade\'s essential sights are covered in 2 focused days. Use day 3 to revisit Skadarlija for a long lunch, wander Zemun without an agenda, or simply rest before continuing to Novi Sad.',
+      },
+    ],
+  },
+  'montenegro-5-days': {
+    solidDays: 4,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Kotor at Your Pace',
+        suggestion: "Kotor's old town and fortress hike fill 2 solid days. Use day 3 for a boat trip to Perast and Our Lady of the Rocks, or simply relax before continuing to Budva.",
+      },
+    ],
+  },
+  'slovenia-7-days': {
+    solidDays: 5,
+    days: [
+      {
+        day: 3,
+        label: 'Flexible Day — Ljubljana at Your Pace',
+        suggestion: "Ljubljana's castle, riverfront and market cover 2 solid days. Use day 3 for a relaxed café morning in the old town, or a half-day trip to Postojna Cave before continuing to Lake Bled.",
+      },
+      {
+        day: 6,
+        label: 'Flexible Day — Lake Bled at Your Pace',
+        suggestion: 'The lake circuit, island and castle cover 2 solid days at Bled. Use day 6 for Vintgar Gorge if you skipped it, or a quieter second lap of the lake shore before continuing to Piran.',
+      },
+    ],
+  },
+  'bahrain-7-days': {
+    solidDays: 6,
+    days: [
+      {
+        day: 4,
+        label: 'Manama Wrap-Up & Transfer to Muharraq',
+        suggestion: 'A short final morning in Manama — revisit the souq or grab a last coffee at Bahrain Bay — before the 20-minute causeway crossing to Muharraq for the rest of the trip.',
+      },
+    ],
+  },
+};
+
+export interface ItineraryComingSoon {
+  /** The shorter duration for the same country that IS fully real content today. */
+  redirectSlug: string;
+}
+
+export const ITINERARY_COMING_SOON: Record<string, ItineraryComingSoon> = {
+  'bulgaria-5-days': { redirectSlug: 'bulgaria-3-days' },
+  'bulgaria-7-days': { redirectSlug: 'bulgaria-3-days' },
+  'slovakia-5-days': { redirectSlug: 'slovakia-3-days' },
+  'slovakia-7-days': { redirectSlug: 'slovakia-3-days' },
+  'estonia-5-days': { redirectSlug: 'estonia-3-days' },
+  'estonia-7-days': { redirectSlug: 'estonia-3-days' },
+  'serbia-7-days': { redirectSlug: 'serbia-5-days' },
+  'montenegro-7-days': { redirectSlug: 'montenegro-5-days' },
+};
+
 // Returns unique cities and the day range for each — used for the route overview strip
 export function buildRouteOverview(days: ItineraryDay[]): { city: City; startDay: number; endDay: number }[] {
   const seen = new Map<string, { city: City; startDay: number; endDay: number }>();
