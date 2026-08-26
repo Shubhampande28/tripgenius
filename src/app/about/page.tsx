@@ -4,16 +4,17 @@ import { Compass, Globe, BookOpen, Shield, Heart, TrendingUp, Search, RefreshCw,
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
+import { REAL_CITY_COUNT, REAL_COUNTRY_COUNT } from '@/lib/siteStats';
 
 const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
   title: 'About TripGenius — Editorial Standards & Research Process',
-  description: 'Learn how TripGenius researches and writes travel guides. Our editorial process, fact-checking standards, and commitment to honest, up-to-date information for 70+ destinations.',
+  description: `Learn how TripGenius researches and writes travel guides. Our editorial process, fact-checking standards, and commitment to honest, up-to-date information for ${REAL_CITY_COUNT} destinations.`,
   alternates: { canonical: `${BASE}/about` },
   openGraph: {
     title: 'About TripGenius — Honest Travel Guides for Every Destination',
-    description: 'Free, honest, and up-to-date travel guides for 140+ destinations. No paid rankings, no fluff.',
+    description: `Free, honest, and up-to-date travel guides for ${REAL_CITY_COUNT} destinations. No paid rankings, no fluff.`,
     url: `${BASE}/about`,
     siteName: 'TripGenius',
     type: 'website',
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary',
     title: 'About TripGenius — Honest Travel Guides for Every Destination',
-    description: 'Free, honest, and up-to-date travel guides for 140+ destinations. No paid rankings, no fluff.',
+    description: `Free, honest, and up-to-date travel guides for ${REAL_CITY_COUNT} destinations. No paid rankings, no fluff.`,
   },
 };
 
@@ -89,7 +90,7 @@ const aboutSchema = {
     name: 'TripGenius',
     url: BASE,
     logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
-    description: 'Free travel guides for 70+ cities worldwide. Honest, well-researched information with no paid rankings.',
+    description: `Free travel guides for ${REAL_CITY_COUNT} cities worldwide. Honest, well-researched information with no paid rankings.`,
     foundingDate: '2025',
     knowsAbout: ['Travel', 'Tourism', 'India Travel', 'Asia Travel', 'Europe Travel', 'Travel Planning'],
     areaServed: 'Worldwide',
@@ -122,7 +123,7 @@ export default function AboutPage() {
             {/* Entity one-liner — identical wording to the footer, so search and
                 AI engines see one canonical description of the brand. */}
             <p className="mt-4 text-primary-text text-base max-w-xl mx-auto leading-relaxed font-medium">
-              TripGenius is a free travel guide platform covering 160+ cities,
+              TripGenius is a free travel guide platform covering {REAL_CITY_COUNT} cities,
               built for Indian and international travellers.
             </p>
             <p className="mt-3 text-muted text-base max-w-xl mx-auto leading-relaxed">
@@ -139,7 +140,7 @@ export default function AboutPage() {
               TripGenius started as a personal frustration. Too many travel websites bury honest advice under hotel ads, affiliate spam, and clickbait listicles that clearly haven&apos;t been updated since 2019. We wanted something different.
             </p>
             <p className="text-muted leading-relaxed mb-4">
-              So we built it. Starting with a handful of destinations and growing to 140+ cities across 15+ countries, TripGenius is now one of the fastest-growing free travel guide platforms on the web. Our readers come to us because they know what they&apos;ll get: real information, real costs, and real advice — not paid promotions dressed up as editorial content.
+              So we built it. Starting with a handful of destinations and growing to {REAL_CITY_COUNT} cities across {REAL_COUNTRY_COUNT} countries, TripGenius is now one of the fastest-growing free travel guide platforms on the web. Our readers come to us because they know what they&apos;ll get: real information, real costs, and real advice — not paid promotions dressed up as editorial content.
             </p>
             <p className="text-muted leading-relaxed">
               We cover everything from iconic world cities like Paris and Tokyo to incredible Indian destinations that most travel sites simply ignore. Whether you&apos;re backpacking on a budget or planning a luxury escape, TripGenius has a guide for you.

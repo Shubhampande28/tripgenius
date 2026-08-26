@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
 import Schema from "@/components/Schema";
+import { REAL_CITY_COUNT } from "@/lib/siteStats";
 import "./globals.css";
 
 const GA_ID = "G-GZN2V0V66B";
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | TripGenius",
   },
   description:
-    `Free travel guides for 70+ cities across India, Asia, Europe & the Americas. Find the best time to visit, things to do, budget breakdowns, and local insider tips for Bali, Delhi, Jaipur, Tokyo, Paris and more.`,
+    `Free travel guides for ${REAL_CITY_COUNT} cities across India, Asia, Europe & the Americas. Find the best time to visit, things to do, budget breakdowns, and local insider tips for Bali, Delhi, Jaipur, Tokyo, Paris and more.`,
   metadataBase: new URL(SITE),
   alternates: { canonical: SITE },
   openGraph: {
@@ -40,14 +41,14 @@ export const metadata: Metadata = {
     siteName: "TripGenius",
     url: SITE,
     title: `TripGenius — Free Travel Guides for India & the World`,
-    description: `Free travel guides for 70+ cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
+    description: `Free travel guides for ${REAL_CITY_COUNT} cities. Best time to visit, budget, things to do, and hidden gems — India, Asia, Europe & beyond.`,
     images: [{ url: `${SITE}/opengraph-image`, width: 1200, height: 630, alt: "TripGenius — Free Travel Guides" }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@tripgenius_in",
     title: "TripGenius — Free Travel Guides for India & the World",
-    description: "Free travel guides for 70+ cities. Best time to visit, budget, things to do, and hidden gems.",
+    description: `Free travel guides for ${REAL_CITY_COUNT} cities. Best time to visit, budget, things to do, and hidden gems.`,
     images: [`${SITE}/opengraph-image`],
   },
   robots: {
@@ -116,7 +117,7 @@ export default function RootLayout({
                 'https://www.instagram.com/tripgenius_in',
                 'https://www.pinterest.com/tripgenius_in',
               ],
-              description: 'Free travel guides for 70+ cities worldwide.',
+              description: `Free travel guides for ${REAL_CITY_COUNT} cities worldwide.`,
             },
             {
               '@context': 'https://schema.org',

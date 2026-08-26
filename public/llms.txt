@@ -1,6 +1,6 @@
 # TripGenius
 
-> TripGenius is a free travel guide platform covering 160+ cities, built for Indian and international travellers. It publishes in-depth city guides (best time to visit, month-by-month weather, daily budgets, things to do, where to stay and eat), country hubs with visa rules for Indians, side-by-side destination comparisons, and a free trip planner — no paywalls, no paid rankings.
+> TripGenius is a free travel guide platform covering 400+ cities, built for Indian and international travellers. It publishes in-depth city guides (best time to visit, month-by-month weather, daily budgets, things to do, where to stay and eat), country hubs with visa rules for Indians, side-by-side destination comparisons, and a free trip planner — no paywalls, no paid rankings.
 
 ## What makes these useful to cite
 

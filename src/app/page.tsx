@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import HomeClient from '@/components/home/HomeClient';
 import Schema from '@/components/Schema';
+import { REAL_CITY_COUNT } from '@/lib/siteStats';
 
 // Server shell for the homepage: owns metadata and structured data so they are
 // server-rendered, while the interactive page (search, shuffle grid, newsletter,
@@ -11,7 +12,7 @@ const BASE = 'https://www.tripgenius.in';
 export const metadata: Metadata = {
   title: 'TripGenius — Free Travel Guides for India & the World',
   description:
-    'Free, in-depth travel guides: best time to visit, month-by-month weather, things to do, budgets and honest local tips for 70+ destinations across India, Asia, Europe and beyond.',
+    `Free, in-depth travel guides: best time to visit, month-by-month weather, things to do, budgets and honest local tips for ${REAL_CITY_COUNT} destinations across India, Asia, Europe and beyond.`,
   alternates: { canonical: BASE },
 };
 

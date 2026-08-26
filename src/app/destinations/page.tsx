@@ -8,6 +8,7 @@ import SafeImage from '@/components/SafeImage';
 import { allCities } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { countries } from '@/data/countries';
+import { REAL_CITY_COUNT } from '@/lib/siteStats';
 import { ArrowRight, Search } from 'lucide-react';
 import Flag from '@/components/Flag';
 
@@ -140,7 +141,7 @@ export default function DestinationsPage() {
               All Destinations
             </h1>
             <p className="text-muted text-base">
-              Free travel guides for 70+ destinations — things to do, best time to visit and local tips.
+              Free travel guides for {REAL_CITY_COUNT} destinations — things to do, best time to visit and local tips.
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Compass, X, Camera } from 'lucide-react';
 import Flag from '@/components/Flag';
+import { REAL_CITY_COUNT, REAL_COUNTRY_COUNT } from '@/lib/siteStats';
 
 // Pinterest has no lucide icon — minimal brand glyph, inherits currentColor
 function PinterestIcon({ size = 16 }: { size?: number }) {
@@ -56,9 +57,9 @@ export default function Footer() {
       <div className="border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted text-center" suppressHydrationWarning>
-            <span className="font-semibold text-primary-text">160+ city guides</span>
+            <span className="font-semibold text-primary-text">{REAL_CITY_COUNT} city guides</span>
             <span aria-hidden>·</span>
-            <span className="font-semibold text-primary-text">49 countries</span>
+            <span className="font-semibold text-primary-text">{REAL_COUNTRY_COUNT} countries</span>
             <span aria-hidden>·</span>
             <span>Updated {updated}</span>
             <span aria-hidden>·</span>
@@ -78,7 +79,7 @@ export default function Footer() {
             {/* Consistent entity one-liner — keep identical wording on the About
                 page so AI engines see one canonical description of the brand. */}
             <p className="mt-4 text-muted text-sm leading-relaxed max-w-xs">
-              TripGenius is a free travel guide platform covering 160+ cities,
+              TripGenius is a free travel guide platform covering {REAL_CITY_COUNT} cities,
               built for Indian and international travellers.
             </p>
             <div className="flex items-center gap-4 mt-6">

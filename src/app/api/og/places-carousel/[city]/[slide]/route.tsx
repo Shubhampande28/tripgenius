@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { getCityBySlug } from '@/lib/cities';
+import { REAL_CITY_COUNT } from '@/lib/siteStats';
 
 // Node runtime: these routes bundle the full city dataset (~1.2 MB), which
 // exceeds the 1 MB Edge Function limit on the current Vercel plan.
@@ -152,7 +153,7 @@ export async function GET(
               Plan your{'\n'}Bali trip free
             </span>
             <div style={{ display:'flex', flexDirection:'column', gap:12, width:'100%' }}>
-              {['🌍  70+ city guides — all free', '✅  No paid reviews or sponsors', '📅  Updated for 2026'].map(t => (
+              {[`🌍  ${REAL_CITY_COUNT} city guides — all free`, '✅  No paid reviews or sponsors', '📅  Updated for 2026'].map(t => (
                 <div key={t} style={{ display:'flex', alignItems:'center',
                   background:'rgba(255,122,0,0.08)', borderRadius:12, padding:'12px 18px' }}>
                   <span style={{ fontSize:17, color:GRN, fontWeight:600 }}>{t}</span>

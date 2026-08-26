@@ -5,16 +5,17 @@ import Footer from '@/components/Footer';
 import CountriesExplorer from '@/components/CountriesExplorer';
 import Schema from '@/components/Schema';
 import { countries } from '@/data/countries';
+import { REAL_COUNTRY_COUNT } from '@/lib/siteStats';
 
 const BASE = 'https://www.tripgenius.in';
 
 export const metadata: Metadata = {
   title: 'Travel Guides by Country — Best Places to Visit Worldwide',
-  description: 'Explore honest travel guides for 49 countries. Visa requirements for Indians, best time to visit, top cities, daily budgets and local tips — all in one place.',
+  description: `Explore honest travel guides for ${REAL_COUNTRY_COUNT} countries. Visa requirements for Indians, best time to visit, top cities, daily budgets and local tips — all in one place.`,
   alternates: { canonical: `${BASE}/countries` },
   openGraph: {
     title: 'Travel Guides by Country | TripGenius',
-    description: 'Honest guides for 49 countries — visa info, best time to visit, top cities, and real budgets.',
+    description: `Honest guides for ${REAL_COUNTRY_COUNT} countries — visa info, best time to visit, top cities, and real budgets.`,
     url: `${BASE}/countries`,
     type: 'website',
   },
