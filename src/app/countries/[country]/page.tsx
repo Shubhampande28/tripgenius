@@ -16,7 +16,7 @@ import { countries, getCountryBySlug, type CountryData } from '@/data/countries'
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts, isIndexablePost } from '@/lib/blog';
-import { ITINERARY_DURATIONS, getItinerarySlug, buildItineraryDays, buildRouteOverview, type ItineraryDuration } from '@/lib/itineraries';
+import { ITINERARY_DURATIONS, ITINERARY_COMING_SOON, getItinerarySlug, buildItineraryDays, buildRouteOverview, type ItineraryDuration } from '@/lib/itineraries';
 
 const BASE  = 'https://www.tripgenius.in';
 const YEAR  = new Date().getFullYear();
@@ -114,10 +114,15 @@ export default async function CountryPage({ params }: Props) {
   // still used for the ItemList schema, which should list every city.
   const displayCities = rankedCities;
 
-  // Trip planner — ready-made 3/5/7 day itineraries for this country
+  // Trip planner — ready-made 3/5/7 day itineraries for this country. Skips
+  // any duration in ITINERARY_COMING_SOON — those pages are noindexed
+  // maintenance stubs (not enough real content to fill the advertised
+  // duration honestly), so they must not be surfaced here as if they were
+  // normal, complete itineraries.
   type ItineraryOption = { duration: ItineraryDuration; route: ReturnType<typeof buildRouteOverview> };
   const itineraryOptions = ITINERARY_DURATIONS
     .map((duration): ItineraryOption | null => {
+      if (ITINERARY_COMING_SOON[getItinerarySlug(slug, duration)]) return null;
       const days = buildItineraryDays(slug, duration);
       return days.length > 0 ? { duration, route: buildRouteOverview(days) } : null;
     })
