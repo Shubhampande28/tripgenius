@@ -35,6 +35,14 @@ export interface Ga4Channels {
   engagementRate: number;          // 0..1
   avgEngagementSeconds: number;
   landingPages: { page: string; sessions: number; engagementSeconds: number }[];
+  /** Raw activeUsers for the window (all traffic). */
+  activeUsersRaw: number;
+  /**
+   * activeUsers excluding country=Singapore AND channel=Direct — the
+   * confirmed bot-traffic signature (see docs/ga4-bot-traffic-2026-09.md).
+   * Report this number, not activeUsersRaw, for revenue/monetization calls.
+   */
+  activeUsersClean: number;
 }
 
 export interface WeekData {
@@ -148,7 +156,7 @@ async function ga4ForRange(token: string, [start, end]: [string, string]): Promi
   if (!propertyId) throw new Error('GA4_PROPERTY_ID env var is not set');
   const dateRanges = [{ startDate: start, endDate: end }];
 
-  const [channels, sources, engagement, landing] = await Promise.all([
+  const [channels, sources, engagement, landing, cleanUsers] = await Promise.all([
     ga4Report(token, propertyId, {
       dateRanges,
       dimensions: [{ name: 'sessionDefaultChannelGroup' }],
@@ -170,6 +178,20 @@ async function ga4ForRange(token: string, [start, end]: [string, string]): Promi
       orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
       limit: 10,
     }),
+    // Confirmed bot-traffic signature (2026-09 diagnostic): country=Singapore
+    // AND channel=Direct. Excluding both gives the clean active-user count.
+    ga4Report(token, propertyId, {
+      dateRanges,
+      metrics: [{ name: 'activeUsers' }],
+      dimensionFilter: {
+        andGroup: {
+          expressions: [
+            { notExpression: { filter: { fieldName: 'country', stringFilter: { value: 'Singapore', matchType: 'EXACT' } } } },
+            { notExpression: { filter: { fieldName: 'sessionDefaultChannelGroup', stringFilter: { value: 'Direct', matchType: 'EXACT' } } } },
+          ],
+        },
+      },
+    }),
   ]);
 
   const channelMap: Record<string, number> = {};
@@ -190,6 +212,7 @@ async function ga4ForRange(token: string, [start, end]: [string, string]): Promi
   const engagementRate = engRow ? Number(engRow.metricValues[0].value) : 0;
   const totalEngagement = engRow ? Number(engRow.metricValues[1].value) : 0;
   const activeUsers = engRow ? Number(engRow.metricValues[2].value) : 0;
+  const activeUsersClean = Number(cleanUsers.rows?.[0]?.metricValues?.[0]?.value ?? 0);
 
   return {
     channels: channelMap,
@@ -202,6 +225,8 @@ async function ga4ForRange(token: string, [start, end]: [string, string]): Promi
       sessions: Number(row.metricValues[0].value),
       engagementSeconds: Number(row.metricValues[1].value),
     })),
+    activeUsersRaw: activeUsers,
+    activeUsersClean,
   };
 }
 

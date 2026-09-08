@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
@@ -66,11 +67,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Set by src/proxy.ts for requests whose User-Agent is a literal HTTP
+  // library or headless-tool string (curl, python-requests, HeadlessChrome,
+  // ...). Server-known bots skip AdSense entirely; a second, client-side
+  // check below catches headless-Chromium traffic that spoofs a normal
+  // Chrome UA (undetectable from headers alone — see docs/ga4-bot-traffic-2026-09.md).
+  const serverBotSuspected = (await headers()).get('x-tg-bot-suspected') === '1';
+
   return (
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable}`}>
       <head>
@@ -86,19 +94,48 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.skyscanner.net" />
       </head>
       <body className="min-h-screen antialiased">
-        {/* Google AdSense */}
-        <Script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}`}
-          crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
+        {/* Bot heuristic — runs before GA/AdSense init. Flags sessions where
+            the browser reports automation (navigator.webdriver, the
+            WebDriver spec flag every major automation framework sets:
+            Selenium, Playwright, Puppeteer) or has other headless
+            fingerprints. This is what catches the disguised-Chrome bot
+            traffic that a server-side UA check can't — see
+            docs/ga4-bot-traffic-2026-09.md. Tagged as a GA4 user property
+            so reporting can filter it going forward without guessing by
+            country. */}
+        <Script id="tg-bot-check" strategy="beforeInteractive">{`
+          (function () {
+            try {
+              var nav = navigator;
+              var flags = [
+                !!nav.webdriver,
+                nav.languages && nav.languages.length === 0,
+                /Chrome/.test(nav.userAgent) && typeof window.chrome === 'undefined',
+              ];
+              window.__tgBotSuspected = ${serverBotSuspected ? 'true' : 'false'} || flags.some(Boolean);
+            } catch (e) {
+              window.__tgBotSuspected = ${serverBotSuspected ? 'true' : 'false'};
+            }
+          })();
+        `}</Script>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+          gtag('set', 'user_properties', { bot_suspected: window.__tgBotSuspected ? 'true' : 'false' });
           gtag('config', '${GA_ID}');
+        `}</Script>
+        {/* Google AdSense — skipped entirely for sessions flagged above, so
+            bot traffic never generates an ad impression/click. */}
+        <Script id="tg-adsense-loader" strategy="afterInteractive">{`
+          if (!window.__tgBotSuspected) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}';
+            s.crossOrigin = 'anonymous';
+            document.body.appendChild(s);
+          }
         `}</Script>
         <MotionProvider>{children}</MotionProvider>
         {/* Site-wide Organization + WebSite structured data */}
