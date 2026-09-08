@@ -12,4 +12,5 @@ export const AD_SLOTS = {
   cityMidContent:   '3333333333', // Rectangle  — between sections on city pages
   blogMidArticle:   '4444444444', // In-article — midway through blog posts
   blogBottom:       '5555555555', // Horizontal — bottom of blog posts
+  visitMidContent:  '6666666666', // In-article — /visit/[city]/[month] only, after the "vs best time" context section, before Things to do (2026-09 Zone 4 scoped rollout)
 } as const;
