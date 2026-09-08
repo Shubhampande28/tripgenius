@@ -14,7 +14,17 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import type { QueueEntry } from './build-queue';
 
-const DIR = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
+// process.cwd()-relative rather than import.meta.url-derived: this module is
+// imported both as a CLI script (npx tsx automation/pinterest/render.ts, run
+// from the repo root per the usage note above) and by the Next.js server
+// (/admin/pinterest's image route), which also always runs with cwd at the
+// project root — so this is safe in both cases, and unlike the
+// import.meta.url computation it replaces, it's a fully static expression
+// Turbopack's file tracer can resolve. That import.meta.url form is exactly
+// what caused every path.join(DIR, ...) below to be untraceable, forcing
+// Turbopack to conservatively trace the whole project for this route (the
+// "whole project was traced unintentionally" build warning).
+const DIR = path.join(process.cwd(), 'automation', 'pinterest');
 const OUT_DIR = path.join(DIR, 'output');
 const PUBLIC_DIR = path.join(DIR, '..', '..', 'public');
 const SITE_ORIGIN = 'https://www.tripgenius.in';
@@ -48,7 +58,13 @@ function localPublicPath(url: string): string | null {
       return null;
     }
   }
-  const resolved = path.join(PUBLIC_DIR, decodeURIComponent(pathname));
+  // turbopackIgnore: this join is intentionally dynamic (pathname is a
+  // request-derived asset path, not statically knowable) — without the
+  // annotation, Turbopack's file tracer can't prove which files this
+  // resolves to and conservatively traces the entire project as a
+  // dependency of this route (the "whole project was traced unintentionally"
+  // build warning). Path-traversal is still guarded on the next line.
+  const resolved = path.join(/*turbopackIgnore: true*/ PUBLIC_DIR, decodeURIComponent(pathname));
   if (resolved !== PUBLIC_DIR && !resolved.startsWith(PUBLIC_DIR + path.sep)) return null;
   return fs.existsSync(resolved) && fs.statSync(resolved).isFile() ? resolved : null;
 }
