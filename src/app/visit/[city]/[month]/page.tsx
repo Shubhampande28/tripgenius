@@ -14,6 +14,8 @@ import { cityHasMapBuilder } from '@/lib/mapUtils';
 import { getCityImageUrl } from '@/lib/cityImages';
 import type { MonthInfo, MonthRating } from '@/lib/types';
 import Flag from '@/components/Flag';
+import AdUnit from '@/components/AdUnit';
+import { AD_SLOTS } from '@/lib/adsense';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -333,6 +335,20 @@ export default async function CityInMonthPage(
               See the full month-by-month guide →
             </Link>
           </section>
+
+          {/* Ad unit — Zone 4 only (this route), manual unit, not Auto ads
+              (2026-09 scoped rollout, see docs/ga4-bot-traffic-2026-09.md for
+              why exposure is being kept narrow while bot-detection
+              verification is in progress). Placed after the verdict/context
+              reading content and before Things to do, matching the same
+              isIndexableCity-style gate already used on /cities/[slug] so it
+              never renders on a noindex/non-substantial page. Wrapped so it
+              never sits above the fold before real content on mobile. */}
+          {isIndexableMonthPage(city, idx) && (
+            <div className="mb-10">
+              <AdUnit slot={AD_SLOTS.visitMidContent} format="auto" />
+            </div>
+          )}
 
           {/* What to do */}
           {things.length > 0 && (
