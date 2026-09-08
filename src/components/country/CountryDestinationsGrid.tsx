@@ -27,7 +27,13 @@ interface RegionGroup {
 }
 
 export default function CountryDestinationsGrid({ country, cities, countrySlug }: CountryDestinationsGridProps) {
-  const cityMap = new Map(cities.map((c) => [c.slug, c]));
+  // Defense-in-depth: the caller (countries/[country]/page.tsx) already
+  // filters stub cities out of `cities`, but this component renders
+  // clickable destination cards directly from the prop it's given — filter
+  // again here so a future caller can't reintroduce fabricated-content
+  // pages by passing an unfiltered list (2026-09 audit).
+  const realCities = cities.filter((c) => !c.stub);
+  const cityMap = new Map(realCities.map((c) => [c.slug, c]));
 
   const regionGroups: RegionGroup[] = (country.regions ?? [])
     .map((region, i) => ({
@@ -39,7 +45,7 @@ export default function CountryDestinationsGrid({ country, cities, countrySlug }
     .filter((r) => r.cityObjs.length > 0);
 
   const usedSlugs = new Set(regionGroups.flatMap((r) => r.cityObjs.map((c) => c.slug)));
-  const leftover = cities.filter((c) => !usedSlugs.has(c.slug));
+  const leftover = realCities.filter((c) => !usedSlugs.has(c.slug));
 
   const hasRegions = regionGroups.length > 0;
 
@@ -47,9 +53,9 @@ export default function CountryDestinationsGrid({ country, cities, countrySlug }
     <div className="space-y-12">
       {!hasRegions && (
         <FlatSection
-          cities={cities}
+          cities={realCities}
           heading={`Best Places to Visit in ${country.name}`}
-          label={`${cities.length} ${cities.length === 1 ? 'destination' : 'destinations'}`}
+          label={`${realCities.length} ${realCities.length === 1 ? 'destination' : 'destinations'}`}
           sub="City guides with things to do, honest costs, and local tips"
           cap={12}
           featureFirst

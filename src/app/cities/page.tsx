@@ -28,15 +28,20 @@ export default function CitiesPage({ showHeroGlobe = false }: CitiesPageProps = 
     if (q) setQuery(q);
   }, []);
 
+  // !c.stub: stub cities have no real content (enrichCity fabricates their
+  // weather/activities) and must never be searchable/browsable here, even
+  // though they're separately de-indexed and ad-free (2026-09 audit).
+  const realCities = useMemo(() => allCities.filter((c) => !c.stub), []);
+
   const filtered = useMemo(() => {
-    if (query.length === 0) return allCities;
+    if (query.length === 0) return realCities;
     const q = query.toLowerCase();
-    return allCities.filter(
+    return realCities.filter(
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.country.toLowerCase().includes(q)
     );
-  }, [query]);
+  }, [query, realCities]);
 
   return (
     <>

@@ -98,9 +98,13 @@ export default async function CountryPage({ params }: Props) {
   const country = getCountryBySlug(slug);
   if (!country) notFound();
 
+  // !c.stub matches the filter /destinations/page.tsx already applies (line
+  // ~109) — stub cities have no real content (enrichCity fabricates their
+  // weather/activities) and must never render as a clickable destination
+  // card, even though they're already de-indexed and ad-free (2026-09 audit).
   const citiesData = country.cities
     .map((s) => getCityBySlug(s))
-    .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined);
+    .filter((c): c is NonNullable<ReturnType<typeof getCityBySlug>> => c !== undefined && !c.stub);
 
   const featuredPriority = slug === 'india' ? INDIA_FEATURED_DESTINATIONS : [];
   const priorityIndex = new Map(featuredPriority.map((citySlug, index) => [citySlug, index]));

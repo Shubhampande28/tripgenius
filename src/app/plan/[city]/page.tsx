@@ -9,13 +9,16 @@ import type { City } from '@/lib/types';
 
 const BASE = 'https://www.tripgenius.in';
 
+// !c.stub is defensive: no stub city currently has the per-attraction
+// coordinates cityHasMapBuilder requires (verified empirically, 2026-09
+// audit), but that's a data fact, not a structural guarantee.
 function mapReadyCity(slug: string): City | undefined {
   const city = getCityBySlug(slug);
-  return city && cityHasMapBuilder(city) ? city : undefined;
+  return city && !city.stub && cityHasMapBuilder(city) ? city : undefined;
 }
 
 export function generateStaticParams() {
-  return allCities.filter(cityHasMapBuilder).map((c) => ({ city: c.slug }));
+  return allCities.filter((c) => !c.stub && cityHasMapBuilder(c)).map((c) => ({ city: c.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
