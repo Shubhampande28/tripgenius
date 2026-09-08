@@ -46,20 +46,35 @@ function verdict(city: string, month: string, m: MonthInfo): string {
 // answers "what's the weather" — the snippet must promise what it can't:
 // "is it worth going?". Everything below is derived from the month's data.
 
+// Bug found while verifying the Part 2 title fix (2026-09): "post-monsoon"
+// (meaning the rains have ENDED — dozens of authored months use this exact
+// phrase, e.g. Hampi October: "Perfect (27°C)... post-monsoon clear") was
+// matching the bare /monsoon/ substring, so pleasant post-monsoon months
+// were getting the "Monsoon Reality" warning title instead of the normal
+// one. Excluding the "post-" prefix fixes it without missing genuine
+// in-monsoon warnings ("monsoon begins", "heavy monsoon", ...).
 const isMonsoonMonth = (city: { country: string }, m: MonthInfo) =>
-  city.country === 'India' && /monsoon|heavy rain|torrential|rainy|rainiest|downpour/i.test(`${m.weather} ${m.highlight}`);
+  city.country === 'India' && /(?<!post-)monsoon|heavy rain|torrential|rainy|rainiest|downpour/i.test(`${m.weather} ${m.highlight}`);
 
-function buildVisitTitle(cityName: string, M: string, year: number, monsoon: boolean): string {
+// Was a single repeated pattern for all 2,400 pages ("[City] in [Month]:
+// Worth It? Weather, Crowds & Costs") — a CTR audit (2026-09) found this
+// correlates with a 0.42% blended CTR at position 5-9, where 3-8% is normal.
+// Fix: inject `temp` — the only real, page-unique NUMBER in the data model
+// (price/crowds are categorical and city-wide, not month-specific — using
+// them here would mean fabricating a number). temp is placed right after
+// the month so it survives truncation at Google's ~60-char display limit.
+function buildVisitTitle(cityName: string, M: string, year: number, monsoon: boolean, temp: string): string {
   const candidates = monsoon
     ? [
-        `${cityName} in ${M}: Monsoon Reality, Crowds & Costs`,
-        `${cityName} in ${M}: Monsoon Reality & Costs`,
+        `${cityName} in ${M}: ${temp}, Monsoon Reality & Costs`,
+        `${cityName} in ${M}: ${temp} — Monsoon Reality`,
+        `${cityName} in ${M}: ${temp} Monsoon (${year})`,
         `${cityName} in ${M} (${year})`,
       ]
     : [
-        `${cityName} in ${M} ${year}: Worth It? Weather, Crowds & Costs`,
-        `${cityName} in ${M}: Worth Visiting? Weather & Costs`,
-        `${cityName} in ${M}: Worth It? Weather & Costs`,
+        `${cityName} in ${M}: ${temp}, Worth It? Weather & Costs`,
+        `${cityName} in ${M}: ${temp} — Crowds & Costs`,
+        `${cityName} in ${M}: ${temp}, Worth Visiting?`,
         `${cityName} in ${M} (${year})`,
       ];
   return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
@@ -122,7 +137,7 @@ export async function generateMetadata(
   const m = city.monthByMonth.months[idx];
   const year = new Date().getFullYear();
   const monsoon = isMonsoonMonth(city, m);
-  const title = buildVisitTitle(city.name, M, year, monsoon);
+  const title = buildVisitTitle(city.name, M, year, monsoon, m.temp);
   const desc = buildVisitDescription(city.name, M, m, city.stats.budget, monsoon);
 
   return {
@@ -193,6 +208,22 @@ export default async function CityInMonthPage(
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
+  // ItemList for the "Things to do in [City] in [Month]" list below — same
+  // pattern as /cities/[slug], which had this and /visit/[city]/[month]
+  // didn't despite rendering the identical kind of list (audit finding, 2026-09).
+  const itemListSchema = things.length ? {
+    '@context': 'https://schema.org', '@type': 'ItemList',
+    name: `Top ${things.length} Things to Do in ${city.name} in ${M}`,
+    description: `The best experiences in ${city.name} during ${M}.`,
+    numberOfItems: things.length,
+    itemListElement: things.map((t, i) => ({
+      '@type': 'ListItem', position: i + 1,
+      item: {
+        '@type': 'TouristAttraction', name: t.name, description: t.description,
+        address: { '@type': 'PostalAddress', addressLocality: city.name, addressCountry: city.country },
+      },
+    })),
+  } : null;
   const breadcrumbSchema = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: [
@@ -207,6 +238,7 @@ export default async function CityInMonthPage(
     <>
       <Schema data={faqSchema} />
       <Schema data={breadcrumbSchema} />
+      {itemListSchema && <Schema data={itemListSchema} />}
       <Navbar />
       <main className="min-h-screen pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
