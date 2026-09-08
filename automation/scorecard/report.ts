@@ -46,6 +46,15 @@ function gscTable(rows: WeekData['topQueries'], keyHeader: string): string {
 
 function anomalies(cur: WeekData, prev: WeekData): string[] {
   const out: string[] = [];
+  if (cur.ga4.activeUsersRaw > 0) {
+    const botShare = 1 - cur.ga4.activeUsersClean / cur.ga4.activeUsersRaw;
+    if (botShare > 0.15) {
+      out.push(
+        `🚨 Bot-suspected traffic is ${(botShare * 100).toFixed(0)}% of active users this week ` +
+        `(${cur.ga4.activeUsersRaw} raw → ${cur.ga4.activeUsersClean} bot-adjusted).`,
+      );
+    }
+  }
   if (prev.gscTotal.clicks > 0) {
     const drop = (prev.gscTotal.clicks - cur.gscTotal.clicks) / prev.gscTotal.clicks;
     if (drop > 0.3) {
@@ -84,6 +93,13 @@ function buildReport(cur: WeekData, prev: WeekData): string {
   const aiPrev = prev.ga4.channels['AI'] ?? prev.ga4.channels['Organic AI'] ?? 0;
   lines.push(headlineRow('AI-assistant sessions', aiCur, aiPrev, String));
   lines.push(headlineRow('Engagement rate', cur.ga4.engagementRate, prev.ga4.engagementRate, pct));
+  lines.push(headlineRow('Active users (raw)', cur.ga4.activeUsersRaw, prev.ga4.activeUsersRaw, String));
+  lines.push(headlineRow('Active users (bot-adjusted)', cur.ga4.activeUsersClean, prev.ga4.activeUsersClean, String));
+  lines.push('');
+  lines.push(
+    '_"Bot-adjusted" excludes country=Singapore AND channel=Direct — a confirmed automated-traffic ' +
+    'signature (see docs/ga4-bot-traffic-2026-09.md). Use the bot-adjusted number for revenue/monetization decisions._',
+  );
   lines.push('');
 
   lines.push('## Sessions by channel');
@@ -127,7 +143,7 @@ function buildReport(cur: WeekData, prev: WeekData): string {
 }
 
 function appendHistory(cur: WeekData): void {
-  const header = 'week_start,gsc_clicks,gsc_impressions,gsc_ctr,gsc_position,itinerary_ctr,visit_ctr,pinterest_sessions,reddit_sessions,engagement_rate\n';
+  const header = 'week_start,gsc_clicks,gsc_impressions,gsc_ctr,gsc_position,itinerary_ctr,visit_ctr,pinterest_sessions,reddit_sessions,engagement_rate,active_users_raw,active_users_clean\n';
   const weekStart = cur.label.split(' ')[0];
   const row = [
     weekStart,
@@ -140,6 +156,8 @@ function appendHistory(cur: WeekData): void {
     cur.ga4.pinterestSessions,
     cur.ga4.redditSessions,
     cur.ga4.engagementRate.toFixed(4),
+    cur.ga4.activeUsersRaw,
+    cur.ga4.activeUsersClean,
   ].join(',') + '\n';
 
   if (!fs.existsSync(HISTORY_FILE)) fs.writeFileSync(HISTORY_FILE, header);
