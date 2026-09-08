@@ -7,7 +7,11 @@ import Link from 'next/link';
 import { Search, ArrowRight, MapPin, Globe } from 'lucide-react';
 import { allCities } from '@/lib/cities';
 
-const citySuggestions = allCities.map((c) => c.name);
+// !c.stub: stub cities have no real content (enrichCity fabricates their
+// weather/activities) and must never be suggested or reachable from the
+// homepage search bar (2026-09 audit).
+const realCities = allCities.filter((c) => !c.stub);
+const citySuggestions = realCities.map((c) => c.name);
 
 export default function Hero() {
   const [query, setQuery] = useState('');
@@ -20,7 +24,7 @@ export default function Hero() {
 
   const handleSearch = (cityName?: string) => {
     const target = cityName ?? query;
-    const city = allCities.find((c) => c.name.toLowerCase() === target.toLowerCase());
+    const city = realCities.find((c) => c.name.toLowerCase() === target.toLowerCase());
     if (city) router.push(`/cities/${city.slug}`);
   };
 

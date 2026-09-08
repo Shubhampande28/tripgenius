@@ -58,7 +58,14 @@ export function matchDestination(input: string): DestinationMatch | null {
 
   const slugCandidate = norm.replace(/\s+/g, '-');
 
-  const exactCity = allCities.find((c) => c.slug === slugCandidate);
+  // !c.stub: without this, an exact-slug match (e.g. typing a stub city's
+  // name verbatim) would bypass the stub filter the fuzzy match below
+  // already applies, and selectCitiesForItinerary() would build a full
+  // itinerary from enrichCity's fabricated weather/activity data (2026-09
+  // audit — this was the most consequential of the gaps found, since it
+  // actively synthesizes a "trip plan" from fake data rather than just
+  // rendering a page).
+  const exactCity = allCities.find((c) => c.slug === slugCandidate && !c.stub);
   if (exactCity) {
     const country = countries.find((c) => c.name.toLowerCase() === exactCity.country.toLowerCase());
     if (country) return { city: exactCity, country };

@@ -14,7 +14,11 @@ import { allCities } from '@/lib/cities';
 import { cityHasMapBuilder } from '@/lib/mapUtils';
 import { trackEvent } from '@/lib/analytics';
 
-const mapBuilderCities = allCities.filter(cityHasMapBuilder);
+// !c.stub is defensive: no stub city currently has the per-attraction
+// coordinates cityHasMapBuilder requires (verified empirically, 2026-09
+// audit), but that's a data fact, not a structural guarantee — guard it
+// explicitly so it can't silently regress.
+const mapBuilderCities = allCities.filter((c) => !c.stub && cityHasMapBuilder(c));
 
 function PlannerPageInner() {
   const searchParams = useSearchParams();
