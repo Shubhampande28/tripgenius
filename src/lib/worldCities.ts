@@ -19,6 +19,15 @@ export type AddedCityData = {
   description: string;
   highlights: string[];
   monthByMonth?: MonthByMonth;
+  // Optional override for the generic per-item description this builder
+  // otherwise generates from `highlights` alone ("${name} is one of
+  // ${city.name}'s signature experiences...", identical template for every
+  // item on every city using this builder — real attraction names, but
+  // templated text, the same thin-content pattern isIndexableCity's gate
+  // exists to keep out, per a different generator than enrichCity's
+  // fabricated-weather fallback). Provide real per-attraction descriptions
+  // here when upgrading a city past the generic template (2026-09).
+  thingsToDo?: City['thingsToDo'];
 };
 
 export const makeAddedCityGuide = (city: AddedCityData): City => {
@@ -47,7 +56,7 @@ export const makeAddedCityGuide = (city: AddedCityData): City => {
     stats: { bestTime: city.bestTime, budget: city.budget, language: city.language, currency: city.currency },
     vibes: city.vibes,
     monthByMonth: city.monthByMonth,
-    thingsToDo: city.highlights.map((name, index) => ({
+    thingsToDo: city.thingsToDo ?? city.highlights.map((name, index) => ({
       name,
       description: `${name} is one of ${city.name}'s signature experiences. Plan it with a relaxed buffer, book timed-entry or transport ahead in peak season, and pair it with a nearby meal or neighbourhood walk for the best rhythm.`,
       icon: icons[index % icons.length],
@@ -295,6 +304,37 @@ const addedCitiesRaw: AddedCityData[] = [
     heroDescription: 'Geneva sits on a grand lake framed by mountains, with UN institutions, watchmaking, chocolate, old-town lanes, and day trips into France.',
     description: 'It is calm, expensive, international, and best for travellers who like museums, lake walks, and refined dining.',
     highlights: ['Jet d\'Eau', 'Old Town Geneva', 'United Nations Tour', 'Patek Philippe Museum', 'Lake Geneva Cruise', 'Mont Saleve', 'St Pierre Cathedral', 'Carouge District', 'Bains des Paquis', 'CERN Visit'],
+    thingsToDo: [
+      { name: 'Jet d\'Eau', description: 'Geneva\'s 140-metre fountain jet, one of the tallest in the world and the city\'s signature landmark visible from almost anywhere on the lake — best photographed from the Pont du Mont-Blanc at sunset.', icon: '*', duration: '20-30 min', category: 'Iconic' },
+      { name: 'Old Town Geneva', description: 'Cobbled lanes climbing to St Pierre Cathedral, where cafes, antique shops, and the Reformation Wall trace the city\'s history as a centre of Protestant thought under Calvin.', icon: '*', duration: '2 hrs', category: 'Historical' },
+      { name: 'United Nations Tour', description: 'The Palais des Nations, Europe\'s UN headquarters and once home of the League of Nations — guided tours pass the Assembly Hall and a room lined entirely in gold leaf.', icon: '*', duration: '1.5 hrs', category: 'Culture' },
+      { name: 'Patek Philippe Museum', description: 'A watchmaking museum tracing 500 years of horology in the city that helped define Swiss watchmaking, with pieces from Patek Philippe\'s own workshops alongside historic timepieces from across Europe.', icon: '*', duration: '1.5 hrs', category: 'Culture' },
+      { name: 'Lake Geneva Cruise', description: 'A boat trip on Western Europe\'s largest lake, with views of Mont Blanc on clear days and stops possible at lakeside towns like Nyon or across into French Evian.', icon: '*', duration: '1-3 hrs', category: 'Nature' },
+      { name: 'Mont Salève', description: 'A limestone ridge just across the French border, reached by cable car from Geneva\'s outskirts in minutes — the summit delivers a panorama over the entire city, lake, and Mont Blanc massif.', icon: '*', duration: 'Half day', category: 'Nature' },
+      { name: 'St Pierre Cathedral', description: 'A Gothic cathedral where John Calvin preached during the Reformation — climb the north tower for the same rooftop view that made Old Town worth the walk.', icon: '*', duration: '45 min', category: 'Historical' },
+      { name: 'Carouge District', description: 'A former Sardinian town absorbed into Geneva, with Italian-style piazzas, artisan workshops, and a noticeably more bohemian, café-terrace feel than the rest of the city.', icon: '*', duration: '2 hrs', category: 'Local' },
+      { name: 'Bains des Pâquis', description: 'A public lakeside bathing pier where Genevans swim, sauna, and eat at the no-frills café year-round, including in winter — the most local, least touristy thing to do on the lake.', icon: '*', duration: '1-2 hrs', category: 'Local' },
+      { name: 'CERN Visit', description: 'The European particle physics laboratory that runs the Large Hadron Collider, on Geneva\'s outskirts — the free Science Gateway exhibition centre requires no advance booking, though guided tours of the facility do.', icon: '*', duration: 'Half day', category: 'Day trip' },
+    ],
+    monthByMonth: {
+      summary: 'May–September is the reliable warm season for lake activities and Mont Salève views. Geneva\'s continental climate brings cold winters (December–February), occasionally sharpened by the Bise, a strong north wind funnelled down the lake. Spring and autumn are mild but changeable.',
+      bestMonths: ['June', 'July', 'September'],
+      avoidMonths: ['January'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'avoid', weather: 'Cold, occasional Bise wind', temp: '4°C/-1°C', crowds: 'Low', price: 'Low', highlight: 'Cheapest month, though outdoor lake activities are limited' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cold, clearer skies', temp: '6°C/0°C', crowds: 'Low', price: 'Low', highlight: 'Mont Salève often has the clearest winter Mont Blanc views' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool, early spring', temp: '11°C/3°C', crowds: 'Low', price: 'Moderate', highlight: 'Old Town walks turn pleasant again' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild spring', temp: '15°C/6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Lake cruises resume their full spring-summer schedule' },
+        { month: 'May', short: 'May', rating: 'good', weather: 'Warm, occasional rain', temp: '19°C/10°C', crowds: 'Moderate', price: 'High', highlight: 'Bains des Pâquis season fully underway' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm summer', temp: '23°C/13°C', crowds: 'High', price: 'High', highlight: 'Fêtes de Genève lakeside festival season begins' },
+        { month: 'July', short: 'Jul', rating: 'excellent', weather: 'Warm, dry', temp: '25°C/15°C', crowds: 'High', price: 'Peak', highlight: 'Best month for Mont Salève hikes and lake swimming' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Warm, some thunderstorms', temp: '24°C/14°C', crowds: 'High', price: 'Peak', highlight: 'Fêtes de Genève fireworks close out the festival' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm, clearer air', temp: '20°C/11°C', crowds: 'Moderate', price: 'High', highlight: 'Best visibility of Mont Blanc from the lakefront' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Cool autumn', temp: '14°C/7°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable Old Town walking weather, thinner crowds' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cold, foggy over the lake', temp: '8°C/3°C', crowds: 'Low', price: 'Low', highlight: 'Museum season — CERN and Patek Philippe without queues' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Cold, festive', temp: '5°C/0°C', crowds: 'Moderate', price: 'Moderate', highlight: 'L\'Escalade festival (mid-December) marks a 1602 military victory' },
+      ],
+    },
   },
   {
     slug: 'lucerne', name: 'Lucerne', country: 'Switzerland', flag: '🇨🇭', tagline: 'Storybook Switzerland', gradient: 'from-blue-700 to-emerald-500', accentColor: '#0F766E', photo: 'photo-1527255907996-5975e6da2cdb', bestTime: 'May - Oct, Dec', budget: 'CHF 130-330/day', language: 'German, English', currency: 'CHF', vibes: ['Lake', 'Old town', 'Mountains'],
@@ -332,6 +372,37 @@ const addedCitiesRaw: AddedCityData[] = [
     heroDescription: 'Munich blends grand Bavarian architecture, beer gardens, art museums, Christmas markets, and easy access to fairytale castles and Alpine lakes.',
     description: 'It is cleaner and more traditional than Berlin, with excellent family appeal and strong day-trip options.',
     highlights: ['Marienplatz', 'Nymphenburg Palace', 'English Garden', 'BMW Museum', 'Viktualienmarkt', 'Neuschwanstein Day Trip', 'Hofbrauhaus Beer Hall', 'Deutsches Museum', 'Olympiapark', 'Frauenkirche'],
+    thingsToDo: [
+      { name: 'Marienplatz', description: 'Munich\'s central square, where the Neo-Gothic Glockenspiel in the New Town Hall tower performs its clockwork show at 11am and noon (plus 5pm in summer) — the natural starting point for any first visit.', icon: '*', duration: '1 hr', category: 'Iconic' },
+      { name: 'Nymphenburg Palace', description: 'The Wittelsbach dynasty\'s baroque summer palace, with a canal-lined park, the Gallery of Beauties portrait collection, and porcelain workshops still operating on the grounds today.', icon: '*', duration: '2-3 hrs', category: 'Historical' },
+      { name: 'English Garden', description: 'One of the world\'s largest urban parks — bigger than New York\'s Central Park — famous for the surfers who ride a standing wave on the Eisbach stream and the beer garden at the Chinese Tower.', icon: '*', duration: '2-3 hrs', category: 'Nature' },
+      { name: 'BMW Museum', description: 'A striking bowl-shaped museum beside BMW\'s four-cylinder headquarters tower, tracing a century of design and motorsport — the adjacent BMW Welt showroom is free and worth combining with it.', icon: '*', duration: '2 hrs', category: 'Culture' },
+      { name: 'Viktualienmarkt', description: 'A daily food market just south of Marienplatz since 1807 — Bavarian sausages, cheeses, and produce stalls surround the market\'s own beer garden, a favourite lunch stop for locals.', icon: '*', duration: '1 hr', category: 'Food' },
+      { name: 'Neuschwanstein Day Trip', description: 'Ludwig II\'s fairytale castle in the foothills of the Alps, about 2 hours from Munich by train and bus — the inspiration for Disney\'s Sleeping Beauty Castle, best booked with a timed-entry ticket in advance.', icon: '*', duration: 'Full day', category: 'Day trip' },
+      { name: 'Hofbräuhaus Beer Hall', description: 'The most famous beer hall in the world, in continuous operation since 1589 — oompah bands, litre steins, and long communal tables make it touristy but genuinely fun for at least one visit.', icon: '*', duration: '1-2 hrs', category: 'Local' },
+      { name: 'Deutsches Museum', description: 'The world\'s largest science and technology museum, with full-size aircraft, submarines, and mine tunnels across 50 fields of science — plan at least half a day even for a partial visit.', icon: '*', duration: 'Half day', category: 'Culture' },
+      { name: 'Olympiapark', description: 'The tent-roofed stadium complex built for the 1972 Summer Olympics, now a park with a climbable Olympic Tower, lake, and the BMW Welt within walking distance.', icon: '*', duration: '2 hrs', category: 'Nature' },
+      { name: 'Frauenkirche', description: 'Munich\'s twin-domed cathedral and skyline landmark since the 15th century — by local ordinance no building in the city centre may stand taller than its towers.', icon: '*', duration: '30-45 min', category: 'Historical' },
+    ],
+    monthByMonth: {
+      summary: 'May–September is the wide comfortable season, peaking with Oktoberfest (mid-September to the first Sunday in October) when the city is at its busiest and most expensive. December adds Christmas market season. January–March is cold with occasional snow; November is Munich\'s quietest, greyest month.',
+      bestMonths: ['May', 'June', 'September'],
+      avoidMonths: ['November'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, occasional snow', temp: '3°C/-3°C', crowds: 'Low', price: 'Low', highlight: 'Quiet museums and beer halls, cheapest month for stays' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Cold, still winter', temp: '5°C/-2°C', crowds: 'Low', price: 'Low', highlight: 'Fasching (Munich carnival) parades in the final week' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Cool, early spring', temp: '10°C/2°C', crowds: 'Low', price: 'Low', highlight: 'Starkbierfest strong-beer season at traditional breweries' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Mild spring', temp: '14°C/5°C', crowds: 'Moderate', price: 'Moderate', highlight: 'English Garden and beer gardens reopen for the season' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, pleasant', temp: '18°C/9°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Best all-round month — beer gardens full, before summer crowds' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm summer', temp: '21°C/12°C', crowds: 'High', price: 'High', highlight: 'Long daylight hours for Alpine day trips' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Warm, occasional rain', temp: '23°C/14°C', crowds: 'High', price: 'High', highlight: 'Peak Eisbach surfing conditions in the English Garden' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Warm summer', temp: '23°C/13°C', crowds: 'High', price: 'High', highlight: 'Summer festival season across the city\'s beer gardens' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Mild, Oktoberfest begins', temp: '19°C/10°C', crowds: 'Peak', price: 'Peak', highlight: 'Oktoberfest opens mid-month — book accommodation months ahead' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Cooling autumn', temp: '13°C/6°C', crowds: 'High', price: 'High', highlight: 'Oktoberfest\'s final days through the first Sunday' },
+        { month: 'November', short: 'Nov', rating: 'avoid', weather: 'Cold, grey, damp', temp: '7°C/2°C', crowds: 'Low', price: 'Low', highlight: 'Munich\'s quietest month, before Christmas markets open' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Cold, festive', temp: '3°C/-2°C', crowds: 'High', price: 'High', highlight: 'Christmas markets fill Marienplatz through Dec 24' },
+      ],
+    },
   },
   {
     slug: 'hamburg', name: 'Hamburg', country: 'Germany', flag: '🇩🇪', tagline: 'Harbour City', gradient: 'from-blue-800 to-teal-500', accentColor: '#0F766E', photo: 'photo-1467269204594-9661b134dd2b', bestTime: 'May - Sep', budget: 'EUR 85-220/day', language: 'German, English', currency: 'EUR', vibes: ['Harbour', 'Design', 'Music'],
@@ -350,6 +421,37 @@ const addedCitiesRaw: AddedCityData[] = [
     heroDescription: 'Queenstown sits on Lake Wakatipu under jagged peaks, turning every day into a choice between jet boats, hikes, wineries, ski fields, and scenic drives.',
     description: 'It is expensive but unforgettable, especially for travellers who want active days and dramatic views.',
     highlights: ['Skyline Gondola', 'Shotover Jet', 'Bungee Jumping', 'Lake Wakatipu Cruise', 'Glenorchy Drive', 'Milford Sound Day Trip', 'Queenstown Gardens', 'Arrowtown Historic Village', 'Routeburn Track Day Walk', 'Onsen Hot Pools'],
+    thingsToDo: [
+      { name: 'Skyline Gondola', description: 'A cable car climbing 450m above the town in under 4 minutes, to a viewpoint over Lake Wakatipu and the Remarkables range — the summit also has New Zealand\'s only luge track.', icon: '*', duration: '1.5-2 hrs', category: 'Scenic' },
+      { name: 'Shotover Jet', description: 'A high-speed jet boat ride through the narrow, canyon-walled Shotover River, known for 360-degree spins within centimetres of the rock walls — the original commercial jet boat operation, running since 1965.', icon: '*', duration: '1 hr', category: 'Adventure' },
+      { name: 'Bungee Jumping', description: 'Queenstown is the birthplace of commercial bungee jumping, at the Kawarau Gorge Suspension Bridge where AJ Hackett made the first commercial jump in 1988 — still operating at the original site today.', icon: '*', duration: '2-3 hrs', category: 'Adventure' },
+      { name: 'Lake Wakatipu Cruise', description: 'A cruise on the vintage 1912 steamship TSS Earnslaw, one of the few remaining coal-fired passenger ships in the Southern Hemisphere, across the lake the town is built beside.', icon: '*', duration: '1.5-3.5 hrs', category: 'Scenic' },
+      { name: 'Glenorchy Drive', description: 'Regularly rated one of the world\'s most scenic drives, the 45-minute route along Lake Wakatipu\'s shore to Glenorchy passes the mountain backdrops used in several Lord of the Rings scenes.', icon: '*', duration: 'Half day', category: 'Nature' },
+      { name: 'Milford Sound Day Trip', description: 'A full-day trip to Fiordland\'s most famous fjord, roughly 4-5 hours\' drive each way (or a scenic flight in under an hour) — waterfalls, seals, and dolphins are common sights on the boat cruise once there.', icon: '*', duration: 'Full day', category: 'Day trip' },
+      { name: 'Queenstown Gardens', description: 'A peninsula park on the edge of the town centre with a frisbee golf course, rose garden, and lake views — the easiest, free way to spend an hour without a car.', icon: '*', duration: '1 hr', category: 'Nature' },
+      { name: 'Arrowtown Historic Village', description: 'A former gold-mining town 20 minutes from Queenstown, with preserved 1860s cottages, a small Chinese settlement museum, and autumn foliage considered among New Zealand\'s best.', icon: '*', duration: 'Half day', category: 'Historical' },
+      { name: 'Routeburn Track Day Walk', description: 'One of New Zealand\'s Great Walks, most often done over 2-3 days, but the first stretch from the Routeburn Shelter to Routeburn Flats makes a rewarding half-day out-and-back for non-trampers.', icon: '*', duration: 'Half day', category: 'Adventure' },
+      { name: 'Onsen Hot Pools', description: 'Japanese-style private cedar hot tubs perched above the Shotover River canyon, bookable by the hour — a quieter, less adrenaline-driven way to spend an evening in an adventure-sport town.', icon: '*', duration: '1 hr', category: 'Relaxation' },
+    ],
+    monthByMonth: {
+      summary: 'Queenstown runs on Southern Hemisphere seasons and works two ways: December-March is warm summer for hiking, jet boating, and lake activities, while June-August is ski season at Coronet Peak and The Remarkables. Shoulder months (April-May, September-November) are quieter and cheaper, with autumn (April-May) prized for foliage around Arrowtown.',
+      bestMonths: ['January', 'February', 'July'],
+      avoidMonths: [],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'excellent', weather: 'Warm summer', temp: '22°C/11°C', crowds: 'High', price: 'Peak', highlight: 'Peak hiking and lake season, long daylight hours' },
+        { month: 'February', short: 'Feb', rating: 'excellent', weather: 'Warm, driest summer month', temp: '22°C/11°C', crowds: 'High', price: 'Peak', highlight: 'Best weather reliability of the year' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Warm, cooling', temp: '19°C/9°C', crowds: 'Moderate', price: 'High', highlight: 'Still warm for hiking, crowds thinning from peak summer' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild autumn', temp: '15°C/5°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Arrowtown\'s autumn foliage is at its peak' },
+        { month: 'May', short: 'May', rating: 'good', weather: 'Cool, early winter chill', temp: '11°C/2°C', crowds: 'Low', price: 'Low', highlight: 'Quietest shoulder month, good value before ski season' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Cold, ski season opens', temp: '7°C/-1°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Coronet Peak and The Remarkables typically open for skiing' },
+        { month: 'July', short: 'Jul', rating: 'excellent', weather: 'Cold, reliable snow', temp: '6°C/-2°C', crowds: 'High', price: 'High', highlight: 'Peak ski season, Queenstown Winter Festival (late June-July)' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Cold, snow persists', temp: '8°C/-1°C', crowds: 'High', price: 'High', highlight: 'Last full month of reliable ski conditions' },
+        { month: 'September', short: 'Sep', rating: 'average', weather: 'Cold, transitional', temp: '11°C/1°C', crowds: 'Low', price: 'Moderate', highlight: 'Ski season winding down, hiking trails still snowy at altitude' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Mild spring', temp: '14°C/3°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Lower-altitude hikes reopen as snow melts' },
+        { month: 'November', short: 'Nov', rating: 'good', weather: 'Mild, lengthening days', temp: '17°C/6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Great Walks season (including Routeburn) typically opens' },
+        { month: 'December', short: 'Dec', rating: 'excellent', weather: 'Warm, summer begins', temp: '20°C/9°C', crowds: 'High', price: 'Peak', highlight: 'Summer season ramps up ahead of New Year' },
+      ],
+    },
   },
   {
     slug: 'rotorua', name: 'Rotorua', country: 'New Zealand', flag: '🇳🇿', tagline: 'Geothermal Maori Heartland', gradient: 'from-emerald-700 to-lime-500', accentColor: '#16A34A', photo: 'photo-1597212618440-806262de4f6b', bestTime: 'Nov - Apr', budget: 'NZD 110-280/day', language: 'English, Maori', currency: 'NZD', vibes: ['Geothermal', 'Culture', 'Nature'],
@@ -387,6 +489,37 @@ const addedCitiesRaw: AddedCityData[] = [
     heroDescription: 'Dubrovnik rises from the Adriatic in stone walls, red roofs, marble lanes, and sea cliffs, one of Europe\'s most cinematic old towns.',
     description: 'Go early or late in the day to avoid cruise crowds, and stay overnight if budget allows.',
     highlights: ['City Walls Walk', 'Old Town', 'Lovrijenac Fortress', 'Mount Srd Cable Car', 'Lokrum Island', 'Elafiti Islands', 'Rector\'s Palace', 'Banje Beach', 'Kayaking the Old Town Walls', 'Game of Thrones Filming Locations Tour'],
+    thingsToDo: [
+      { name: 'City Walls Walk', description: 'A near-complete circuit of Dubrovnik\'s medieval fortifications, roughly 2km around, with views down into the Old Town on one side and the Adriatic on the other — go at opening time to beat both heat and crowds.', icon: '*', duration: '2 hrs', category: 'Iconic' },
+      { name: 'Old Town', description: 'The limestone-paved, car-free heart of Dubrovnik, rebuilt after a devastating 1667 earthquake and again after 1990s shelling — Stradun, the main street, is the spine to explore outward from.', icon: '*', duration: '3-4 hrs', category: 'Historical' },
+      { name: 'Lovrijenac Fortress', description: 'A clifftop fortress just outside the western walls, built to deter Venetian ambitions — the inscription above its entrance reads "Freedom is not sold for all the gold in the world."', icon: '*', duration: '1 hr', category: 'Historical' },
+      { name: 'Mount Srđ Cable Car', description: 'A cable car climbing 412m above the Old Town in under 4 minutes, to a viewpoint used as a Napoleonic-era fort and, more recently, a Homeland War museum — sunset here is one of the Adriatic\'s best views.', icon: '*', duration: '1.5 hrs', category: 'Scenic' },
+      { name: 'Lokrum Island', description: 'A short ferry ride from the Old Town harbour, this forested island has a ruined monastery, a saltwater lake, botanical gardens, and resident peacocks — a genuine escape from Old Town crowds.', icon: '*', duration: 'Half day', category: 'Nature' },
+      { name: 'Elafiti Islands', description: 'A chain of car-free islands north of Dubrovnik, usually visited on a full-day boat tour with stops for swimming and a seafood lunch on Šipan or Lopud.', icon: '*', duration: 'Full day', category: 'Day trip' },
+      { name: 'Rector\'s Palace', description: 'The seat of government for the historic Republic of Ragusa, where the elected Rector was confined for his one-month term to prevent any single family gaining too much power — now a museum of the city\'s Golden Age.', icon: '*', duration: '1 hr', category: 'Historical' },
+      { name: 'Banje Beach', description: 'Dubrovnik\'s main city beach, a five-minute walk from the Old Town\'s Ploče Gate, with the walls and Lokrum Island as a backdrop — beach clubs here rent loungers by the day.', icon: '*', duration: '2-3 hrs', category: 'Relaxation' },
+      { name: 'Kayaking the Old Town Walls', description: 'Sea kayaking tours paddle along the base of the city walls and out to Lokrum, offering a sea-level perspective of the fortifications that the walking tour above can\'t match.', icon: '*', duration: '2-3 hrs', category: 'Adventure' },
+      { name: 'Game of Thrones Filming Locations Tour', description: 'Dubrovnik stood in for King\'s Landing throughout the series — guided walking tours point out Fort Lovrijenac, Fort Bokar, and other recognisable filming spots around the Old Town.', icon: '*', duration: '2 hrs', category: 'Iconic' },
+    ],
+    monthByMonth: {
+      summary: 'May–June and September–October are Dubrovnik\'s sweet spot — warm, swimmable, and well ahead of or behind the peak cruise-ship crowds. July–August is hot, crowded, and expensive, with multiple cruise ships docking daily. November–March is quiet and mild by northern-European standards but wet, and many restaurants and boat tours close for the season.',
+      bestMonths: ['May', 'June', 'September'],
+      avoidMonths: ['January'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'avoid', weather: 'Mild but wet and windy', temp: '11°C/6°C', crowds: 'Low', price: 'Low', highlight: 'Most restaurants and boat tours are closed for the season' },
+        { month: 'February', short: 'Feb', rating: 'average', weather: 'Mild, still rainy', temp: '12°C/6°C', crowds: 'Low', price: 'Low', highlight: 'Cheapest month, Old Town at its quietest' },
+        { month: 'March', short: 'Mar', rating: 'average', weather: 'Mild, improving', temp: '14°C/8°C', crowds: 'Low', price: 'Low', highlight: 'Businesses slowly reopen ahead of the season' },
+        { month: 'April', short: 'Apr', rating: 'good', weather: 'Warm, occasional rain', temp: '17°C/10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'City walls walk without summer heat or crowds' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, dry', temp: '22°C/14°C', crowds: 'Moderate', price: 'High', highlight: 'Sea warm enough to swim, before peak crowds arrive' },
+        { month: 'June', short: 'Jun', rating: 'excellent', weather: 'Warm summer', temp: '26°C/18°C', crowds: 'High', price: 'Peak', highlight: 'Dubrovnik Summer Festival opens (Jun 10 - Aug 25 in 2026)' },
+        { month: 'July', short: 'Jul', rating: 'good', weather: 'Hot, dry', temp: '29°C/21°C', crowds: 'Peak', price: 'Peak', highlight: 'Peak cruise-ship season — Old Town is busiest mid-morning' },
+        { month: 'August', short: 'Aug', rating: 'good', weather: 'Hot, dry', temp: '29°C/21°C', crowds: 'Peak', price: 'Peak', highlight: 'Warmest sea temperatures of the year for swimming' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm, drier', temp: '25°C/18°C', crowds: 'Moderate', price: 'High', highlight: 'Cruise crowds thin while the sea is still warm' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Mild, more rain', temp: '20°C/14°C', crowds: 'Low', price: 'Moderate', highlight: 'Comfortable walking weather, most boat tours still running' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Mild but wet', temp: '15°C/10°C', crowds: 'Low', price: 'Low', highlight: 'Quiet Old Town, but many seasonal businesses closing' },
+        { month: 'December', short: 'Dec', rating: 'average', weather: 'Mild, rainy', temp: '12°C/7°C', crowds: 'Low', price: 'Low', highlight: 'Small Christmas market on Stradun, very few tourists' },
+      ],
+    },
   },
   {
     slug: 'split', name: 'Split', country: 'Croatia', flag: '🇭🇷', tagline: 'Palace by the Sea', gradient: 'from-cyan-700 to-stone-400', accentColor: '#0891B2', photo: 'photo-1555990793-da110a1b7f88', bestTime: 'May - Jun, Sep - Oct', budget: 'EUR 75-220/day', language: 'Croatian, English', currency: 'EUR', vibes: ['Roman', 'Ferries', 'Coast'],
@@ -540,6 +673,37 @@ const addedCitiesRaw: AddedCityData[] = [
     heroDescription: 'Milan is Italy\'s business and design engine, with a spectacular Gothic cathedral, fashion districts, aperitivo culture, and rail links to the lakes.',
     description: 'It works well as a stylish city stop or northern Italy gateway.',
     highlights: ['Milan Duomo', 'Galleria Vittorio Emanuele II', 'The Last Supper', 'Brera District', 'Navigli Canals', 'Lake Como Day Trip', 'Sforza Castle', 'Pinacoteca di Brera', 'San Siro Stadium Tour', 'Quadrilatero della Moda Shopping'],
+    thingsToDo: [
+      { name: 'Milan Duomo', description: 'The largest Gothic cathedral in Italy, nearly six centuries in the making, with 3,400 statues and spires — climb to the rooftop terraces for views over the city and, on clear days, the Alps.', icon: '*', duration: '1.5-2 hrs', category: 'Iconic' },
+      { name: 'Galleria Vittorio Emanuele II', description: 'One of the world\'s oldest shopping arcades, an iron-and-glass 19th-century structure connecting the Duomo to La Scala — spin on the bull mosaic underfoot for luck, a genuine local tradition.', icon: '*', duration: '30-45 min', category: 'Historical' },
+      { name: 'The Last Supper', description: 'Leonardo da Vinci\'s mural at Santa Maria delle Grazie, viewable only in 15-minute timed slots for a strictly limited number of visitors per day — book weeks ahead, tickets sell out fast.', icon: '*', duration: '15-30 min', category: 'Culture' },
+      { name: 'Brera District', description: 'Milan\'s former artists\' quarter, now cobbled streets of galleries, boutiques, and aperitivo bars around the Pinacoteca di Brera — the most atmospheric part of the city for an evening walk.', icon: '*', duration: '2 hrs', category: 'Local' },
+      { name: 'Navigli Canals', description: 'A network of Renaissance-era canals, once designed partly by Leonardo da Vinci for transporting marble to build the Duomo — now Milan\'s aperitivo and nightlife district, especially lively at sunset.', icon: '*', duration: '2-3 hrs', category: 'Local' },
+      { name: 'Lake Como Day Trip', description: 'An hour by train from Milan, Lake Como\'s villas, funiculars, and lakeside towns like Bellagio and Varenna make one of Italy\'s most popular half-day escapes from the city.', icon: '*', duration: 'Full day', category: 'Day trip' },
+      { name: 'Sforza Castle', description: 'A 15th-century fortress of the ruling Sforza dynasty, now housing several city museums including an unfinished Michelangelo sculpture — the surrounding Sempione Park is a good place to unwind after.', icon: '*', duration: '1.5 hrs', category: 'Historical' },
+      { name: 'Pinacoteca di Brera', description: 'One of Italy\'s finest art museums, with major works by Raphael, Caravaggio, and Mantegna in a collection built largely from churches suppressed under Napoleon.', icon: '*', duration: '2 hrs', category: 'Culture' },
+      { name: 'San Siro Stadium Tour', description: 'Home to both AC Milan and Inter Milan, one of European football\'s most storied stadiums — tours include the changing rooms and pitch-side access on non-match days.', icon: '*', duration: '1.5 hrs', category: 'Iconic' },
+      { name: 'Quadrilatero della Moda Shopping', description: 'Milan\'s fashion quadrilateral — Via Montenapoleone and its surrounding streets — where the world\'s luxury houses have their flagship stores; window shopping is free and the streets themselves are handsome.', icon: '*', duration: '1-2 hrs', category: 'Local' },
+    ],
+    monthByMonth: {
+      summary: 'April–June and September–October are Milan\'s best months — mild and dry, before summer humidity and after it breaks. Summer (June–August) turns hot and humid, with many Milanese leaving the city in August. Winter (December–February) is cold and often foggy, though the Christmas season and fashion week bring energy back to the streets.',
+      bestMonths: ['April', 'May', 'September'],
+      avoidMonths: ['August'],
+      months: [
+        { month: 'January', short: 'Jan', rating: 'average', weather: 'Cold, foggy', temp: '7°C/1°C', crowds: 'Low', price: 'Low', highlight: 'Quiet month for museums, Men\'s Fashion Week in mid-January' },
+        { month: 'February', short: 'Feb', rating: 'good', weather: 'Cold, clearer', temp: '10°C/2°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Women\'s Fashion Week fills the city\'s hotels mid-month' },
+        { month: 'March', short: 'Mar', rating: 'good', weather: 'Mild, changeable', temp: '14°C/6°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable walking weather returns to the Navigli' },
+        { month: 'April', short: 'Apr', rating: 'excellent', weather: 'Mild, pleasant', temp: '18°C/9°C', crowds: 'High', price: 'High', highlight: 'Salone del Mobile design week (mid-April) transforms the city' },
+        { month: 'May', short: 'May', rating: 'excellent', weather: 'Warm, dry', temp: '22°C/13°C', crowds: 'High', price: 'High', highlight: 'Best all-round month — warm but before summer humidity' },
+        { month: 'June', short: 'Jun', rating: 'good', weather: 'Warm, humidity building', temp: '26°C/16°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Long evenings for Navigli aperitivo season' },
+        { month: 'July', short: 'Jul', rating: 'average', weather: 'Hot, humid', temp: '29°C/19°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Lake Como day trips offer relief from city heat' },
+        { month: 'August', short: 'Aug', rating: 'avoid', weather: 'Hot, humid, many locals away', temp: '29°C/19°C', crowds: 'Low', price: 'Low', highlight: 'Many restaurants close as Milanese leave for the coast' },
+        { month: 'September', short: 'Sep', rating: 'excellent', weather: 'Warm, humidity easing', temp: '25°C/15°C', crowds: 'High', price: 'High', highlight: 'Women\'s Fashion Week returns, energy back in the city' },
+        { month: 'October', short: 'Oct', rating: 'good', weather: 'Mild autumn', temp: '18°C/10°C', crowds: 'Moderate', price: 'Moderate', highlight: 'Comfortable sightseeing weather, thinner crowds than spring' },
+        { month: 'November', short: 'Nov', rating: 'average', weather: 'Cool, foggy, damp', temp: '12°C/6°C', crowds: 'Low', price: 'Low', highlight: 'Museum season — the Duomo rooftop without queues' },
+        { month: 'December', short: 'Dec', rating: 'good', weather: 'Cold, festive', temp: '7°C/2°C', crowds: 'High', price: 'High', highlight: 'La Scala opera season opens Dec 7, Milan\'s biggest cultural night' },
+      ],
+    },
   },
   {
     slug: 'amalfi', name: 'Amalfi', country: 'Italy', flag: '🇮🇹', tagline: 'Cliffside Coast', gradient: 'from-cyan-700 to-yellow-500', accentColor: '#0891B2', photo: 'photo-1633321088355-d0f81134ca3b', bestTime: 'May - Jun, Sep - Oct', budget: 'EUR 100-320/day', language: 'Italian, English', currency: 'EUR', vibes: ['Coast', 'Romantic', 'Scenic'],
