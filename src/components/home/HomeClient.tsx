@@ -23,7 +23,17 @@ import Flag from '@/components/Flag';
 // ── Featured Destinations ──────────────────────────────────────────
 // Curated order used for the server render & first paint (stable, SEO-friendly).
 // After mount we shuffle a much larger pool so a different mix shows each visit.
-const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'dubai', 'jaipur', 'bangkok', 'maldives'];
+// 2026-09 growth-strategy finding: mexico-city, santorini and venice already
+// rank on real, majority-US/UK/CA/AU search demand (GSC-confirmed: 1,500+,
+// 1,180+, 1,055+ Western impressions/month respectively) at fully-authored,
+// non-thin guides — the gap holding them at position 10-20 instead of page 1
+// is internal-link authority, not content depth. The homepage is this site's
+// single highest-authority page, so featuring them here (not just in the
+// post-mount shuffle pool, which crawlers may not see) is a direct, free lever
+// for exactly that gap. Swapped out dubai/jaipur/bangkok (India-audience-
+// centric picks, already well-served elsewhere) to make room; kept
+// bali/paris/tokyo/goa/maldives as still-strong global anchors.
+const FEATURED_SLUGS = ['bali', 'paris', 'tokyo', 'goa', 'santorini', 'mexico-city', 'venice', 'maldives'];
 const TOP_PICKS_COUNT = 8;
 
 // Pool of well-photographed, full (non-stub) destinations to randomise from.
