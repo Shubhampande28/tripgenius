@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
 import { getAllTrending, TrendingCategory } from '@/lib/trending';
+import { getPostCoverUrl, COVER_W } from '@/lib/blogImages';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -91,7 +92,7 @@ export default function TrendingPage() {
                     className="group grid grid-cols-1 md:grid-cols-2 gap-0 bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-64 md:h-auto min-h-[260px]">
                       <Image
-                        src={`https://images.unsplash.com/${featured.coverPhoto}?auto=format&fit=crop&w=800&q=80`}
+                        src={getPostCoverUrl(featured.coverPhoto, COVER_W.featured)}
                         alt={featured.title} fill
                         className="object-cover card-img"
                         sizes="(max-width: 768px) 100vw, 50vw"
@@ -130,7 +131,7 @@ export default function TrendingPage() {
                     className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-44 overflow-hidden">
                       <Image
-                        src={`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=600&q=80`}
+                        src={getPostCoverUrl(article.coverPhoto, COVER_W.card)}
                         alt={article.title} fill
                         className="object-cover card-img"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

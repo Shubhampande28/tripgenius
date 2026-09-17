@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BookOpen, ArrowRight, Clock, CalendarDays, ClipboardList } from 'lucide-react';
 import { getPostsForCity } from '@/lib/blog';
+import { getPostCoverUrl } from '@/lib/blogImages';
 import { City } from '@/lib/types';
 
 // "Guides & Itineraries" — blog posts covering this city (matched via the
@@ -49,7 +50,7 @@ export default function CityGuides({ city }: { city: City }) {
           >
             <div className="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden">
               <Image
-                src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=200&q=70`}
+                src={getPostCoverUrl(post.coverPhoto, 200, 70)}
                 alt={post.title}
                 fill
                 sizes="80px"

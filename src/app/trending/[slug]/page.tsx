@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Schema from '@/components/Schema';
 import { getAllTrending, getTrendingBySlug, TrendingBlock, TrendingCategory } from '@/lib/trending';
+import { getPostCoverUrl, COVER_W } from '@/lib/blogImages';
 
 const BASE = 'https://www.tripgenius.in';
 
@@ -30,13 +31,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       publishedTime: article.date,
       authors: ['TripGenius'],
       tags: article.tags,
-      images: [`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getPostCoverUrl(article.coverPhoto, COVER_W.hero)],
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
       description: article.description,
-      images: [`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`],
+      images: [getPostCoverUrl(article.coverPhoto, COVER_W.hero)],
     },
   };
 }
@@ -131,7 +132,7 @@ export default async function TrendingArticlePage({ params }: { params: Promise<
     headline: article.title,
     description: article.description,
     url: articleUrl,
-    image: `https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1200&q=80`,
+    image: getPostCoverUrl(article.coverPhoto, COVER_W.hero),
     datePublished: article.date,
     dateModified: article.date,
     author: { '@type': 'Organization', name: 'TripGenius Editorial Team', url: `${BASE}/about` },
@@ -165,7 +166,7 @@ export default async function TrendingArticlePage({ params }: { params: Promise<
         {/* Cover image */}
         <div className="relative h-64 sm:h-80 lg:h-96 w-full pt-16">
           <Image
-            src={`https://images.unsplash.com/${article.coverPhoto}?auto=format&fit=crop&w=1400&q=80`}
+            src={getPostCoverUrl(article.coverPhoto, 1400)}
             alt={article.title}
             fill
             priority
@@ -243,7 +244,7 @@ export default async function TrendingArticlePage({ params }: { params: Promise<
                     className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/30 card-lift">
                     <div className="relative h-32 overflow-hidden">
                       <Image
-                        src={`https://images.unsplash.com/${a.coverPhoto}?auto=format&fit=crop&w=400&q=80`}
+                        src={getPostCoverUrl(a.coverPhoto, COVER_W.related)}
                         alt={a.title} fill className="object-cover card-img"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
