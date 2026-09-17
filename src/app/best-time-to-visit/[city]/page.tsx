@@ -15,12 +15,29 @@ export function generateStaticParams() {
   return getAllCitySlugs().map(slug => ({ city: slug }));
 }
 
+// Was a single repeated pattern for all 155 pages ("Best Time to Visit
+// [City] [Year] — Month by Month Guide") — GSC audit (2026-09) found this
+// converting at 0.23% CTR across 13,596 impressions, the same shape as the
+// /visit/ and /countries/ title bugs. city.stats.bestTime (e.g. "Oct – Mar")
+// is real, page-unique, and already used in the description below — this
+// is literally the answer the "best time to visit X" query is asking for,
+// so putting it in the title doubles as a direct query-intent match.
+function buildBestTimeTitle(cityName: string, bestTime: string, year: number): string {
+  const candidates = [
+    `Best Time to Visit ${cityName}: ${bestTime} (${year} Guide)`,
+    `Best Time to Visit ${cityName}: ${bestTime}`,
+    `${cityName}: Best Time to Visit Is ${bestTime}`,
+    `Best Time to Visit ${cityName} ${year}`,
+  ];
+  return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) return {};
 
-  const title = `Best Time to Visit ${city.name} ${new Date().getFullYear()} — Month by Month Guide`;
+  const title = buildBestTimeTitle(city.name, city.stats.bestTime, new Date().getFullYear());
   const desc = `When is the best time to visit ${city.name}? Complete month-by-month weather guide. Best months: ${city.stats.bestTime}. Includes crowd levels, prices, and what to expect each month.`;
 
   return {
