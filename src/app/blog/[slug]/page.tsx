@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -277,12 +278,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <PostTOC content={post.content} />
 
           {/* Content — one auto-linker per render so "first mention only" and
-              the per-post cap hold across the whole article */}
+              the per-post cap hold across the whole article. Mid-article ad
+              (only on substantial/indexed posts, same policy reasoning as
+              blogBottom below) is interleaved after the midpoint block —
+              genuinely "midway through the article," not just visually
+              between two arbitrary blocks. */}
           <article>
             {(() => {
               const linkify = createAutoLinker();
+              const midpoint = Math.floor(post.content.length / 2);
+              const showMidAd = isSubstantialPost(post) && post.content.length >= 4;
               return post.content.map((block, i) => (
-                <ContentBlock key={i} block={block} linkify={linkify} />
+                <Fragment key={i}>
+                  <ContentBlock block={block} linkify={linkify} />
+                  {showMidAd && i === midpoint && (
+                    <AdUnit slot={AD_SLOTS.blogMidArticle} format="auto" className="my-8" />
+                  )}
+                </Fragment>
               ));
             })()}
           </article>

@@ -247,6 +247,13 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
       <main>
         <CityHero city={city} countrySlug={countrySlug} />
         <AtAGlance city={city} />
+        {/* Only monetise substantial, indexed guides — same policy reasoning
+            as the sidebar unit below. */}
+        {isIndexableCity(city) && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AdUnit slot={AD_SLOTS.cityTopBanner} format="horizontal" />
+          </div>
+        )}
         <CityQuickNav city={city} />
 
         {/* Discovery comes first on every destination: users see the top
@@ -264,6 +271,11 @@ export default async function CityPage(props: PageProps<'/cities/[slug]'>) {
         </section>
 
         <MonthByMonth city={city} />
+        {isIndexableCity(city) && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
+            <AdUnit slot={AD_SLOTS.cityMidContent} format="rectangle" />
+          </div>
+        )}
         {city.neighbourhoods?.length
           ? <NeighbourhoodsAreas city={city} />
           : <ExploreByArea city={city} />
