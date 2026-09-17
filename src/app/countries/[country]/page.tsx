@@ -77,13 +77,33 @@ export async function generateStaticParams() {
   return countries.map((c) => ({ country: c.slug }));
 }
 
+// Was a single repeated pattern for all 57 country pages ("[Country] Travel
+// Guide 2026 — Cities, Itineraries & Tips") — GSC audit (2026-09) found this
+// converting 0 clicks from 3,871 impressions across all of them (e.g.
+// /countries/ireland: 2,945 impressions alone, 0 clicks, position 10.7 for
+// "best places to visit in ireland"). Same root cause as the /visit/ fix:
+// inject a real, page-unique number instead of a generic phrase. cities.length
+// is the only such number in CountryData (visaForIndians is categorical, not
+// numeric) — and "best places to visit" is literally the top opportunity
+// query's own phrasing, so it doubles as a query-match bonus.
+function buildCountryTitle(country: CountryData, year: number): string {
+  const n = country.cities.length;
+  const candidates = [
+    `${country.name}: ${n} Best Places to Visit (${year} Guide)`,
+    `${country.name}: ${n} Best Places to Visit`,
+    `${country.name} Travel Guide: ${n} Cities & Itineraries`,
+    `${country.name} Travel Guide ${year}`,
+  ];
+  return candidates.find((t) => t.length <= 60) ?? candidates[candidates.length - 1];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: slug } = await params;
   const country = getCountryBySlug(slug);
   if (!country) return { title: 'Not Found' };
   // No "| TripGenius" here — the root layout's title template appends it.
-  const title = `${country.name} Travel Guide ${YEAR} — Cities, Itineraries & Tips`;
-  const description = `Plan your ${country.name} trip: city guides, visa info for Indians (${country.visaForIndians}), best time ${country.bestTime}, day-by-day itineraries and honest local tips — all free.`;
+  const title = buildCountryTitle(country, YEAR);
+  const description = `${country.cities.length} city guides for ${country.name}: visa info for Indians (${country.visaForIndians}), best time ${country.bestTime}, day-by-day itineraries and honest local tips — all free.`;
   return {
     title, description,
     alternates: { canonical: `${BASE}/countries/${slug}` },
