@@ -126,16 +126,61 @@ export default async function RootLayout({
           gtag('set', 'user_properties', { bot_suspected: window.__tgBotSuspected ? 'true' : 'false' });
           gtag('config', '${GA_ID}');
         `}</Script>
-        {/* Google AdSense — skipped entirely for sessions flagged above, so
-            bot traffic never generates an ad impression/click. */}
+        {/* Google AdSense — the navigator.webdriver check above still gates
+            obvious cases, but the 2026-09 Singapore bot pattern disguises
+            itself as real Chrome and defeats it (confirmed: 0 of 140
+            sessions flagged bot_suspected over a full week, while landing
+            directly on ad-bearing /visit/ pages). That traffic's one
+            consistently measured weakness is behavioral, not a browser
+            property: near-zero engagement time, ~1 pageview/session. So
+            instead of trusting a flag a bot can fake, the ad script now
+            only loads once BOTH the session is not server/webdriver-flagged
+            AND a real engagement signal has actually happened — the first
+            genuine interaction (scroll/mouse/touch/key/click), or, for
+            real readers who do none of those (keyboard-only, or just
+            reading without moving the mouse), a dwell-time floor that only
+            counts time the tab is actually visible in the foreground. A
+            drive-by bot that loads a page and leaves in milliseconds never
+            triggers either condition, so it never generates an ad
+            impression — this targets the site's own confirmed traffic
+            data rather than a spoofable client fingerprint. Real readers
+            see zero difference: ads still load within ~4s or their first
+            scroll, whichever is first, which is standard lazy-ad-load
+            practice anyway (and better for Core Web Vitals: the ad script
+            no longer competes with page content on initial load). */}
         <Script id="tg-adsense-loader" strategy="afterInteractive">{`
-          if (!window.__tgBotSuspected) {
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}';
-            s.crossOrigin = 'anonymous';
-            document.body.appendChild(s);
-          }
+          (function () {
+            if (window.__tgBotSuspected) return;
+            var loaded = false;
+            var timer = null;
+            var events = ['scroll', 'mousemove', 'touchstart', 'keydown', 'click'];
+            function cleanup() {
+              events.forEach(function (e) { window.removeEventListener(e, onInteract); });
+              if (timer) clearTimeout(timer);
+            }
+            function loadAds() {
+              if (loaded) return;
+              loaded = true;
+              cleanup();
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}';
+              s.crossOrigin = 'anonymous';
+              document.body.appendChild(s);
+            }
+            function onInteract() { loadAds(); }
+            events.forEach(function (e) { window.addEventListener(e, onInteract, { passive: true, once: true }); });
+
+            var dwellMs = 4000, elapsed = 0;
+            function tick() {
+              if (document.visibilityState === 'visible') {
+                elapsed += 250;
+                if (elapsed >= dwellMs) { loadAds(); return; }
+              }
+              timer = setTimeout(tick, 250);
+            }
+            timer = setTimeout(tick, 250);
+          })();
         `}</Script>
         <MotionProvider>{children}</MotionProvider>
         {/* Site-wide Organization + WebSite structured data */}
