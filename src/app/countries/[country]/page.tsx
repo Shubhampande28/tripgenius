@@ -16,6 +16,7 @@ import { countries, getCountryBySlug, type CountryData } from '@/data/countries'
 import { getCityBySlug } from '@/lib/cities';
 import { getCityImageUrl } from '@/lib/cityImages';
 import { allPosts, isIndexablePost } from '@/lib/blog';
+import { getPostCoverUrl, COVER_W } from '@/lib/blogImages';
 import { ITINERARY_DURATIONS, ITINERARY_COMING_SOON, getItinerarySlug, buildItineraryDays, buildRouteOverview, type ItineraryDuration } from '@/lib/itineraries';
 
 const BASE  = 'https://www.tripgenius.in';
@@ -493,7 +494,7 @@ export default async function CountryPage({ params }: Props) {
                     {/* Image */}
                     <div className="relative w-36 sm:w-56 lg:w-64 flex-shrink-0 overflow-hidden" style={{ minHeight: '148px' }}>
                       <Image
-                        src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=600&q=75`}
+                        src={getPostCoverUrl(post.coverPhoto, COVER_W.card, 75)}
                         alt={post.title}
                         fill
                         sizes="(max-width:640px) 144px, (max-width:1024px) 224px, 256px"

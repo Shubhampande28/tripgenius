@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Search, ArrowRight, Mail, ChevronDown, ChevronLeft, ChevronRight, Sparkles, CalendarDays, Shuffle } from 'lucide-react';
+import { getPostCoverUrl, COVER_W } from '@/lib/blogImages';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AIPlannerTeaser from '@/components/home/AIPlannerTeaser';
@@ -511,7 +512,7 @@ export default function HomeClient() {
                   className="group bg-surface border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-accent/20 transition-all duration-300 flex flex-col">
                   <div className="relative h-48 overflow-hidden">
                     <SafeImage
-                      src={`https://images.unsplash.com/${post.coverPhoto}?auto=format&fit=crop&w=800&h=600&q=80`}
+                      src={getPostCoverUrl(post.coverPhoto, COVER_W.featured)}
                       alt={post.title}
                       city={post.slug}
                       fill
