@@ -15,9 +15,12 @@ const KLOOK_AID      = process.env.NEXT_PUBLIC_KLOOK_AID ?? '';
 const SKYSCANNER_PID = process.env.NEXT_PUBLIC_SKYSCANNER_PID ?? '';
 
 // ── Booking.com ──────────────────────────────────────────────────────────────
+// selected_currency + lang=en-gb: the site's audience is overwhelmingly
+// Indian (per GSC/GA4), and the default en-us/no-currency params showed USD
+// prices to everyone — a real friction point found in a 2026-09 link audit.
 
 export function hotelUrl(cityName: string, checkIn?: string, checkOut?: string): string {
-  const params = new URLSearchParams({ ss: cityName, lang: 'en-us' });
+  const params = new URLSearchParams({ ss: cityName, lang: 'en-gb', selected_currency: 'INR' });
   if (BOOKING_AID) params.set('aid', BOOKING_AID);
   if (checkIn)  params.set('checkin',  checkIn);
   if (checkOut) params.set('checkout', checkOut);
@@ -25,16 +28,34 @@ export function hotelUrl(cityName: string, checkIn?: string, checkOut?: string):
 }
 
 export function hotelNeighbourhoodUrl(cityName: string, neighbourhood: string): string {
-  const params = new URLSearchParams({ ss: `${neighbourhood}, ${cityName}`, lang: 'en-us' });
+  const params = new URLSearchParams({ ss: `${neighbourhood}, ${cityName}`, lang: 'en-gb', selected_currency: 'INR' });
   if (BOOKING_AID) params.set('aid', BOOKING_AID);
   return `https://www.booking.com/searchresults.html?${params}`;
 }
 
 // ── Skyscanner ────────────────────────────────────────────────────────────────
+// .co.in (not the UK .net site) for an India-first audience. Several
+// destinations we cover have no airport of their own — routing those through
+// Skyscanner's "flights-to/<slug>" pattern returns an empty or wrong page
+// (found in a 2026-09 link audit: flights-to/mathura-vrindavan,
+// flights-to/thekkady, flights-to/ajmer all 404 or mismatch). Route those to
+// the nearest airport with real commercial service instead.
+const NEAREST_AIRPORT: Record<string, string> = {
+  mathura: 'agra', vrindavan: 'agra', 'mathura-vrindavan': 'agra',
+  thekkady: 'kochi', ajmer: 'jaipur', pushkar: 'jaipur',
+  bir: 'dharamshala', 'bir-billing': 'dharamshala',
+  'tirthan-valley': 'chandigarh', kasol: 'chandigarh', manali: 'chandigarh',
+  mussoorie: 'dehradun', rishikesh: 'dehradun', haridwar: 'dehradun',
+  nainital: 'delhi', munnar: 'kochi', kasauli: 'chandigarh', shimla: 'chandigarh',
+  hampi: 'hubli', gokarna: 'goa', darjeeling: 'bagdogra', gangtok: 'bagdogra',
+  kedarnath: 'dehradun', badrinath: 'dehradun', 'dzukou-valley': 'dimapur', kohima: 'dimapur',
+};
 
-export function flightUrl(cityName: string): string {
-  const slug = cityName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
-  const base = 'https://www.skyscanner.net/transport/flights-to';
+export function flightUrl(cityName: string, citySlug?: string): string {
+  const mapped = citySlug ? NEAREST_AIRPORT[citySlug] : undefined;
+  const targetName = mapped ? mapped.replace(/-/g, ' ') : cityName;
+  const slug = targetName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
+  const base = 'https://www.skyscanner.co.in/transport/flights-to';
   return SKYSCANNER_PID
     ? `${base}/${slug}/?associateid=${SKYSCANNER_PID}`
     : `${base}/${slug}/`;

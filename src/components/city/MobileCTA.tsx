@@ -23,15 +23,23 @@ export default function MobileCTA({ city }: { city: City }) {
           href={hotelUrl(city.name)}
           target="_blank"
           rel="noopener noreferrer sponsored"
+          data-affiliate-partner="booking"
+          data-affiliate-destination={city.slug}
+          data-affiliate-page-type="city"
+          data-affiliate-placement="mobile-cta"
           className="flex-1 flex items-center justify-center gap-2 bg-accent text-white rounded-xl py-3 text-sm font-semibold"
         >
           <Hotel size={15} />
           Book Hotels
         </a>
         <a
-          href={flightUrl(city.name)}
+          href={flightUrl(city.name, city.slug)}
           target="_blank"
           rel="noopener noreferrer sponsored"
+          data-affiliate-partner="skyscanner"
+          data-affiliate-destination={city.slug}
+          data-affiliate-page-type="city"
+          data-affiliate-placement="mobile-cta"
           className="flex-1 flex items-center justify-center gap-2 bg-surface border border-border text-primary-text rounded-xl py-3 text-sm font-semibold"
         >
           <Plane size={15} />

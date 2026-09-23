@@ -41,7 +41,11 @@ export default function CitySidebar({ city }: { city: City }) {
           <a
             href={hotelUrl(city.name)}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer sponsored"
+            data-affiliate-partner="booking"
+            data-affiliate-destination={city.slug}
+            data-affiliate-page-type="city"
+            data-affiliate-placement="sidebar"
             className="flex items-center gap-3 p-3.5 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/20 transition-all duration-200 group"
           >
             <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -59,6 +63,10 @@ export default function CitySidebar({ city }: { city: City }) {
             href={activitiesUrl(city.slug, city.name)}
             target="_blank"
             rel="noopener noreferrer sponsored"
+            data-affiliate-partner={activitiesLabel(city.slug).toLowerCase()}
+            data-affiliate-destination={city.slug}
+            data-affiliate-page-type="city"
+            data-affiliate-placement="sidebar"
             className="flex items-center gap-3 p-3.5 rounded-xl bg-accent/10 border border-accent/20 hover:bg-accent/20 transition-all duration-200 group"
           >
             <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -73,9 +81,13 @@ export default function CitySidebar({ city }: { city: City }) {
           </a>
 
           <a
-            href={flightUrl(city.name)}
+            href={flightUrl(city.name, city.slug)}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer sponsored"
+            data-affiliate-partner="skyscanner"
+            data-affiliate-destination={city.slug}
+            data-affiliate-page-type="city"
+            data-affiliate-placement="sidebar"
             className="flex items-center gap-3 p-3.5 rounded-xl bg-teal/10 border border-teal/20 hover:bg-teal/20 transition-all duration-200 group"
           >
             <div className="w-9 h-9 rounded-lg bg-teal/20 flex items-center justify-center flex-shrink-0">

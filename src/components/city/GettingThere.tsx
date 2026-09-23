@@ -140,9 +140,13 @@ export default function GettingThere({ city }: { city: City }) {
 
             {/* Flight search CTA */}
             <a
-              href={flightUrl(city.name)}
+              href={flightUrl(city.name, city.slug)}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer sponsored"
+              data-affiliate-partner="skyscanner"
+              data-affiliate-destination={city.slug}
+              data-affiliate-page-type="city"
+              data-affiliate-placement="getting-there"
               className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 active:scale-95 transition-all shadow-lg shadow-accent/20"
             >
               <Plane size={15} />

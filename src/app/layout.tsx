@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
+import AffiliateClickTracker from "@/components/AffiliateClickTracker";
 import Schema from "@/components/Schema";
 import { REAL_CITY_COUNT } from "@/lib/siteStats";
 import "./globals.css";
@@ -183,6 +184,7 @@ export default async function RootLayout({
           })();
         `}</Script>
         <MotionProvider>{children}</MotionProvider>
+        <AffiliateClickTracker />
         {/* Site-wide Organization + WebSite structured data */}
         <Schema
           data={[

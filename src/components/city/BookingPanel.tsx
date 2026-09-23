@@ -12,6 +12,7 @@ export default function BookingPanel({ city }: { city: City }) {
       sub: 'Best rates · Free cancellation',
       href: hotelUrl(city.name),
       provider: 'Booking.com',
+      partner: 'booking',
     },
     {
       icon: Ticket,
@@ -19,13 +20,15 @@ export default function BookingPanel({ city }: { city: City }) {
       sub: `Top-rated experiences in ${city.name}`,
       href: activitiesUrl(city.slug, city.name),
       provider: activitiesLabel(city.slug),
+      partner: activitiesLabel(city.slug).toLowerCase(),
     },
     {
       icon: Plane,
       label: 'Flights',
       sub: 'Compare 500+ airlines',
-      href: flightUrl(city.name),
+      href: flightUrl(city.name, city.slug),
       provider: 'Skyscanner',
+      partner: 'skyscanner',
     },
     {
       icon: Shield,
@@ -33,6 +36,7 @@ export default function BookingPanel({ city }: { city: City }) {
       sub: 'Medical · Cancellation · Baggage',
       href: 'https://www.worldnomads.com/',
       provider: 'World Nomads',
+      partner: 'worldnomads',
     },
   ];
 
@@ -92,12 +96,16 @@ export default function BookingPanel({ city }: { city: City }) {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {links.map(({ icon: Icon, label, sub, href, provider }) => (
+        {links.map(({ icon: Icon, label, sub, href, provider, partner }) => (
           <a
             key={label}
             href={href}
             target="_blank"
             rel="noopener noreferrer sponsored"
+            data-affiliate-partner={partner}
+            data-affiliate-destination={city.slug}
+            data-affiliate-page-type="city"
+            data-affiliate-placement="booking-panel"
             className="group flex items-center gap-4 p-4 rounded-xl border border-border bg-surface hover:border-accent/30 hover:bg-accent/4 transition-all duration-200"
           >
             {/* Unified neutral icon box — no 4 different colours */}

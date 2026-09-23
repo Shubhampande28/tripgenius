@@ -1,6 +1,24 @@
 import { City, MonthInfo, MonthRating, TimeOfDay } from './types';
 import { verifiedCityImages } from './cityImages';
 
+// Many `areas` entries are thematic groupings for the "explore by area" cards
+// ("Essential Core", "Local Culture & Food", "Snow View & Tiffin Top",
+// "Caves, Peaks & Viewpoints") rather than real, bookable localities. Passing
+// these straight to a hotel-search query (Booking.com's `ss` param) returns
+// empty or nonsense results — real click data (2026-09) showed exactly this:
+// "ss=Essential Core, Toronto", "ss=Caves, Peaks & Viewpoints, Wayanad".
+// Conservative heuristic: an "&"/"," almost always signals a made-up theme
+// label, not a place name a booking site recognises; a short list of generic
+// bucket words catches the rest. When in doubt, exclude — the fallback
+// (city-wide hotel search) always works, a broken "neighbourhood" search
+// often doesn't.
+const NON_LOCALITY_WORDS = /\b(core|escapes?|surrounds?|essentials?|stops?|highlights?|culture|crafts?|festivals?|viewpoints?)\b/i;
+export function isBookableLocalityName(name: string): boolean {
+  if (/[&,]/.test(name)) return false;
+  if (NON_LOCALITY_WORDS.test(name)) return false;
+  return true;
+}
+
 const monthNames = [
   ['January', 'Jan'], ['February', 'Feb'], ['March', 'Mar'], ['April', 'Apr'],
   ['May', 'May'], ['June', 'Jun'], ['July', 'Jul'], ['August', 'Aug'],
@@ -352,7 +370,7 @@ export function enrichCity(city: City): City {
     // Every source city already has a curated area list. Reuse that real data
     // for the Bali-style area module instead of inventing generic bases such
     // as "Quieter Local Base" for destinations without authored neighbourhoods.
-    neighbourhoods: city.neighbourhoods ?? city.areas?.map((area, index) => ({
+    neighbourhoods: city.neighbourhoods ?? city.areas?.filter((area) => isBookableLocalityName(area.name)).map((area, index) => ({
       name: area.name,
       description: area.tagline || `${area.name} is one of the main areas to explore in ${city.name}.`,
       bestFor: [
