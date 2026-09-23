@@ -49,7 +49,12 @@ export default function WhereToStay({ city }: { city: City }) {
                     key={area.name}
                     href={hotelNeighbourhoodUrl(city.name, area.name)}
                     target="_blank"
-                    rel="noopener noreferrer sponsored"                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-accent/30 card-lift flex flex-col"
+                    rel="noopener noreferrer sponsored"
+                    data-affiliate-partner="booking"
+                    data-affiliate-destination={city.slug}
+                    data-affiliate-page-type="city"
+                    data-affiliate-placement="where-to-stay-neighbourhood"
+                    className="group relative rounded-2xl overflow-hidden border border-border hover:border-accent/30 card-lift flex flex-col"
                   >
                     {/* Area image */}
                     <div className="relative h-44 overflow-hidden">
@@ -128,6 +133,10 @@ export default function WhereToStay({ city }: { city: City }) {
                 href={hotelUrl(city.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
+                data-affiliate-partner="booking"
+                data-affiliate-destination={city.slug}
+                data-affiliate-page-type="city"
+                data-affiliate-placement="where-to-stay-all-hotels"
                 className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors flex-shrink-0"
               >
                 <Hotel size={14} />
@@ -150,6 +159,10 @@ export default function WhereToStay({ city }: { city: City }) {
                 href={hotelUrl(city.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
+                data-affiliate-partner="booking"
+                data-affiliate-destination={city.slug}
+                data-affiliate-page-type="city"
+                data-affiliate-placement="where-to-stay-fallback-banner"
                 className="flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-xl text-sm font-semibold hover:bg-accent/90 transition-colors"
               >
                 <Hotel size={15} />

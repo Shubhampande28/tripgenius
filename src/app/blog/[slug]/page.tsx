@@ -363,21 +363,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="glass-card glass-hover glass-sheen mt-4 p-5 rounded-2xl">
               <p className="text-xs font-bold uppercase tracking-wider text-muted mb-3">Book Your Trip to {cityData.name}</p>
               <div className="grid grid-cols-3 gap-2">
-                <a href={hotelUrl(cityData.name)} target="_blank" rel="noopener noreferrer sponsored" className="min-w-0">
+                <a href={hotelUrl(cityData.name)} target="_blank" rel="noopener noreferrer sponsored" data-affiliate-partner="booking" data-affiliate-destination={cityData.slug} data-affiliate-page-type="blog" data-affiliate-placement="booking-box" className="min-w-0">
                   <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
                     <Hotel size={16} />
                     <span className="text-xs font-semibold">Hotels</span>
                     <span className="text-[10px] opacity-80">Booking.com</span>
                   </span>
                 </a>
-                <a href={activitiesUrl(cityData.slug, cityData.name)} target="_blank" rel="noopener noreferrer sponsored" className="min-w-0">
+                <a href={activitiesUrl(cityData.slug, cityData.name)} target="_blank" rel="noopener noreferrer sponsored" data-affiliate-partner={activitiesLabel(cityData.slug).toLowerCase()} data-affiliate-destination={cityData.slug} data-affiliate-page-type="blog" data-affiliate-placement="booking-box" className="min-w-0">
                   <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
                     <Ticket size={16} />
                     <span className="text-xs font-semibold">Tours</span>
                     <span className="text-[10px] opacity-80">{activitiesLabel(cityData.slug)}</span>
                   </span>
                 </a>
-                <a href={flightUrl(cityData.name)} target="_blank" rel="noopener noreferrer" className="min-w-0">
+                <a href={flightUrl(cityData.name, cityData.slug)} target="_blank" rel="noopener noreferrer sponsored" data-affiliate-partner="skyscanner" data-affiliate-destination={cityData.slug} data-affiliate-page-type="blog" data-affiliate-placement="booking-box" className="min-w-0">
                   <span className="btn btn-primary w-full !flex-col !h-auto !py-3 !gap-1.5">
                     <Plane size={16} />
                     <span className="text-xs font-semibold">Flights</span>
