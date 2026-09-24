@@ -214,7 +214,14 @@ function inferActivityTime(name: string, description: string, existing?: TimeOfD
 
 export function enrichCity(city: City): City {
   const spots = topSpots(city);
-  const firstArea = city.areas?.[0]?.name ?? 'Central Area';
+  // areas[0]?.name is frequently a thematic bucket label, not a real place
+  // ("Essential Core", "Local Culture & Food" — see isBookableLocalityName)
+  // synthesized by makeAddedCityGuide()'s fixed 3-group template. Found
+  // leaking into six templated text fields below as if it were a genuine
+  // neighbourhood ("Stay close to Essential Core...") in a 2026-09 link
+  // audit. Same fallback as when there's no area at all.
+  const rawFirstArea = city.areas?.[0]?.name;
+  const firstArea = rawFirstArea && isBookableLocalityName(rawFirstArea) ? rawFirstArea : 'the city centre';
   const mainSpot = spots[0] ?? city.name;
   const secondarySpot = spots[1] ?? firstArea;
   const thirdSpot = spots[2] ?? 'local markets';
