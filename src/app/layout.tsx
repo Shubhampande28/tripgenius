@@ -119,6 +119,60 @@ export default async function RootLayout({
             }
           })();
         `}</Script>
+        {/* Behavioral bot flag — 2026-09 investigation found the dominant
+            Singapore/China bot clusters are UNDETECTABLE by the fingerprint
+            check above (0 of ~2,000 Singapore sessions ever flagged true):
+            they run a real, unspoofed Chromium engine. Their one consistent
+            tell across both countries was behavioral, not a browser
+            property — near-zero dwell time (1-5s), no real interaction,
+            ~1-2 pageviews, Direct/no-referrer. This runs everywhere
+            (no country check, so real fast-bouncing humans anywhere are
+            fine — one single short visit alone isn't flagged; it only
+            fires for the specific combination of ALL FOUR signals at
+            once). It updates the bot_suspected user property after the
+            fact (on tab-hide/unload) purely for reporting accuracy — it
+            does not gate anything in real time; the AdSense loader below
+            already handles that independently via its own dwell/interact
+            gate. */}
+        <Script id="tg-bot-behavioral" strategy="beforeInteractive">{`
+          (function () {
+            try {
+              var referrerEmpty = !document.referrer;
+              var interacted = false;
+              var events = ['scroll', 'mousemove', 'touchstart', 'keydown', 'click'];
+              function markInteracted() { interacted = true; }
+              events.forEach(function (e) { window.addEventListener(e, markInteracted, { passive: true, once: true }); });
+
+              var pvCount = 1;
+              try {
+                var origPush = history.pushState;
+                history.pushState = function () {
+                  pvCount++;
+                  return origPush.apply(this, arguments);
+                };
+              } catch (e) {}
+
+              var startTs = Date.now();
+              var checked = false;
+              function checkBehavioral() {
+                if (checked) return;
+                checked = true;
+                var elapsed = Date.now() - startTs;
+                if (referrerEmpty && !interacted && elapsed < 3000 && pvCount <= 2) {
+                  window.__tgBotSuspected = true;
+                  if (typeof window.gtag === 'function') {
+                    window.gtag('set', 'user_properties', { bot_suspected: 'true' });
+                    window.gtag('event', 'bot_suspected_behavioral', { elapsed_ms: elapsed, pageviews: pvCount });
+                  }
+                }
+              }
+              document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'hidden') checkBehavioral();
+              });
+              window.addEventListener('pagehide', checkBehavioral);
+            } catch (e) {}
+          })();
+        `}</Script>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
@@ -159,7 +213,7 @@ export default async function RootLayout({
               events.forEach(function (e) { window.removeEventListener(e, onInteract); });
               if (timer) clearTimeout(timer);
             }
-            function loadAds() {
+            function loadAds(trigger) {
               if (loaded) return;
               loaded = true;
               cleanup();
@@ -168,15 +222,22 @@ export default async function RootLayout({
               s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}';
               s.crossOrigin = 'anonymous';
               document.body.appendChild(s);
+              // Makes bot ad-exposure directly measurable (previously only
+              // inferable from timing) — compare against bot_suspected in
+              // GA4 to confirm the dwell/interact gate is actually working,
+              // rather than assuming it from session duration alone.
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'ads_loaded', { trigger: trigger });
+              }
             }
-            function onInteract() { loadAds(); }
+            function onInteract() { loadAds('interaction'); }
             events.forEach(function (e) { window.addEventListener(e, onInteract, { passive: true, once: true }); });
 
             var dwellMs = 4000, elapsed = 0;
             function tick() {
               if (document.visibilityState === 'visible') {
                 elapsed += 250;
-                if (elapsed >= dwellMs) { loadAds(); return; }
+                if (elapsed >= dwellMs) { loadAds('dwell'); return; }
               }
               timer = setTimeout(tick, 250);
             }
